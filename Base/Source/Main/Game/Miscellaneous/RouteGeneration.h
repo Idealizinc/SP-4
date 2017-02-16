@@ -1,10 +1,10 @@
 /*
 Copyright (c) Clinton Teo Jun Quan 2016
 
-Creator(s)    : Clinton Teo Jun Quan
+Creator(s)    : Clinton Teo Jun Quan, Lim Rui An, Ryan (Optimization)
 Creation Date : 5 February 2016 15:13 PM
 File Name     : RouteGeneration.h
-Purpose       : Creates the optimal path for the enemies to go through
+Purpose       : Generate a route for enemies to go through, first by finding the next node which is (mostly) closest to the player's base, and when the enemy is at a junction, random a chance for the enemy to go another way other than the closest way to the player base.
 */
 #ifndef ROUTEGENERATION_H
 #define ROUTEGENERATION_H
