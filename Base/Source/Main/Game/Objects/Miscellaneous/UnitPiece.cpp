@@ -2,10 +2,30 @@
 
 UnitPiece::UnitPiece()
 {
-	moved = false;
+	Init();
 }
 
 UnitPiece::~UnitPiece()
+{
+
+}
+
+void UnitPiece::Init()
+{
+	moved = false;
+}
+
+void UnitPiece::Update(const float& dt)
+{
+
+}
+
+void UnitPiece::Render()
+{
+
+}
+
+void UnitPiece::Exit()
 {
 
 }

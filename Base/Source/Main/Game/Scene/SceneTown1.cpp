@@ -370,5 +370,10 @@ void SceneTown1::Render()
 
 void SceneTown1::Exit()
 {
+	for (std::vector<Enemy*>::iterator it = enemyList.begin(); it != enemyList.end();)
+	{	
+		delete *it;
+		it = enemyList.erase(it);
+	}
 	QuickExit();
 }

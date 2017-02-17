@@ -19,8 +19,9 @@ public:
 	UnitPiece();
 	~UnitPiece();
 
+	//causes unresolved externals cuz no function definition
 	virtual void Init();
-	virtual void Update(const float&);
+	virtual void Update(const float& dt);
 	virtual void Render();
 	virtual void Exit();
 
