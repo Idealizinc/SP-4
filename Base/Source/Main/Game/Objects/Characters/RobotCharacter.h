@@ -1,7 +1,7 @@
 #ifndef ROBOT_CHARACTER_H
 #define ROBOT_CHARACTER_H
 
-#include "../../ObjectStates/RobotStateManager.h"
+//#include "../../ObjectStates/RobotStateManager.h"
 #include "../../../Engine/Objects/CharacterEntity.h"
 #include "../../SceneManagement/ScenePartitionGraph.h"
 
