@@ -33,23 +33,49 @@ void EnemyController::Update(const float& dt)
 
 	if (temp->GetStateName() == "Standby")
 	{
-
+		if (turnCheck() == true)
+		{
+			SetCurrentState("Spawning");
+		}
 	}
 	else if (temp->GetStateName() == "Spawning")
 	{
-		//create a new enemy and spawn it at spawn
+		//insert unitspawn with enemybase position code here (can be implemented by function)
+		SetCurrentState("Moving");
 	}
 	else if (temp->GetStateName() == "Moving")
 	{
-		//rand a enemy and pop from enemymoveVector
+		//rand a enemy in the vector containing enemy units in the field and pop the front most slot from the Enemy targetNode vector of the selected enemy (can be implemented as function)
+		SetCurrentState("End");
 	}
 	else if (temp->GetStateName() == "End")
 	{
-
+		SetCurrentState("Standby");
+		turnSet();
 	}
 }
 
 void EnemyController::Exit()
 {
 
+}
+
+bool EnemyController::turnCheck(/*CharacterEntity* test*/)//this checks if its the enemy turn yet
+{
+	/*
+	if (test->playerTurn == false)
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+	*/
+	return false;
+}
+
+void EnemyController::turnSet()//similar function should be in playercontroller, this functions gives the turn and thus control back to the player (or can just directly edit the variable i guess)
+{
+	//test->playerTurn = true;
 }

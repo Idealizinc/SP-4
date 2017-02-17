@@ -18,12 +18,15 @@ public:
 	EnemyController();
 	virtual ~EnemyController();
 
-	virtual void Init(){};
-	virtual void Update(const float& dt){};
-	virtual void Exit(){};
+	virtual void Init();
+	virtual void Update(const float& dt);
+	virtual void Exit();
+	//check code definition for pusedo implementation for functions below
+	bool turnCheck();// need a variable to check whos turn it is in statemanager
+	void turnSet();
 
 private:
-
+	//probably a vector/list of existing enemy units in the field
 
 };
 
