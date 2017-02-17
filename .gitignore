@@ -31,3 +31,8 @@ ipch/
 *.exe
 *.out
 *.app
+irrKlang-1.5.0/lib/Win32-visualStudio/irrKlang.lib
+glew/lib/glew32.lib
+glfw/lib-msvc100/glfw3.lib
+Base/Base.vcxproj.filters
+Base/Base.vcxproj
