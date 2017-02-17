@@ -30,6 +30,7 @@ void CharacterEntity::Render()
 		RenderSystem *Renderer = dynamic_cast<RenderSystem*>(&SceneSystem::Instance().GetRenderSystem());
 		SceneSystem::Instance().GetCurrentScene().modelStack->PushMatrix();
 		SceneSystem::Instance().GetCurrentScene().modelStack->Translate(GetPosition().x, GetPosition().y, GetPosition().z);
+		SceneSystem::Instance().GetCurrentScene().modelStack->Rotate(-90, 1, 0,0);
 		SceneSystem::Instance().GetCurrentScene().modelStack->Rotate(GetRotationAngle(), GetRotationAxis().x, GetRotationAxis().y, GetRotationAxis().z);
 		SceneSystem::Instance().GetCurrentScene().modelStack->Scale(GetDimensions().x, GetDimensions().y, GetDimensions().z);
 		Renderer->RenderMesh(*GetMesh(), true);
@@ -45,7 +46,11 @@ void CharacterEntity::Update(const float& dt)
 	{
 		Vector3 StoredVelocity = GetVelocity();
 		if (!Static)
-			SetPosition(GetPosition() + (StoredVelocity + GetVelocity()) * 0.5f * (float)dt);
+			SetPosition(GetPosition() + (StoredVelocity + GetVelocity()) * 0.5f * (float)dt); 
+		if (!GetVelocity().IsZero())
+			LookVector = GetVelocity().Normalized();
+		if (GetVelocity().LengthSquared() > 0)
+			SetRotationAngle(Math::RadianToDegree(atan2(-GetVelocity().x, -GetVelocity().z)));
 	}
 }
 
