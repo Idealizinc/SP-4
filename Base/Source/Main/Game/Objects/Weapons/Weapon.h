@@ -22,6 +22,7 @@ public:
 		EquipTime = -1;
 		Equipped = false;
 		Timer = 0;
+		Type = 0;
 		Attackability = false;
 	};
 	virtual ~Weapon(){};
@@ -97,6 +98,8 @@ protected:
 	float Timer;
 	// Attackability?
 	bool Attackability;
+	// Type
+	int Type;
 	
 };
 

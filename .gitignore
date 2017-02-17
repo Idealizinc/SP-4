@@ -31,3 +31,5 @@ ipch/
 *.exe
 *.out
 *.app
+Base/Base.vcxproj
+Base/Base.vcxproj.filters
