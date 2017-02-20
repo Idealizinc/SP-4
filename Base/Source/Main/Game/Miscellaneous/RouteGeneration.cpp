@@ -15,7 +15,7 @@ std::vector<TerrainNode*> RouteGeneration::GeneratePath()
 
 	DefinedPath.push_back(StartNode);
 
-	while (DefinedPath.size() < MaximumPathCount)
+	while (DefinedPath.size() < (unsigned)MaximumPathCount)
 	{
 		float ClosestDistance = FLT_MAX;
 
@@ -32,7 +32,7 @@ std::vector<TerrainNode*> RouteGeneration::GeneratePath()
 			ClosestDistance = MostViableNode->CalculateRemainderPathCost(TargetNode);
 		}
 		// A distance comparison between each node, in an attempt to find the closest.
-		for (int i = 0; i < PossibleMoves.size(); ++i)
+		for (unsigned int i = 0; i < PossibleMoves.size(); ++i)
 		{
 			if (PossibleMoves[i] != PreviousNode)
 			{
@@ -53,7 +53,7 @@ std::vector<TerrainNode*> RouteGeneration::GeneratePath()
 		if (PossibleMoves.size() >=  3)
 		{
 			// Cause of circle running
-			if (Math::RandIntMinMax(0, 10) > 5)
+			if (Math::RandIntMinMax(0, 10) > 6)
 			{
 				TerrainNode* Choice = RandomizeSelection(PossibleMoves);
 				// Possibility of infinite loop if there are only two linked nodes and the end in not connected

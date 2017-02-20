@@ -25,7 +25,7 @@ class StateList : public SingletonTemplate<StateList>
 	public:
 		~StateList();
 		State* FindState(const string&);
-		void CreateState(const string&);
+		string CreateState(const string&);
 		bool RemoveState(const string&);
 
 		int GetStateCount();

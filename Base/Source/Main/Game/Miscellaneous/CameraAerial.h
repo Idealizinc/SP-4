@@ -33,6 +33,8 @@ public:
 	Vector3 CurrentCameraRotation;
 	Vector3 LookVector;
 	Vector3 CameraMoveTargetPosition;
+	float CameraSpeed = 5.f;
+	float FieldOfView = 60.f;
 
 private:
 	// Internal Functions

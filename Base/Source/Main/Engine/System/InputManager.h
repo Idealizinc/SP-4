@@ -13,13 +13,32 @@ Defines the Input Manager that handles all forms of input
 #define _INPUTMANAGER_H
 
 #include "Vector3.h"
+#include <map>
 
 class InputManager
 {
 public:
+	enum MouseState
+	{
+		MOUSE_DOWN = 0,
+		MOUSE_RELEASE,
+		MOUSE_UP,
+		MOUSE_HOLD,
+		MOUSE_MAX
+	};
+
+	enum MouseKeys
+	{
+		KEY_LMB = 0,
+		KEY_RMB = 1,
+		KEY_MAX
+	};
+
 	InputManager();
+	~InputManager();
 	void HandleUserInput();
 	bool GetKeyValue(char);
+	unsigned short GetMouseInput(const unsigned short& key);
 	Vector3 GetMousePosition();
 	void SetMousePosition(Vector3);
 	void SetMouseToScreenCenter();
@@ -34,6 +53,7 @@ public:
 private:
 	Vector3 MousePosition;
 	bool cIM_Keys[256];
+	std::map<unsigned short, unsigned short> MouseButtonState;
 };
 
 #endif

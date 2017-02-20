@@ -496,7 +496,7 @@ Mesh* MeshBuilder::GenerateTerrain(const std::string &meshName, const std::strin
 	std::vector<Vertex> vertex_buffer_data;
 	std::vector<GLuint> index_buffer_data;
 
-	const float SCALE_FACTOR = 32.f;
+	const float SCALE_FACTOR = 256.f;
 
 	if (!LoadHeightMap(file_path.c_str(), heightMap))
 	{
@@ -514,7 +514,7 @@ Mesh* MeshBuilder::GenerateTerrain(const std::string &meshName, const std::strin
 
 			v.pos.Set(static_cast<float>(x) / terrainSize - 0.5f, scaledHeight, static_cast<float>(z) / terrainSize - 0.5f);
 			v.color.Set(scaledHeight, scaledHeight, scaledHeight);
-			v.texCoord.Set((float)(x) / terrainSize * SCALE_FACTOR / 2, 1.0f - (float)(z) / terrainSize * SCALE_FACTOR / 2);
+			v.texCoord.Set((float)(x) / terrainSize * SCALE_FACTOR * 0.1f, 1.0f - (float)(z) / terrainSize * SCALE_FACTOR * 0.1f);
 
 			if (z == 0)
 			{

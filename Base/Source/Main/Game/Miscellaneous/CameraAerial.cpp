@@ -56,7 +56,7 @@ void CameraAerial::Update(const float& dt)
 	Vector3 Direction;
 	if ((Direction = (CameraMoveTargetPosition - (position - CameraAxialOffset))).LengthSquared() > 1.f)
 	{
-		position += Direction * 2 * dt;
+		position += Direction * CameraSpeed * dt;
 	}
 	// Calculating the resultant vectors must and can only be run after all positional/rotational updates
 	CalculateCameraVectors();

@@ -8,7 +8,6 @@
 #include "../Systems/BillboardManager.h"
 #include "../Objects/Miscellaneous/GameMap.h"
 #include "../Miscellaneous/CameraAerial.h"
-#include"../Miscellaneous/RouteGeneration.h"
 
 class Enemy
 {
@@ -42,7 +41,7 @@ private:
     void RenderTerrain();
     void RenderSkybox();
 
-    const float SkyboxSize = 1000;
+    const float SkyboxSize = 1500;
 
     BillboardManager BManager;
     GameObject* Player;
@@ -50,11 +49,6 @@ private:
     GameMap *InteractiveMap;
 	std::vector<GameObject*> EntityList;
 	Vector3 CenterPosition;
-
-	//enemy stuff
-	float timer = 0;
-	std::vector<Enemy*> enemyList;
-	std::vector<std::vector<TerrainNode*>> PathList;
 };
 
 #endif // _SCENE_TOWN_1_H

@@ -2,8 +2,6 @@
 #include "../../Game/Mains/Application.h"
 #include "SceneSystem.h"
 #include "SimpleCommand.h"
-// Test Build 2 
-// - Ryan
 
 InputManager::InputManager()
 {
@@ -11,6 +9,12 @@ InputManager::InputManager()
 	{
 		cIM_Keys[num] = false;
 	}
+}
+
+
+InputManager::~InputManager()
+{
+	MouseButtonState.clear();
 }
 
 void InputManager::HandleUserInput()
@@ -27,11 +31,40 @@ void InputManager::HandleUserInput()
             cIM_Keys[SimpleCommand::m_allTheKeys[num]] = false;
         }
     }
+	for (std::map<unsigned short, unsigned short>::iterator it = MouseButtonState.begin(); it != MouseButtonState.end(); ++it)
+	{
+		// I wasn't pressing it down earlier, but I am now.
+		if ((it->second == MOUSE_RELEASE) && Application::IsMousePressed(it->first)){
+			it->second = MOUSE_DOWN;
+		}
+		// I've already pressed it but am still holding down.
+		else if ((it->second == MOUSE_DOWN || it->second == MOUSE_HOLD) && Application::IsMousePressed(it->first)){
+			it->second = MOUSE_HOLD;
+		}
+		// I was holding it earlier but I've just let it go
+		else if ((it->second == MOUSE_HOLD) && !Application::IsMousePressed(it->first)){
+			it->second = MOUSE_UP;
+		}
+		else{
+			it->second = MOUSE_RELEASE;
+		}
+	}
 }
 
 bool InputManager::GetKeyValue(char c)
 {
 	return cIM_Keys[c];
+}
+
+unsigned short InputManager::GetMouseInput(const unsigned short& key)
+{
+	std::map<unsigned short, unsigned short>::iterator it = MouseButtonState.find(key);
+	if (it != MouseButtonState.end())
+	{
+		return it->second;
+	}
+	else MouseButtonState.insert(std::pair<unsigned short, bool>(key, MOUSE_RELEASE));
+	return MOUSE_RELEASE;
 }
 
 Vector3 InputManager::GetMousePosition()
@@ -53,22 +86,22 @@ void InputManager::SetScreenSize(float x, float y)
 void InputManager::UpdateMouse()
 {
 	////New Version for use with my camera version
-	//POINT mousePosition;
-	//GetCursorPos(&mousePosition);
-	//
-	//if (!cIM_inMouseMode)
-	//{
-	//	int moveX = (int)cIM_ScreenWidth / 2;
-	//	int moveY = (int)cIM_ScreenHeight / 2;
-	//
-	//	//Lock the cursor's position to the center of the screen.
-	//	SetCursorPos(moveX, moveY);
-	//
-	//	//Calculate the difference between the cursor coordinates between frames
-	//	cIM_CameraYaw = static_cast<float>(mousePosition.x - moveX);
-	//	cIM_CameraPitch = static_cast<float>(mousePosition.y - moveY);
-	//}
-	//SetMousePosition(Vector3((float)mousePosition.x, cIM_ScreenHeight - (float)mousePosition.y, 0.f));
+	POINT mousePosition;
+	GetCursorPos(&mousePosition);
+	
+	if (!cIM_inMouseMode)
+	{
+		int moveX = (int)cIM_ScreenWidth / 2;
+		int moveY = (int)cIM_ScreenHeight / 2;
+	
+		//Lock the cursor's position to the center of the screen.
+		SetCursorPos(moveX, moveY);
+	
+		//Calculate the difference between the cursor coordinates between frames
+		cIM_CameraYaw = static_cast<float>(mousePosition.x - moveX);
+		cIM_CameraPitch = static_cast<float>(mousePosition.y - moveY);
+	}
+	SetMousePosition(Vector3((float)mousePosition.x, cIM_ScreenHeight - (float)mousePosition.y, 0.f));
 }
 
 void InputManager::SetMouseToScreenCenter()

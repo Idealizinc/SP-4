@@ -92,10 +92,10 @@ bool GameMap::LoadFile(const std::string &mapName, std::vector<unsigned char> &t
 				if (Icon == "TN" || Icon == "TNP" || Icon == "TNE")
 				{
 					TerrainNode* TN = new TerrainNode();
-					BaseObject *TNBO = dynamic_cast<BaseObject*>(itLegend->second);
+					GameObject *TNBO = dynamic_cast<GameObject*>(itLegend->second);
 					if (TNBO)
 					{
-						BaseObject *aCopyOfIt = new BaseObject(*TNBO);
+						GameObject *aCopyOfIt = new GameObject(*TNBO);
 						aCopyOfIt->SetPosition(Vector3((float)num_Column, 0, (float)theLineCounter));
 						aCopyOfIt->Static = true;
 						it->second.push_back(" "); 
@@ -171,7 +171,7 @@ bool GameMap::LoadFile(const std::string &mapName, std::vector<unsigned char> &t
 			((the3DObj->GetPosition().z - ((float)theNumOfTiles_MapHeight * 0.5f)) * tileSizeXYZ.z) - (tileSizeXYZ.z * 0.5f)
 			));
 		the3DObj->SetPosition(Vector3(the3DObj->GetPosition().x,
-			(the3DObj->GetDimensions().y*0.5f) + terrainSize.y * ReadHeightMap(theHeightMap, the3DObj->GetPosition().x / terrainSize.x, the3DObj->GetPosition().z / terrainSize.z) - 0.5f,
+			(the3DObj->GetDimensions().y*0.5f) + terrainSize.y * ReadHeightMap(theHeightMap, the3DObj->GetPosition().x / terrainSize.x, the3DObj->GetPosition().z / terrainSize.z), 
 			the3DObj->GetPosition().z
 			));
 		the3DObj->SetBounds();
@@ -180,14 +180,14 @@ bool GameMap::LoadFile(const std::string &mapName, std::vector<unsigned char> &t
 
 	for (std::vector<TerrainNode*>::iterator it = TempNodeList.begin(), end = TempNodeList.end(); it != end; ++it)
 	{
-		BaseObject *the3DObj = dynamic_cast<BaseObject*>((*it)->GetEntity());
+		GameObject *the3DObj = dynamic_cast<GameObject*>((*it)->GetEntity());
 		the3DObj->SetPosition(Vector3(
 			((the3DObj->GetPosition().x - ((float)theNumOfTiles_MapWidth * 0.5f)) * tileSizeXYZ.x) + (tileSizeXYZ.x * 0.5f),
 			0,
 			((the3DObj->GetPosition().z - ((float)theNumOfTiles_MapHeight * 0.5f)) * tileSizeXYZ.z) - (tileSizeXYZ.z * 0.5f)
 			));
 		the3DObj->SetPosition(Vector3(the3DObj->GetPosition().x,
-			(the3DObj->GetDimensions().y*0.5f) + terrainSize.y * ReadHeightMap(theHeightMap, the3DObj->GetPosition().x / terrainSize.x, the3DObj->GetPosition().z / terrainSize.z) - 0.5f,
+			(the3DObj->GetDimensions().y*0.25f) + terrainSize.y * ReadHeightMap(theHeightMap, the3DObj->GetPosition().x / terrainSize.x, the3DObj->GetPosition().z / terrainSize.z),
 			the3DObj->GetPosition().z
 			));
 		(*it)->SetGridIndex(ScenePartitionGraph::Instance().FindGridIndexForPosition(the3DObj->GetPosition()));
