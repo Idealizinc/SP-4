@@ -45,11 +45,13 @@ public:
 	float DetectionRadius;
 	int FieldOfView;
 	float HealRate;
+	int RaceType;
 
 private:
 	
 protected:
 	StateManager* InternalStateManager;
+	std::set<BaseObject*> CharacterObjectList;
 
 };
 

@@ -10,6 +10,8 @@
 #include "../Systems/GameLogicSystem.h"
 
 
+//#include "../Miscellaneous/TerrainDataLoader.h"
+
 std::string SceneTown1::id_ = "1_Scene";
 
 SceneTown1::SceneTown1()
@@ -76,6 +78,27 @@ void SceneTown1::QuickExit()
 void SceneTown1::Init()
 {
 	QuickInit();
+	for (int i = 0; i < 100; ++i)
+	{
+		RG.GeneratePath();
+		PathList.push_back(RG.DefinedPath);
+		//std::cout << i << ": " << RG.DefinedPath.size() << std::endl;
+	}
+
+
+	//terrain test
+		/*TerrainDataLoader* test = new TerrainDataLoader();
+		test->LoadTerrainData("CSVFiles/TerrainDataLoader.csv");
+		Terrain* test2 = test->GetTerrain("MeleePanel");
+		test2->GetTerrainName();
+		float hpboost = test2->GetUnitAdvantage(Terrain::T_HEALTH);
+		float meleeboost = test2->GetUnitAdvantage(Terrain::T_MELEE);
+		float magicboost = test2->GetUnitAdvantage(Terrain::T_MAGIC);
+		float rangeboost = test2->GetUnitAdvantage(Terrain::T_RANGE);
+		float hpnerf = test2->GetUnitDisadvantage(Terrain::T_HEALTH);
+		float meleenerf = test2->GetUnitDisadvantage(Terrain::T_MELEE);
+		float magicnerf = test2->GetUnitDisadvantage(Terrain::T_MAGIC);
+		float rangenerf = test2->GetUnitDisadvantage(Terrain::T_RANGE);*/
 }
 
 void SceneTown1::Update(const float& dt)
@@ -329,5 +352,10 @@ void SceneTown1::Render()
 
 void SceneTown1::Exit()
 {
+	for (std::vector<Enemy*>::iterator it = enemyList.begin(); it != enemyList.end();)
+	{	
+		delete *it;
+		it = enemyList.erase(it);
+	}
 	QuickExit();
 }
