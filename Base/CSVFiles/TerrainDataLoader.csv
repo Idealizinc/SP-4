@@ -1,5 +1,5 @@
-TerrainID,TerrainName,TerrainType,HealthBoost,MeleeBoost,MagicBoost,RangeBoost
-1,HealthPanel,0,2,1,1,1
-2,MeleePanel,1,1,2,1,1
-3,MagicPanel,2,1,1,2,1
-4,RangePanel,3,1,1,1,2
+TerrainID,TerrainName,TerrainType,HealthAdvantage,MeleeAdvantage,MagicAdvantage,RangeAdvantage,HealthDisadvantage,MeleeDisadvantage,MagicDisadvantage,RangeDisadvantage
+1,HealthPanel,0,1.5,1,1,1,0.9,1,1,1
+2,MeleePanel,1,1,1.5,1,1,1,0.9,1,1
+3,MagicPanel,2,1,1,1.5,1,1,1,0.9,1
+4,RangePanel,3,1,1,1,1.5,1,1,1,0.9
