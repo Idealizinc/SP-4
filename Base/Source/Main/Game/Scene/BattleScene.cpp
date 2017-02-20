@@ -27,10 +27,6 @@ BattleScene::~BattleScene()
 
 void BattleScene::QuickInit()
 {
-	loader.LoadWeaponData("CSVFiles/WeaponDataLoader.csv");
-	loader.LoadUnitData("CSVFiles/UnitDataLoader.csv");
-	loader.LoadRaceData("CSVFiles/RaceDataLoader.csv");
-
 	RenderSystem *Renderer = dynamic_cast<RenderSystem*>(&SceneSystem::Instance().GetRenderSystem());
 
 	// Set Terrain Size
@@ -60,28 +56,7 @@ void BattleScene::QuickInit()
 	theMap->SetEntityID("scene town 1 logic map");
 	theMap->LoadMap("CSVFiles//Town1Layout.csv", m_heightMap, TerrainScale, EntityList, BManager);
 
-	// Render Unit
-	SpawnPosition_Melee = Vector3(-50, 10, 0);
-	for (int i = 0; i < 10; ++i)
-	{
-		NewChar = new MeleeCharacter();
-		MeleeCharacter* MC = dynamic_cast<MeleeCharacter*>(NewChar);
-		MC->SetCharacter(loader.UnitMap.find("Crusader")->second, loader.RaceMap.find("Human")->second);
-		NewChar->SetDimensions(Vector3(MeleeSize, MeleeSize, MeleeSize));
-		NewChar->SetPosition(SpawnPosition_Melee);
-		ObjectManager::Instance().AddNewCharacter(NewChar);
-	}
-
-	SpawnPosition_Range = Vector3(50, 10, 0);
-	for (int i = 0; i < 10; ++i)
-	{
-		NewChar2 = new RangeCharacter();
-		RangeCharacter* MC = dynamic_cast<RangeCharacter*>(NewChar2);
-		MC->SetCharacter(loader.UnitMap.find("Mercedes")->second, loader.RaceMap.find("Elven")->second);
-		NewChar2->SetDimensions(Vector3(RangeSize, RangeSize, RangeSize));
-		NewChar2->SetPosition(SpawnPosition_Range);
-		ObjectManager::Instance().AddNewCharacter(NewChar2);
-	}
+	BS.Init();
 
 }
 
@@ -99,6 +74,8 @@ void BattleScene::QuickExit()
 		delete Player;
 	if (camera)
 		delete camera;
+
+	BS.Exit();
 }
 void BattleScene::Init()
 {
@@ -151,7 +128,7 @@ void BattleScene::Update(const float& dt)
 	BManager.UpdateContainer(dt, CA->position);
 
 	//Changes
-	//EventSystem::Instance().Update((float)dt);
+	BS.Update(dt);
 	UpdateCharacterLogic(dt);
 	UpdateInternals(dt);
 	//MessageSystem::Instance().Update((float)dt);
@@ -160,25 +137,23 @@ void BattleScene::Update(const float& dt)
 	ScenePartitionGraph::Instance().Update(dt);
 
 	framerates = 1 / dt;
-
-	std::cout << NewChar2->GetCurrentState()->GetStateName() << std::endl;
 }
 
 //Star of Changes
 void BattleScene::UpdateCharacterLogic(double dt)
 {
 	std::vector<CharacterEntity*> Container = ObjectManager::Instance().GetCharacterList();
-	//EventSystem::Instance().ClearCharacterCount();
+	BS.ClearCharacterCount();
 	NumCharacters = 0;
 	for (std::vector<CharacterEntity*>::iterator it = Container.begin(); it != Container.end(); ++it)
 	{
 		CharacterEntity* CE = *it;
 		if (CE->Active)
 		{
-			//EventSystem""Instance().CurrentCharacterCount.find(CE->GetEntityID())->second += 1;
-			//Vector3 Pos = CE->GetPosition();
+			BS.CurrentPlayerUnitCount.find(CE->GetEntityID())->second += 1;
+			Vector3 Pos = CE->GetPosition();
 			//Inverse Velocity if Character is about to leave screen
-			//float DistBuffer = CE->GetDimensions().x * 3.f;
+			float DistBuffer = CE->GetDimensions().x * 3.f;
 			//if ((CE->GetPosition().x > ObjectManager::Instance().WorldWidth - DistBuffer && CE->GetVelocity().x > 0) || (CE->GetPosition().x < DistBuffer && CE->GetVelocity().x < 0))
 			//{
 			//	Vector3 Velocity = CE->GetVelocity();
@@ -216,7 +191,7 @@ void BattleScene::UpdateCharacterLogic(double dt)
 			//		CE->SetVelocity(Vel);
 			//	}
 			//}
-			CE->Update(dt);
+			CE->Update((float)dt);
 			NumCharacters++;
 		}
 	}
@@ -263,7 +238,7 @@ void BattleScene::UpdateInternals(double dt)
 		}
 		//Update if the object is still exists
 		if (obj->Active && !obj->Static)
-			obj->Update(dt);
+			obj->Update((float)dt);
 
 		//Particle Update
 		for (std::vector<Particle*>::iterator it = ObjectManager::Instance().GetParticleList().begin(); it != ObjectManager::Instance().GetParticleList().end(); ++it)
@@ -473,6 +448,7 @@ void BattleScene::RenderPassMain()
 
 	Renderer->RenderMesh("reference", false);
 
+	BS.Render();
 	RenderTerrain();
 	RenderSkybox();
 	RenderShadowCasters();

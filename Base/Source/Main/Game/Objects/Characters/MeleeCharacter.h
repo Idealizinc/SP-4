@@ -25,6 +25,10 @@ public:
 	CharacterEntity* TargetFriend;
 	WeaponType* WT;
 
+	Vector3 TargetDir;
+
+	bool isPlayer;
+
 private:
 
 protected:

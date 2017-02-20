@@ -12,6 +12,7 @@ MeleeCharacter::~MeleeCharacter()
 
 void MeleeCharacter::SetCharacter(UnitType* Type, UnitRace* Race)
 {
+	
 	HealthPoints = Type->GetHealth() * Race->GetHealthModifier();
 	MaxHealthPoints = Type->GetMaxHealth() * Race->GetHealthModifier();
 	WalkSpeed = Type->GetWalkspeed();
@@ -30,6 +31,7 @@ void MeleeCharacter::SetCharacter(UnitType* Type, UnitRace* Race)
 
 void MeleeCharacter::Init()
 {
+	isPlayer = false;
 	FieldOfView = 200;
 	InternalTimer = 0;
 	WaitTime = 0;
