@@ -2,6 +2,6 @@ Name,CharacterSymbol //ONLY 1 character is allowed!,MeshID,ScaleX,ScaleY,ScaleZ,
 TheWhiteCube,C,cube,20,20,20,,,,1,0
 TheTree,T,Tree,10,20,10,,,,1,1
 Castle_House,House,Castle_House,10,10,20,,,,1,0
-TerrainNode,TN,cube,10,2,10,,,,1,0
-TerrainNodePlayer,TNP,Client,10,2,10,,,,1,0
-TerrainNodeEnemy,TNE,ExternalClient,10,2,10,,,,1,0
+TerrainNode,TN,cube,10,5,10,,,,1,0
+TerrainNodePlayer,TNP,Client,10,5,10,,,,1,0
+TerrainNodeEnemy,TNE,ExternalClient,10,5,10,,,,1,0

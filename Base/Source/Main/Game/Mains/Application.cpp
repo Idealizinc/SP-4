@@ -29,7 +29,7 @@
 #include <stdlib.h>
 
 GLFWwindow* m_window;
-const unsigned char FPS = 120; // FPS of this game
+const unsigned char FPS = 60; // FPS of this game
 const unsigned int frameTime = 1000 / FPS; // time for each frame
 
 int Application::cA_WindowHeight = 0, Application::cA_WindowWidth = 0;
@@ -104,7 +104,7 @@ void Application::Init()
 	//glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);			//To make MacOS happy; should not be needed
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);	//We don't want the old OpenGL 
 	//Borderless
-	//glfwWindowHint(GLFW_DECORATED, GL_FALSE);
+	glfwWindowHint(GLFW_DECORATED, GL_FALSE);
 
 	const GLFWvidmode * mode = glfwGetVideoMode(glfwGetPrimaryMonitor());	//Obtain Width and Height values from the monitor;
 	cA_WindowWidth = 800;
@@ -160,8 +160,8 @@ void Application::Init()
 
 	// Initiallize used scenes
 	//Scene_MainMenu *MM = new Scene_MainMenu();
-	//SceneTown1 *Town1 = new SceneTown1();
-	BattleScene *Battle = new BattleScene();
+	SceneTown1 *Town1 = new SceneTown1();
+	//BattleScene *Battle = new BattleScene();
 
     MusicSystem::Instance().Init();
 }

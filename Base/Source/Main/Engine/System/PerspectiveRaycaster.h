@@ -1,3 +1,6 @@
+#ifndef _PERSPECTIVE_RAYCASTER_H
+#define _PERSPECTIVE_RAYCASTER_H
+
 /*
 Copyright (c) Lim Rui An, Ryan 2017
 
@@ -14,18 +17,26 @@ Purpose       : Defines a PerspectiveRaycaster that converts mouse clicks in cam
 #include "Vector3.h"
 #include "Mtx44.h"
 
-#ifndef _PERSPECTIVE_RAYCASTER_H
-#define _PERSPECTIVE_RAYCASTER_H
+
+struct Ray
+{
+	Vector3 Origin;
+	Vector3 End;
+	Vector3 Direction;
+};
 
 class PerspectiveRaycaster : public SingletonTemplate<PerspectiveRaycaster>
 {
 public:
-	Vector3 CalculateCursorPositionInWorldSpace(Camera* camera, float CameraViewAngle, float NearPlane);
+	Ray CalculateCursorPositionInWorldSpace(Camera* camera, const float& CameraViewAngle);
+	Vector3 CalculateIntersectionPointInPlane(const Vector3& PointOnPlane, const Vector3& PlaneNormal, const Ray& Raycast);
 
 private:
-	Vector3 CursorOriginCoordinates;
-
+	// Functions
 	void CalculateCursorPosition();
+
+	// Variables
+	Vector3 CursorOriginCoordinates;
 
 protected:
 

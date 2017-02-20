@@ -18,6 +18,9 @@ public:
 	virtual ~TerrainNode()
 	{
 		//Exit();
+		if (Object != nullptr)
+			delete Object;
+		Object = nullptr;
 	}
 
 	virtual void Exit()

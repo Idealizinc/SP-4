@@ -53,7 +53,7 @@ std::vector<TerrainNode*> RouteGeneration::GeneratePath()
 		if (PossibleMoves.size() >=  3)
 		{
 			// Cause of circle running
-			if (Math::RandIntMinMax(0, 10) > 5)
+			if (Math::RandIntMinMax(0, 10) > 6)
 			{
 				TerrainNode* Choice = RandomizeSelection(PossibleMoves);
 				// Possibility of infinite loop if there are only two linked nodes and the end in not connected

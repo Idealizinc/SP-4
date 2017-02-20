@@ -121,7 +121,7 @@ void RenderSystem::Init()
 	glUseProgram(m_programID);
 
 	m_lightDepthFBO.Init(10096, 10096);
-	glUniform1i(m_parameters[U_SHADOW_SAMPLING_AMOUNT], 8);
+	glUniform1i(m_parameters[U_SHADOW_SAMPLING_AMOUNT], 12);
 
 	lights[0].type = Light::LIGHT_DIRECTIONAL;
 	lights[0].position.Set(200, 175, 62.5f);

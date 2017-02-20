@@ -131,7 +131,7 @@ GridNode* ScenePartitionGraph::FindGridForPosition(const Vector3& Position)
 
 Vector3 ScenePartitionGraph::FindGridIndexForPosition(const Vector3& Position)
 {
-	return Vector3((int)((Position.x + GridCenter.x + GridDimensions.x * 0.5f) / GridDimensions.x * GridDivisions), (int)((Position.z + GridCenter.y + GridDimensions.y * 0.5f) / GridDimensions.y * GridDivisions));
+	return Vector3((float)(int)((Position.x + GridCenter.x + GridDimensions.x * 0.5f) / GridDimensions.x * GridDivisions), (float)(int)((Position.z + GridCenter.y + GridDimensions.y * 0.5f) / GridDimensions.y * GridDivisions));
 }
 
 Node* ScenePartitionGraph::CreateNewNode(BaseObject* B)
