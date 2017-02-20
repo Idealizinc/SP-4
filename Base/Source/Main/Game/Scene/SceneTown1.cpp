@@ -78,14 +78,6 @@ void SceneTown1::QuickExit()
 void SceneTown1::Init()
 {
 	QuickInit();
-	for (int i = 0; i < 100; ++i)
-	{
-		RG.GeneratePath();
-		PathList.push_back(RG.DefinedPath);
-		//std::cout << i << ": " << RG.DefinedPath.size() << std::endl;
-	}
-
-
 	//terrain test
 		/*TerrainDataLoader* test = new TerrainDataLoader();
 		test->LoadTerrainData("CSVFiles/TerrainDataLoader.csv");
@@ -352,10 +344,5 @@ void SceneTown1::Render()
 
 void SceneTown1::Exit()
 {
-	for (std::vector<Enemy*>::iterator it = enemyList.begin(); it != enemyList.end();)
-	{	
-		delete *it;
-		it = enemyList.erase(it);
-	}
 	QuickExit();
 }
