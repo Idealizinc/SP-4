@@ -3,6 +3,7 @@
 #include "../Objects/Characters/MeleeCharacter.h"
 #include "../Systems/ObjectManager.h"
 #include "../Systems/EventSystem.h"
+#include "../Scene/BattleSystem.h"
 
 MeleeStateManager::MeleeStateManager()
 {
@@ -31,6 +32,7 @@ void MeleeStateManager::Init()
 	//Current state first
 	SetCurrentState("Idle");
 
+	isEngaged = false;
 	//if (Val > 75)
 	//	MWeapon = new MeleeWeapon(4, Math::RandFloatMinMax(0.1f, 0.3f), )
 
@@ -60,7 +62,10 @@ void MeleeStateManager::Update(const float& dt)
 			}
 
 			if (MC->InternalTimer > MC->WaitTime)
+			{
+				MC->InternalTimer = 0;
 				SetCurrentState("Scout");
+			}
 		}
 		//ReactToMessage();
 	}
@@ -134,13 +139,17 @@ void MeleeStateManager::Update(const float& dt)
 			SetCurrentState("Dead");
 		}
 		//Search for enemy
-		//if (MC->TargetFriend == nullptr)
 		CharacterEntity* CE = FindNearestEnemy(MC);
-		if (CE != nullptr && (CE->RaceType != MC->RaceType))
+		if (CE != nullptr)
 		{
 			//MC->ResetMessageAlert();
 			//MC->SendingMessage = true;
 			//MessageSystem::Instance().SendMessage(MC, "Engaging Enemy", MC->GetEntityID());
+			isEngaged = true;
+			if (isEngaged)
+			{
+				MC->TargetDir = Vector3(0, 0, 0);
+			}
 			MC->TargetEnemy = CE;
 			SetCurrentState("Attack");
 		}
@@ -166,6 +175,8 @@ void MeleeStateManager::Update(const float& dt)
 			MC->Active = false;
 		}
 	}
+
+	std::cout << MC->GetCurrentState()->GetStateName() << std::endl;
 }
 
 void MeleeStateManager::Exit()
@@ -198,7 +209,12 @@ bool MeleeStateManager::WithinRange(CharacterEntity* C1, CharacterEntity* C2)
 
 CharacterEntity* MeleeStateManager::FindNearestEnemy(CharacterEntity* MC)
 {
-	std::vector<CharacterEntity*> Container = ObjectManager::Instance().GetCharacterList();
+	MeleeCharacter* Chara = dynamic_cast<MeleeCharacter*>(MC);
+	if (Chara->isPlayer)
+		Container = BattleSystem::Instance().GetEnemyCharacterList();
+	else
+		Container = BattleSystem::Instance().GetPlayerCharacterList();
+
 	if (Container.size() > 1 && MC->TargetEnemy == nullptr)
 	{
 		// Radius Check
@@ -206,7 +222,7 @@ CharacterEntity* MeleeStateManager::FindNearestEnemy(CharacterEntity* MC)
 		float DistanceBetween = FLT_MAX;
 		for (std::vector<CharacterEntity*>::iterator it = Container.begin(); it != Container.end(); ++it)
 		{
-			if (*it != MC && (*it)->Active && !DeathCheck(*it) && ((*it)->RaceType != MC->RaceType))
+			if (*it != MC && (*it)->Active && !DeathCheck(*it))
 			{
 				ObjectManager::Instance().WorldHeight;
 				Vector3 Position = (*it)->GetPosition();
@@ -238,18 +254,9 @@ void MeleeStateManager::RandomizeMovement(CharacterEntity* C)
 	MeleeCharacter* MC = (MeleeCharacter*)C;
 	int Degree = Math::RandIntMinMax(-360, 360);
 	float SpeedMultiplier = Math::RandFloatMinMax(1.f, 1.5f);
-	MC->SetVelocity(MC->GetVelocity() + Vector3((float)sin(Degree), 0, (float)cos(Degree)).Normalize() * Math::RandFloatMinMax((float)-MC->WalkSpeed * SpeedMultiplier, (float)MC->WalkSpeed)* SpeedMultiplier);
+	MC->SetVelocity(MC->GetVelocity() + (MC->TargetDir) + Vector3((float)sin(Degree), 0, (float)cos(Degree)).Normalize() * Math::RandFloatMinMax((float)-MC->WalkSpeed * SpeedMultiplier, (float)MC->WalkSpeed)* SpeedMultiplier);
 	MC->InternalTimer = 0;
 }
-
-void MeleeStateManager::FixedMovement(CharacterEntity* C)
-{
-	MeleeCharacter* RC = (MeleeCharacter*)C;
-	float SpeedMultiplier = Math::RandFloatMinMax(1.f, 1.5f);
-	RC->SetVelocity(RC->GetVelocity() + Vector3(0, Math::RandFloatMinMax((float)-RC->WalkSpeed * SpeedMultiplier, 0) * SpeedMultiplier));
-	RC->InternalTimer = 0;
-}
-
 
 void MeleeStateManager::MoveToTargetEnemy(CharacterEntity* SC)
 {

@@ -3,6 +3,7 @@
 
 #include "Mesh.h"
 #include "Vertex.h"
+#include "../../Engine/Objects/SpriteAnimation.h"
 
 #include <vector>
 
@@ -25,6 +26,7 @@ public:
 	static Mesh* GenerateText(const std::string &meshName, unsigned row, unsigned col);
 	static Mesh* GenerateAvatar(const std::string &meshName, Color color, float length);
 	static Mesh* GenerateTerrain(const std::string &meshName, const std::string& file_path, std::vector<unsigned char>& heightMap);
+	static SpriteAnimation* GenerateSpriteAnimation(const std::string &meshName, unsigned numRow, unsigned numCol);
 
 };
 

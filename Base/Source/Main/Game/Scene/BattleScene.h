@@ -8,10 +8,7 @@
 #include "../Systems/BillboardManager.h"
 #include "../Objects/Miscellaneous/GameMap.h"
 #include "../Miscellaneous/CameraAerial.h"
-
-#include "../../Game/Objects/UnitData/UnitDataLoader.h"
-#include "../../Game/Objects/Characters/MeleeCharacter.h"
-#include "../../Game/Objects/Characters/RangeCharacter.h"
+#include "BattleSystem.h"
 
 //changes
 #include <vector>
@@ -28,13 +25,7 @@ public:
 	virtual void Render();
 	virtual void Exit();
 
-	//changes
-	Vector3 SpawnPosition_Melee;
-	Vector3 SpawnPosition_Range;
-	const float MeleeSize = 10.f;
-	const float RangeSize = 10.f;
-	UnitDataLoader loader;
-
+	BattleSystem BS;
 private:
 	// Shadow GPass
 	void RenderPassGPass();
@@ -63,12 +54,6 @@ private:
 	void UpdateCharacterLogic(double dt);
 	void UpdateInternals(double dt);
 	bool CheckCollision(BaseObject* o1, BaseObject* o2, std::string type = "Circle");
-
-	const std::string Melee = "Crusader";
-	const std::string Range = "Mercedes";
-
-	CharacterEntity* NewChar;
-	CharacterEntity* NewChar2;
 
 protected:
 	int NumCharacters;

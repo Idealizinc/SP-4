@@ -12,8 +12,9 @@ MeleeCharacter::~MeleeCharacter()
 
 void MeleeCharacter::SetCharacter(UnitType* Type, UnitRace* Race)
 {
-	HealthPoints = (int)(Type->GetHealth() * Race->GetHealthModifier());
-	MaxHealthPoints = (int)(Type->GetMaxHealth() * Race->GetHealthModifier());
+	
+	HealthPoints = Type->GetHealth() * Race->GetHealthModifier();
+	MaxHealthPoints = Type->GetMaxHealth() * Race->GetHealthModifier();
 	WalkSpeed = Type->GetWalkspeed();
 	DetectionRadius = Type->GetRange();
 	RaceType = Race->GetRace();
@@ -24,12 +25,13 @@ void MeleeCharacter::SetCharacter(UnitType* Type, UnitRace* Race)
 	WT = Type->PossibleWeapon[RandomChoice];
 
 	MeleeStateManager* MS = dynamic_cast<MeleeStateManager*>(InternalStateManager);
-	MS->MWeapon = new MeleeWeapon((int)(WT->GetDamage() * Race->GetMeleeDamageModifier()), WT->GetRate(), 2);
+	MS->MWeapon = new MeleeWeapon(WT->GetDamage() * Race->GetMeleeDamageModifier(), WT->GetRate(), 2);
 
 }
 
 void MeleeCharacter::Init()
 {
+	isPlayer = false;
 	FieldOfView = 200;
 	InternalTimer = 0;
 	WaitTime = 0;

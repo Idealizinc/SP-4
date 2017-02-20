@@ -17,13 +17,16 @@ public:
 	virtual void Render(){};
 	MeleeWeapon* MWeapon;
 
+	std::vector<CharacterEntity*> Container;
+	bool isEngaged;
+
+
 private:
 	
 	bool DeathCheck(CharacterEntity*);
 	bool WithinRange(CharacterEntity*, CharacterEntity*);
 	CharacterEntity* FindNearestEnemy(CharacterEntity*);
 	void RandomizeMovement(CharacterEntity*);
-	void FixedMovement(CharacterEntity*);
 	void MeleeTarget(CharacterEntity*);
 	void MoveToTargetEnemy(CharacterEntity*);
 	bool MoveToTargetFriend();

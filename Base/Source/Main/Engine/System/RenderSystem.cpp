@@ -660,7 +660,7 @@ bool RenderSystem::LoadCSVMeshes(const std::string &fileLocation)
 					newMesh = MeshBuilder::GenerateSphere(theName, Color(r, g, b), 10, 10, 1.f);
 				}
 				else if (theValues[pos] == "SPRITE") {
-					/*unsigned row, col;
+					unsigned row, col;
 					it = std::find(theKeys.begin(), theKeys.end(), "NUMROWS");
 					pos = it - theKeys.begin();
 					row = stoi(theValues[pos]);
@@ -670,7 +670,7 @@ bool RenderSystem::LoadCSVMeshes(const std::string &fileLocation)
 					newMesh = MeshBuilder::GenerateSpriteAnimation(theName, row, col);
                     SpriteAnimation *theSprite = dynamic_cast<SpriteAnimation*>(newMesh);
                     theSprite->m_anim = new Animation();
-                    theSprite->m_anim->Set(0, (row * col) - 1, 1, 1, true);*/
+                    theSprite->m_anim->Set(0, (row * col) - 1, 1, 1, true);
 				}
 				else {
 					continue;
