@@ -3,7 +3,7 @@
 
 #include "Mesh.h"
 #include "Vertex.h"
-#include "../../Engine/Objects/SpriteAnimation.h"
+#include "SpriteAnimation.h"
 
 #include <vector>
 

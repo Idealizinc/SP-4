@@ -3,7 +3,7 @@
 #include "../Objects/Characters/MeleeCharacter.h"
 #include "../Systems/ObjectManager.h"
 #include "../Systems/EventSystem.h"
-#include "../Scene/BattleSystem.h"
+#include "../Systems/BattleSystem.h"
 
 MeleeStateManager::MeleeStateManager()
 {

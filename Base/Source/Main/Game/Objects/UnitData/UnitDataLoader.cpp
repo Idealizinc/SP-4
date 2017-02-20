@@ -147,7 +147,7 @@ bool UnitDataLoader::LoadUnitData(const char *file_path)
 			{
 				num++;
 				std::ostringstream ss;
-				ss << "WEAPON" << num;
+				ss << "WEAPON" << num; //keyname
 				it = std::find(CSV_Keys.begin(), CSV_Keys.end(), ss.str());
 				pos = it - CSV_Keys.begin();
 				//Temp->PossibleWeapon
@@ -274,7 +274,7 @@ bool UnitDataLoader::LoadTerrainData(const char* file_path)
 				CSV_Keys.push_back(CurrentFragmentedSubString);
 			}
 		}
-		else
+		else //any other line
 		{
 			TerrainType* Temp = new TerrainType();
 			for (unsigned int i = 0; i < CSV_Keys.size(); ++i)
