@@ -216,7 +216,7 @@ void BattleScene::UpdateCharacterLogic(double dt)
 			//		CE->SetVelocity(Vel);
 			//	}
 			//}
-			CE->Update(dt);
+			CE->Update((float)dt);
 			NumCharacters++;
 		}
 	}
@@ -263,7 +263,7 @@ void BattleScene::UpdateInternals(double dt)
 		}
 		//Update if the object is still exists
 		if (obj->Active && !obj->Static)
-			obj->Update(dt);
+			obj->Update((float)dt);
 
 		//Particle Update
 		for (std::vector<Particle*>::iterator it = ObjectManager::Instance().GetParticleList().begin(); it != ObjectManager::Instance().GetParticleList().end(); ++it)

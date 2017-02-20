@@ -10,7 +10,7 @@ File Name     : UnitPiece.h
 Purpose       : Defines a UnitPiece, a piece that represents an Enemy/Player's Battalion in the Map Scene
 */
 
-#include "../../../Engine/Objects/BaseObject.h"
+#include "../../SceneManagement/Objects/TerrainNode.h"
 #include <map>
 
 /*
@@ -26,6 +26,9 @@ The Number of Each Type of Unit
 A UnitPiece's stats can only be changed upon creation <- May change in future
 */
 
+class Terrain;
+class TerrainNode;
+
 class UnitPiece : public BaseObject
 {
 public:
@@ -37,6 +40,7 @@ public:
 
 //private: < Temp
 	std::map<std::string, unsigned short> InternalBattalionList;
+	TerrainNode* TargetNode;
 	Vector3 TargetPosition;
 protected:
 

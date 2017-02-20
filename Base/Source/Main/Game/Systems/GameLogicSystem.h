@@ -17,6 +17,7 @@ Purpose       : Defines the GameLogicSystem that handles the both the player and
 #include "../Logic/EnemySystem.h"
 #include "../../Engine/System/SceneSystem.h"
 #include "../Miscellaneous/CameraAerial.h"
+#include "../Logic/Terrain/TerrainDataLoader.h"
 
 /*
 Description
@@ -58,6 +59,7 @@ public:
 	const std::string PlayerTurn = "Player's Turn";
 	const std::string EnemyTurn = "Enemy's Turn";
 	const std::string BattlePhase = "Battle Phase";
+	TerrainDataLoader TerrainLoader;
 
 //private:
 	PlayerSystem* InternalPlayerSystem;

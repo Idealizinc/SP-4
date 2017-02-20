@@ -79,6 +79,8 @@ EnemyPiece* EnemySystem::GenerateNewEnemy()
 	EP->TargetPosition = EP->InternalDefinedPath.front()->GetEntity()->GetPosition() + Vector3(0, EP->InternalDefinedPath.front()->GetEntity()->GetDimensions().y + EP->GetDimensions().y);
 	EP->SetPosition(EP->TargetPosition + Vector3(0, 10, 0));
 	InternalEnemyContainer.push_back(EP);
+	// Add to the tile he is on
+	EP->InternalDefinedPath.front()->TerrainTile->EnemyUnitList.push_back(EP);
 	return EP;
 }
 
@@ -88,8 +90,19 @@ EnemyPiece* EnemySystem::AdvanceSingleUnit()
 	EnemyPiece* EP = RandomizePieceSelection();
 	while (EP->InternalDefinedPath.size() <= 1)
 		EP = RandomizePieceSelection();
+	// Remove from the old tile
+	for (std::vector<UnitPiece*>::iterator it = EP->InternalDefinedPath.front()->TerrainTile->EnemyUnitList.begin(); it != EP->InternalDefinedPath.front()->TerrainTile->EnemyUnitList.end(); ++it)
+	{
+		if (*it == EP)
+		{
+			EP->InternalDefinedPath.front()->TerrainTile->EnemyUnitList.erase(it);
+			break;
+		}
+	}
 	// Pop the front of his current path
 	EP->InternalDefinedPath.erase(EP->InternalDefinedPath.begin());
+	// Add to the tile he is on
+	EP->InternalDefinedPath.front()->TerrainTile->EnemyUnitList.push_back(EP);
 	EP->TargetPosition = EP->InternalDefinedPath.front()->GetEntity()->GetPosition() + Vector3(0, EP->InternalDefinedPath.front()->GetEntity()->GetDimensions().y + EP->GetDimensions().y);
 	return EP;
 }

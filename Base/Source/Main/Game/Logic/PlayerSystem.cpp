@@ -27,8 +27,7 @@ void PlayerSystem::Exit(void)
 void PlayerSystem::Update(const float& dt)
 {
 	CameraAerial* CA = (CameraAerial*)SceneSystem::Instance().GetCurrentScene().camera;
-	GameLogicSystem::Instance().SetCurrentState(GameLogicSystem::Instance().EnemyTurn);
-
+	
 	switch (CurrentTurnState)
 	{
 	case (S_TURNSTART) : // It's my turn, do something
@@ -74,11 +73,25 @@ UnitPiece* PlayerSystem::GenerateNewUnit()
 	UP->TargetPosition = Spawn->GetPosition() + Vector3(0, Spawn->GetDimensions().y + UP->GetDimensions().y);
 	UP->SetPosition(UP->TargetPosition + Vector3(0, 10, 0));
 	InternalUnitContainer.push_back(UP);
+	// Add to the tile he is on
+	ScenePartitionGraph::Instance().PlayerBase->TerrainTile->PlayerUnitList.push_back(UP);
+	UP->TargetNode = ScenePartitionGraph::Instance().PlayerBase;
 	return UP;
 }
 
 UnitPiece* PlayerSystem::AdvanceSingleUnit(UnitPiece* Selection, TerrainNode* Target)
 {
+	// Remove from the old tile
+	for (std::vector<UnitPiece*>::iterator it = Selection->TargetNode->TerrainTile->PlayerUnitList.begin(); it != Selection->TargetNode->TerrainTile->PlayerUnitList.end(); ++it)
+	{
+		if (*it == Selection)
+		{
+			Selection->TargetNode->TerrainTile->PlayerUnitList.erase(it);
+			break;
+		}
+	}
+	Target->TerrainTile->PlayerUnitList.push_back(Selection);
+	Selection->TargetNode = Target;
 	Selection->TargetPosition = Target->GetEntity()->GetPosition() + Vector3(0, Target->GetEntity()->GetDimensions().y + Selection->GetDimensions().y);
 	return Selection;
 }
@@ -118,18 +131,15 @@ void PlayerSystem::HandleUserInput()
 		{
 			// Clicked different tiles
 			// Check if they are linked
-			bool Linked = false;
+			if (MouseDownSelection->TerrainTile->PlayerUnitList.size() > 0)
 			for (auto it : MouseDownSelection->LinkedTerrainNodes)
 			{
 				if (it == MouseUpSelection)
 				{
-					Linked = true;
+					SelectedUnit = AdvanceSingleUnit(MouseDownSelection->TerrainTile->PlayerUnitList.front(), MouseUpSelection);
+					CA->CameraMoveTargetPosition = MouseUpSelection->GetEntity()->GetPosition();
 					break;
 				}
-			}
-			if (Linked)
-			{
-				CA->CameraMoveTargetPosition = MouseUpSelection->GetEntity()->GetPosition();
 			}
 		}
 		MouseDownSelection = MouseUpSelection = nullptr;

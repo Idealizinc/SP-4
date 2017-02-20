@@ -39,6 +39,7 @@ void SceneTown1::QuickInit()
 	ScenePartitionGraph::Instance().AssignGridParameters(Vector3(), Vector3(TerrainScale.x, TerrainScale.z), 4);
 
 	CameraAerial* CA = new CameraAerial();
+	
 	camera = CA;
 	CA->AltInit(/*Player Character Position*/Vector3(0, 0, 0), Vector3(0, 150, 0.01f), Vector3(0, 1, 0));
 	CenterPosition.Set(SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth * 0.5f, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.5f, 0);
@@ -52,12 +53,14 @@ void SceneTown1::QuickInit()
 	newMesh->textureArray[1] = LoadTGA("Image//GrassStoneTex.tga");
 	Renderer->MeshList.insert(std::pair<std::string, Mesh*>(newMesh->name, newMesh));
 		
+	GameLogicSystem::Instance().TerrainLoader.LoadTerrainData("CSVFiles/TerrainDataLoader.csv");
 	InteractiveMap = new GameMap();
 	InteractiveMap->SetEntityID("SceneMap");
 	InteractiveMap->LoadMap("CSVFiles//Town1Layout.csv", m_heightMap, TerrainScale, EntityList, BManager);
 
-	SceneSystem::Instance().cSS_InputManager->cIM_inMouseMode = true;
 	GameLogicSystem::Instance().Init();
+
+	SceneSystem::Instance().cSS_InputManager->cIM_inMouseMode = true;
 }
 
 void SceneTown1::QuickExit()
@@ -78,19 +81,6 @@ void SceneTown1::QuickExit()
 void SceneTown1::Init()
 {
 	QuickInit();
-	//terrain test
-		/*TerrainDataLoader* test = new TerrainDataLoader();
-		test->LoadTerrainData("CSVFiles/TerrainDataLoader.csv");
-		Terrain* test2 = test->GetTerrain("MeleePanel");
-		test2->GetTerrainName();
-		float hpboost = test2->GetUnitAdvantage(Terrain::T_HEALTH);
-		float meleeboost = test2->GetUnitAdvantage(Terrain::T_MELEE);
-		float magicboost = test2->GetUnitAdvantage(Terrain::T_MAGIC);
-		float rangeboost = test2->GetUnitAdvantage(Terrain::T_RANGE);
-		float hpnerf = test2->GetUnitDisadvantage(Terrain::T_HEALTH);
-		float meleenerf = test2->GetUnitDisadvantage(Terrain::T_MELEE);
-		float magicnerf = test2->GetUnitDisadvantage(Terrain::T_MAGIC);
-		float rangenerf = test2->GetUnitDisadvantage(Terrain::T_RANGE);*/
 }
 
 void SceneTown1::Update(const float& dt)
