@@ -30,7 +30,7 @@ public:
 private:
 	// Internals
 	std::vector<TerrainNode*> PossibleMoves;
-	int MaximumPathCount = 100;
+	int MaximumPathCount = 50;
 	// Functions
 	TerrainNode* RandomizeSelection(std::vector<TerrainNode*> SelectionList);
 };

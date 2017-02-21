@@ -32,7 +32,7 @@ public:
 
 	// Virtual
 	virtual void Init(){};
-	virtual void Init(const std::string& MeshName, const float& Mass, const Vector3& Position, const Vector3& Dimensions, const Vector3& Velocity, const float& RotationAngle, const Vector3& RotationAxis);
+	void Init(const std::string& MeshName, const float& Mass, const Vector3& Position, const Vector3& Dimensions, const Vector3& Velocity, const float& RotationAngle, const Vector3& RotationAxis);
 	virtual void Render();
 	virtual void Update(const float& dt);
 	virtual void Exit();

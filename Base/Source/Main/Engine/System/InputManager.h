@@ -47,6 +47,7 @@ public:
 	void SetScreenSize(float, float);
 
 	float cIM_ScreenWidth, cIM_ScreenHeight;
+	Vector3 ScreenCenter;
 	float cIM_CameraYaw = 0, cIM_CameraPitch = 0;
 	bool cIM_inMouseMode = false;
 

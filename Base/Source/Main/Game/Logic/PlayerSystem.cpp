@@ -57,6 +57,7 @@ void PlayerSystem::Update(const float& dt)
 		}
 		break;
 	}
+	//GameLogicSystem::Instance().SetCurrentState(GameLogicSystem::Instance().EnemyTurn);
 }
 
 void PlayerSystem::Render(void)
@@ -101,7 +102,7 @@ void PlayerSystem::HandleUserInput()
 	CameraAerial* CA = (CameraAerial*)SceneSystem::Instance().GetCurrentScene().camera;
 	if (SceneSystem::Instance().cSS_InputManager->GetMouseInput(InputManager::KEY_LMB) == InputManager::MOUSE_DOWN)
 	{
-		TerrainNode* TN = GameLogicSystem::Instance().GetTerrainNodeForPosition(PerspectiveRaycaster::Instance().CalculateIntersectionPointInPlane(Vector3(), Vector3(0, 1), PerspectiveRaycaster::Instance().CalculateCursorPositionInWorldSpace(CA, CA->FieldOfView)));
+		TerrainNode* TN = GameLogicSystem::Instance().GetTerrainNodeForPosition(PerspectiveRaycaster::Instance().CalculateIntersectionPointInPlane(Vector3(0,5), Vector3(0, 1), PerspectiveRaycaster::Instance().CalculateCursorPositionInWorldSpace(CA, CA->FieldOfView)));
 		if (TN)
 		{
 			MouseDownSelection = TN;
@@ -110,7 +111,7 @@ void PlayerSystem::HandleUserInput()
 	}
 	else if (SceneSystem::Instance().cSS_InputManager->GetMouseInput(InputManager::KEY_LMB) == InputManager::MOUSE_UP)
 	{
-		TerrainNode* TN = GameLogicSystem::Instance().GetTerrainNodeForPosition(PerspectiveRaycaster::Instance().CalculateIntersectionPointInPlane(Vector3(), Vector3(0, 1), PerspectiveRaycaster::Instance().CalculateCursorPositionInWorldSpace(CA, CA->FieldOfView)));
+		TerrainNode* TN = GameLogicSystem::Instance().GetTerrainNodeForPosition(PerspectiveRaycaster::Instance().CalculateIntersectionPointInPlane(Vector3(0, 5), Vector3(0, 1), PerspectiveRaycaster::Instance().CalculateCursorPositionInWorldSpace(CA, CA->FieldOfView)));
 		if (TN)
 			MouseUpSelection = TN;
 	}
