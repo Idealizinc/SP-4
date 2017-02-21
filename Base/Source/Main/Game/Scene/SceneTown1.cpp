@@ -56,7 +56,7 @@ void SceneTown1::QuickInit()
 	GameLogicSystem::Instance().TerrainLoader.LoadTerrainData("CSVFiles/TerrainDataLoader.csv");
 	InteractiveMap = new GameMap();
 	InteractiveMap->SetEntityID("SceneMap");
-	InteractiveMap->LoadMap("CSVFiles//Town1Layout.csv", m_heightMap, TerrainScale, EntityList, BManager);
+	InteractiveMap->LoadMap("CSVFiles//Tutorial.csv", m_heightMap, TerrainScale, EntityList, BManager);
 
 	GameLogicSystem::Instance().Init();
 
