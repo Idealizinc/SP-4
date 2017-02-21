@@ -62,10 +62,10 @@ void Node::Render()
 				SceneSystem::Instance().GetRenderSystem().modelStack->Rotate(GetEntity()->GetRotationAngle(), GetEntity()->GetRotationAxis().x, GetEntity()->GetRotationAxis().y, GetEntity()->GetRotationAxis().z);
 				SceneSystem::Instance().GetRenderSystem().modelStack->Scale(GetEntity()->GetDimensions().x, GetEntity()->GetDimensions().y, GetEntity()->GetDimensions().z);
 
-				std::map<std::string, std::vector<Mesh*>>::iterator iter = ScenePartitionGraph::Instance().LODList.find(Object->GetEntityID());
+				/*std::map<std::string, std::vector<Mesh*>>::iterator iter = ScenePartitionGraph::Instance().LODList.find(Object->GetEntityID());
 				if (iter != ScenePartitionGraph::Instance().LODList.end())
 					Renderer->RenderMesh(*iter->second.at(Parent->LODLevel), true);
-				else Renderer->RenderMesh(*Object->GetMesh(), true);
+				else */Renderer->RenderMesh(*Object->GetMesh(), true);
 
 				SceneSystem::Instance().GetRenderSystem().modelStack->PopMatrix();
 				Parent->LODLevel = 0;

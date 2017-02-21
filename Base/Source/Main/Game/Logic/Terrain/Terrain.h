@@ -30,15 +30,7 @@ public:
 		T_NORMAL,
 		T_MAX,
 	};
-	Terrain()
-	{
-
-	}
-	~Terrain()
-	{
-
-	}
-
+	
 	// Getters
 	std::string GetEntityID()
 	{

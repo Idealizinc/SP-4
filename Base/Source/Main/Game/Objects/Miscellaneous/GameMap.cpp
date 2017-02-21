@@ -365,7 +365,11 @@ void GameMap::AssignTerrainNodes(std::vector<TerrainNode*>* List)
 				if ((TN->GetGridIndex() == (GI - Vector3(1, 0, 0))) ||
 					(TN->GetGridIndex() == (GI - Vector3(0, 0, 1))) ||
 					(TN->GetGridIndex() == (GI + Vector3(1, 0, 0))) ||
-					(TN->GetGridIndex() == (GI + Vector3(0, 0, 1))))
+					(TN->GetGridIndex() == (GI + Vector3(0, 0, 1))) || 
+					(TN->GetGridIndex() == (GI + Vector3(1, 0, 1))) ||
+					(TN->GetGridIndex() == (GI + Vector3(1, 0, -1))) ||
+					(TN->GetGridIndex() == (GI + Vector3(-1, 0, -1))) ||
+					(TN->GetGridIndex() == (GI + Vector3(-1, 0, 1))))
 				{
 					TN->LinkedTerrainNodes.push_back(it2);
 				}

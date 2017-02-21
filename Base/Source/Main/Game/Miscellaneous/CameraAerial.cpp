@@ -6,6 +6,8 @@
 // Base
 CameraAerial::CameraAerial()
 {
+	CameraSpeed = 10.f;
+	FieldOfView = 60.f;
 	Init(Vector3(0, 0, 0), Vector3(0, 0, 1), Vector3(0, 1));
 }
 

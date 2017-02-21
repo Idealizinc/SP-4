@@ -58,7 +58,9 @@ std::vector<TerrainNode*> RouteGeneration::GeneratePath()
 				TerrainNode* Choice = RandomizeSelection(PossibleMoves);
 				// Possibility of infinite loop if there are only two linked nodes and the end in not connected
 				while (Choice == PreviousNode || Choice == MostViableNode)
+				{
 					Choice = RandomizeSelection(PossibleMoves);
+				}
 		
 				MostViableNode = Choice;
 			}

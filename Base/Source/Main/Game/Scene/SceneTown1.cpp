@@ -10,9 +10,11 @@
 #include "../Systems/GameLogicSystem.h"
 
 
-//#include "../Miscellaneous/TerrainDataLoader.h"
+#include "../../Engine/Interface/InterfaceSystem.h"
 
 std::string SceneTown1::id_ = "1_Scene";
+
+InterfaceSystem* IS;
 
 SceneTown1::SceneTown1()
 	: SceneEntity()
@@ -78,9 +80,16 @@ void SceneTown1::QuickExit()
 	if (camera)
 		delete camera;
 }
+
 void SceneTown1::Init()
 {
 	QuickInit();
+	IS = new InterfaceSystem();
+	InterfaceLayer* L = IS->CreateNewInterfaceLayer("Layer", 0, 0);
+	InterfaceElement* E = L->CreateNewInterfaceElement("Test", "quad", SceneSystem::Instance().cSS_InputManager->ScreenCenter * -2.f, Vector3(500, 500, 500));
+	E->SetTargetPosition(SceneSystem::Instance().cSS_InputManager->ScreenCenter);
+	E->SetText("Test");
+	E->SetTextColor(0);
 }
 
 void SceneTown1::Update(const float& dt)
@@ -88,6 +97,7 @@ void SceneTown1::Update(const float& dt)
 	RenderSystem *Renderer = dynamic_cast<RenderSystem*>(&SceneSystem::Instance().GetRenderSystem());
 
 	Renderer->Update(dt);
+	IS->Update(dt);
 
 	float Speed = 50.f;
 	CameraAerial* CA = (CameraAerial*)camera;
@@ -246,6 +256,9 @@ void SceneTown1::RenderPassGPass()
 	}
 	else
 	{
+		//CameraAerial* CA = (CameraAerial*)SceneSystem::Instance().GetCurrentScene().camera;
+		//Renderer->m_lightDepthProj.SetToPerspective(CA->FieldOfView, SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth / SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight, 0.1f, 2000.0f);
+
 		Renderer->m_lightDepthProj.SetToPerspective(90, 1.f, 0.1, 20);
 	}
 	Renderer->m_lightDepthView.SetToLookAt(Renderer->lights[0].position.x, Renderer->lights[0].position.y, Renderer->lights[0].position.z, 0, 0, 0, 0, 1, 0);
@@ -289,7 +302,8 @@ void SceneTown1::RenderPassMain()
 	Renderer->SetHUD(false);
 
 	Mtx44 perspective;
-	perspective.SetToPerspective(60.0f, SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth / SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight, 0.1f, 2000.0f);
+	CameraAerial* CA = (CameraAerial*)SceneSystem::Instance().GetCurrentScene().camera;
+	perspective.SetToPerspective(CA->FieldOfView, SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth / SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight, 0.1f, 2000.0f);
 	projectionStack->LoadMatrix(perspective);
 
 	// Camera matrix
@@ -313,6 +327,7 @@ void SceneTown1::RenderPassMain()
 		it->Render();
 	
 	Renderer->SetHUD(true);
+	IS->Render();
 	std::stringstream ss;
 	ss.str("");
 	ss << "FPS: " << framerates;
