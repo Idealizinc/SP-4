@@ -14,11 +14,13 @@ Purpose       : Defines a base character class
 #include "../State/StateManager.h"
 #include "BaseObject.h"
 
+#include "SpriteObject.h"
+
 #include <set>
 
 class StateManager;
 
-class CharacterEntity : public BaseObject
+class CharacterEntity : public SpriteObject
 {
 public:
 	CharacterEntity();

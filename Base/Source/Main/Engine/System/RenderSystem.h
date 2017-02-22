@@ -20,6 +20,7 @@ Purpose       : Defines a RenderSystem
 #include "shader.hpp"
 #include "LoadTGA.h"
 #include "LoadOBJ.h"
+#include  "../../Engine/Objects/SpriteObject.h"
 
 #ifndef MAX_NUM_LIGHTS
 #define MAX_NUM_LIGHTS 2
@@ -109,6 +110,7 @@ public:
 	};
 
 	std::map<std::string, Mesh*> MeshList;
+	std::map<std::string, std::map<std::string, std::vector<GLuint>>> SpriteList; // Key: Character Entity Name, <Key: Animation ID, Value: Vector of GLuint* that represents the frame animations>
 
 	virtual void Init();
 	virtual void Update(const float& dt);
@@ -146,6 +148,7 @@ public:
 private:
 	bool OrthogonalModeActive;
 	bool LoadCSVMeshes(const std::string &fileLocation);
+	bool LoadCSVSpriteMeshes(const std::string &fileLocation);
 	Mesh *ExportedFont;
 };
 

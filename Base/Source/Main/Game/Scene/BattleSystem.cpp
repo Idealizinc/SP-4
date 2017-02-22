@@ -19,12 +19,12 @@ void BattleSystem::Init()
 
 	for (float i = 0; i < 50; i += 10)
 	{
-		PlayerSpawnPoints.push_back(Vector3(-50.f, 10.f, i));
+		PlayerSpawnPoints.push_back(Vector3(-200.f, 10.f, i));
 	}
 
 	for (float i = 0; i < 50; i += 10)
 	{
-		EnemySpawnPoints.push_back(Vector3(50.f, 10.f, i));
+		EnemySpawnPoints.push_back(Vector3(200.f, 10.f, i));
 	}
 	
 
@@ -48,8 +48,8 @@ void BattleSystem::Init()
 	SpawnPosition_Player = PlayerTempSpawn[PRNG];
 	SpawnPosition_Enemy = EnemyTempSpawn[ERNG];
 
-	CurrentPlayerUnitCount.insert(std::pair<std::string, unsigned short>("Crusader", 10));
-	CurrentEnemyUnitCount.insert(std::pair<std::string, unsigned short>("Crusader", 10));
+	CurrentPlayerUnitCount.insert(std::pair<std::string, unsigned short>("Crusader", 20));
+	CurrentEnemyUnitCount.insert(std::pair<std::string, unsigned short>("Crusader", 20));
 
 	SpawnPlayerCharacter(CurrentPlayerUnitCount);
 	SpawnEnemyCharacter(CurrentEnemyUnitCount);
@@ -85,7 +85,7 @@ void BattleSystem::SpawnPlayerCharacter(std::map<std::string, unsigned short> Pl
 					MC->isPlayer = true;
 					NewChar->SetDimensions(Vector3(UnitSize, UnitSize, UnitSize));
 					int RNG = Math::RandIntMinMax(0, PlayerSpawnPoints.size()-1);
-					MC->TargetDir.x = (SpawnPosition_Enemy.x - SpawnPosition_Player.x)/10;
+					MC->TargetDir.x = (SpawnPosition_Enemy.x - SpawnPosition_Player.x)/20;
 					NewChar->SetPosition(PlayerSpawnPoints[RNG]);
 				}
 
@@ -115,7 +115,7 @@ void BattleSystem::SpawnEnemyCharacter(std::map<std::string, unsigned short> Ene
 					MC->SetCharacter(UT, Loader.RaceMap.find("Elven")->second);
 					NewChar->SetDimensions(Vector3(UnitSize, UnitSize, UnitSize));
 					int RNG = Math::RandIntMinMax(0, EnemySpawnPoints.size()-1);
-					MC->TargetDir.x = (SpawnPosition_Player.x - SpawnPosition_Enemy.x)/10;
+					MC->TargetDir.x = (SpawnPosition_Player.x - SpawnPosition_Enemy.x)/20;
 					NewChar->SetPosition(EnemySpawnPoints[RNG]);
 				}
 
