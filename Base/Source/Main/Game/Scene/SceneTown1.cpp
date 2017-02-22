@@ -14,7 +14,7 @@
 
 std::string SceneTown1::id_ = "1_Scene";
 
-InterfaceSystem* IS;
+//InterfaceSystem* IS;
 
 SceneTown1::SceneTown1()
 	: SceneEntity()
@@ -79,17 +79,24 @@ void SceneTown1::QuickExit()
 		delete Player;
 	if (camera)
 		delete camera;
+	if (GSI)
+	{
+		GSI->Exit();
+		delete GSI;
+		GSI = nullptr;
+	}
+		
 }
 
 void SceneTown1::Init()
 {
 	QuickInit();
-	IS = new InterfaceSystem();
+	/*IS = new InterfaceSystem();
 	InterfaceLayer* L = IS->CreateNewInterfaceLayer("Layer", 0, 0);
-	InterfaceElement* E = L->CreateNewInterfaceElement("Test", "quad", SceneSystem::Instance().cSS_InputManager->ScreenCenter * -2.f, Vector3(500, 500, 500));
+	InterfaceElement* E = L->CreateNewInterfaceElement("Test", "weed", SceneSystem::Instance().cSS_InputManager->ScreenCenter * -2.f, Vector3(500, 500, 500));
 	E->SetTargetPosition(SceneSystem::Instance().cSS_InputManager->ScreenCenter);
 	E->SetText("Test");
-	E->SetTextColor(0);
+	E->SetTextColor(0);*/
 }
 
 void SceneTown1::Update(const float& dt)
@@ -97,7 +104,9 @@ void SceneTown1::Update(const float& dt)
 	RenderSystem *Renderer = dynamic_cast<RenderSystem*>(&SceneSystem::Instance().GetRenderSystem());
 
 	Renderer->Update(dt);
-	IS->Update(dt);
+	//IS->Update(dt);
+	GSI->Update(dt);
+	//UCI->Update(dt);
 
 	float Speed = 50.f;
 	CameraAerial* CA = (CameraAerial*)camera;
@@ -141,6 +150,17 @@ void SceneTown1::Update(const float& dt)
 		CA->CameraMoveTargetPosition.y = -50.f;
 	}
 	else CA->CameraMoveTargetPosition.y = 0;
+
+	//if (Application::IsKeyPressed('Z') && UCI->UIDisplayed == false)
+	//{
+	//	UCI->MoveIn();
+	//	//UIDisplayed = true;
+	//}
+	//if (Application::IsKeyPressed('X') && UCI->UIDisplayed == true)
+	//{
+	//	UCI->MoveOut();
+	//	//UIDisplayed = false;
+	//}
 
 	CA->Update(dt);
 	//MusicSystem::Instance().playBackgroundMusic("battle");
@@ -327,7 +347,9 @@ void SceneTown1::RenderPassMain()
 		it->Render();
 	
 	Renderer->SetHUD(true);
-	IS->Render();
+	//IS->Render();
+	GSI->Render();
+	//UCI->Render();
 	std::stringstream ss;
 	ss.str("");
 	ss << "FPS: " << framerates;
