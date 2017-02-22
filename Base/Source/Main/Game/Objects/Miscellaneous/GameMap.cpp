@@ -5,6 +5,8 @@
 #include "../../../Engine/System/RenderSystem.h"
 #include "../../../Engine/System/SceneSystem.h"
 #include "../../SceneManagement/ScenePartitionGraph.h"
+#include "../../Logic/Terrain/Terrain.h"
+#include "../../Systems/GameLogicSystem.h"
 #include "LoadHmap.h"
 #include "GameObject.h"
 
@@ -104,11 +106,20 @@ bool GameMap::LoadFile(const std::string &mapName, std::vector<unsigned char> &t
 						TempNodeList.push_back(TN);
 						if (Icon == "TNP")
 						{
+							TN->TerrainTile = new Terrain(*GameLogicSystem::Instance().TerrainLoader.TerrainMap.find("Plains")->second);
 							Player = TN;
 						}
 						else if (Icon == "TNE")
 						{
+							TN->TerrainTile = new Terrain(*GameLogicSystem::Instance().TerrainLoader.TerrainMap.find("Plains")->second);
 							Enemy = TN;
+						}
+						else
+						{
+							// Randomize Tile
+							std::map<std::string, Terrain*>::iterator it = GameLogicSystem::Instance().TerrainLoader.TerrainMap.begin();
+							std::advance(it, Math::RandIntMinMax(0, GameLogicSystem::Instance().TerrainLoader.TerrainMap.size() - 1));
+							TN->TerrainTile = new Terrain(*it->second);
 						}
 					}
 				}
@@ -354,7 +365,11 @@ void GameMap::AssignTerrainNodes(std::vector<TerrainNode*>* List)
 				if ((TN->GetGridIndex() == (GI - Vector3(1, 0, 0))) ||
 					(TN->GetGridIndex() == (GI - Vector3(0, 0, 1))) ||
 					(TN->GetGridIndex() == (GI + Vector3(1, 0, 0))) ||
-					(TN->GetGridIndex() == (GI + Vector3(0, 0, 1))))
+					(TN->GetGridIndex() == (GI + Vector3(0, 0, 1))) || 
+					(TN->GetGridIndex() == (GI + Vector3(1, 0, 1))) ||
+					(TN->GetGridIndex() == (GI + Vector3(1, 0, -1))) ||
+					(TN->GetGridIndex() == (GI + Vector3(-1, 0, -1))) ||
+					(TN->GetGridIndex() == (GI + Vector3(-1, 0, 1))))
 				{
 					TN->LinkedTerrainNodes.push_back(it2);
 				}

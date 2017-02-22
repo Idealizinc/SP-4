@@ -8,7 +8,7 @@
 #include "../Systems/BillboardManager.h"
 #include "../Objects/Miscellaneous/GameMap.h"
 #include "../Miscellaneous/CameraAerial.h"
-#include "BattleSystem.h"
+#include "../Systems/BattleSystem.h"
 
 //changes
 #include <vector>

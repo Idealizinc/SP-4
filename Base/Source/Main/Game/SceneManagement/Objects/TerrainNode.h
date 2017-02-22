@@ -11,16 +11,24 @@ Purpose       : Defines a Node that represents a plot of terrain
 */
 
 #include "Node.h"
+#include "../../Logic/Terrain/Terrain.h"
+
+class Terrain;
 
 class TerrainNode : public Node
 {
 public:
+	Terrain* TerrainTile = nullptr;
+
 	virtual ~TerrainNode()
 	{
 		//Exit();
 		if (Object != nullptr)
 			delete Object;
 		Object = nullptr;
+		if (TerrainTile != nullptr)
+			delete TerrainTile;
+		TerrainTile = nullptr;
 	}
 
 	virtual void Exit()
