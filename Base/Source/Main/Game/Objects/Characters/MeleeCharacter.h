@@ -14,7 +14,7 @@ public:
 	virtual ~MeleeCharacter();
 
 	virtual void Init();
-	virtual void Update(double dt);
+	virtual void Update(const float& dt);
 	void Exit();
 
 	float InternalTimer2;
@@ -28,6 +28,7 @@ public:
 	Vector3 TargetDir;
 
 	bool isPlayer;
+
 
 private:
 

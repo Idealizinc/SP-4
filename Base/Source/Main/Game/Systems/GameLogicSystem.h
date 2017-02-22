@@ -19,6 +19,8 @@ Purpose       : Defines the GameLogicSystem that handles the both the player and
 #include "../Miscellaneous/CameraAerial.h"
 #include "../Logic/Terrain/TerrainDataLoader.h"
 
+#include"../UserInterface/UnitCreationInterface.h"
+
 /*
 Description
 The GLS is the acting state manager of the game.
@@ -66,7 +68,7 @@ public:
 	EnemySystem* InternalEnemySystem;
 	float PieceAnimationSpeed = 2.f;
 	float PieceMinimumDistance = 0.01f;
-
+	UnitCreationInterface* UnitInterface;
 protected:
 
 };

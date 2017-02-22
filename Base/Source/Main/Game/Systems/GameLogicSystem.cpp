@@ -33,6 +33,8 @@ void GameLogicSystem::QuickInit()
 	InternalEnemySystem = new EnemySystem();
 	InternalEnemySystem->Init();
 	// Init Battle System
+	//Init UI
+	UnitInterface = new UnitCreationInterface();
 }
 
 void GameLogicSystem::Update(const float& dt)
@@ -51,12 +53,15 @@ void GameLogicSystem::Update(const float& dt)
 	{
 		
 	}
+
+	UnitInterface->Update(dt);
 }
 
 void GameLogicSystem::Render()
 {
 	if (InternalPlayerSystem)
 	{
+		UnitInterface->Render();
 		InternalPlayerSystem->Render();
 	}
 	if (InternalEnemySystem)
@@ -83,6 +88,12 @@ void GameLogicSystem::QuickExit()
 		InternalEnemySystem->Exit();
 		delete InternalEnemySystem;
 		InternalEnemySystem = nullptr;
+	}
+	if (UnitInterface)
+	{
+		UnitInterface->Exit();
+		delete UnitInterface;
+		UnitInterface = nullptr;
 	}
 }
 

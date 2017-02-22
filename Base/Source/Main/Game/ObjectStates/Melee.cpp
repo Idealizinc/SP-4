@@ -45,6 +45,8 @@ void MeleeStateManager::Update(const float& dt)
 	MC->InternalTimer += dt;
 	//MC->HealthPoints -= 0.1f * dt;
 
+	
+
 	if (temp->GetStateName() == "Idle")
 	{
 		MC->InternalTimer += dt;
@@ -253,8 +255,8 @@ void MeleeStateManager::RandomizeMovement(CharacterEntity* C)
 {
 	MeleeCharacter* MC = (MeleeCharacter*)C;
 	int Degree = Math::RandIntMinMax(-360, 360);
-	float SpeedMultiplier = Math::RandFloatMinMax(1.f, 1.5f);
-	MC->SetVelocity(MC->GetVelocity() + (MC->TargetDir) + Vector3((float)sin(Degree), 0, (float)cos(Degree)).Normalize() * Math::RandFloatMinMax((float)-MC->WalkSpeed * SpeedMultiplier, (float)MC->WalkSpeed)* SpeedMultiplier);
+	//float SpeedMultiplier = Math::RandFloatMinMax(1.f, 1.5f);
+	MC->SetVelocity(/*MC->GetVelocity() + (MC->TargetDir) +*/ Vector3((float)sin(Degree), 0, (float)cos(Degree)).Normalize() * Math::RandFloatMinMax((float)-MC->WalkSpeed /*SpeedMultiplier*/, (float)MC->WalkSpeed) /*SpeedMultiplier*/);
 	MC->InternalTimer = 0;
 }
 

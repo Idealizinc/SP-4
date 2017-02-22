@@ -7,8 +7,8 @@ File Name     : UnitDataLoader.h
 Purpose       : Defines a base unit and weapon loader class
 */
 
-#ifndef UNIT_DATA_LOADER_H
-#define UNIT_DATA_LOADER_H
+#ifndef UNITDATALOADER_H
+#define UNITDATALOADER_H
 
 #include <map>
 #include <string>

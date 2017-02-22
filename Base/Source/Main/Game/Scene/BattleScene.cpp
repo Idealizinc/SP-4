@@ -39,7 +39,7 @@ void BattleScene::QuickInit()
 
 	CameraAerial* CA = new CameraAerial();
 	camera = CA;
-	CA->AltInit(/*Player Character Position*/Vector3(0, 0, 0), Vector3(0, 300, 1), Vector3(0, 1, 0));
+	CA->AltInit(/*Player Character Position*/Vector3(0, 0, 0), Vector3(0, 100, 100), Vector3(0, 1, 0));
 	CenterPosition.Set(SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth * 0.5f, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.5f, 0);
 
 	// Initiallise Model Specific Meshes Here
@@ -54,9 +54,11 @@ void BattleScene::QuickInit()
 	InteractiveMap = new GameMap();
 	GameMap *theMap = dynamic_cast<GameMap*>(InteractiveMap);
 	theMap->SetEntityID("scene town 1 logic map");
-	theMap->LoadMap("CSVFiles//Town1Layout.csv", m_heightMap, TerrainScale, EntityList, BManager);
+	theMap->LoadMap("CSVFiles//Town1LayoutTest.csv", m_heightMap, TerrainScale, EntityList, BManager);
 
 	BS.Init();
+
+	SceneSystem::Instance().cSS_InputManager->cIM_inMouseMode = true;
 
 }
 

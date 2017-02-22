@@ -155,8 +155,10 @@ void RenderSystem::Init()
 
 #ifdef _DEBUG
 	assert(LoadCSVMeshes("CSVFiles/MeshDriven.csv"));
+	assert(LoadCSVSpriteMeshes("CSVFiles/SpriteDriven.csv"));
 #else
 	LoadCSVMeshes("CSVFiles/MeshDriven.csv");
+	LoadCSVSpriteMeshes("CSVFiles/SpriteDriven.csv"));
 #endif
 	ExportedFont = MeshList.find("text")->second;
 }
@@ -660,7 +662,7 @@ bool RenderSystem::LoadCSVMeshes(const std::string &fileLocation)
 					newMesh = MeshBuilder::GenerateSphere(theName, Color(r, g, b), 10, 10, 1.f);
 				}
 				else if (theValues[pos] == "SPRITE") {
-					unsigned row, col;
+			/*		unsigned row, col;
 					it = std::find(theKeys.begin(), theKeys.end(), "NUMROWS");
 					pos = it - theKeys.begin();
 					row = stoi(theValues[pos]);
@@ -670,7 +672,7 @@ bool RenderSystem::LoadCSVMeshes(const std::string &fileLocation)
 					newMesh = MeshBuilder::GenerateSpriteAnimation(theName, row, col);
                     SpriteAnimation *theSprite = dynamic_cast<SpriteAnimation*>(newMesh);
                     theSprite->m_anim = new Animation();
-                    theSprite->m_anim->Set(0, (row * col) - 1, 1, 1, true);
+                    theSprite->m_anim->Set(0, row * col, 1, 0, true);*/
 				}
 				else {
 					continue;
@@ -702,6 +704,101 @@ bool RenderSystem::LoadCSVMeshes(const std::string &fileLocation)
 			}
 		}
         file.close();
+		return true;
+	}
+	return false;
+}
+
+bool RenderSystem::LoadCSVSpriteMeshes(const std::string &fileLocation)
+{
+	std::ifstream file(fileLocation.c_str());
+	if (file.is_open())
+	{
+		std::string data = "";
+		std::vector<std::string> theKeys;
+		std::vector<std::string> theValues;
+		std::map<std::string, GLuint> targaStuff;
+		while (getline(file, data))
+		{
+			if (data == "" || data == "\n" || data == "\r")
+				continue;
+			std::string token;
+			std::istringstream iss(data);
+			if (theKeys.empty())
+			{   //Get the keys from CSV
+				while (getline(iss, token, ','))
+				{
+					CapitalizeString(token);
+					theKeys.push_back(token);
+				}
+			}
+			else {  //Begin getting all the values from the CSV
+				while (getline(iss, token, ','))
+				{
+					theValues.push_back(token);
+				}
+
+				//NAME
+				std::vector<std::string>::iterator it;
+				it = std::find(theKeys.begin(), theKeys.end(), "NAME");
+				size_t pos = it - theKeys.begin();
+				std::string theName = theValues[pos];
+				//MESH
+				Mesh* AssignedMesh = MeshBuilder::GenerateQuad(theName, Color(1,0,0), 1.f);
+				//ANIMATIONSTATE
+				it = std::find(theKeys.begin(), theKeys.end(), "ANIMATIONSTATE");
+				pos = it - theKeys.begin();
+				std::string State = theValues[pos];
+
+				//TEXTURES
+				std::vector<GLuint> Textures;
+				int num = 0; int valuePos = pos;
+				while (theValues.size() - 1 > pos)
+				{
+					// Read the csv and determine what textures need to be loaded
+					std::ostringstream ss;
+					ss << "TEXTURE" << num + 1;
+					it = std::find(theKeys.begin(), theKeys.end(), ss.str());
+					pos = it - theKeys.begin();
+					if (theValues[pos] == "" || theValues[pos] == "\n" || theValues[pos] == "\r")
+						break;
+					std::map<std::string, GLuint>::iterator it = targaStuff.find(theValues[pos]);
+					// If I have found the texture, no need to generate a new one
+					GLuint SelectedTexture;
+					if (it != targaStuff.end())
+					{
+						SelectedTexture = (*it).second;
+					}
+					else
+					{
+						// Make a new one
+						SelectedTexture = LoadTGA(theValues[pos].c_str());
+						targaStuff.insert(std::pair<std::string, GLuint>(theValues[pos], SelectedTexture));
+					}
+					if (num == 0)
+						AssignedMesh->textureArray[0] = SelectedTexture;
+					// Here I will need to create and assign the .tgas into a vector
+					Textures.push_back(SelectedTexture);
+					num++; ++valuePos;
+				}
+				// Here I will need to determine whether a sprite map has been created for the character that I'm currently loading.
+				std::map<std::string, std::map<std::string, std::vector<GLuint>>>::iterator SpriteMap = SpriteList.find(theName);
+				if (SpriteMap == SpriteList.end())
+				{
+					// I have yet to find a previously created map for this character so I will make a new one
+					std::map<std::string, std::vector<GLuint>> NewCharacterSpriteMap;
+					// Given I have a vector of sprites
+					NewCharacterSpriteMap.insert(std::pair<std::string, std::vector<GLuint>>(State, Textures));
+					SpriteList.insert(std::pair<std::string, std::map<std::string, std::vector<GLuint>>>(theName, NewCharacterSpriteMap));
+				}
+				else {
+					SpriteMap->second.insert(std::pair<std::string, std::vector<GLuint>>(State, Textures));
+				}
+				MeshList.insert(std::pair<std::string, Mesh*>(AssignedMesh->name, AssignedMesh));
+				theValues.clear();
+			}
+		}
+		file.close();
 		return true;
 	}
 	return false;

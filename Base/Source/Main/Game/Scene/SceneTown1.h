@@ -8,6 +8,7 @@
 #include "../Systems/BillboardManager.h"
 #include "../Objects/Miscellaneous/GameMap.h"
 #include "../Miscellaneous/CameraAerial.h"
+#include"../UserInterface/GameScreenInterface.h"
 
 class Enemy
 {
@@ -49,6 +50,9 @@ private:
     GameMap *InteractiveMap;
 	std::vector<GameObject*> EntityList;
 	Vector3 CenterPosition;
+
+	GameScreenInterface* GSI = new GameScreenInterface();
+	
 };
 
 #endif // _SCENE_TOWN_1_H

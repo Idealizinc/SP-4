@@ -10,8 +10,6 @@
 #include "../Systems/GameLogicSystem.h"
 
 
-#include "../../Engine/Interface/InterfaceSystem.h"
-
 std::string SceneTown1::id_ = "1_Scene";
 
 //InterfaceSystem* IS;
@@ -97,6 +95,7 @@ void SceneTown1::Init()
 	E->SetTargetPosition(SceneSystem::Instance().cSS_InputManager->ScreenCenter);
 	E->SetText("Test");
 	E->SetTextColor(0);*/
+
 }
 
 void SceneTown1::Update(const float& dt)
@@ -104,9 +103,10 @@ void SceneTown1::Update(const float& dt)
 	RenderSystem *Renderer = dynamic_cast<RenderSystem*>(&SceneSystem::Instance().GetRenderSystem());
 
 	Renderer->Update(dt);
-	//IS->Update(dt);
+
 	GSI->Update(dt);
-	//UCI->Update(dt);
+
+
 
 	float Speed = 50.f;
 	CameraAerial* CA = (CameraAerial*)camera;

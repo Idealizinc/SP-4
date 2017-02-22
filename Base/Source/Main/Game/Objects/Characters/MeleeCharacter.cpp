@@ -18,8 +18,11 @@ void MeleeCharacter::SetCharacter(UnitType* Type, UnitRace* Race)
 	WalkSpeed = Type->GetWalkspeed();
 	DetectionRadius = Type->GetRange();
 	RaceType = Race->GetRace();
-	SetMesh(Type->GetMeshName());
-	//SetRotationAxis(Vector3(0, 1, 0));
+	SetSprite(Type->GetMeshName());
+	//SetMesh(Type->GetMeshName());
+	SetMesh("DualTexQuad");
+	//anim->SetSprite(Type->GetMeshName());
+	SetRotationAxis(Vector3(0, 1, 0));
 
 	int RandomChoice = Math::RandIntMinMax(0, Type->PossibleWeapon.size() - 1);
 	WT = Type->PossibleWeapon[RandomChoice];
@@ -47,12 +50,21 @@ void MeleeCharacter::Init()
 	InternalStateManager->SetInternalCharacter(this);
 }
 
-void MeleeCharacter::Update(double dt)
+void MeleeCharacter::Update(const float& dt)
 {
 	if (InternalStateManager != nullptr)
 		InternalStateManager->Update((float)dt);
 	if (Active) // Still can update if invisible
 	{
+		Timer += (float)dt;
+
+		CurrentAnimationName = GetCurrentState()->GetStateName();
+
+		if (CurrentAnimationName == "Idle")
+			CurrentAnimation = AnimMap.find("Idle")->second;
+		else if (CurrentAnimationName == "Scout")
+			CurrentAnimation = AnimMap.find("Scout")->second;
+
 		//UpdateAlertTimer(dt);
 		Vector3 StoredVelocity = GetVelocity();
 		if (!Static)
@@ -61,7 +73,19 @@ void MeleeCharacter::Update(double dt)
 			LookVector = GetVelocity().Normalized();
 		if (GetVelocity().LengthSquared() > 0)
 			SetRotationAngle(Math::RadianToDegree(atan2(-GetVelocity().x, GetVelocity().z)));
+
+
+		if (Timer > anim_Time)
+			Timer = 0;
+
+		CurrentFrameMultiplier = Timer / anim_Time;
+		CurrentFrame = CurrentAnimation.size() * CurrentFrameMultiplier;
+
+		// This will set the texture to be rendered with the mesh to the one of the correct animation frame
+		StoredMesh->textureArray[0] = CurrentAnimation[CurrentFrame];
+
 	}
+	
 }
 
 void MeleeCharacter::Exit()

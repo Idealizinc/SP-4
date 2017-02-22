@@ -4,6 +4,8 @@
 #include "../../Engine/State//StateManager.h"
 #include "../../Game/Objects/Weapons/Melee/MeleeWeapon.h"
 
+class SpriteObject;
+
 class MeleeStateManager : public StateManager
 {
 public:
@@ -19,7 +21,6 @@ public:
 
 	std::vector<CharacterEntity*> Container;
 	bool isEngaged;
-
 
 private:
 	
