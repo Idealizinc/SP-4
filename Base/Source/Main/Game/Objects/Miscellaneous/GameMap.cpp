@@ -41,9 +41,9 @@ int gcd(int a, int b) {
 	return b == 0 ? a : gcd(b, a % b);
 }
 
-bool GameMap::LoadMap(const std::string &mapName, std::vector<unsigned char> &theHeightMap, Vector3 &terrainSize, std::vector<GameObject*> &theRenderingStuff, BillboardManager &theBBManager)
+bool GameMap::LoadMap(const std::string &mapName, const bool& IsGameScreenMap, std::vector<unsigned char> &theHeightMap, Vector3 &terrainSize, std::vector<GameObject*> &theRenderingStuff, BillboardManager &theBBManager)
 {
-	if (LoadFile(mapName, theHeightMap, terrainSize, theRenderingStuff, theBBManager) == true)
+	if (LoadFile(mapName, IsGameScreenMap, theHeightMap, terrainSize, theRenderingStuff, theBBManager) == true)
 	{
 		printf("Map (%s) has been successfully loaded!\n", mapName.c_str());
 		return true;
@@ -52,7 +52,7 @@ bool GameMap::LoadMap(const std::string &mapName, std::vector<unsigned char> &th
 	return false;
 }
 
-bool GameMap::LoadFile(const std::string &mapName, std::vector<unsigned char> &theHeightMap, Vector3 &terrainSize, std::vector<GameObject*> &theRenderingStuff, BillboardManager &theBBManager)
+bool GameMap::LoadFile(const std::string &mapName, const bool& IsGameScreenMap, std::vector<unsigned char> &theHeightMap, Vector3 &terrainSize, std::vector<GameObject*> &theRenderingStuff, BillboardManager &theBBManager)
 {
 	int theLineCounter = 1;
 	RenderSystem *Renderer = dynamic_cast<RenderSystem*>(&SceneSystem::Instance().GetRenderSystem());
@@ -91,7 +91,7 @@ bool GameMap::LoadFile(const std::string &mapName, std::vector<unsigned char> &t
 			std::map<std::string, Entity*>::iterator itLegend = bunchOfLegends.find(Icon);
 			if (itLegend != bunchOfLegends.end())
 			{
-				if (Icon == "TN" || Icon == "TNP" || Icon == "TNE")
+				if (IsGameScreenMap && (Icon == "TN" || Icon == "TNP" || Icon == "TNE"))
 				{
 					TerrainNode* TN = new TerrainNode();
 					GameObject *TNBO = dynamic_cast<GameObject*>(itLegend->second);
@@ -166,12 +166,15 @@ bool GameMap::LoadFile(const std::string &mapName, std::vector<unsigned char> &t
 
 	int HCF = gcd(theNumOfTiles_MapWidth, theNumOfTiles_MapHeight);
 
-	ScenePartitionGraph::Instance().GridDivisions = HCF;
-	ScenePartitionGraph::Instance().GenerateGrid();
+	ScenePartition->GridDivisions = HCF;
+	ScenePartition->GenerateGrid();
 	AssignTerrainNodes(&TempNodeList);
 
-	ScenePartitionGraph::Instance().PlayerBase = Player;
-	ScenePartitionGraph::Instance().EnemyBase = Enemy;
+	if (IsGameScreenMap)
+	{
+		ScenePartition->PlayerBase = Player;
+		ScenePartition->EnemyBase = Enemy;
+	}
 
 	for (std::vector<GameObject*>::iterator it = theRenderingStuff.begin(), end = theRenderingStuff.end(); it != end; ++it)
 	{
@@ -186,7 +189,7 @@ bool GameMap::LoadFile(const std::string &mapName, std::vector<unsigned char> &t
 			the3DObj->GetPosition().z
 			));
 		the3DObj->SetBounds();
-		ScenePartitionGraph::Instance().CreateNewNode(the3DObj);
+		ScenePartition->CreateNewNode(the3DObj);
 	}
 
 	for (std::vector<TerrainNode*>::iterator it = TempNodeList.begin(), end = TempNodeList.end(); it != end; ++it)
@@ -201,8 +204,8 @@ bool GameMap::LoadFile(const std::string &mapName, std::vector<unsigned char> &t
 			(the3DObj->GetDimensions().y*0.25f) + terrainSize.y * ReadHeightMap(theHeightMap, the3DObj->GetPosition().x / terrainSize.x, the3DObj->GetPosition().z / terrainSize.z),
 			the3DObj->GetPosition().z
 			));
-		(*it)->SetGridIndex(ScenePartitionGraph::Instance().FindGridIndexForPosition(the3DObj->GetPosition()));
-		ScenePartitionGraph::Instance().AssignObject(*it);
+		(*it)->SetGridIndex(ScenePartition->FindGridIndexForPosition(the3DObj->GetPosition()));
+		ScenePartition->AssignObject(*it);
 	}
 
 	for (std::vector<Particle*>::iterator it = theBBManager.BillboardContainer.begin(), end = theBBManager.BillboardContainer.end(); it != end; ++it)

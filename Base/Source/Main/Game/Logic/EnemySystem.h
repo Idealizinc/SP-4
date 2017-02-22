@@ -44,6 +44,7 @@ private:
 	int NumberOfPaths = 100;
 	float InternalTimer = 0;
 	EnemyPiece* SelectedUnit;
+	TerrainNode* TargetedNode;
 
 	// Functions
 	EnemyPiece* GenerateNewEnemy();

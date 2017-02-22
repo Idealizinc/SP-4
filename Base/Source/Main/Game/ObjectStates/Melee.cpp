@@ -2,8 +2,8 @@
 #include "../../Engine/State/StateList.h"
 #include "../Objects/Characters/MeleeCharacter.h"
 #include "../Systems/ObjectManager.h"
-#include "../Systems/EventSystem.h"
 #include "../Systems/BattleSystem.h"
+#include "../Systems/GameLogicSystem.h"
 
 MeleeStateManager::MeleeStateManager()
 {
@@ -177,8 +177,6 @@ void MeleeStateManager::Update(const float& dt)
 			MC->Active = false;
 		}
 	}
-
-	std::cout << MC->GetCurrentState()->GetStateName() << std::endl;
 }
 
 void MeleeStateManager::Exit()
@@ -213,9 +211,9 @@ CharacterEntity* MeleeStateManager::FindNearestEnemy(CharacterEntity* MC)
 {
 	MeleeCharacter* Chara = dynamic_cast<MeleeCharacter*>(MC);
 	if (Chara->isPlayer)
-		Container = BattleSystem::Instance().GetEnemyCharacterList();
+		Container = GameLogicSystem::Instance().InternalBattleSystem->GetEnemyCharacterList();
 	else
-		Container = BattleSystem::Instance().GetPlayerCharacterList();
+		Container = GameLogicSystem::Instance().InternalBattleSystem->GetPlayerCharacterList();
 
 	if (Container.size() > 1 && MC->TargetEnemy == nullptr)
 	{

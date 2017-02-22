@@ -17,6 +17,7 @@ void EnemySystem::Init(void)
 		InternalPathContainer.push_back(RG.DefinedPath);
 	}
 	CurrentTurnState = S_TURNSTART;
+	TargetedNode = nullptr;
 }
 
 void EnemySystem::Exit(void)
@@ -60,6 +61,16 @@ void EnemySystem::Update(const float& dt)
 			// Reseting for next turn
 			CurrentTurnState = S_TURNSTART;
 			SelectedUnit = nullptr;
+			if (TargetedNode != nullptr)
+			{
+				if (TargetedNode->TerrainTile->PlayerUnitList.size() > 0 && TargetedNode->TerrainTile->EnemyUnitList.size() > 0)
+				{
+					GameLogicSystem::Instance().SetCurrentState(GameLogicSystem::Instance().BattlePhase);
+					GameLogicSystem::Instance().InternalBattleSystem->SetUpUnits(TargetedNode->TerrainTile);
+					SceneSystem::Instance().SwitchScene("BattleScene");
+				}
+				TargetedNode = nullptr;
+			}
 		}
 		break;
 	}
@@ -103,6 +114,7 @@ EnemyPiece* EnemySystem::AdvanceSingleUnit()
 	EP->InternalDefinedPath.erase(EP->InternalDefinedPath.begin());
 	// Add to the tile he is on
 	EP->InternalDefinedPath.front()->TerrainTile->EnemyUnitList.push_back(EP);
+	TargetedNode = EP->InternalDefinedPath.front();
 	EP->TargetPosition = EP->InternalDefinedPath.front()->GetEntity()->GetPosition() + Vector3(0, EP->InternalDefinedPath.front()->GetEntity()->GetDimensions().y + EP->GetDimensions().y);
 	return EP;
 }

@@ -745,6 +745,7 @@ bool RenderSystem::LoadCSVSpriteMeshes(const std::string &fileLocation)
 				std::string theName = theValues[pos];
 				//MESH
 				Mesh* AssignedMesh = MeshBuilder::GenerateQuad(theName, Color(1,0,0), 1.f);
+				MeshList.insert(std::pair<std::string, Mesh*>(AssignedMesh->name, AssignedMesh));
 				//ANIMATIONSTATE
 				it = std::find(theKeys.begin(), theKeys.end(), "ANIMATIONSTATE");
 				pos = it - theKeys.begin();

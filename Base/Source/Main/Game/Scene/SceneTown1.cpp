@@ -34,12 +34,13 @@ void SceneTown1::QuickInit()
 
 	// Set Terrain Size
 	TerrainScale.Set(500.f, 50.f, 500.f);
-	ScenePartitionGraph::Instance().AssignGridParameters(Vector3(), Vector3(TerrainScale.x, TerrainScale.z), 4);
+	ScenePartition = new ScenePartitionGraph();
+	ScenePartition->AssignGridParameters(Vector3(), Vector3(TerrainScale.x, TerrainScale.z), 4);
 
 	CameraAerial* CA = new CameraAerial();
 	
 	camera = CA;
-	CA->AltInit(/*Player Character Position*/Vector3(0, 0, 0), Vector3(0, 150, 0.01f), Vector3(0, 1, 0));
+	CA->AltInit(/*Player Character Position*/Vector3(0, 0, 0), Vector3(0, 100, 0.01f), Vector3(0, 1, 0));
 	CenterPosition.Set(SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth * 0.5f, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.5f, 0);
 
 	// Initiallise Model Specific Meshes Here
@@ -53,8 +54,9 @@ void SceneTown1::QuickInit()
 		
 	GameLogicSystem::Instance().TerrainLoader.LoadTerrainData("CSVFiles/TerrainDataLoader.csv");
 	InteractiveMap = new GameMap();
+	InteractiveMap->ScenePartition = ScenePartition;
 	InteractiveMap->SetEntityID("SceneMap");
-	InteractiveMap->LoadMap("CSVFiles//Town1Layout.csv", m_heightMap, TerrainScale, EntityList, BManager);
+	InteractiveMap->LoadMap("CSVFiles//Town1Layout.csv", true, m_heightMap, TerrainScale, EntityList, BManager);
 
 	GameLogicSystem::Instance().Init();
 
@@ -63,7 +65,12 @@ void SceneTown1::QuickInit()
 
 void SceneTown1::QuickExit()
 {
-	ScenePartitionGraph::Instance().Exit();
+	if (ScenePartition)
+	{
+		ScenePartition->Exit();
+		delete ScenePartition;
+	}
+
 	if (InteractiveMap)
 		delete InteractiveMap;
 	for (auto it : EntityList)
@@ -110,24 +117,20 @@ void SceneTown1::Update(const float& dt)
 
 	if (Application::IsKeyPressed(VK_OEM_MINUS))
 	{
-		ScenePartitionGraph::Instance().ShowPartitions = false;
+		ScenePartition->ShowPartitions = false;
 	}
 
 	if (Application::IsKeyPressed(VK_OEM_PLUS))
 	{
-		ScenePartitionGraph::Instance().ShowPartitions = true;
+		ScenePartition->ShowPartitions = true;
 	}
 
 	for (auto it : ObjectManager::Instance().GetParticleList())
 		it->Update(dt);
 
-	if (Application::IsKeyPressed(VK_SPACE))
+	if (SceneSystem::Instance().cSS_InputManager->GetMouseInput(InputManager::KEY_RMB) == InputManager::MOUSE_HOLD)
 	{
-		CA->CameraMoveTargetPosition.y = 50.f;
-	}
-	else if (Application::IsKeyPressed(VK_MENU))
-	{
-		CA->CameraMoveTargetPosition.y = -50.f;
+		CA->CameraMoveTargetPosition.y = 100.f;
 	}
 	else CA->CameraMoveTargetPosition.y = 0;
 
@@ -135,7 +138,7 @@ void SceneTown1::Update(const float& dt)
 	//MusicSystem::Instance().playBackgroundMusic("battle");
 	BManager.UpdateContainer(dt, CA->position);
 	
-	ScenePartitionGraph::Instance().Update(dt);
+	ScenePartition->Update(dt);
 	GameLogicSystem::Instance().Update(dt);
 	
 	framerates = 1 / dt;
@@ -157,7 +160,7 @@ void SceneTown1::RenderShadowCasters()
 	//RenderTerrain();
 	RenderSystem *Renderer = dynamic_cast<RenderSystem*>(&SceneSystem::Instance().GetRenderSystem());
 	RenderTerrain();
-	ScenePartitionGraph::Instance().Render();
+	ScenePartition->Render();
 
 	GameLogicSystem::Instance().Render();
 

@@ -62,7 +62,7 @@ void ScenePartitionGraph::Update(const float& dt)
 
 void ScenePartitionGraph::Render()
 {
-	float GridDivisionScale = ScenePartitionGraph::Instance().GridDimensions.x / ScenePartitionGraph::Instance().GridDivisions;
+	float GridDivisionScale = GridDimensions.x / GridDivisions;
 	for (std::vector<GridNode*>::iterator it = PartitionGraphContainer.begin(); it != PartitionGraphContainer.end(); ++it)
 	{
 		(*it)->Render();

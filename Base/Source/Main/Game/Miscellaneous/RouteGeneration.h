@@ -16,8 +16,6 @@ Purpose       : Generate a route for enemies to go through, first by finding the
 #include "Vector3.h"
 #include "MyMath.h"
 #include "../SceneManagement/Objects/TerrainNode.h"
-#include "../SceneManagement/ScenePartitionGraph.h"
-
 
 class RouteGeneration
 {

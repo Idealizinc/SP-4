@@ -1,7 +1,6 @@
 #include "BattleSystem.h"
-
-std::vector<Vector3> PlayerSpawnPoints;
-std::vector<Vector3> EnemySpawnPoints;
+#include "../../Engine/System/SceneSystem.h"
+#include "../Objects/Characters/MeleeCharacter.h"
 
 BattleSystem::BattleSystem()
 {
@@ -13,119 +12,84 @@ BattleSystem::~BattleSystem()
 
 void BattleSystem::Init()
 {
-	Loader.LoadWeaponData("CSVFiles/WeaponDataLoader.csv");
-	Loader.LoadUnitData("CSVFiles/UnitDataLoader.csv");
-	Loader.LoadRaceData("CSVFiles/RaceDataLoader.csv");
-
-	for (float i = 0; i < 50; i += 10)
-	{
-		PlayerSpawnPoints.push_back(Vector3(-200.f, 10.f, i));
-	}
-
-	for (float i = 0; i < 50; i += 10)
-	{
-		EnemySpawnPoints.push_back(Vector3(200.f, 10.f, i));
-	}
-	
-
-	std::vector<Vector3> PlayerTempSpawn;
-	for (unsigned int i = 0; i < PlayerSpawnPoints.size(); ++i)
-	{
-		Vector3 Position = PlayerSpawnPoints[i];
-		PlayerTempSpawn.push_back(Position);
-	}
-
-	std::vector<Vector3> EnemyTempSpawn;
-	for (unsigned int i = 0; i < EnemySpawnPoints.size(); ++i)
-	{
-		Vector3 Position = EnemySpawnPoints[i];
-		EnemyTempSpawn.push_back(Position);
-	}
-
-	int PRNG = Math::RandIntMinMax(0, PlayerSpawnPoints.size() - 1);
-	int ERNG = Math::RandIntMinMax(0, EnemySpawnPoints.size() - 1);
-
-	SpawnPosition_Player = PlayerTempSpawn[PRNG];
-	SpawnPosition_Enemy = EnemyTempSpawn[ERNG];
-
-	CurrentPlayerUnitCount.insert(std::pair<std::string, unsigned short>("Crusader", 20));
-	CurrentEnemyUnitCount.insert(std::pair<std::string, unsigned short>("Crusader", 20));
-
-	SpawnPlayerCharacter(CurrentPlayerUnitCount);
-	SpawnEnemyCharacter(CurrentEnemyUnitCount);
+	UnitData.LoadWeaponData("CSVFiles/WeaponDataLoader.csv");
+	UnitData.LoadUnitData("CSVFiles/UnitDataLoader.csv");
+	UnitData.LoadRaceData("CSVFiles/RaceDataLoader.csv");
 }
 
 void BattleSystem::Update(const float& dt)
 {
+	// I will need to update all my characters, projectiles and other miscellaneous game objects
+	UpdateCharacterLogic(InternalPlayerCharacterList, dt);
+	UpdateCharacterLogic(InternalEnemyCharacterList, dt);
+	UpdateProjectileLogic(dt);
+}
+
+void BattleSystem::Render()
+{
 	for (auto it : InternalPlayerCharacterList)
+		it->Render();
+	for (auto it : InternalEnemyCharacterList)
+		it->Render();
+	for (auto it : InternalProjectileList)
+		it->Render();
+}
+
+void BattleSystem::Exit()
+{
+	while (InternalPlayerCharacterList.size() > 0)
 	{
-		it->Update(dt);
+		CharacterEntity* obj = InternalPlayerCharacterList.back();
+		obj->Exit();
+		delete obj;
+		InternalPlayerCharacterList.pop_back();
 	}
-	for (auto et : InternalEnemyCharacterList)
+	while (InternalEnemyCharacterList.size() > 0)
 	{
-		et->Update(dt);
+		CharacterEntity* obj = InternalEnemyCharacterList.back();
+		obj->Exit();
+		delete obj;
+		InternalEnemyCharacterList.pop_back();
+	}
+	while (InternalProjectileList.size() > 0)
+	{
+		Projectile* obj = InternalProjectileList.back();
+		obj->Exit();
+		delete obj;
+		InternalProjectileList.pop_back();
 	}
 }
 
-void BattleSystem::SpawnPlayerCharacter(std::map<std::string, unsigned short> PlayerCharacterList)
+std::vector<CharacterEntity*>& BattleSystem::GetPlayerCharacterList()
 {
-	for (auto PCL : PlayerCharacterList)
-	{
-		UnitType* UT = Loader.UnitMap.find(PCL.first)->second;
-		if (UT != nullptr)
-		{
-			for (unsigned int i = 0; i < PCL.second; ++i)
-			{
-				CharacterEntity* NewChar = nullptr;
-				if (UT->GetType() == UnitType::T_MELEE)
-				{
-					NewChar = new MeleeCharacter();
-					MeleeCharacter* MC = dynamic_cast<MeleeCharacter*>(NewChar);
-					MC->SetCharacter(UT, Loader.RaceMap.find("Human")->second);
-					MC->isPlayer = true;
-					NewChar->SetDimensions(Vector3(UnitSize, UnitSize, UnitSize));
-					int RNG = Math::RandIntMinMax(0, PlayerSpawnPoints.size()-1);
-					MC->TargetDir.x = (SpawnPosition_Enemy.x - SpawnPosition_Player.x)/20;
-					NewChar->SetPosition(PlayerSpawnPoints[RNG]);
-				}
-
-				if (NewChar != nullptr)
-				{
-					InternalPlayerCharacterList.push_back(NewChar);
-				}
-			}
-		}
-	}
+	return InternalPlayerCharacterList;
+}
+std::vector<CharacterEntity*>& BattleSystem::GetEnemyCharacterList()
+{
+	return InternalEnemyCharacterList;
+}
+std::vector<Projectile*>& BattleSystem::GetProjectileList()
+{
+	return InternalProjectileList;
 }
 
-void BattleSystem::SpawnEnemyCharacter(std::map<std::string, unsigned short> EnemyCharacterList)
+void BattleSystem::SetUpUnits(Terrain* BattlefieldTile)
 {
-	for (auto ECL : EnemyCharacterList)
-	{
-		UnitType* UT = Loader.UnitMap.find(ECL.first)->second;
-		if (UT != nullptr)
-		{
-			for (unsigned int i = 0; i < ECL.second; ++i)
-			{
-				CharacterEntity* NewChar = nullptr;
-				if (UT->GetType() == UnitType::T_MELEE)
-				{
-					NewChar = new MeleeCharacter();
-					MeleeCharacter* MC = dynamic_cast<MeleeCharacter*>(NewChar);
-					MC->SetCharacter(UT, Loader.RaceMap.find("Elven")->second);
-					NewChar->SetDimensions(Vector3(UnitSize, UnitSize, UnitSize));
-					int RNG = Math::RandIntMinMax(0, EnemySpawnPoints.size()-1);
-					MC->TargetDir.x = (SpawnPosition_Player.x - SpawnPosition_Enemy.x)/20;
-					NewChar->SetPosition(EnemySpawnPoints[RNG]);
-				}
-
-				if (NewChar != nullptr)
-				{
-					InternalEnemyCharacterList.push_back(NewChar);
-				}
-			}
-		}
+	ClearCharacterCounters();
+	// For every of the Units within the tile, I am  going to put the entirety of the battalions into my counters
+	// Set up the Player
+	for (auto it : BattlefieldTile->PlayerUnitList){
+		for (auto it2 : it->InternalBattalionList)
+			CurrentPlayerUnitCount.insert(std::pair<std::string, unsigned short>(it2.first, it2.second));
 	}
+	// Set up the Enemy
+	for (auto it : BattlefieldTile->EnemyUnitList){
+		for (auto it2 : it->InternalBattalionList)
+			CurrentEnemyUnitCount.insert(std::pair<std::string, unsigned short>(it2.first, it2.second));
+	}
+	// Spawn the characters
+	SpawnPlayerCharacters(CurrentPlayerUnitCount);
+	SpawnEnemyCharacters(CurrentEnemyUnitCount);
 }
 
 void BattleSystem::AddNewProjectile(Projectile* P)
@@ -147,57 +111,169 @@ void BattleSystem::AddNewProjectile(Projectile* P)
 		InternalProjectileList.push_back(P);
 }
 
-void BattleSystem::Render()
+void BattleSystem::ClearCharacterCounters()
 {
-	for (auto it : InternalPlayerCharacterList)
+	CurrentPlayerUnitCount.clear();
+	CurrentEnemyUnitCount.clear();
+}
+
+void BattleSystem::UpdateCharacterLogic(std::vector<CharacterEntity*>& CharacterList, const float& dt)
+{
+	for (auto it : CharacterList)
 	{
-		it->Render();
-	}
-	for (auto et : InternalEnemyCharacterList)
-	{
-		et->Render();
+		// The character will update it's StateManager as well as it's own Kinematic State if possible
+		// I will need to do other updates here such as friction/limiting walkspeed
+		if (!it->GetVelocity().IsZero())
+		{
+			Vector3 Direction = it->GetVelocity();
+			if (it->GetVelocity().LengthSquared() > it->WalkSpeed * it->WalkSpeed)
+			{
+				it->SetVelocity(Direction.Normalize() * it->WalkSpeed);
+			}
+		}
+		it->Update(dt);
 	}
 }
 
-void BattleSystem::ClearCharacterCount()
+bool CheckCollision(BaseObject *o1, BaseObject *o2, std::string type)
 {
-	for (std::map<std::string, unsigned short>::iterator it = CurrentPlayerUnitCount.begin(); it != CurrentPlayerUnitCount.end(); ++it)
+	if (type == "Circle")
 	{
-		it->second = 0;
+		float CombinedRadiusSquared = (o1->GetDimensions().x + o2->GetDimensions().x) * (o1->GetDimensions().x + o2->GetDimensions().x);
+		float DistSquared = (o1->GetPosition() - o2->GetPosition()).LengthSquared();
+		if (DistSquared < CombinedRadiusSquared)
+		{
+			return true;
+		}
+		return false;
 	}
-	for (std::map<std::string, unsigned short>::iterator it2 = CurrentEnemyUnitCount.begin(); it2 != CurrentEnemyUnitCount.end(); ++it2)
+	else if (type == "AABB")
+		return false;
+	else if (type == "OBB")
+		return false;
+	else return false;
+}
+
+void BattleSystem::UpdateProjectileLogic(const float& dt)
+{
+	for (auto it : InternalProjectileList)
 	{
-		it2->second = 0;
+		if (it->Active)
+		{
+			// Find Current Grid
+			GridNode* GN = SceneSystem::Instance().GetCurrentScene().ScenePartition->FindGridForPosition(it->GetPosition());
+			// Check Collision Here
+			if (GN != nullptr)
+			{
+				std::vector<Node*> NodeList = GN->GetNodeList();
+				for (std::vector<Node*>::iterator it2 = NodeList.begin(); it2 != NodeList.end(); ++it2)
+				{
+					GameObject* GO = dynamic_cast<GameObject*>((*it2)->GetEntity());
+					if (GO != nullptr)
+					{
+						if (GO->Active && GO->Static && GO->GetBoundary() != nullptr)
+						{
+							Boundary* B = GO->GetBoundary();
+							if (B->CheckCollision(it->GetPosition()))
+							{
+								it->Active = false;
+							}
+						}
+					}
+				}
+				if (it->Active)
+				{
+					std::vector<CharacterEntity*> Container;
+					if (it->PlayerTeam)
+						Container = InternalPlayerCharacterList;
+					else Container = InternalEnemyCharacterList;
+
+					for (auto it2 : Container)
+					{
+						BaseObject *obj2 = dynamic_cast<BaseObject*>(it2);
+						if (obj2->Active)
+						{
+							if (CheckCollision(it, obj2, "Circle"))
+							{
+								it->Active = false;
+								CharacterEntity* CE = it2;
+								//Gets Hit
+								CE->HealthPoints -= (it)->GetDamageDealt();
+
+								//int NumParticles = Math::RandIntMinMax(2, 4);
+								//for (int i = 0; i < NumParticles; ++i)
+								//{
+								//	float ParticleSpeed = Math::RandFloatMinMax(3.f, 6.f);
+								//	float ParticleLifeTime = Math::RandFloatMinMax(0.75f, 1.5f);
+								//
+								//	//ObjectManager::Instance().AddNewParticle(new Particle(obj2->GetEntityID(), 1, CE->GetPosition() * Math::RandFloatMinMax(0.3f, 0.75f), Vector3(Math::RandFloatMinMax(-ParticleSpeed, ParticleSpeed), Math::RandFloatMinMax(-ParticleSpeed, ParticleSpeed), Math::RandFloatMinMax(0, ParticleSpeed)), camera.position, ParticleLifeTime));
+								//}
+							}
+						}
+					}
+				}
+			}
+		}
 	}
 }
 
-std::vector<CharacterEntity*> BattleSystem::GetPlayerCharacterList()
+void BattleSystem::SpawnPlayerCharacters(std::map<std::string, unsigned short> PlayerCharacterList)
 {
-	return InternalPlayerCharacterList;
-}
-std::vector<CharacterEntity*> BattleSystem::GetEnemyCharacterList()
-{
-	return InternalEnemyCharacterList;
-}
-std::vector<Projectile*>& BattleSystem::GetProjectileList()
-{
-	return InternalProjectileList;
+	for (auto PCL : PlayerCharacterList)
+	{
+		UnitType* UT = UnitData.UnitMap.find(PCL.first)->second;
+		if (UT != nullptr)
+		{
+			for (unsigned int i = 0; i < PCL.second; ++i)
+			{
+				CharacterEntity* NewChar = nullptr;
+				if (UT->GetType() == UnitType::T_MELEE)
+				{
+					NewChar = new MeleeCharacter();
+					MeleeCharacter* MC = dynamic_cast<MeleeCharacter*>(NewChar);
+					MC->SetCharacter(UT, UnitData.RaceMap.find("Human")->second);
+					MC->isPlayer = true;
+					NewChar->SetDimensions(Vector3(UnitSize, UnitSize, UnitSize));
+					//int RNG = Math::RandIntMinMax(0, PlayerSpawnPoints.size() - 1);
+					//MC->TargetDir.x = (SpawnPosition_Enemy.x - SpawnPosition_Player.x) / 20;
+					NewChar->SetPosition(SpawnPosition_Player);
+				}
+
+				if (NewChar != nullptr)
+				{
+					InternalPlayerCharacterList.push_back(NewChar);
+				}
+			}
+		}
+	}
 }
 
-void BattleSystem::Exit()
+void BattleSystem::SpawnEnemyCharacters(std::map<std::string, unsigned short> EnemyCharacterList)
 {
-	while (InternalPlayerCharacterList.size() > 0)
+	for (auto ECL : EnemyCharacterList)
 	{
-		CharacterEntity* obj = InternalPlayerCharacterList.back();
-		obj->Exit();
-		delete obj;
-		InternalPlayerCharacterList.pop_back();
-	}
-	while (InternalEnemyCharacterList.size() > 0)
-	{
-		CharacterEntity* obj = InternalEnemyCharacterList.back();
-		obj->Exit();
-		delete obj;
-		InternalEnemyCharacterList.pop_back();
+		UnitType* UT = UnitData.UnitMap.find(ECL.first)->second;
+		if (UT != nullptr)
+		{
+			for (unsigned int i = 0; i < ECL.second; ++i)
+			{
+				CharacterEntity* NewChar = nullptr;
+				if (UT->GetType() == UnitType::T_MELEE)
+				{
+					NewChar = new MeleeCharacter();
+					MeleeCharacter* MC = dynamic_cast<MeleeCharacter*>(NewChar);
+					MC->SetCharacter(UT, UnitData.RaceMap.find("Elven")->second);
+					NewChar->SetDimensions(Vector3(UnitSize, UnitSize, UnitSize));
+					//int RNG = Math::RandIntMinMax(0, EnemySpawnPoints.size() - 1);
+					//MC->TargetDir.x = (SpawnPosition_Player.x - SpawnPosition_Enemy.x) / 20;
+					NewChar->SetPosition(SpawnPosition_Enemy);
+				}
+
+				if (NewChar != nullptr)
+				{
+					InternalEnemyCharacterList.push_back(NewChar);
+				}
+			}
+		}
 	}
 }

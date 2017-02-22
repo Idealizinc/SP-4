@@ -63,7 +63,7 @@ unsigned short InputManager::GetMouseInput(const unsigned short& key)
 	{
 		return it->second;
 	}
-	else MouseButtonState.insert(std::pair<unsigned short, bool>(key, MOUSE_RELEASE));
+	else MouseButtonState.insert(std::pair<unsigned short, unsigned short>(key, MOUSE_RELEASE));
 	return MOUSE_RELEASE;
 }
 
@@ -81,8 +81,8 @@ void InputManager::SetScreenSize(float x, float y)
 {
 	cIM_ScreenWidth = x;
 	cIM_ScreenHeight = y;
-	ScreenCenter.x = (int)cIM_ScreenWidth / 2;
-	ScreenCenter.y = (int)cIM_ScreenHeight / 2;
+	ScreenCenter.x = (int)cIM_ScreenWidth * 0.5f;
+	ScreenCenter.y = (int)cIM_ScreenHeight * 0.5f;
 }
 
 void InputManager::UpdateMouse()

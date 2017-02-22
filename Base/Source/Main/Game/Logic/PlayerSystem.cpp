@@ -1,6 +1,5 @@
 #include "PlayerSystem.h"
 #include "../Systems/GameLogicSystem.h"
-#include "../SceneManagement/ScenePartitionGraph.h"
 #include "../../Engine/System/PerspectiveRaycaster.h"
 
 PlayerSystem::~PlayerSystem(void)
@@ -12,7 +11,7 @@ void PlayerSystem::Init(void)
 {
 	CurrentTurnState = S_TURNSTART;
 	SelectedUnit = nullptr;
-	MouseDownSelection = MouseUpSelection = nullptr;
+	MouseDownSelection = MouseUpSelection = TargetedNode = nullptr;
 }
 
 void PlayerSystem::Exit(void)
@@ -31,7 +30,7 @@ void PlayerSystem::Update(const float& dt)
 	switch (CurrentTurnState)
 	{
 	case (S_TURNSTART) : // It's my turn, do something
-		CA->CameraMoveTargetPosition = ScenePartitionGraph::Instance().PlayerBase->GetEntity()->GetPosition();
+		CA->CameraMoveTargetPosition = SceneSystem::Instance().GetCurrentScene().ScenePartition->PlayerBase->GetEntity()->GetPosition();
 		CurrentTurnState = S_ACTION;
 		break;
 	case (S_ACTION) : // I Spawn/Move a Unit
@@ -54,6 +53,16 @@ void PlayerSystem::Update(const float& dt)
 			// Reseting for next turn
 			CurrentTurnState = S_TURNSTART;
 			SelectedUnit = nullptr;
+			if (TargetedNode != nullptr)
+			{
+				if (TargetedNode->TerrainTile->PlayerUnitList.size() > 0 && TargetedNode->TerrainTile->EnemyUnitList.size() > 0)
+				{
+					GameLogicSystem::Instance().SetCurrentState(GameLogicSystem::Instance().BattlePhase);
+					GameLogicSystem::Instance().InternalBattleSystem->SetUpUnits(TargetedNode->TerrainTile);
+					SceneSystem::Instance().SwitchScene("BattleScene");
+				}
+				TargetedNode = nullptr;
+			}
 		}
 		break;
 	}
@@ -70,13 +79,13 @@ UnitPiece* PlayerSystem::GenerateNewUnit()
 {
 	// Create a new unit and assign him to the start
 	UnitPiece* UP = new UnitPiece();
-	BaseObject* Spawn = ScenePartitionGraph::Instance().PlayerBase->GetEntity();
+	BaseObject* Spawn = SceneSystem::Instance().GetCurrentScene().ScenePartition->PlayerBase->GetEntity();
 	UP->TargetPosition = Spawn->GetPosition() + Vector3(0, Spawn->GetDimensions().y + UP->GetDimensions().y);
 	UP->SetPosition(UP->TargetPosition + Vector3(0, 10, 0));
 	InternalUnitContainer.push_back(UP);
 	// Add to the tile he is on
-	ScenePartitionGraph::Instance().PlayerBase->TerrainTile->PlayerUnitList.push_back(UP);
-	UP->TargetNode = ScenePartitionGraph::Instance().PlayerBase;
+	SceneSystem::Instance().GetCurrentScene().ScenePartition->PlayerBase->TerrainTile->PlayerUnitList.push_back(UP);
+	UP->TargetNode = SceneSystem::Instance().GetCurrentScene().ScenePartition->PlayerBase;
 	return UP;
 }
 
@@ -123,7 +132,7 @@ void PlayerSystem::HandleUserInput()
 		{
 			// Clicked the same tile
 			CA->CameraMoveTargetPosition = MouseDownSelection->GetEntity()->GetPosition();
-			if (MouseDownSelection == ScenePartitionGraph::Instance().PlayerBase)
+			if (MouseDownSelection == SceneSystem::Instance().GetCurrentScene().ScenePartition->PlayerBase)
 			{
 				SelectedUnit = GenerateNewUnit();
 			}
@@ -138,6 +147,7 @@ void PlayerSystem::HandleUserInput()
 				if (it == MouseUpSelection)
 				{
 					SelectedUnit = AdvanceSingleUnit(MouseDownSelection->TerrainTile->PlayerUnitList.front(), MouseUpSelection);
+					TargetedNode = MouseUpSelection;
 					CA->CameraMoveTargetPosition = MouseUpSelection->GetEntity()->GetPosition();
 					break;
 				}

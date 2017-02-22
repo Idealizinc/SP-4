@@ -33,6 +33,8 @@ void GameLogicSystem::QuickInit()
 	InternalEnemySystem = new EnemySystem();
 	InternalEnemySystem->Init();
 	// Init Battle System
+	InternalBattleSystem = new BattleSystem();
+	InternalBattleSystem->Init();
 }
 
 void GameLogicSystem::Update(const float& dt)
@@ -49,19 +51,26 @@ void GameLogicSystem::Update(const float& dt)
 	}
 	else if (CurrentState->GetStateName() == BattlePhase)
 	{
-		
+		InternalBattleSystem->Update(dt);
 	}
 }
 
 void GameLogicSystem::Render()
 {
-	if (InternalPlayerSystem)
+	if (GetCurrentState()->GetStateName() != BattlePhase)
 	{
-		InternalPlayerSystem->Render();
+		if (InternalPlayerSystem)
+		{
+			InternalPlayerSystem->Render();
+		}
+		if (InternalEnemySystem)
+		{
+			InternalEnemySystem->Render();
+		}
 	}
-	if (InternalEnemySystem)
+	else
 	{
-		InternalEnemySystem->Render();
+		InternalBattleSystem->Render();
 	}
 }
 
@@ -88,7 +97,7 @@ void GameLogicSystem::QuickExit()
 
 TerrainNode* GameLogicSystem::GetTerrainNodeForPosition(const Vector3& Position)
 {
-	GridNode* GN = ScenePartitionGraph::Instance().FindGridForPosition(Position);
+	GridNode* GN = SceneSystem::Instance().GetCurrentScene().ScenePartition->FindGridForPosition(Position);
 	if (GN != nullptr)
 	{
 		for (std::vector<Node*>::reverse_iterator it = GN->GetNodeList().rbegin(); it != GN->GetNodeList().rend(); ++it)

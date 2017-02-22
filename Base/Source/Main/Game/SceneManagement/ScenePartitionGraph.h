@@ -10,14 +10,14 @@ Purpose       : Defines the ScenePartitionGraph. A singular object that divides 
 #ifndef _SCENE_GRAPH_PARTITION_H
 #define _SCENE_GRAPH_PARTITION_H
 
-#include "../../Engine/Internal/SingletonTemplate.h"
+//#include "../../Engine/Internal/SingletonTemplate.h"
 #include "../../Engine/Internal/System.h"
 #include "Objects/TerrainNode.h"
 #include "Objects\GridNode.h"
 #include <vector>
 #include <map>
 
-class ScenePartitionGraph : public System, public SingletonTemplate<ScenePartitionGraph>
+class ScenePartitionGraph : public System//, public SingletonTemplate<ScenePartitionGraph>
 {
 public:
 	virtual void Init();
