@@ -81,8 +81,6 @@ void MeleeCharacter::Update(const float& dt)
 		CurrentFrameMultiplier = Timer / anim_Time;
 		CurrentFrame = CurrentAnimation.size() * CurrentFrameMultiplier;
 
-		std::cout << CurrentFrame << std::endl;
-
 		// This will set the texture to be rendered with the mesh to the one of the correct animation frame
 		StoredMesh->textureArray[0] = CurrentAnimation[CurrentFrame];
 
