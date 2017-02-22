@@ -110,7 +110,7 @@ public:
 	};
 
 	std::map<std::string, Mesh*> MeshList;
-	std::map<std::string, std::map<std::string, std::vector<GLuint>>> SpriteList; // Key: Character Entity Name, <Key: Animation ID, Value: Vector of GLuint* that represents the frame animations>
+	std::map<std::string, std::map<std::string, std::vector<GLuint>>> SpriteList; // Key: Character Entity Name, <Key: Animation ID, Value: Vector of GLuint that represents the frame animations>
 
 	virtual void Init();
 	virtual void Update(const float& dt);

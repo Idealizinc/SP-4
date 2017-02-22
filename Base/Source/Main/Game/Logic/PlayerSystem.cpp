@@ -132,10 +132,19 @@ void PlayerSystem::HandleUserInput()
 		{
 			// Clicked the same tile
 			CA->CameraMoveTargetPosition = MouseDownSelection->GetEntity()->GetPosition();
+
+			if (GameLogicSystem::Instance().UnitInterface->deploy == true && GameLogicSystem::Instance().UnitInterface->returnUnitSpawnSys()->getCurrentUnitCount() != 0)
+			{
+				//GameLogicSystem::Instance().UnitInterface->returnUnitSpawnSys()->returnUnitMap(); this returns the map of units
+				SelectedUnit = GenerateNewUnit();
+				GameLogicSystem::Instance().UnitInterface->deploy = false;
+			}
 			if (MouseDownSelection == SceneSystem::Instance().GetCurrentScene().ScenePartition->PlayerBase)
 			{
-				SelectedUnit = GenerateNewUnit();
+				//SelectedUnit = GenerateNewUnit();
+				GameLogicSystem::Instance().UnitInterface->OpenInterface();
 			}
+			
 		}
 		else if (MouseDownSelection != MouseUpSelection)
 		{

@@ -194,6 +194,18 @@ void RenderSystem::Exit()
 		}
 		MeshList.clear();
 	}
+	if (SpriteList.empty() == false)
+	{
+		for (auto it : SpriteList)
+		{
+			for (auto it2 : it.second)
+			{
+				it2.second.clear();
+			}
+			it.second.clear();
+		}
+		SpriteList.clear();
+	}
 	glDeleteProgram(m_programID);
 	glDeleteVertexArrays(1, &m_vertexArrayID);
 	modelStack = nullptr;

@@ -43,6 +43,9 @@ public:
 	void ResetToOriginal();
 	void SwapOriginalWithTarget();
 
+	Vector3 GetTargetPosition();
+	Vector3 GetOriginalPosition();
+
 	// Variables
 
 private:

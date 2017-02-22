@@ -171,3 +171,13 @@ void InterfaceElement::WrapElementText()
 	}
 	else TextWrappingEnabled = false;
 }
+
+Vector3 InterfaceElement::GetTargetPosition()
+{
+	return TargetPosition;
+}
+
+Vector3 InterfaceElement::GetOriginalPosition()
+{
+	return OriginalPosition;
+}
