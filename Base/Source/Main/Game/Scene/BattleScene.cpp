@@ -5,6 +5,7 @@
 #include "../../Engine/System/MusicSystem.h"
 #include "../Mains/Application.h"
 #include "../SceneManagement/ScenePartitionGraph.h"
+#include "../Systems/GameLogicSystem.h"
 
 std::string BattleScene::id_ = "BattleScene";
 
@@ -39,7 +40,7 @@ void BattleScene::QuickInit()
 
 	CameraAerial* CA = new CameraAerial();
 	camera = CA;
-	CA->AltInit(/*Player Character Position*/Vector3(0, 0, 0), Vector3(0, 100, 100), Vector3(0, 1, 0));
+	CA->AltInit(/*Player Character Position*/Vector3(0, 0, 0), Vector3(0, 50, 50), Vector3(0, 1, 0));
 	CenterPosition.Set(SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth * 0.5f, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.5f, 0);
 
 	// Initiallise Model Specific Meshes Here
@@ -126,11 +127,7 @@ void BattleScene::Update(const float& dt)
 
 	ScenePartition->Update(dt);
 
-	if (Application::IsKeyPressed(VK_MENU))
-	{
-		CA->CameraMoveTargetPosition.y = -50.f;
-		SceneSystem::Instance().SwitchScene("1_Scene");
-	}
+	GameLogicSystem::Instance().Update(dt);
 
 	framerates = 1 / dt;
 }
@@ -290,6 +287,8 @@ void BattleScene::RenderShadowCasters()
 	RenderSystem *Renderer = dynamic_cast<RenderSystem*>(&SceneSystem::Instance().GetRenderSystem());
 
 	ScenePartition->Render();
+
+	GameLogicSystem::Instance().Render();
 
 	for (std::vector<Particle*>::iterator it = BManager.BillboardContainer.begin(); it != BManager.BillboardContainer.end(); ++it)
 	{

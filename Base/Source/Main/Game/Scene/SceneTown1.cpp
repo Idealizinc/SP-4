@@ -321,8 +321,8 @@ void SceneTown1::RenderPassMain()
 	RenderShadowCasters();
 	modelStack->PopMatrix();
 
-	for (auto it : ObjectManager::Instance().GetParticleList())
-		it->Render();
+	//for (auto it : ObjectManager::Instance().GetParticleList())
+	//	it->Render();
 	
 	Renderer->SetHUD(true);
 	GSI->Render();

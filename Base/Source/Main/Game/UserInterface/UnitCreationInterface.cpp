@@ -32,16 +32,10 @@ void UnitCreationInterface::Init()
 	UnitSelectLayer->SetOriginalPosition(Vector3(ScreenHalfDimension.x * 3.f,0, 0));
 	UnitSelectLayer->SetTargetPosition(Vector3(ScreenHalfDimension.x * 3.f,0, 0));
 
-	UnitSelectFrame = UnitSelectLayer->CreateNewInterfaceElement("UnitSelectFrame", "Frame", Vector3(0, ScreenHalfDimension.y * 1.f, 0), Vector3(ScreenHalfDimension.x * 0.9f, ScreenHalfDimension.y * 2.1f, 1));
-	UnitSelectFrame->SetTargetPosition(Vector3(0, ScreenHalfDimension.y * 1.f, 0));
-	UnitSelectFrame->SetTextColor(0);
-
 	//NoUnitPopup = UnitSelectLayer->CreateNewInterfaceElement("MeleeSlot", "quad2", Vector3(0, ScreenHalfDimension.y * 1.35f, 0), Vector3(ScreenHalfDimension.x *0.7f, ScreenHalfDimension.y*0.3f, 1));
 	//NoUnitPopup->SetTargetPosition(Vector3(0, ScreenHalfDimension.y * 1.35f, 0));
 	//NoUnitPopup->SetText("No Unit Selected");
 	//NoUnitPopup->SetTextColor(0);
-
-
 
 	MeleeSlotElement = UnitSelectLayer->CreateNewInterfaceElement("MeleeSlot", "quad2", Vector3(0, ScreenHalfDimension.y * 1.35f, 0), Vector3(ScreenHalfDimension.x *0.3f, ScreenHalfDimension.y*0.2f, 1));
 	MeleeSlotElement->SetTargetPosition(Vector3(0, ScreenHalfDimension.y * 1.35f, 0));
@@ -67,6 +61,10 @@ void UnitCreationInterface::Init()
 	Title->SetTargetPosition(Vector3(0, ScreenHalfDimension.y * 1.7f, 0));
 	Title->SetText("DEPLOYMENT");
 	Title->SetTextColor(0);
+
+	UnitSelectFrame = UnitSelectLayer->CreateNewInterfaceElement("UnitSelectFrame", "Frame", Vector3(0, ScreenHalfDimension.y * 1.f, 0), Vector3(ScreenHalfDimension.x * 0.9f, ScreenHalfDimension.y * 2.1f, 1));
+	UnitSelectFrame->SetTargetPosition(Vector3(0, ScreenHalfDimension.y * 1.f, 0));
+	UnitSelectFrame->SetTextColor(0);
 
 
 

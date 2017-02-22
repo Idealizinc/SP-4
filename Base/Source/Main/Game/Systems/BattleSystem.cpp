@@ -15,6 +15,9 @@ void BattleSystem::Init()
 	UnitData.LoadWeaponData("CSVFiles/WeaponDataLoader.csv");
 	UnitData.LoadUnitData("CSVFiles/UnitDataLoader.csv");
 	UnitData.LoadRaceData("CSVFiles/RaceDataLoader.csv");
+
+	SpawnPosition_Enemy = Vector3(-20, 1, 0);
+	SpawnPosition_Player = Vector3(20, 1, 0);
 }
 
 void BattleSystem::Update(const float& dt)
@@ -263,6 +266,7 @@ void BattleSystem::SpawnEnemyCharacters(std::map<std::string, unsigned short> En
 					NewChar = new MeleeCharacter();
 					MeleeCharacter* MC = dynamic_cast<MeleeCharacter*>(NewChar);
 					MC->SetCharacter(UT, UnitData.RaceMap.find("Elven")->second);
+					MC->isPlayer = false;
 					NewChar->SetDimensions(Vector3(UnitSize, UnitSize, UnitSize));
 					//int RNG = Math::RandIntMinMax(0, EnemySpawnPoints.size() - 1);
 					//MC->TargetDir.x = (SpawnPosition_Player.x - SpawnPosition_Enemy.x) / 20;
