@@ -12,6 +12,7 @@
 #include <Vector3.h>
 #include <map>
 #include <vector>
+#include "../UserInterface/BattleScreenInterface.h"
 
 #include "../Objects/Characters/MeleeCharacter.h"
 
@@ -43,6 +44,8 @@ public:
 
 	std::vector<CharacterEntity*> InternalPlayerCharacterList;
 	std::vector<CharacterEntity*> InternalEnemyCharacterList;
+
+	BattleScreenInterface * BSI = new BattleScreenInterface();
 
 private:
 	void SpawnPlayerCharacter(std::map<std::string, unsigned short> PlayerCharacterList);

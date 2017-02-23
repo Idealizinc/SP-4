@@ -48,8 +48,8 @@ void BattleSystem::Init()
 	SpawnPosition_Player = PlayerTempSpawn[PRNG];
 	SpawnPosition_Enemy = EnemyTempSpawn[ERNG];
 
-	CurrentPlayerUnitCount.insert(std::pair<std::string, unsigned short>("Crusader", 20));
-	CurrentEnemyUnitCount.insert(std::pair<std::string, unsigned short>("Crusader", 20));
+	CurrentPlayerUnitCount.insert(std::pair<std::string, unsigned short>("Beastman", 20));
+	CurrentEnemyUnitCount.insert(std::pair<std::string, unsigned short>("Beastman", 20));
 
 	SpawnPlayerCharacter(CurrentPlayerUnitCount);
 	SpawnEnemyCharacter(CurrentEnemyUnitCount);
@@ -57,6 +57,8 @@ void BattleSystem::Init()
 
 void BattleSystem::Update(const float& dt)
 {
+	BSI->Update(dt);
+
 	for (auto it : InternalPlayerCharacterList)
 	{
 		it->Update(dt);
@@ -149,6 +151,7 @@ void BattleSystem::AddNewProjectile(Projectile* P)
 
 void BattleSystem::Render()
 {
+	BSI->Render();
 	for (auto it : InternalPlayerCharacterList)
 	{
 		it->Render();
@@ -199,5 +202,12 @@ void BattleSystem::Exit()
 		obj->Exit();
 		delete obj;
 		InternalEnemyCharacterList.pop_back();
+	}
+
+	if (BSI)
+	{
+		BSI->Exit();
+		delete BSI;
+		BSI = nullptr;
 	}
 }

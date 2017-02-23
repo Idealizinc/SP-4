@@ -48,7 +48,6 @@ private:
 	std::vector<GameObject*> EntityList;
 	Vector3 CenterPosition;
 
-
 	//Changes
 	void RenderObjects(BaseObject *obj);
 	void UpdateCharacterLogic(double dt);

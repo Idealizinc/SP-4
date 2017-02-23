@@ -19,10 +19,10 @@ void MeleeCharacter::SetCharacter(UnitType* Type, UnitRace* Race)
 	DetectionRadius = Type->GetRange();
 	RaceType = Race->GetRace();
 	SetSprite(Type->GetMeshName());
-	//SetMesh(Type->GetMeshName());
-	SetMesh("DualTexQuad");
+	SetMesh(Type->GetMeshName());
+	//SetMesh("DualTexQuad");
 	//anim->SetSprite(Type->GetMeshName());
-	SetRotationAxis(Vector3(0, 1, 0));
+	//SetRotationAxis(Vector3(0, 1, 0));
 
 	int RandomChoice = Math::RandIntMinMax(0, Type->PossibleWeapon.size() - 1);
 	WT = Type->PossibleWeapon[RandomChoice];
@@ -45,7 +45,7 @@ void MeleeCharacter::Init()
 		delete InternalStateManager;
 	InternalStateManager = new MeleeStateManager();
 	InternalStateManager->Init();
-	SetEntityID("Crusader");
+	SetEntityID("Beastman");
 
 	InternalStateManager->SetInternalCharacter(this);
 }
@@ -64,6 +64,8 @@ void MeleeCharacter::Update(const float& dt)
 			CurrentAnimation = AnimMap.find("Idle")->second;
 		else if (CurrentAnimationName == "Scout")
 			CurrentAnimation = AnimMap.find("Scout")->second;
+		else if (CurrentAnimationName == "Attack")
+			CurrentAnimation = AnimMap.find("Attack")->second;
 
 		//UpdateAlertTimer(dt);
 		Vector3 StoredVelocity = GetVelocity();
