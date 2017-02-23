@@ -27,7 +27,7 @@ void BattleScreenInterface::Init()
 	TurnPopup = CreateNewInterfaceLayer("StartLayer", 0, 0);
 
 	BattleWordPopup = TurnPopup->CreateNewInterfaceElement("BattleWordPopUp", "quad1", Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 2.5f, 0), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.5f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.2f, 0));
-	BattleWordPopup->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.5, 0));
+	BattleWordPopup->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.5f, 0));
 	BattleWordPopup->SetText("Battle");
 	BattleWordPopup->SetTextColor(0);
 
@@ -45,16 +45,16 @@ void BattleScreenInterface::Init()
 	TerrainInfoFrame->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.2f, 0));
 
 	TerrainHealthBoostValue = TerrainInfoLayer->CreateNewInterfaceElement("TerrainHealthBoostValue", "quad1", Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.25f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * -2.5f, 0), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.3f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.2f, 0));
-	TerrainHealthBoostValue->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.25f, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.2, 0));
+	TerrainHealthBoostValue->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.25f, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.2f, 0));
 
 	TerrainMeleeBoostValue = TerrainInfoLayer->CreateNewInterfaceElement("TerrainMeleeBoostValue", "quad1", Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.75f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * -2.5f, 0), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.3f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.2f, 0));
-	TerrainMeleeBoostValue->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.75f, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.2, 0));
+	TerrainMeleeBoostValue->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.75f, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.2f, 0));
 
 	TerrainMagicBoostValue = TerrainInfoLayer->CreateNewInterfaceElement("TerrainMagicBoostValue", "quad1", Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 1.25f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * -2.5f, 0), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.3f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.2f, 0));
-	TerrainMagicBoostValue->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 1.25f, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.2, 0));
+	TerrainMagicBoostValue->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 1.25f, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.2f, 0));
 
 	TerrainRangeBoostValue = TerrainInfoLayer->CreateNewInterfaceElement("TerrainRangeBoostValue", "quad1", Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 1.75f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * -2.5f, 0), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.3f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.2f, 0));
-	TerrainRangeBoostValue->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 1.75f, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.2, 0));
+	TerrainRangeBoostValue->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 1.75f, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.2f, 0));
 
 	TerrainInfoBackElement = TerrainInfoLayer->CreateNewInterfaceElement("TerrainInfoBackground", "Background", Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * -2.5f, 0), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 2, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.8f, 0));
 	TerrainInfoBackElement->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.2f, 0));

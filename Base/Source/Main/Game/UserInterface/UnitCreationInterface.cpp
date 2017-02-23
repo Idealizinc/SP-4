@@ -1,4 +1,5 @@
 #include "UnitCreationInterface.h"
+#include "../Systems/GameLogicSystem.h"
 
 UnitCreationInterface::UnitCreationInterface()
 {
@@ -7,7 +8,7 @@ UnitCreationInterface::UnitCreationInterface()
 
 UnitCreationInterface::~UnitCreationInterface()
 {
-
+	Exit();
 }
 
 void UnitCreationInterface::Init()
@@ -35,15 +36,26 @@ void UnitCreationInterface::Init()
 	UnitSelectLayer->SetOriginalPosition(Vector3(ScreenHalfDimension.x * 4.f,0, 0));
 	UnitSelectLayer->SetTargetPosition(Vector3(ScreenHalfDimension.x * 4.f,0, 0));
 
-	IconLayer = CreateNewInterfaceLayer("Icons", 0, 0);
-	IconLayer->SetOriginalPosition(Vector3(0, 0, 0));
-	IconLayer->SetTargetPosition(Vector3(0, 0, 0));
+	
 
 
 	CountLayer = CreateNewInterfaceLayer("Count", 0, 0);
 	CountLayer->SetOriginalPosition(Vector3(ScreenHalfDimension.x * 3.f, 0, 0));
 	CountLayer->SetTargetPosition(Vector3(ScreenHalfDimension.x * 3.f, 0, 0));
 
+	IconLayer = CreateNewInterfaceLayer("Icons", 0, 0);
+	IconLayer->SetOriginalPosition(Vector3(0, 0, 0));
+	IconLayer->SetTargetPosition(Vector3(0, 0, 0));
+
+	for (auto it : GameLogicSystem::Instance().InternalBattleSystem->UnitData.UnitMap)
+	{
+		InterfaceElement* tempElement = nullptr;
+
+		tempElement = IconLayer->CreateNewInterfaceElement("Icon" + it.second->GetName(), "weed2", Vector3(ScreenHalfDimension.x * 0.5f, ScreenHalfDimension.y * 3.f, 0), Vector3(ScreenHalfDimension.x *0.1f, ScreenHalfDimension.y*0.175f, 1));
+		tempElement->SetTargetPosition(Vector3(ScreenHalfDimension.x * 0.5f, ScreenHalfDimension.y * 3.f, 0));
+
+		IconMap.insert(std::pair<std::string, InterfaceElement*>(it.second->GetName(), tempElement));
+	}
 	
 
 	UnitSpawnMap->CreateUnitUIElement(UnitSelectLayer);
@@ -67,7 +79,7 @@ void UnitCreationInterface::Update(const float& dt)
 	}
 
 	HandleUserInput();
-
+	ShowDisplay();
 	UnitSpawnMap->CreateUnitDisplayElement(IconLayer);
 	
 	if (warningDisplayed == 1)
@@ -84,6 +96,45 @@ void UnitCreationInterface::Update(const float& dt)
 	}
 
 }
+
+void UnitCreationInterface::ShowDisplay()
+{
+	Vector3 HalfDimension = SceneSystem::Instance().cSS_InputManager->ScreenCenter;
+	std::map<std::string, unsigned short> currentUnitMap = UnitSpawnMap->returnRecordedUnitMap();
+	int IconCount = currentUnitMap.size();
+
+		Vector3 lowestPt(HalfDimension.x * 0.2f, HalfDimension.y);
+		Vector3 highestPt(HalfDimension.x, HalfDimension.y * 1.5f);
+
+		float DisplayWidth = (highestPt.x - lowestPt.x);
+		float DisplayHeight = (highestPt.y - lowestPt.y);
+
+		float IconSpaceWidth = (DisplayWidth / IconCount) / 2;
+		float IconSpaceHeight = (DisplayHeight / IconCount) / 2;
+
+		InterfaceElement* tempElement = nullptr;
+
+		int count = 1;
+		for (auto it2 : IconMap)
+		{
+			bool displayed = false;
+			for (auto it : currentUnitMap)
+			{
+				if (it2.first == it.first)
+				{
+					it2.second->SetTargetPosition(Vector3(lowestPt.x + IconSpaceWidth * count , highestPt.y));
+					++count;
+					displayed = true;
+					break;
+				}
+			}
+			if (displayed == false)
+			{
+				it2.second->SetTargetPosition(it2.second->GetOriginalPosition());
+			}
+		}
+}
+
 void UnitCreationInterface::Render()
 {
 	for (auto it : InternalLayerContainer)
@@ -172,4 +223,14 @@ void UnitCreationInterface::CheckDeployed()
 UnitSpawnSystem* UnitCreationInterface::returnUnitSpawnSys()
 {
 	return UnitSpawnMap;
+}
+
+void UnitCreationInterface::Exit()
+{
+	for (auto it : InternalLayerContainer)
+	{
+		it->Exit();
+		delete it;
+	}
+	InternalLayerContainer.clear();
 }

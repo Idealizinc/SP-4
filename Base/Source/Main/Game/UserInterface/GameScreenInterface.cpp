@@ -7,7 +7,7 @@ GameScreenInterface::GameScreenInterface()
 
 GameScreenInterface::~GameScreenInterface()
 {
-
+	Exit();
 }
 
 void GameScreenInterface::Init()

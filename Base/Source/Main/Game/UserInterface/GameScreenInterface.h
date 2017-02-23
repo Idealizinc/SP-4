@@ -19,7 +19,7 @@ class GameScreenInterface : public InterfaceSystem
 {
 public:
 	GameScreenInterface();
-	~GameScreenInterface();
+	virtual ~GameScreenInterface();
 
 	virtual void Init(void);
 	virtual void Update(const float& dt);

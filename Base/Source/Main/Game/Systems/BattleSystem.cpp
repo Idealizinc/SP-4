@@ -193,7 +193,7 @@ void BattleSystem::UpdateCharacterLogic(std::vector<CharacterEntity*>& Character
 				Vector3 Direction = (*it)->GetVelocity();
 				if ((*it)->GetVelocity().LengthSquared() > (*it)->WalkSpeed * (*it)->WalkSpeed)
 				{
-					(*it)->SetVelocity(Direction.Normalize() * (*it)->WalkSpeed);
+					(*it)->SetVelocity(Direction.Normalize() * (float)((*it)->WalkSpeed));
 				}
 
 			}

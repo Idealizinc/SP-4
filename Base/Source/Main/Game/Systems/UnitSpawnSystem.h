@@ -37,8 +37,7 @@ public:
 private:
 	std::map<std::string, unsigned short> RecordedUnitMap;
 
-	std::map<std::string, InterfaceElement*> IconMap;
-	std::map<std::string, InterfaceElement*> IconCounterMap;
+	InterfaceLayer* DisplayIcons;
 
 	int maxUnit; //unused
 	int interval = 0;

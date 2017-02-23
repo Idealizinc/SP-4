@@ -46,7 +46,7 @@ private:
 	bool PopUpDone = 0;
 	bool PoppedUp2 = 0;
 	bool PopUpDone2 = 0;
-	Vector3 CenterTarget = Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.5, 0);
+	Vector3 CenterTarget = Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.5f, 0);
 	float floatValueReader;
 
 	std::vector<InterfaceLayer*> InternalLayerContainer;
