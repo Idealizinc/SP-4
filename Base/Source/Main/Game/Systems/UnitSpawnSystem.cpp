@@ -38,11 +38,27 @@ void UnitSpawnSystem::CreateUnitUIElement(InterfaceLayer* layer)
 		InterfaceElement* tempElement = nullptr;
 		
 		// Image Icon
-		tempElement = layer->CreateNewInterfaceElement("UnitInfoBacking", "weed2", Pos - Vector3(BackingDimension.x * 0.4f, BackingDimension.y * 0.15f), Vector3(HalfDimension.x *0.1f, HalfDimension.y*0.175f, 1));
-		tempElement->SetTargetPosition(Pos - Vector3(BackingDimension.x * 0.4f, BackingDimension.y * 0.15f));
+		tempElement = layer->CreateNewInterfaceElement("UnitInfoBacking", "weed2", Pos - Vector3(BackingDimension.x * 0.15f,-( BackingDimension.y * 0.05f)), Vector3(HalfDimension.x *0.15f, HalfDimension.y*0.25f, 1));
+		tempElement->SetTargetPosition(Pos - Vector3(BackingDimension.x * 0.15f, -(BackingDimension.y * 0.05f)));
 		tempElement = layer->CreateNewInterfaceElement("UnitInfoName", "Transparent", Pos - Vector3(BackingDimension.x * 0.4f, -BackingDimension.y * 0.3f), Vector3(HalfDimension.x *0.1f, HalfDimension.y*0.075f, 1));
 		tempElement->SetTargetPosition(Pos - Vector3(BackingDimension.x * 0.4f, -BackingDimension.y * 0.3f));
 		tempElement->SetText(it.first);
+		tempElement->SetTextColor(0);
+
+		tempElement = layer->CreateNewInterfaceElement("UnitInfoType", "Transparent", Pos - Vector3(BackingDimension.x * 0.4f, -(BackingDimension.y * -0.15f)), Vector3(HalfDimension.x *0.1f, HalfDimension.y*0.075f, 1));
+		tempElement->SetTargetPosition(Pos - Vector3(BackingDimension.x * 0.4f, -(BackingDimension.y * -0.15f)));
+		if (it.second->GetType() == 0)
+		{
+			tempElement->SetText("Warrior");
+		}
+		else if (it.second->GetType() == 1)
+		{
+			tempElement->SetText("Mage");
+		}
+		else if (it.second->GetType() == 2)
+		{
+			tempElement->SetText("Ranger");
+		}
 		tempElement->SetTextColor(0);
 
 		// Stats
@@ -51,8 +67,8 @@ void UnitSpawnSystem::CreateUnitUIElement(InterfaceLayer* layer)
 		ss.str("");
 		ss << "Health: " << it.second->GetMaxHealth();
 		tempElement->SetText(ss.str());*/
-		tempElement = layer->CreateNewInterfaceElement("HealthImage", "health", Pos - Vector3(BackingDimension.x * 0.2f, BackingDimension.y * - 0.3f), Vector3(HalfDimension.x *0.05f, HalfDimension.y*0.1f, 1));
-		tempElement->SetTargetPosition(Pos - Vector3(BackingDimension.x * 0.2f, BackingDimension.y * -0.3f));
+		tempElement = layer->CreateNewInterfaceElement("HealthImage", "health", Pos - Vector3(BackingDimension.x * 0.f, BackingDimension.y * -0.3f), Vector3(HalfDimension.x *0.05f, HalfDimension.y*0.1f, 1));
+		tempElement->SetTargetPosition(Pos - Vector3(BackingDimension.x * 0.f, BackingDimension.y * -0.3f));
 
 		tempElement = layer->CreateNewInterfaceElement("HealthStats", "Transparent", Pos + Vector3(BackingDimension.x * 0.1f, BackingDimension.y * 0.3f), Vector3(HalfDimension.x *0.2f, HalfDimension.y*0.1f, 1));
 		tempElement->SetTargetPosition(Pos + Vector3(BackingDimension.x * 0.1f, BackingDimension.y * 0.3f));
@@ -61,8 +77,8 @@ void UnitSpawnSystem::CreateUnitUIElement(InterfaceLayer* layer)
 		tempElement->SetText(ss.str());
 		tempElement->SetTextColor(0);
 
-		tempElement = layer->CreateNewInterfaceElement("DamageImage", "sword", Pos - Vector3(BackingDimension.x * 0.2f), Vector3(HalfDimension.x *0.05f, HalfDimension.y*0.1f, 1));
-		tempElement->SetTargetPosition(Pos - Vector3(BackingDimension.x * 0.2f));
+		tempElement = layer->CreateNewInterfaceElement("DamageImage", "sword", Pos - Vector3(BackingDimension.x * 0.f), Vector3(HalfDimension.x *0.05f, HalfDimension.y*0.1f, 1));
+		tempElement->SetTargetPosition(Pos - Vector3(BackingDimension.x * 0.f));
 
 		int lowestWepDamage = NULL;
 		int highestWepDamage = NULL;
@@ -97,8 +113,8 @@ void UnitSpawnSystem::CreateUnitUIElement(InterfaceLayer* layer)
 		tempElement->SetText(ss.str());
 		tempElement->SetTextColor(0);
 
-		tempElement = layer->CreateNewInterfaceElement("WalkImage", "boot", Pos - Vector3(BackingDimension.x * 0.2f, BackingDimension.y * 0.3f), Vector3(HalfDimension.x *0.05f, HalfDimension.y*0.1f, 1));
-		tempElement->SetTargetPosition(Pos - Vector3(BackingDimension.x * 0.2f, BackingDimension.y * 0.3f));
+		tempElement = layer->CreateNewInterfaceElement("WalkImage", "boot", Pos - Vector3(BackingDimension.x * 0.f, BackingDimension.y * 0.3f), Vector3(HalfDimension.x *0.05f, HalfDimension.y*0.1f, 1));
+		tempElement->SetTargetPosition(Pos - Vector3(BackingDimension.x * 0.f, BackingDimension.y * 0.3f));
 
 		tempElement = layer->CreateNewInterfaceElement("WalkStats", "Transparent", Pos + Vector3(BackingDimension.x * 0.1f, BackingDimension.y * -0.3f), Vector3(HalfDimension.x *0.2f, HalfDimension.y*0.1f, 1));
 		tempElement->SetTargetPosition(Pos + Vector3(BackingDimension.x * 0.1f, BackingDimension.y * -0.3f));
@@ -132,32 +148,6 @@ void UnitSpawnSystem::CreateUnitUIElement(InterfaceLayer* layer)
 	}
 	
 	
-}
-
-void UnitSpawnSystem::CreateUnitDisplayElement(InterfaceLayer* IconLayer)
-{
-	Vector3 HalfDimension = SceneSystem::Instance().cSS_InputManager->ScreenCenter;
-	int IconCount = RecordedUnitMap.size();
-	if (IconCount > 0)
-	{
-		Vector3 lowestPt(HalfDimension.x * 0.5f, HalfDimension.y);
-		Vector3 highestPt(HalfDimension.x, HalfDimension.y * 1.5f);
-
-		float DisplayWidth = (highestPt.x - lowestPt.x);
-		float DisplayHeight = (highestPt.y - lowestPt.y);
-
-		float IconSpaceWidth = (DisplayWidth / IconCount)/2;
-		float IconSpaceHeight = (DisplayHeight / IconCount)/2;
-
-		InterfaceElement* tempElement = nullptr;
-
-		//for (auto it : RecordedUnitMap)
-		//{
-		//	Vector3 test = Vector3(lowestPt.x + IconSpaceWidth, highestPt.y);
-		//	tempElement = IconLayer->CreateNewInterfaceElement("icon", "weed", Vector3(lowestPt.x + IconSpaceWidth, highestPt.y), Vector3(HalfDimension.x *0.05f, HalfDimension.y*0.1f, 1));
-		//	tempElement->SetTargetPosition(Vector3(lowestPt.x + IconSpaceWidth, highestPt.y));
-		//}
-	}
 }
 
 

@@ -21,7 +21,6 @@ public:
 	~UnitSpawnSystem();
 
 	void CreateUnitUIElement(InterfaceLayer*);
-	void CreateUnitDisplayElement(InterfaceLayer* IconLayer);
 
 	void editUnit(std::string type, unsigned short count);
 	std::map<std::string, unsigned short> returnRecordedUnitMap();

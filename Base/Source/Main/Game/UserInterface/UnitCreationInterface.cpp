@@ -51,7 +51,7 @@ void UnitCreationInterface::Init()
 	{
 		InterfaceElement* tempElement = nullptr;
 
-		tempElement = IconLayer->CreateNewInterfaceElement("Icon" + it.second->GetName(), "weed2", Vector3(ScreenHalfDimension.x * 0.5f, ScreenHalfDimension.y * 3.f, 0), Vector3(ScreenHalfDimension.x *0.1f, ScreenHalfDimension.y*0.175f, 1));
+		tempElement = IconLayer->CreateNewInterfaceElement("Icon" + it.second->GetName(), "weed2", Vector3(ScreenHalfDimension.x * 0.5f, ScreenHalfDimension.y * 3.f, 0), Vector3(ScreenHalfDimension.x *0.15f, ScreenHalfDimension.y*0.25f, 1));
 		tempElement->SetTargetPosition(Vector3(ScreenHalfDimension.x * 0.5f, ScreenHalfDimension.y * 3.f, 0));
 
 		IconMap.insert(std::pair<std::string, InterfaceElement*>(it.second->GetName(), tempElement));
@@ -80,7 +80,7 @@ void UnitCreationInterface::Update(const float& dt)
 
 	HandleUserInput();
 	ShowDisplay();
-	UnitSpawnMap->CreateUnitDisplayElement(IconLayer);
+	//UnitSpawnMap->CreateUnitDisplayElement(IconLayer);
 	
 	if (warningDisplayed == 1)
 	{
@@ -104,7 +104,7 @@ void UnitCreationInterface::ShowDisplay()
 	int IconCount = currentUnitMap.size();
 
 		Vector3 lowestPt(HalfDimension.x * 0.2f, HalfDimension.y);
-		Vector3 highestPt(HalfDimension.x, HalfDimension.y * 1.5f);
+		Vector3 highestPt(HalfDimension.x * 1.5f, HalfDimension.y * 1.7f);
 
 		float DisplayWidth = (highestPt.x - lowestPt.x);
 		float DisplayHeight = (highestPt.y - lowestPt.y);
