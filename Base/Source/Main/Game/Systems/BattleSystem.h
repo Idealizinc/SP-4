@@ -1,57 +1,66 @@
 #ifndef BATTLE_SYSTEM_H
 #define BATTLE_SYSTEM_H
 
-#include "../Miscellaneous/DetectMemoryLeak.h"
-
 #include "../../Engine/Internal/System.h"
-#include "../../Engine/Internal/SingletonTemplate.h"
 #include "../../Engine/Objects/CharacterEntity.h"
 #include "../Objects/Miscellaneous/Projectile.h"
-#include "../Objects/Miscellaneous/Particle.h"
 #include "../Objects/UnitData/UnitDataLoader.h"
-#include <Vector3.h>
-#include <map>
+#include "../Logic/Terrain/Terrain.h"
 #include <vector>
+#include <map>
 
-#include "../Objects/Characters/MeleeCharacter.h"
+/*
+Description
+A battle system is one that exists within the game logic system and is only called to update and render when a battle occurs.
+The primary duty of such a system;
+- To act as a link between the game screen's unit pieces and the battle screens battle characters
+- To spawn units of both the player and the enemy
+- To handle the objects of battle; projectiles, fsms and characters.
+- To be generic such that no spawn point or unit is hardcoded.
+*/
 
-class BattleSystem : public System, public SingletonTemplate<BattleSystem>
+class BattleSystem : public System
 {
 public:
 	BattleSystem();
-	~BattleSystem();
+	virtual ~BattleSystem();
 
 	virtual void Init();
 	virtual void Update(const float& dt);
 	virtual void Render();
 	virtual void Exit();
 
-	Vector3 SpawnPosition_Player;
-	Vector3 SpawnPosition_Enemy;
-
-	const float UnitSize = 10.f;
-
-	std::map<std::string, unsigned short>CurrentPlayerUnitCount;
-	std::map<std::string, unsigned short>CurrentEnemyUnitCount;
-	void ClearCharacterCount();
-
+	std::vector<CharacterEntity*>& GetPlayerCharacterList();
+	std::vector<CharacterEntity*>& GetEnemyCharacterList();
+	std::vector<Projectile*>& GetProjectileList();
+	void SetUpUnits(Terrain* BattlefieldTile);
 	void AddNewProjectile(Projectile* P);
 
-	std::vector<CharacterEntity*> GetPlayerCharacterList();
-	std::vector<CharacterEntity*> GetEnemyCharacterList();
-	std::vector<Projectile*>& GetProjectileList();
+private:
+	// Internals
+	// Miscellaneous
+	Vector3 SpawnPosition_Player;
+	Vector3 SpawnPosition_Enemy;
+	const float UnitSize = 10.f;
 
+	// Data Store
+	UnitDataLoader UnitData;
+
+	// Containers
+	std::vector<Projectile*> InternalProjectileList;
 	std::vector<CharacterEntity*> InternalPlayerCharacterList;
 	std::vector<CharacterEntity*> InternalEnemyCharacterList;
 
-private:
-	void SpawnPlayerCharacter(std::map<std::string, unsigned short> PlayerCharacterList);
-	void SpawnEnemyCharacter(std::map<std::string, unsigned short> EnemyCharacterList);
+	// Storage for what units are currently within th battalions
+	std::map<std::string, unsigned short> CurrentPlayerUnitCount;
+	std::map<std::string, unsigned short> CurrentEnemyUnitCount;
 
-	UnitDataLoader Loader;
-	//std::map <std::string, int> CharacterCountLimit;
-	//std::map <std::string, float> SpawnTime;
-	std::vector<Projectile*> InternalProjectileList;
+	// Functions
+	void ClearCharacterCounters();
+	void UpdateCharacterLogic(std::vector<CharacterEntity*>& CharacterList , const float& dt);
+	void UpdateProjectileLogic(const float& dt);
+	void SpawnPlayerCharacters(std::map<std::string, unsigned short> PlayerCharacterList);
+	void SpawnEnemyCharacters(std::map<std::string, unsigned short> EnemyCharacterList);
 };
 
 

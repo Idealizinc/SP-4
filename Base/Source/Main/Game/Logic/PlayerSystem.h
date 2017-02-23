@@ -42,6 +42,7 @@ private:
 	std::vector<UnitPiece*> InternalUnitContainer;
 	TerrainNode* MouseDownSelection;
 	TerrainNode* MouseUpSelection;
+	TerrainNode* TargetedNode;
 
 	// Functions
 	UnitPiece* GenerateNewUnit();

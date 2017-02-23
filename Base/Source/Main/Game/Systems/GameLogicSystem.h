@@ -18,6 +18,7 @@ Purpose       : Defines the GameLogicSystem that handles the both the player and
 #include "../../Engine/System/SceneSystem.h"
 #include "../Miscellaneous/CameraAerial.h"
 #include "../Logic/Terrain/TerrainDataLoader.h"
+#include "../Systems/BattleSystem.h"
 
 #include"../UserInterface/UnitCreationInterface.h"
 
@@ -66,7 +67,8 @@ public:
 //private:
 	PlayerSystem* InternalPlayerSystem;
 	EnemySystem* InternalEnemySystem;
-	float PieceAnimationSpeed = 2.f;
+	BattleSystem* InternalBattleSystem;
+	float PieceAnimationSpeed = 3.f;
 	float PieceMinimumDistance = 0.01f;
 	UnitCreationInterface* UnitInterface;
 protected:

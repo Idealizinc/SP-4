@@ -29,7 +29,7 @@
 #include <stdlib.h>
 
 GLFWwindow* m_window;
-const unsigned char FPS = 60; // FPS of this game
+const unsigned char FPS = 120; // FPS of this game
 const unsigned int frameTime = 1000 / FPS; // time for each frame
 
 int Application::cA_WindowHeight = 0, Application::cA_WindowWidth = 0;
@@ -159,9 +159,9 @@ void Application::Init()
 #endif
 
 	// Initiallize used scenes
-	//Scene_MainMenu *MM = new Scene_MainMenu();
+	//Scene_MainMenu *MM = new Scene_MainMenu();	
 	SceneTown1 *Town1 = new SceneTown1();
-	//BattleScene *Battle = new BattleScene();
+	BattleScene *Battle = new BattleScene();
 
     MusicSystem::Instance().Init();
 }

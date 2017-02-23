@@ -1,5 +1,6 @@
 #include "GridNode.h"
 #include "../ScenePartitionGraph.h"
+#include "../../../Engine/System/SceneSystem.h"
 
 GridNode::GridNode()
 {
@@ -59,13 +60,13 @@ void GridNode::Update(const float& dt)
 	{
 		if (!(*it)->GetEntity()->Static)
 		{
-			GridNode* GN = ScenePartitionGraph::Instance().FindGridForPosition((*it)->GetEntity()->GetPosition());
+			GridNode* GN = SceneSystem::Instance().GetCurrentScene().ScenePartition->FindGridForPosition((*it)->GetEntity()->GetPosition());
 			if (GN != nullptr)
 			{
 				Vector3 SupposedGridIndex = GN->GetGridIndex();
 				if (GridIndex != SupposedGridIndex)
 				{
-					ScenePartitionGraph::Instance().ReallocationList.push_back(*it);
+					SceneSystem::Instance().GetCurrentScene().ScenePartition->ReallocationList.push_back(*it);
 				}
 				else {
 					(*it)->Update(dt);
@@ -78,7 +79,7 @@ void GridNode::Update(const float& dt)
 void GridNode::Render()
 {
 	if (Object != nullptr)
-		if (ScenePartitionGraph::Instance().ShowPartitions && Object->Visible)
+	if (SceneSystem::Instance().GetCurrentScene().ScenePartition->ShowPartitions && Object->Visible)
 			Object->Render();
 	// Render Child Nodes
 	for (std::vector<Node*>::iterator it = ChildNodeList.begin(), end = ChildNodeList.end(); it != end; ++it)

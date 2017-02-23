@@ -33,8 +33,6 @@ void UnitSpawnSystem::resetUnitMap()
 {
 	UnitMap.clear();
 	UnitMap.insert(std::pair<int, int>(U_MELEE, 0));
-
 	UnitMap.insert(std::pair<int, int>(U_MAGIC, 0));
-
 	UnitMap.insert(std::pair<int, int>(U_RANGE, 0));
 }

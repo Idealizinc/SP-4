@@ -8,6 +8,7 @@
 #include "GameObject.h"
 #include "../../Systems/BillboardManager.h"
 #include "../../SceneManagement/Objects/TerrainNode.h"
+#include "../../SceneManagement/ScenePartitionGraph.h"
 
 class GameMap : public Entity
 {
@@ -15,7 +16,7 @@ public:
     GameMap(void);
     virtual ~GameMap(void);
 
-    virtual bool LoadMap(const std::string &mapName, std::vector<unsigned char> &theHeightMap, Vector3 &terrainSize, std::vector<GameObject*> &theRenderingStuff, BillboardManager &theBBManager);
+    virtual bool LoadMap(const std::string &mapName, const bool& IsGameScreenMap, std::vector<unsigned char> &theHeightMap, Vector3 &terrainSize, std::vector<GameObject*> &theRenderingStuff, BillboardManager &theBBManager);
     int GetTileSize(void);
 
     int getNumOfTiles_MapHeight(void);		// Get the number of tiles for height of the map
@@ -29,13 +30,15 @@ public:
 	virtual void Render(){};
 	virtual void Exit(){};
 
+	ScenePartitionGraph* ScenePartition;
+
 protected:
     int theTileSize;
 
     int theNumOfTiles_MapHeight;	// Number of tiles in the map's height
     int theNumOfTiles_MapWidth;		// Number of tiles in the map's width
 
-    virtual bool LoadFile(const std::string &mapName, std::vector<unsigned char> &theHeightMap, Vector3 &terrainSize, std::vector<GameObject*> &theRenderingStuff, BillboardManager &theBBManager);
+	virtual bool LoadFile(const std::string &mapName, const bool& IsGameScreenMap, std::vector<unsigned char> &theHeightMap, Vector3 &terrainSize, std::vector<GameObject*> &theRenderingStuff, BillboardManager &theBBManager);
     Vector3 tileSizeXYZ;
 
 private:

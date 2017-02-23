@@ -1,4 +1,5 @@
 #include "MeleeCharacter.h"
+#include "../../Miscellaneous/MeshBuilder.h"
 
 MeleeCharacter::MeleeCharacter()
 {
@@ -16,11 +17,11 @@ void MeleeCharacter::SetCharacter(UnitType* Type, UnitRace* Race)
 	HealthPoints = Type->GetHealth() * Race->GetHealthModifier();
 	MaxHealthPoints = Type->GetMaxHealth() * Race->GetHealthModifier();
 	WalkSpeed = Type->GetWalkspeed();
-	DetectionRadius = Type->GetRange();
+	DetectionRadius = Type->GetRange() * 2;
 	RaceType = Race->GetRace();
 	SetSprite(Type->GetMeshName());
 	//SetMesh(Type->GetMeshName());
-	SetMesh("DualTexQuad");
+	SetMesh(MeshBuilder::GenerateQuad("cosyoloidontevenknow", 0, 1));
 	//anim->SetSprite(Type->GetMeshName());
 	SetRotationAxis(Vector3(0, 1, 0));
 
@@ -28,7 +29,7 @@ void MeleeCharacter::SetCharacter(UnitType* Type, UnitRace* Race)
 	WT = Type->PossibleWeapon[RandomChoice];
 
 	MeleeStateManager* MS = dynamic_cast<MeleeStateManager*>(InternalStateManager);
-	MS->MWeapon = new MeleeWeapon(WT->GetDamage() * Race->GetMeleeDamageModifier(), WT->GetRate(), 2);
+	MS->MWeapon = new MeleeWeapon(WT->GetDamage() * Race->GetMeleeDamageModifier(), WT->GetRate(),0, 2);
 
 }
 
@@ -40,6 +41,7 @@ void MeleeCharacter::Init()
 	WaitTime = 0;
 	FieldOfView = 150;
 	TargetFriend = nullptr;
+	anim_Time = Math::RandFloatMinMax(1, 5);
 
 	if (InternalStateManager != nullptr)
 		delete InternalStateManager;
