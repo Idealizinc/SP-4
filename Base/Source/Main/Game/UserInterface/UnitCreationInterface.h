@@ -18,8 +18,8 @@ Purpose       : InterfaceSystem class that handles UI for unit spawning menu
 class UnitCreationInterface: public InterfaceSystem
 {
 public:
-	bool UIDisplayed;
 	bool deploy;
+	bool UIDisplayed;
 
 	UnitCreationInterface();
 	~UnitCreationInterface();
@@ -36,34 +36,24 @@ public:
 
 	UnitSpawnSystem* returnUnitSpawnSys();
 
+	void CheckDeployed();
+
 private:
 	void HandleUserInput();
 	bool firstTime;
 	InterfaceLayer* CreateNewInterfaceLayer(const std::string& LayerID, const Vector3& OriginalPosition, const Vector3& TargetPosition);
 	std::vector<InterfaceLayer*> InternalLayerContainer;
 
-	InterfaceLayer* UnitInfoLayer;
-	InterfaceElement* UnitInfoBackElement;
-	InterfaceElement* UnitInfoFrame;
-	InterfaceElement* UnitInfoDisplayElement;
-	InterfaceElement* UnitCountElementW;
-	InterfaceElement* UnitCountElementM;
-	InterfaceElement* UnitCountElementR;
-
-
 	InterfaceLayer* UnitSelectLayer;
-	InterfaceElement* UnitSelectBackElement;
-	InterfaceElement* UnitSelectFrame;
-	InterfaceElement* Title;
-	InterfaceElement* MeleeSlotElement;
-	InterfaceElement* MagicSlotElement;
-	InterfaceElement* RangeSlotElement;
+
+	//LInterfaceLayer* ScrollingLayer;
+	InterfaceLayer* IconLayer;
+	InterfaceLayer* CountLayer;
+
 	InterfaceElement* DeployButton;
 
 	InterfaceLayer* WarningLayer;
 	InterfaceElement* NoUnitPopup;
-
-	InterfaceElement* DraggedElement;// for element being dragged
 
 	UnitSpawnSystem* UnitSpawnMap;
 
@@ -71,6 +61,7 @@ private:
 
 	bool warningDisplayed;
 	float warningTime;
+
 
 };
 

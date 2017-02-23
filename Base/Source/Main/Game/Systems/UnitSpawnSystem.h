@@ -10,26 +10,39 @@ Purpose       : Class that stores units to be spawned
 #ifndef UnitSpawnSystem_H
 #define UnitSpawnSystem_H
 #include <map>
+#include "../Systems/BattleSystem.h"
+#include "../Objects/UnitData/UnitType.h"
+#include "../../Engine/Interface/InterfaceLayer.h"
 
 class UnitSpawnSystem
 {
-private:
-	std::map<int, int> UnitMap;
-	int maxUnit; //unused
 public:
 	UnitSpawnSystem();
 	~UnitSpawnSystem();
-	enum Units
-	{
-		U_MELEE = 0,
-		U_MAGIC,
-		U_RANGE,
-		U_TOTAL
-	};
-	void editUnit(int type, int count);
-	std::map<int,int> returnUnitMap();
+
+	void CreateUnitUIElement(InterfaceLayer*);
+	void CreateUnitDisplayElement(InterfaceLayer* IconLayer);
+
+	void editUnit(std::string type, unsigned short count);
+	std::map<std::string, unsigned short> returnRecordedUnitMap();
+
 	int getCurrentUnitCount();
 	void resetUnitMap();
+
+	std::map<std::string, InterfaceElement*> UnitAdditionIconMap;
+	std::map<std::string, InterfaceElement*> UnitSubtractionIconMap;
+
+	void HandleUserInput(const Vector3& MousePos, const Vector3& LayerPos);
+
+private:
+	std::map<std::string, unsigned short> RecordedUnitMap;
+
+	std::map<std::string, InterfaceElement*> IconMap;
+	std::map<std::string, InterfaceElement*> IconCounterMap;
+
+	int maxUnit; //unused
+	int interval = 0;
+
 };
 
 #endif

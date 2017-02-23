@@ -135,9 +135,9 @@ void PlayerSystem::HandleUserInput()
 
 			if (GameLogicSystem::Instance().UnitInterface->deploy == true && GameLogicSystem::Instance().UnitInterface->returnUnitSpawnSys()->getCurrentUnitCount() != 0)
 			{
-				//GameLogicSystem::Instance().UnitInterface->returnUnitSpawnSys()->returnUnitMap(); this returns the map of units
+				GameLogicSystem::Instance().UnitInterface->returnUnitSpawnSys()->returnRecordedUnitMap(); //this returns the map of units
 				SelectedUnit = GenerateNewUnit();
-				GameLogicSystem::Instance().UnitInterface->deploy = false;
+				GameLogicSystem::Instance().UnitInterface->CheckDeployed();
 			}
 			if (MouseDownSelection == SceneSystem::Instance().GetCurrentScene().ScenePartition->PlayerBase)
 			{

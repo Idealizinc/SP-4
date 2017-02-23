@@ -158,7 +158,7 @@ void RenderSystem::Init()
 	assert(LoadCSVSpriteMeshes("CSVFiles/SpriteDriven.csv"));
 #else
 	LoadCSVMeshes("CSVFiles/MeshDriven.csv");
-	LoadCSVSpriteMeshes("CSVFiles/SpriteDriven.csv"));
+	LoadCSVSpriteMeshes("CSVFiles/SpriteDriven.csv");
 #endif
 	ExportedFont = MeshList.find("text")->second;
 }

@@ -324,12 +324,18 @@ void SceneTown1::RenderPassMain()
 	//for (auto it : ObjectManager::Instance().GetParticleList())
 	//	it->Render();
 	
-	Renderer->SetHUD(true);
 	GSI->Render();
+
+	Renderer->SetHUD(true);
 	std::stringstream ss;
 	ss.str("");
 	ss << "FPS: " << framerates;
 	Renderer->RenderTextOnScreen(ss.str(), Color(), SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth* 0.02f, SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth* 0.01f, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.1f);
+	ss.str(""); 
+	for (auto it : GameLogicSystem::Instance().UnitInterface->returnUnitSpawnSys()->returnRecordedUnitMap())
+		ss << it.first << ": " << it.second << " | ";
+	Renderer->RenderTextOnScreen(ss.str(), Color(), SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth* 0.015f, SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth* 0.01f, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.05f);
+
 	Renderer->SetHUD(false);
 }
 
