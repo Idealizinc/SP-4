@@ -94,7 +94,7 @@ void InputManager::UpdateMouse()
 	if (!cIM_inMouseMode)
 	{
 		//Lock the cursor's position to the center of the screen.
-		SetCursorPos(ScreenCenter.x, ScreenCenter.y);
+		SetCursorPos((int)ScreenCenter.x, (int)ScreenCenter.y);
 	
 		//Calculate the difference between the cursor coordinates between frames
 		cIM_CameraYaw = static_cast<float>(mousePosition.x - ScreenCenter.x);

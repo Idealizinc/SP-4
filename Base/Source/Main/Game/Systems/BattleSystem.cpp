@@ -20,7 +20,7 @@ void BattleSystem::Init()
 	SpawnPosition_Enemy = Vector3(-20, 1, 0);
 	SpawnPosition_Player = Vector3(20, 1, 0);
 	CurrentBattleTile = nullptr;
-
+	BSI = new BattleScreenInterface();
 	BSI->Init();
 }
 
@@ -195,6 +195,7 @@ void BattleSystem::UpdateCharacterLogic(std::vector<CharacterEntity*>& Character
 				{
 					(*it)->SetVelocity(Direction.Normalize() * (*it)->WalkSpeed);
 				}
+
 			}
 			(*it)->Update(dt);
 			++it;

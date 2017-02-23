@@ -14,8 +14,8 @@ MeleeCharacter::~MeleeCharacter()
 void MeleeCharacter::SetCharacter(UnitType* Type, UnitRace* Race)
 {
 	
-	HealthPoints = Type->GetHealth() * Race->GetHealthModifier();
-	MaxHealthPoints = Type->GetMaxHealth() * Race->GetHealthModifier();
+	HealthPoints = (int)(Type->GetHealth() * Race->GetHealthModifier());
+	MaxHealthPoints = (int)(Type->GetMaxHealth() * Race->GetHealthModifier());
 	WalkSpeed = Type->GetWalkspeed();
 	DetectionRadius = Type->GetRange() * 2;
 	RaceType = Race->GetRace();
@@ -29,7 +29,7 @@ void MeleeCharacter::SetCharacter(UnitType* Type, UnitRace* Race)
 	WT = Type->PossibleWeapon[RandomChoice];
 
 	MeleeStateManager* MS = dynamic_cast<MeleeStateManager*>(InternalStateManager);
-	MS->MWeapon = new MeleeWeapon(WT->GetDamage() * Race->GetMeleeDamageModifier(), WT->GetRate(),0, 2);
+	MS->MWeapon = new MeleeWeapon((int)(WT->GetDamage() * Race->GetMeleeDamageModifier()), WT->GetRate(),0, 2);
 
 }
 
@@ -81,7 +81,7 @@ void MeleeCharacter::Update(const float& dt)
 			Timer = 0;
 
 		CurrentFrameMultiplier = Timer / anim_Time;
-		CurrentFrame = CurrentAnimation.size() * CurrentFrameMultiplier;
+		CurrentFrame = (int)(CurrentAnimation.size() * CurrentFrameMultiplier);
 
 		// This will set the texture to be rendered with the mesh to the one of the correct animation frame
 		StoredMesh->textureArray[0] = CurrentAnimation[CurrentFrame];

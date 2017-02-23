@@ -40,17 +40,19 @@ void InterfaceElement::Render(const Vector3& LayerPosition)
 {
 	if (Active && Visible)
 	{
+		float Divisor = 0.4f;
 		glDisable(GL_CULL_FACE);
 		RenderSystem *Renderer = dynamic_cast<RenderSystem*>(&SceneSystem::Instance().GetRenderSystem());
 		Renderer->SetHUD(true);
 		if (!TextWrappingEnabled)
-			Renderer->RenderTextOnScreen(ElementText, Color(TextColor.x, TextColor.y, TextColor.z), Dimensions.y * 0.3f, Position.x + LayerPosition.x - (ElementText.size() * 0.5f * 0.75f * Dimensions.y * 0.3f), Position.y + LayerPosition.y - (0.5f * Dimensions.y * 0.3f));
+			Renderer->RenderTextOnScreen(ElementText, Color(TextColor.x, TextColor.y, TextColor.z), Dimensions.y * Divisor, Position.x + LayerPosition.x - (ElementText.size() * 0.5f * 0.75f * Dimensions.y * Divisor), Position.y + LayerPosition.y - (0.5f * Dimensions.y * Divisor));
 		else if (TextWrappingEnabled)
 		for (unsigned int i = 0; i < WrappedTextContainer.size(); ++i)
 		{
 			Renderer->RenderTextOnScreen(WrappedTextContainer[i], Color(TextColor.x, TextColor.y, TextColor.z), Dimensions.y * 0.275f, Position.x - Dimensions.x * 0.5f + (Dimensions.y * 0.25f) + LayerPosition.x, Position.y + LayerPosition.y + (0.5f * Dimensions.y * 0.25f) - (i * Dimensions.y * 0.25f));
 		}
-		Renderer->RenderMeshIn2D(*StoredMesh, false, Dimensions.x, Dimensions.y, Position.x + LayerPosition.x, Position.y + LayerPosition.y);
+		if (MeshName != "Transparent")
+			Renderer->RenderMeshIn2D(*StoredMesh, false, Dimensions.x, Dimensions.y, Position.x + LayerPosition.x, Position.y + LayerPosition.y);
 		Renderer->SetHUD(false);
 		glEnable(GL_CULL_FACE);
 	}

@@ -39,7 +39,10 @@ public:
 	void AddNewProjectile(Projectile* P);
 	Terrain* CurrentBattleTile;
 
-	BattleScreenInterface * BSI = new BattleScreenInterface();
+	BattleScreenInterface * BSI;
+
+	// Data Store
+	UnitDataLoader UnitData;
 
 private:
 	// Internals
@@ -47,9 +50,6 @@ private:
 	Vector3 SpawnPosition_Player;
 	Vector3 SpawnPosition_Enemy;
 	const float UnitSize = 10.f;
-
-	// Data Store
-	UnitDataLoader UnitData;
 	
 	// Containers
 	std::vector<Projectile*> InternalProjectileList;
@@ -59,8 +59,6 @@ private:
 	// Storage for what units are currently within th battalions
 	std::map<std::string, unsigned short> CurrentPlayerUnitCount;
 	std::map<std::string, unsigned short> CurrentEnemyUnitCount;
-
-
 
 	// Functions
 	void ClearCharacterCounters();

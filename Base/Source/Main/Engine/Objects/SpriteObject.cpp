@@ -19,7 +19,7 @@ void SpriteObject::Update(double dt)
 		RotationAngle = Math::RadianToDegree(atan2(-Velocity.x, Velocity.y));
 
 		CurrentFrameMultiplier = Timer / anim_Time;
-		CurrentFrame = AnimMap.size() * CurrentFrameMultiplier;
+		CurrentFrame = (int)(AnimMap.size() * CurrentFrameMultiplier);
 
 	}
 }

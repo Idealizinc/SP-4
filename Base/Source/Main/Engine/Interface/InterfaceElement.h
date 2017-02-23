@@ -29,7 +29,9 @@ public:
 	virtual void Exit();
 
 	// Getters
-	
+	Vector3 GetTargetPosition();
+	Vector3 GetOriginalPosition();
+
 	// Setters
 	void SetTextWrapping(const bool& Enabled);
 	void SetTextColor(const Vector3& Color);
@@ -42,9 +44,6 @@ public:
 	bool DetectUserInput(const Vector3& MousePosition, const Vector3& ParentLayerPosition);
 	void ResetToOriginal();
 	void SwapOriginalWithTarget();
-
-	Vector3 GetTargetPosition();
-	Vector3 GetOriginalPosition();
 
 	// Variables
 
