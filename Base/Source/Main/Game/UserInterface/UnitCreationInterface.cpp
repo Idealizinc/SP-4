@@ -81,7 +81,16 @@ void UnitCreationInterface::Update(const float& dt)
 	HandleUserInput();
 	ShowDisplay();
 	//UnitSpawnMap->CreateUnitDisplayElement(IconLayer);
-	
+	if (deploy == true && UnitSpawnMap->getCurrentUnitCount() == 0)
+	{
+		if (warningDisplayed == 0)
+		{
+			NoUnitPopup->SwapOriginalWithTarget();
+			warningDisplayed = 1;
+			warningTime = 2;
+			deploy = false;
+		}
+	}
 	if (warningDisplayed == 1)
 	{
 		if (warningTime > 0)
@@ -155,6 +164,7 @@ void UnitCreationInterface::HandleUserInput()
 
 		if (DeployButton->DetectUserInput(MousePos, UnitSelectLayer->GetPosition()))
 		{
+			
 			deploy = 1;
 		}
 	}
@@ -188,6 +198,7 @@ void UnitCreationInterface::OpenInterface()
 		UnitSelectLayer->SwapOriginalWithTarget();
 	
 	}
+	UnitSpawnMap->resetUnitMap();
 	deploy = false;
 	if (warningDisplayed == true)
 	{
