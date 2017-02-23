@@ -17,6 +17,7 @@ void EnemySystem::Init(void)
 		InternalPathContainer.push_back(RG.DefinedPath);
 	}
 	CurrentTurnState = S_TURNSTART;
+	TargetedNode = nullptr;
 }
 
 void EnemySystem::Exit(void)
@@ -31,6 +32,16 @@ void EnemySystem::Exit(void)
 
 void EnemySystem::Update(const float& dt)
 {
+	for (std::vector<UnitPiece*>::iterator it = InternalEnemyContainer.begin(); it != InternalEnemyContainer.end();)
+	{
+		if (!(*it)->Active)
+		{
+			delete *it;
+			it = InternalEnemyContainer.erase(it);
+		}
+		else ++it;
+	}
+
 	switch (CurrentTurnState)
 	{
 	case (S_TURNSTART) : // It's my turn, Randomize Selection
@@ -43,8 +54,12 @@ void EnemySystem::Update(const float& dt)
 		CurrentTurnState = S_TURNEND;
 		break;
 	case (S_MOVE) : // I Move a Unit
-		SelectedUnit = AdvanceSingleUnit();
-		CurrentTurnState = S_TURNEND;
+		if (InternalEnemyContainer.size() > 0)
+		{
+			SelectedUnit = AdvanceSingleUnit();
+			CurrentTurnState = S_TURNEND;
+		}
+		else CurrentTurnState = S_SPAWN;
 		break;
 	case (S_TURNEND) : // I end my turn
 		Vector3 Direction = SelectedUnit->TargetPosition - SelectedUnit->GetPosition();
@@ -60,6 +75,16 @@ void EnemySystem::Update(const float& dt)
 			// Reseting for next turn
 			CurrentTurnState = S_TURNSTART;
 			SelectedUnit = nullptr;
+			if (TargetedNode != nullptr)
+			{
+				if (TargetedNode->TerrainTile->PlayerUnitList.size() > 0 && TargetedNode->TerrainTile->EnemyUnitList.size() > 0)
+				{
+					GameLogicSystem::Instance().SetCurrentState(GameLogicSystem::Instance().BattlePhase);
+					GameLogicSystem::Instance().InternalBattleSystem->SetUpUnits(TargetedNode->TerrainTile);
+					SceneSystem::Instance().SwitchScene("BattleScene");
+				}
+				TargetedNode = nullptr;
+			}
 		}
 		break;
 	}
@@ -67,7 +92,9 @@ void EnemySystem::Update(const float& dt)
 
 void EnemySystem::Render(void)
 {
+	if (InternalEnemyContainer.size())
 	for (auto it : InternalEnemyContainer)
+	if (it->Active)
 		it->Render();
 }
 
@@ -103,6 +130,7 @@ EnemyPiece* EnemySystem::AdvanceSingleUnit()
 	EP->InternalDefinedPath.erase(EP->InternalDefinedPath.begin());
 	// Add to the tile he is on
 	EP->InternalDefinedPath.front()->TerrainTile->EnemyUnitList.push_back(EP);
+	TargetedNode = EP->InternalDefinedPath.front();
 	EP->TargetPosition = EP->InternalDefinedPath.front()->GetEntity()->GetPosition() + Vector3(0, EP->InternalDefinedPath.front()->GetEntity()->GetDimensions().y + EP->GetDimensions().y);
 	return EP;
 }
@@ -110,6 +138,6 @@ EnemyPiece* EnemySystem::AdvanceSingleUnit()
 EnemyPiece* EnemySystem::RandomizePieceSelection()
 {
 	// Might want to add some selection conditions here
-	EnemyPiece* EP = InternalEnemyContainer[Math::RandIntMinMax(0, InternalEnemyContainer.size() - 1)];
+	EnemyPiece* EP = (EnemyPiece*)InternalEnemyContainer[Math::RandIntMinMax(0, InternalEnemyContainer.size() - 1)];
 	return EP;
 }

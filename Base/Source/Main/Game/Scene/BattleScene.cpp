@@ -5,7 +5,7 @@
 #include "../../Engine/System/MusicSystem.h"
 #include "../Mains/Application.h"
 #include "../SceneManagement/ScenePartitionGraph.h"
-#include "../Systems/ObjectManager.h" 
+#include "../Systems/GameLogicSystem.h"
 
 std::string BattleScene::id_ = "BattleScene";
 
@@ -31,7 +31,8 @@ void BattleScene::QuickInit()
 
 	// Set Terrain Size
 	TerrainScale.Set(400.f, 25.f, 400.f);
-	ScenePartitionGraph::Instance().AssignGridParameters(Vector3(), Vector3(TerrainScale.x, TerrainScale.z), 4);
+	ScenePartition = new ScenePartitionGraph();
+	ScenePartition->AssignGridParameters(Vector3(), Vector3(TerrainScale.x, TerrainScale.z), 4);
 
 	Mtx44 perspective;
 	perspective.SetToPerspective(45.0f, SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth / SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight, 0.1f, 10000.0f);
@@ -53,18 +54,20 @@ void BattleScene::QuickInit()
 
 	InteractiveMap = new GameMap();
 	GameMap *theMap = dynamic_cast<GameMap*>(InteractiveMap);
-	theMap->SetEntityID("scene town 1 logic map");
-	theMap->LoadMap("CSVFiles//Town1LayoutTest.csv", m_heightMap, TerrainScale, EntityList, BManager);
-
-	BS.Init();
+	theMap->ScenePartition = ScenePartition;
+	theMap->SetEntityID("Battlefield");
+	theMap->LoadMap("CSVFiles//BattlefieldLayout1.csv", false, m_heightMap, TerrainScale, EntityList, BManager);
 
 	SceneSystem::Instance().cSS_InputManager->cIM_inMouseMode = true;
-
 }
 
 void BattleScene::QuickExit()
 {
-	ScenePartitionGraph::Instance().Exit();
+	if (ScenePartition)
+	{
+		ScenePartition->Exit();
+		delete ScenePartition;
+	}
 	if (InteractiveMap)
 		delete InteractiveMap;
 	for (auto it : EntityList)
@@ -76,8 +79,6 @@ void BattleScene::QuickExit()
 		delete Player;
 	if (camera)
 		delete camera;
-
-	BS.Exit();
 }
 void BattleScene::Init()
 {
@@ -112,144 +113,133 @@ void BattleScene::Update(const float& dt)
 
 	if (Application::IsKeyPressed(VK_OEM_MINUS))
 	{
-		ScenePartitionGraph::Instance().ShowPartitions = false;
+		ScenePartition->ShowPartitions = false;
 	}
 
 	if (Application::IsKeyPressed(VK_OEM_PLUS))
 	{
-		ScenePartitionGraph::Instance().ShowPartitions = true;
+		ScenePartition->ShowPartitions = true;
 	}
-
-	//CA->CameraMoveTargetPosition = NewChar->GetPosition();
-
-	for (auto it : ObjectManager::Instance().GetParticleList())
-		it->Update(dt);
 
 	CA->Update(dt);
 	//MusicSystem::Instance().playBackgroundMusic("battle");
 	BManager.UpdateContainer(dt, CA->position);
 
-	//Changes
-	BS.Update(dt);
-	UpdateCharacterLogic(dt);
-	UpdateInternals(dt);
-	//MessageSystem::Instance().Update((float)dt);
-	//
-	
-	ScenePartitionGraph::Instance().Update(dt);
+	ScenePartition->Update(dt);
+
+	GameLogicSystem::Instance().Update(dt);
 
 	framerates = 1 / dt;
 }
 
-//Star of Changes
+//Start of Changes
 void BattleScene::UpdateCharacterLogic(double dt)
 {
-	std::vector<CharacterEntity*> Container = ObjectManager::Instance().GetCharacterList();
-	BS.ClearCharacterCount();
-	NumCharacters = 0;
-	for (std::vector<CharacterEntity*>::iterator it = Container.begin(); it != Container.end(); ++it)
-	{
-		CharacterEntity* CE = *it;
-		if (CE->Active)
-		{
-			BS.CurrentPlayerUnitCount.find(CE->GetEntityID())->second += 1;
-			Vector3 Pos = CE->GetPosition();
-			//Inverse Velocity if Character is about to leave screen
-			float DistBuffer = CE->GetDimensions().x * 3.f;
-			//if ((CE->GetPosition().x > ObjectManager::Instance().WorldWidth - DistBuffer && CE->GetVelocity().x > 0) || (CE->GetPosition().x < DistBuffer && CE->GetVelocity().x < 0))
-			//{
-			//	Vector3 Velocity = CE->GetVelocity();
-			//	Velocity.x = 2 * -CE->GetVelocity().x;
-			//	CE->SetVelocity(Velocity);
-			//}
-			//if ((CE->GetPosition().z > ObjectManager::Instance().WorldWidth - DistBuffer && CE->GetVelocity().z > 0) || (CE->GetPosition().z < DistBuffer && CE->GetVelocity().z < 0))
-			//{
-			//	Vector3 Velocity = CE->GetVelocity();
-			//	Velocity.z = 2 * -CE->GetVelocity().z;
-			//	CE->SetVelocity(Velocity);
-			//}
-			//// 
-			//if ((CE->GetPosition().z < ObjectManager::Instance().WorldHeight && CE->GetPosition().z > 0) && (CE->GetPosition().x < ObjectManager::Instance().WorldWidth && CE->GetPosition().x > 0))
-			//{
-			//	CE->SetVelocity(CE->GetVelocity() - CE->GetVelocity() * 0.5f * (float)dt);
-			//}
-			//else
-			//{
-			//	float SpeedCap = (float)CE->WalkSpeed * 1.5f;
-			//	if (CE->GetVelocity().x > SpeedCap)
-			//	{
-			//		Vector3 Vel = CE->GetVelocity();
-			//		if (Vel.x > 0.f)
-			//			Vel.x = SpeedCap;
-			//		else Vel.x = -SpeedCap;
-			//		CE->SetVelocity(Vel);
-			//	}
-			//	if (CE->GetVelocity().z > SpeedCap)
-			//	{
-			//		Vector3 Vel = CE->GetVelocity();
-			//		if (Vel.z > 0.f)
-			//			Vel.z = SpeedCap;
-			//		else Vel.z = -SpeedCap;
-			//		CE->SetVelocity(Vel);
-			//	}
-			//}
-			CE->Update((float)dt);
-			NumCharacters++;
-		}
-	}
+	//std::vector<CharacterEntity*> Container = ObjectManager::Instance().GetCharacterList();
+	//NumCharacters = 0;
+	//for (std::vector<CharacterEntity*>::iterator it = Container.begin(); it != Container.end(); ++it)
+	//{
+	//	CharacterEntity* CE = *it;
+	//	if (CE->Active)
+	//	{
+	//		BS.CurrentPlayerUnitCount.find(CE->GetEntityID())->second += 1;
+	//		Vector3 Pos = CE->GetPosition();
+	//		//Inverse Velocity if Character is about to leave screen
+	//		float DistBuffer = CE->GetDimensions().x * 3.f;
+	//		//if ((CE->GetPosition().x > ObjectManager::Instance().WorldWidth - DistBuffer && CE->GetVelocity().x > 0) || (CE->GetPosition().x < DistBuffer && CE->GetVelocity().x < 0))
+	//		//{
+	//		//	Vector3 Velocity = CE->GetVelocity();
+	//		//	Velocity.x = 2 * -CE->GetVelocity().x;
+	//		//	CE->SetVelocity(Velocity);
+	//		//}
+	//		//if ((CE->GetPosition().z > ObjectManager::Instance().WorldWidth - DistBuffer && CE->GetVelocity().z > 0) || (CE->GetPosition().z < DistBuffer && CE->GetVelocity().z < 0))
+	//		//{
+	//		//	Vector3 Velocity = CE->GetVelocity();
+	//		//	Velocity.z = 2 * -CE->GetVelocity().z;
+	//		//	CE->SetVelocity(Velocity);
+	//		//}
+	//		//// 
+	//		//if ((CE->GetPosition().z < ObjectManager::Instance().WorldHeight && CE->GetPosition().z > 0) && (CE->GetPosition().x < ObjectManager::Instance().WorldWidth && CE->GetPosition().x > 0))
+	//		//{
+	//		//	CE->SetVelocity(CE->GetVelocity() - CE->GetVelocity() * 0.5f * (float)dt);
+	//		//}
+	//		//else
+	//		//{
+	//		//	float SpeedCap = (float)CE->WalkSpeed * 1.5f;
+	//		//	if (CE->GetVelocity().x > SpeedCap)
+	//		//	{
+	//		//		Vector3 Vel = CE->GetVelocity();
+	//		//		if (Vel.x > 0.f)
+	//		//			Vel.x = SpeedCap;
+	//		//		else Vel.x = -SpeedCap;
+	//		//		CE->SetVelocity(Vel);
+	//		//	}
+	//		//	if (CE->GetVelocity().z > SpeedCap)
+	//		//	{
+	//		//		Vector3 Vel = CE->GetVelocity();
+	//		//		if (Vel.z > 0.f)
+	//		//			Vel.z = SpeedCap;
+	//		//		else Vel.z = -SpeedCap;
+	//		//		CE->SetVelocity(Vel);
+	//		//	}
+	//		//}
+	//		CE->Update((float)dt);
+	//		NumCharacters++;
+	//	}
+	//}
 }
 
 void BattleScene::UpdateInternals(double dt)
 {
-	std::vector<Projectile*> Container = ObjectManager::Instance().GetProjectileList();
-	for (std::vector<Projectile*>::iterator it = Container.begin(); it != Container.end(); ++it)
-	{
-		BaseObject *obj = (BaseObject*)*it;
-		Vector3 Pos = obj->GetPosition();
+	//std::vector<Projectile*> Container = ObjectManager::Instance().GetProjectileList();
+	//for (std::vector<Projectile*>::iterator it = Container.begin(); it != Container.end(); ++it)
+	//{
+	//	BaseObject *obj = (BaseObject*)*it;
+	//	Vector3 Pos = obj->GetPosition();
 
-		if (Pos.z > ObjectManager::Instance().WorldHeight) obj->Active = false;
-		if (Pos.z < 0) obj->Active = false;
-		if (Pos.x > ObjectManager::Instance().WorldWidth) obj->Active = false;
-		if (Pos.x < 0) obj->Active = false;
+	//	if (Pos.z > ObjectManager::Instance().WorldHeight) obj->Active = false;
+	//	if (Pos.z < 0) obj->Active = false;
+	//	if (Pos.x > ObjectManager::Instance().WorldWidth) obj->Active = false;
+	//	if (Pos.x < 0) obj->Active = false;
 
-		if (obj->Active)
-		{
-			for (std::vector<CharacterEntity*>::iterator it2 = ObjectManager::Instance().GetCharacterList().begin(); it2 != ObjectManager::Instance().GetCharacterList().end(); ++it2)
-			{
-				BaseObject *obj2 = dynamic_cast<BaseObject*>(*it2);
-				if (obj2->Active && (((*it)->OwnerID == "Magic" && obj2->GetEntityID() != "Magic") || (((*it)->OwnerID == "Mercedes" && obj2->GetEntityID() != "Mercedes")) && ((*it)->OwnerID == "Range" && obj2->GetEntityID() != "Melee")))
-				{
-					if (CheckCollision(obj, obj2))
-					{
-						obj->Active = false;
-						CharacterEntity* CE = *it2;
-						//Get Hitted
-						CE->HealthPoints -= (*it)->GetDamageDealt();
+	//	if (obj->Active)
+	//	{
+	//		for (std::vector<CharacterEntity*>::iterator it2 = ObjectManager::Instance().GetCharacterList().begin(); it2 != ObjectManager::Instance().GetCharacterList().end(); ++it2)
+	//		{
+	//			BaseObject *obj2 = dynamic_cast<BaseObject*>(*it2);
+	//			if (obj2->Active && (((*it)->OwnerID == "Magic" && obj2->GetEntityID() != "Magic") || (((*it)->OwnerID == "Mercedes" && obj2->GetEntityID() != "Mercedes")) && ((*it)->OwnerID == "Range" && obj2->GetEntityID() != "Melee")))
+	//			{
+	//				if (CheckCollision(obj, obj2))
+	//				{
+	//					obj->Active = false;
+	//					CharacterEntity* CE = *it2;
+	//					//Get Hitted
+	//					CE->HealthPoints -= (*it)->GetDamageDealt();
 
-						int NumParticles = Math::RandIntMinMax(2, 4);
-						for (int i = 0; i < NumParticles; ++i)
-						{
-							float ParticleSpeed = Math::RandFloatMinMax(3.f, 6.f);
-							float ParticleLifeTime = Math::RandFloatMinMax(0.75f, 1.5f);
+	//					int NumParticles = Math::RandIntMinMax(2, 4);
+	//					for (int i = 0; i < NumParticles; ++i)
+	//					{
+	//						float ParticleSpeed = Math::RandFloatMinMax(3.f, 6.f);
+	//						float ParticleLifeTime = Math::RandFloatMinMax(0.75f, 1.5f);
 
-							//ObjectManager::Instance().AddNewParticle(new Particle(obj2->GetEntityID(), 1, CE->GetPosition() * Math::RandFloatMinMax(0.3f, 0.75f), Vector3(Math::RandFloatMinMax(-ParticleSpeed, ParticleSpeed), Math::RandFloatMinMax(-ParticleSpeed, ParticleSpeed), Math::RandFloatMinMax(0, ParticleSpeed)), camera.position, ParticleLifeTime));
-						}
-					}
-				}
-			}
-		}
-		//Update if the object is still exists
-		if (obj->Active && !obj->Static)
-			obj->Update((float)dt);
+	//						//ObjectManager::Instance().AddNewParticle(new Particle(obj2->GetEntityID(), 1, CE->GetPosition() * Math::RandFloatMinMax(0.3f, 0.75f), Vector3(Math::RandFloatMinMax(-ParticleSpeed, ParticleSpeed), Math::RandFloatMinMax(-ParticleSpeed, ParticleSpeed), Math::RandFloatMinMax(0, ParticleSpeed)), camera.position, ParticleLifeTime));
+	//					}
+	//				}
+	//			}
+	//		}
+	//	}
+	//	//Update if the object is still exists
+	//	if (obj->Active && !obj->Static)
+	//		obj->Update((float)dt);
 
-		//Particle Update
-		for (std::vector<Particle*>::iterator it = ObjectManager::Instance().GetParticleList().begin(); it != ObjectManager::Instance().GetParticleList().end(); ++it)
-		{
-			Particle *obj = (Particle*)*it;
-			if (obj->Active && !obj->Visible)
-				obj->Update((float)dt);
-		}
-	}
+	//	//Particle Update
+	//	for (std::vector<Particle*>::iterator it = ObjectManager::Instance().GetParticleList().begin(); it != ObjectManager::Instance().GetParticleList().end(); ++it)
+	//	{
+	//		Particle *obj = (Particle*)*it;
+	//		if (obj->Active && !obj->Visible)
+	//			obj->Update((float)dt);
+	//	}
+	//}
 }
 
 bool BattleScene::CheckCollision(BaseObject *o1, BaseObject *o2, std::string type)
@@ -275,17 +265,6 @@ void BattleScene::RenderObjects(BaseObject *obj)
 {
 	if (obj->Active && obj->Visible && obj->GetEntityID() != "")
 	{
-		/*RenderSystem *Renderer = dynamic_cast<RenderSystem*>(&SceneSystem::Instance().GetRenderSystem());
-		std::string Name = obj->GetEntityID();
-		if (Name == "Crusader")
-		{
-			modelStack->PushMatrix();
-			modelStack->Translate(obj->GetPosition().x, obj->GetPosition().y, obj->GetPosition().z);
-			modelStack->Rotate(obj->GetRotationAngle(), obj->GetRotationAxis().x, obj->GetRotationAxis().y, obj->GetRotationAxis().z);
-			modelStack->Scale(obj->GetDimensions().x, obj->GetDimensions().y, obj->GetDimensions().z);
-			Renderer->RenderMesh("M_Crusader", false);
-			modelStack->PopMatrix();
-		}*/
 		obj->Render();
 	}
 }
@@ -307,7 +286,9 @@ void BattleScene::RenderShadowCasters()
 	//RenderTerrain();
 	RenderSystem *Renderer = dynamic_cast<RenderSystem*>(&SceneSystem::Instance().GetRenderSystem());
 
-	ScenePartitionGraph::Instance().Render();
+	ScenePartition->Render();
+
+	GameLogicSystem::Instance().Render();
 
 	for (std::vector<Particle*>::iterator it = BManager.BillboardContainer.begin(); it != BManager.BillboardContainer.end(); ++it)
 	{
@@ -449,69 +430,56 @@ void BattleScene::RenderPassMain()
 	modelStack->LoadIdentity();
 
 	Renderer->RenderMesh("reference", false);
-	BS.Render();
+
 	RenderTerrain();
 	RenderSkybox();
 	RenderShadowCasters();
 
 	//Changes
 	//Projectile
-	for (std::vector<Projectile*>::iterator it = ObjectManager::Instance().GetProjectileList().begin(); it != ObjectManager::Instance().GetProjectileList().end(); ++it)
-	{
-		BaseObject *obj = (BaseObject*)*it;
-		if (obj->Active && obj->Visible)
-			RenderObjects(obj);
-	}
-	//Characters
-	for (std::vector<CharacterEntity*>::iterator it = ObjectManager::Instance().GetCharacterList().begin(); it != ObjectManager::Instance().GetCharacterList().end(); ++it)
-	{
-		CharacterEntity *obj = (CharacterEntity*)*it;
-		if (obj->Active && obj->Visible)
-		{
-			float TextScale = 2.5f;
-			float TextOffset = 0.5f + 0.5f * TextScale;
-
-			RenderObjects(obj);
-
-			//HealthBar
-			//Vector3 BarDimensionDefault = Vector3(obj->GetDimensions().x * 2.f, obj->GetDimensions().y * 0.4f, 1);
-			//float HPBarDimensionX = ((float)obj->HealthPoints / (float)obj->MaxHealthPoints) * BarDimensionDefault.x + Math::EPSILON;
-			//float HPBarPosX = obj->GetPosition().x - (BarDimensionDefault.x - HPBarDimensionX) * 0.5f;
-			//float HPBarPosY;
-			//
-			//modelStack->PushMatrix();
-			//modelStack->Translate(HPBarPosX, HPBarPosY, 1);
-			//modelStack->Scale(HPBarDimensionX, BarDimensionDefault.y, BarDimensionDefault.z);
-			//if (obj->HealthPoints > obj->MaxHealthPoints * 0.25f)
-			//	Renderer->RenderMesh("GreenBar", false);
-			//else Renderer->RenderMesh("RedBar", false);
-			//modelStack->PopMatrix();
-
-			//modelStack->PushMatrix();
-			//modelStack->Top(obj->GetPosition().x, HPBarPosY + obj->GetDimensions().y, 1);
-			//float Ratio = (obj->MessageAnimationTimer / obj->MessageAnimationMaxTime);
-			//float Size = TextScale * 2.f;
-			//float Scale = Math::Clamp(Size*Ratio, Math::EPSILON, Size);
-			//modelStack->Scale(Scale, Scale, 1);
-			//if (obj->FoundMessage)
-			//	Renderer->RenderMesh("ShowMessage", false);
-			//modelStack->PopMatrix();
-		}
-	}
-	//Particle
-	//for (std::vector<Particle*>::iterator it = ObjectManager::Instance().GetParticleList().begin(); it != ObjectManager::Instance().GetParticleList().end(); ++it)
+	//for (std::vector<Projectile*>::iterator it = ObjectManager::Instance().GetProjectileList().begin(); it != ObjectManager::Instance().GetProjectileList().end(); ++it)
 	//{
 	//	BaseObject *obj = (BaseObject*)*it;
 	//	if (obj->Active && obj->Visible)
-	//	{
 	//		RenderObjects(obj);
+	//}
+	////Characters
+	//for (std::vector<CharacterEntity*>::iterator it = ObjectManager::Instance().GetCharacterList().begin(); it != ObjectManager::Instance().GetCharacterList().end(); ++it)
+	//{
+	//	CharacterEntity *obj = (CharacterEntity*)*it;
+	//	if (obj->Active && obj->Visible)
+	//	{
+	//		float TextScale = 2.5f;
+	//		float TextOffset = 0.5f + 0.5f * TextScale;
+
+	//		RenderObjects(obj);
+
+	//		//HealthBar
+	//		//Vector3 BarDimensionDefault = Vector3(obj->GetDimensions().x * 2.f, obj->GetDimensions().y * 0.4f, 1);
+	//		//float HPBarDimensionX = ((float)obj->HealthPoints / (float)obj->MaxHealthPoints) * BarDimensionDefault.x + Math::EPSILON;
+	//		//float HPBarPosX = obj->GetPosition().x - (BarDimensionDefault.x - HPBarDimensionX) * 0.5f;
+	//		//float HPBarPosY;
+	//		//
+	//		//modelStack->PushMatrix();
+	//		//modelStack->Translate(HPBarPosX, HPBarPosY, 1);
+	//		//modelStack->Scale(HPBarDimensionX, BarDimensionDefault.y, BarDimensionDefault.z);
+	//		//if (obj->HealthPoints > obj->MaxHealthPoints * 0.25f)
+	//		//	Renderer->RenderMesh("GreenBar", false);
+	//		//else Renderer->RenderMesh("RedBar", false);
+	//		//modelStack->PopMatrix();
+
+	//		//modelStack->PushMatrix();
+	//		//modelStack->Top(obj->GetPosition().x, HPBarPosY + obj->GetDimensions().y, 1);
+	//		//float Ratio = (obj->MessageAnimationTimer / obj->MessageAnimationMaxTime);
+	//		//float Size = TextScale * 2.f;
+	//		//float Scale = Math::Clamp(Size*Ratio, Math::EPSILON, Size);
+	//		//modelStack->Scale(Scale, Scale, 1);
+	//		//if (obj->FoundMessage)
+	//		//	Renderer->RenderMesh("ShowMessage", false);
+	//		//modelStack->PopMatrix();
 	//	}
 	//}
-
 	//End of changes
-	
-	for (auto it : ObjectManager::Instance().GetParticleList())
-		it->Render();
 
 	Renderer->SetHUD(true);
 	std::stringstream ss;

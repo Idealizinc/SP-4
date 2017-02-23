@@ -1,5 +1,5 @@
-#ifndef UNIT_DATA_LOADER_H
-#define UNIT_DATA_LOADER_H
+#ifndef TERRAIN_DATA_LOADER_H
+#define TERRAIN_DATA_LOADER_H
 
 #include <map>
 #include <string>
@@ -26,4 +26,4 @@ public:
 
 };
 
-#endif
+#endif // TERRAIN_DATA_LOADER_H

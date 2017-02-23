@@ -1,4 +1,5 @@
 #include "RouteGeneration.h"
+#include "../../Engine/System/SceneSystem.h"
 
 std::vector<TerrainNode*> RouteGeneration::GeneratePath()
 {
@@ -9,8 +10,8 @@ std::vector<TerrainNode*> RouteGeneration::GeneratePath()
 	TerrainNode* MostViableNode = nullptr;
 	TerrainNode* PreviousNode = nullptr;
 
-	TerrainNode* StartNode = ScenePartitionGraph::Instance().EnemyBase;
-	TerrainNode* TargetNode = ScenePartitionGraph::Instance().PlayerBase;
+	TerrainNode* StartNode = SceneSystem::Instance().GetCurrentScene().ScenePartition->EnemyBase;
+	TerrainNode* TargetNode = SceneSystem::Instance().GetCurrentScene().ScenePartition->PlayerBase;
 	TerrainNode* CurrentNode = StartNode;
 
 	DefinedPath.push_back(StartNode);

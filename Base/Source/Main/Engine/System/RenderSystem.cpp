@@ -194,6 +194,18 @@ void RenderSystem::Exit()
 		}
 		MeshList.clear();
 	}
+	if (SpriteList.empty() == false)
+	{
+		for (auto it : SpriteList)
+		{
+			for (auto it2 : it.second)
+			{
+				it2.second.clear();
+			}
+			it.second.clear();
+		}
+		SpriteList.clear();
+	}
 	glDeleteProgram(m_programID);
 	glDeleteVertexArrays(1, &m_vertexArrayID);
 	modelStack = nullptr;
@@ -745,6 +757,7 @@ bool RenderSystem::LoadCSVSpriteMeshes(const std::string &fileLocation)
 				std::string theName = theValues[pos];
 				//MESH
 				Mesh* AssignedMesh = MeshBuilder::GenerateQuad(theName, Color(1,0,0), 1.f);
+				MeshList.insert(std::pair<std::string, Mesh*>(AssignedMesh->name, AssignedMesh));
 				//ANIMATIONSTATE
 				it = std::find(theKeys.begin(), theKeys.end(), "ANIMATIONSTATE");
 				pos = it - theKeys.begin();

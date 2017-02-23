@@ -1,4 +1,5 @@
 #include "MeleeCharacter.h"
+#include "../../Miscellaneous/MeshBuilder.h"
 
 MeleeCharacter::MeleeCharacter()
 {
@@ -16,19 +17,19 @@ void MeleeCharacter::SetCharacter(UnitType* Type, UnitRace* Race)
 	HealthPoints = Type->GetHealth() * Race->GetHealthModifier();
 	MaxHealthPoints = Type->GetMaxHealth() * Race->GetHealthModifier();
 	WalkSpeed = Type->GetWalkspeed();
-	DetectionRadius = Type->GetRange();
+	DetectionRadius = Type->GetRange() * 2;
 	RaceType = Race->GetRace();
 	SetSprite(Type->GetMeshName());
-	SetMesh(Type->GetMeshName());
-	//SetMesh("DualTexQuad");
+	//SetMesh(Type->GetMeshName());
+	SetMesh(MeshBuilder::GenerateQuad("Remember to delete this", 0, 1));
 	//anim->SetSprite(Type->GetMeshName());
-	//SetRotationAxis(Vector3(0, 1, 0));
+	SetRotationAxis(Vector3(0, 1, 0));
 
 	int RandomChoice = Math::RandIntMinMax(0, Type->PossibleWeapon.size() - 1);
 	WT = Type->PossibleWeapon[RandomChoice];
 
 	MeleeStateManager* MS = dynamic_cast<MeleeStateManager*>(InternalStateManager);
-	MS->MWeapon = new MeleeWeapon(WT->GetDamage() * Race->GetMeleeDamageModifier(), WT->GetRate(), 2);
+	MS->MWeapon = new MeleeWeapon(WT->GetDamage() * Race->GetMeleeDamageModifier(), WT->GetRate(),0, 2);
 
 }
 
@@ -40,12 +41,13 @@ void MeleeCharacter::Init()
 	WaitTime = 0;
 	FieldOfView = 150;
 	TargetFriend = nullptr;
+	anim_Time = Math::RandFloatMinMax(1, 5);
 
 	if (InternalStateManager != nullptr)
 		delete InternalStateManager;
 	InternalStateManager = new MeleeStateManager();
 	InternalStateManager->Init();
-	SetEntityID("Beastman");
+	//SetEntityID("Crusader");
 
 	InternalStateManager->SetInternalCharacter(this);
 }
@@ -64,8 +66,6 @@ void MeleeCharacter::Update(const float& dt)
 			CurrentAnimation = AnimMap.find("Idle")->second;
 		else if (CurrentAnimationName == "Scout")
 			CurrentAnimation = AnimMap.find("Scout")->second;
-		else if (CurrentAnimationName == "Attack")
-			CurrentAnimation = AnimMap.find("Attack")->second;
 
 		//UpdateAlertTimer(dt);
 		Vector3 StoredVelocity = GetVelocity();

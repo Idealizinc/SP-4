@@ -8,7 +8,6 @@
 #include "../Systems/BillboardManager.h"
 #include "../Objects/Miscellaneous/GameMap.h"
 #include "../Miscellaneous/CameraAerial.h"
-#include "../Systems/BattleSystem.h"
 
 //changes
 #include <vector>
@@ -25,7 +24,6 @@ public:
 	virtual void Render();
 	virtual void Exit();
 
-	BattleSystem BS;
 private:
 	// Shadow GPass
 	void RenderPassGPass();

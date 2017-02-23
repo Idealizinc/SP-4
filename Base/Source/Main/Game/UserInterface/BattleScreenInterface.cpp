@@ -1,8 +1,19 @@
 #include "BattleScreenInterface.h"
+#include <sstream>
+#include <iomanip>
+
+
+template <typename T>
+std::string to_string_with_precision(const T a_value, const int n = 2)
+{
+	std::ostringstream out;
+	out << std::setprecision(n) << a_value;
+	return out.str();
+}
 
 BattleScreenInterface::BattleScreenInterface()
 {
-	Init();
+	
 }
 
 BattleScreenInterface::~BattleScreenInterface()
@@ -19,7 +30,6 @@ void BattleScreenInterface::Init()
 	BattleWordPopup->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.5, 0));
 	BattleWordPopup->SetText("Battle");
 	BattleWordPopup->SetTextColor(0);
-	BattleWordPopup->SetVelocity(Vector3(0, -10, 0));
 
 	StartWordPopup = TurnPopup->CreateNewInterfaceElement("StartWordPopUp", "quad2", Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 2.5f, 0), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.5f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.2f, 0));
 	StartWordPopup->SetTargetPosition(StartWordPopup->GetOriginalPosition());
@@ -28,16 +38,26 @@ void BattleScreenInterface::Init()
 	Initiation = true;
 	Followup = false;
 	Finished = false;
+	
+	TerrainInfoLayer = CreateNewInterfaceLayer("BottomLayer", 0, 0);
 
-	TerrainInfoLayer = CreateNewInterfaceLayer("Bottom", 0, 0);
-	TerrainInfoLayer->SetOriginalPosition(Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x, SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth * 0.8f, 0));
+	TerrainInfoFrame = TerrainInfoLayer->CreateNewInterfaceElement("TerrainInfoBackground", "Frame", Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * -2.5f, 0), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 2.1f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.9f, 0));
+	TerrainInfoFrame->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.2f, 0));
 
-	TerrainInfoBackElement = TerrainInfoLayer->CreateNewInterfaceElement("TerrainInfoBackground", "Background", Vector3(TerrainInfoLayer->GetPosition()), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.8f, 1));
-	TerrainInfoFrame = TerrainInfoLayer->CreateNewInterfaceElement("TerrainInfoBackground", "Background", Vector3(TerrainInfoBackElement->GetPosition()), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.8f, 1));
-	TerrainHealthBoostValue = TerrainInfoLayer->CreateNewInterfaceElement("TerrainHealthBoostValue", "quad1", Vector3(TerrainInfoBackElement->GetPosition().x * 0.2f, TerrainInfoBackElement->GetPosition().y, 1), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.8f, 1));
-	TerrainMeleeBoostValue = TerrainInfoLayer->CreateNewInterfaceElement("TerrainMeleeBoostValue", "quad1", Vector3(TerrainInfoBackElement->GetPosition().x * 0.2f, TerrainInfoBackElement->GetPosition().y, 1), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.8f, 1));
-	TerrainMagicBoostValue = TerrainInfoLayer->CreateNewInterfaceElement("TerrainMagicBoostValue", "quad1", Vector3(TerrainInfoBackElement->GetPosition().x * 0.2f, TerrainInfoBackElement->GetPosition().y, 1), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.8f, 1));
-	TerrainRangeBoostValue = TerrainInfoLayer->CreateNewInterfaceElement("TerrainRangeBoostValue", "quad1", Vector3(TerrainInfoBackElement->GetPosition().x * 0.2f, TerrainInfoBackElement->GetPosition().y, 1), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.8f, 1));
+	TerrainHealthBoostValue = TerrainInfoLayer->CreateNewInterfaceElement("TerrainHealthBoostValue", "quad1", Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.25f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * -2.5f, 0), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.3f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.2f, 0));
+	TerrainHealthBoostValue->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.25f, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.2, 0));
+
+	TerrainMeleeBoostValue = TerrainInfoLayer->CreateNewInterfaceElement("TerrainMeleeBoostValue", "quad1", Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.75f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * -2.5f, 0), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.3f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.2f, 0));
+	TerrainMeleeBoostValue->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.75f, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.2, 0));
+
+	TerrainMagicBoostValue = TerrainInfoLayer->CreateNewInterfaceElement("TerrainMagicBoostValue", "quad1", Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 1.25f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * -2.5f, 0), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.3f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.2f, 0));
+	TerrainMagicBoostValue->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 1.25f, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.2, 0));
+
+	TerrainRangeBoostValue = TerrainInfoLayer->CreateNewInterfaceElement("TerrainRangeBoostValue", "quad1", Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 1.75f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * -2.5f, 0), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.3f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.2f, 0));
+	TerrainRangeBoostValue->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 1.75f, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.2, 0));
+
+	TerrainInfoBackElement = TerrainInfoLayer->CreateNewInterfaceElement("TerrainInfoBackground", "Background", Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * -2.5f, 0), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 2, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.8f, 0));
+	TerrainInfoBackElement->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.2f, 0));
 }
 
 void BattleScreenInterface::SetTerrain(Terrain* T)
@@ -53,12 +73,11 @@ void BattleScreenInterface::Update(const float& dt)
 			it->Update(dt * 10);
 	}
 	PopUpDelay(dt);
-
-	TerrainHealthBoostValue->SetText("Health: x" + std::to_string(currentTerrain->UnitAdvantage.find(Terrain::T_HEALTH)->second));
-	TerrainMeleeBoostValue->SetText("Melee: x" + std::to_string(currentTerrain->UnitAdvantage.find(Terrain::T_MELEE)->second));
-	TerrainMagicBoostValue->SetText("Magic: x" + std::to_string(currentTerrain->UnitAdvantage.find(Terrain::T_MAGIC)->second));
-	TerrainRangeBoostValue->SetText("Range: x" + std::to_string(currentTerrain->UnitAdvantage.find(Terrain::T_RANGE)->second));
-
+	TerrainHealthBoostValue->SetText("Health: x" + to_string_with_precision(currentTerrain->UnitAdvantage.find(Terrain::T_HEALTH)->second));
+	TerrainMeleeBoostValue->SetText("Melee: x" + to_string_with_precision(currentTerrain->UnitAdvantage.find(Terrain::T_MELEE)->second));
+	TerrainMagicBoostValue->SetText("Magic: x" + to_string_with_precision(currentTerrain->UnitAdvantage.find(Terrain::T_MAGIC)->second));
+	TerrainRangeBoostValue->SetText("Range: x" + to_string_with_precision(currentTerrain->UnitAdvantage.find(Terrain::T_RANGE)->second));
+   
 	if (Initiation && Followup)
 	{
 		PopUpReset();
@@ -126,12 +145,12 @@ void BattleScreenInterface::PopUpDelay(const float& dt)
 		}
 	}
 
-	else if (StartWordPopup->GetPosition().y <= StartWordPopup->GetTargetPosition().y + 3 && PopUpDone == false && Followup == true)
+	if (StartWordPopup->GetPosition().y <= StartWordPopup->GetTargetPosition().y + 3 && PopUpDone2 == false && Followup == true)
 	{
-		if (PoppedUp == false)
+		if (PoppedUp2 == false)
 		{
 			TurnPopupTimer = 1;
-			PoppedUp = true;
+			PoppedUp2 = true;
 		}
 		else
 		{
@@ -141,7 +160,7 @@ void BattleScreenInterface::PopUpDelay(const float& dt)
 			}
 			else
 			{
-				PopUpDone = true;
+				PopUpDone2 = true;
 				StartWordPopup->SetTargetPosition(StartWordPopup->GetOriginalPosition());
 				if (StartWordPopup->GetPosition().y <= StartWordPopup->GetTargetPosition().y + 3)
 				{
@@ -151,10 +170,10 @@ void BattleScreenInterface::PopUpDelay(const float& dt)
 		}
 	}
 
-	if (Followup && BattleWordPopup->GetPosition() != BattleWordPopup->GetOriginalPosition())
-		BattleWordPopup->ResetToOriginal();
-	if (Finished && StartWordPopup->GetPosition() != StartWordPopup->GetOriginalPosition())
-		StartWordPopup->ResetToOriginal();
+	//if (Finished && BattleWordPopup->GetPosition() != BattleWordPopup->GetOriginalPosition())
+	//	BattleWordPopup->ResetToOriginal();
+	//if (Finished && StartWordPopup->GetPosition() != StartWordPopup->GetOriginalPosition())
+	//	StartWordPopup->ResetToOriginal();
 }
 
 void BattleScreenInterface::PopUpReset()

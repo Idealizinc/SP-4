@@ -44,7 +44,10 @@ private:
 	float TurnPopupTimer = 0;
 	bool PoppedUp = 0;
 	bool PopUpDone = 0;
-	Vector3 CenterTarget = Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.9, 0);
+	bool PoppedUp2 = 0;
+	bool PopUpDone2 = 0;
+	Vector3 CenterTarget = Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.5, 0);
+	float floatValueReader;
 
 	std::vector<InterfaceLayer*> InternalLayerContainer;
 

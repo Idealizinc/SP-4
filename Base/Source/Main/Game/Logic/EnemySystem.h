@@ -29,6 +29,8 @@ public:
 
 	virtual void Render(void);
 
+	std::vector<UnitPiece*> InternalEnemyContainer;
+
 private:
 	enum TurnState
 	{
@@ -39,11 +41,11 @@ private:
 	};
 	// Internals
 	TurnState CurrentTurnState;
-	std::vector<EnemyPiece*> InternalEnemyContainer;
 	std::vector<std::vector<TerrainNode*>> InternalPathContainer;
 	int NumberOfPaths = 100;
 	float InternalTimer = 0;
 	EnemyPiece* SelectedUnit;
+	TerrainNode* TargetedNode;
 
 	// Functions
 	EnemyPiece* GenerateNewEnemy();

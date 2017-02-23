@@ -15,6 +15,9 @@ Purpose       : Defines the base functions and variables for a scene
 #include <vector>
 #include "../Objects/Camera.h"
 
+// Shift the SPG to the Engine in future
+#include "../../Game/SceneManagement/ScenePartitionGraph.h"
+
 class SceneEntity : public Entity
 {
 public:
@@ -49,6 +52,7 @@ public:
 
 	double framerates;
 
+	ScenePartitionGraph* ScenePartition;
 private:
 };
 
