@@ -1,3 +1,12 @@
+/*
+Copyright (c) Clinton Teo Jun Quan 2016
+
+Creator(s)    : Clinton Teo Jun Quan
+Creation Date : 20 February 2016 13:13 PM
+File Name     : UnitCreationInterface.h
+Purpose       : InterfaceSystem class that handles UI for unit spawning menu
+*/
+
 #ifndef UNITCREATIONINTERFACE_H
 #define UNITCREATIONINTERFACE_H
 

@@ -13,29 +13,24 @@ UnitCreationInterface::~UnitCreationInterface()
 void UnitCreationInterface::Init()
 {
 	ScreenHalfDimension = SceneSystem::Instance().cSS_InputManager->ScreenCenter;
-
+	//popup stuff
 	warningDisplayed = 0;
 	WarningLayer = CreateNewInterfaceLayer("Warning", 0, 0);
 	WarningLayer->SetOriginalPosition(Vector3(0, 0, 0));
 	WarningLayer->SetTargetPosition(Vector3(0, 0, 0));
 
-	NoUnitPopup = WarningLayer->CreateNewInterfaceElement("NoUnit", "quad1", Vector3(ScreenHalfDimension.x, ScreenHalfDimension.y * 2.5, 0), Vector3(ScreenHalfDimension.x *0.6f, ScreenHalfDimension.y*0.2f, 1));
-	NoUnitPopup->SetTargetPosition(Vector3(ScreenHalfDimension.x, ScreenHalfDimension.y * 1.3, 0));
+	NoUnitPopup = WarningLayer->CreateNewInterfaceElement("NoUnit", "quad1", Vector3(ScreenHalfDimension.x, ScreenHalfDimension.y * 2.5f, 0), Vector3(ScreenHalfDimension.x *0.6f, ScreenHalfDimension.y*0.2f, 1.f));
+	NoUnitPopup->SetTargetPosition(Vector3(ScreenHalfDimension.x, ScreenHalfDimension.y * 1.3f, 0));
 	NoUnitPopup->SetText("No Unit Selected");
 	NoUnitPopup->SetTextColor(0);
 
 	NoUnitPopup->SwapOriginalWithTarget();
 
 
-
+	//drag side
 	UnitSelectLayer = CreateNewInterfaceLayer("Right", 0, 0);
 	UnitSelectLayer->SetOriginalPosition(Vector3(ScreenHalfDimension.x * 3.f,0, 0));
 	UnitSelectLayer->SetTargetPosition(Vector3(ScreenHalfDimension.x * 3.f,0, 0));
-
-	//NoUnitPopup = UnitSelectLayer->CreateNewInterfaceElement("MeleeSlot", "quad2", Vector3(0, ScreenHalfDimension.y * 1.35f, 0), Vector3(ScreenHalfDimension.x *0.7f, ScreenHalfDimension.y*0.3f, 1));
-	//NoUnitPopup->SetTargetPosition(Vector3(0, ScreenHalfDimension.y * 1.35f, 0));
-	//NoUnitPopup->SetText("No Unit Selected");
-	//NoUnitPopup->SetTextColor(0);
 
 	MeleeSlotElement = UnitSelectLayer->CreateNewInterfaceElement("MeleeSlot", "quad2", Vector3(0, ScreenHalfDimension.y * 1.35f, 0), Vector3(ScreenHalfDimension.x *0.3f, ScreenHalfDimension.y*0.2f, 1));
 	MeleeSlotElement->SetTargetPosition(Vector3(0, ScreenHalfDimension.y * 1.35f, 0));
@@ -52,11 +47,17 @@ void UnitCreationInterface::Init()
 	RangeSlotElement->SetText("RANGER");
 	RangeSlotElement->SetTextColor(0);
 
+	UnitSelectFrame = UnitSelectLayer->CreateNewInterfaceElement("UnitSelectFrame", "Frame", Vector3(0, ScreenHalfDimension.y * 1.f, 0), Vector3(ScreenHalfDimension.x * 0.9f, ScreenHalfDimension.y * 2.1f, 1));
+	UnitSelectFrame->SetTargetPosition(Vector3(0, ScreenHalfDimension.y * 1.f, 0));
+	UnitSelectFrame->SetTextColor(0);
+
 	DeployButton = UnitSelectLayer->CreateNewInterfaceElement("DeployButton", "quad1", Vector3(0, ScreenHalfDimension.y * 0.3f, 0), Vector3(ScreenHalfDimension.x *0.3f, ScreenHalfDimension.y*0.2f, 1));
 	DeployButton->SetTargetPosition(Vector3(0, ScreenHalfDimension.y * 0.3f, 0));
 	DeployButton->SetText("DEPLOY");
 	DeployButton->SetTextColor(0);
 
+	
+	//drop side
 	Title = UnitSelectLayer->CreateNewInterfaceElement("Title", "quad", Vector3(0, ScreenHalfDimension.y * 1.7f, 0), Vector3(ScreenHalfDimension.x *0.7f, ScreenHalfDimension.y*0.3f, 1));
 	Title->SetTargetPosition(Vector3(0, ScreenHalfDimension.y * 1.7f, 0));
 	Title->SetText("DEPLOYMENT");
@@ -65,8 +66,6 @@ void UnitCreationInterface::Init()
 	UnitSelectFrame = UnitSelectLayer->CreateNewInterfaceElement("UnitSelectFrame", "Frame", Vector3(0, ScreenHalfDimension.y * 1.f, 0), Vector3(ScreenHalfDimension.x * 0.9f, ScreenHalfDimension.y * 2.1f, 1));
 	UnitSelectFrame->SetTargetPosition(Vector3(0, ScreenHalfDimension.y * 1.f, 0));
 	UnitSelectFrame->SetTextColor(0);
-
-
 
 	UnitSelectBackElement = UnitSelectLayer->CreateNewInterfaceElement("UnitSelectBackElement", "Background", Vector3(0, ScreenHalfDimension.y * 1.f, 0), Vector3(ScreenHalfDimension.x * 0.8f, ScreenHalfDimension.y * 2.f, 1));
 	UnitSelectBackElement->SetTargetPosition(Vector3(0, ScreenHalfDimension.y * 1.f, 0));
@@ -248,8 +247,8 @@ void UnitCreationInterface::OpenInterface()
 {
 	if (firstTime == 0)
 	{
-		UnitSelectLayer->SetTargetPosition(Vector3(ScreenHalfDimension.x * 1.5,0, 0));
-		UnitInfoLayer->SetTargetPosition(Vector3(ScreenHalfDimension.x * 0.5, 0, 0));
+		UnitSelectLayer->SetTargetPosition(Vector3(ScreenHalfDimension.x * 1.5f,0, 0));
+		UnitInfoLayer->SetTargetPosition(Vector3(ScreenHalfDimension.x * 0.5f, 0, 0));
 		firstTime = 1;
 	}
 	else
