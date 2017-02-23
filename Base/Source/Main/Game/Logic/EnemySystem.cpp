@@ -32,20 +32,38 @@ void EnemySystem::Exit(void)
 
 void EnemySystem::Update(const float& dt)
 {
+	for (std::vector<UnitPiece*>::iterator it = InternalEnemyContainer.begin(); it != InternalEnemyContainer.end();)
+	{
+		if (!(*it)->Active)
+		{
+			delete *it;
+			it = InternalEnemyContainer.erase(it);
+		}
+		else ++it;
+	}
+
 	switch (CurrentTurnState)
 	{
 	case (S_TURNSTART) : // It's my turn, Randomize Selection
-		if (InternalEnemyContainer.size() > 10 || (InternalEnemyContainer.size() > 0 && (Math::RandIntMinMax(1, 10) > 2)))
-			CurrentTurnState = S_MOVE;
-		else CurrentTurnState = S_SPAWN;
+		if (InternalEnemyContainer.size() <= 0)
+			CurrentTurnState = S_SPAWN;
+		else{
+			if (Math::RandIntMinMax(1, 10) > 2)
+				CurrentTurnState = S_MOVE;
+			else CurrentTurnState = S_SPAWN;
+		}
 		break;
 	case (S_SPAWN) : // I Spawn a Unit
 		SelectedUnit = GenerateNewEnemy();
 		CurrentTurnState = S_TURNEND;
 		break;
 	case (S_MOVE) : // I Move a Unit
-		SelectedUnit = AdvanceSingleUnit();
-		CurrentTurnState = S_TURNEND;
+		if (InternalEnemyContainer.size() > 0)
+		{
+			SelectedUnit = AdvanceSingleUnit();
+			CurrentTurnState = S_TURNEND;
+		}
+		else CurrentTurnState = S_SPAWN;
 		break;
 	case (S_TURNEND) : // I end my turn
 		Vector3 Direction = SelectedUnit->TargetPosition - SelectedUnit->GetPosition();
@@ -78,7 +96,9 @@ void EnemySystem::Update(const float& dt)
 
 void EnemySystem::Render(void)
 {
+	if (InternalEnemyContainer.size())
 	for (auto it : InternalEnemyContainer)
+	if (it->Active)
 		it->Render();
 }
 
@@ -122,6 +142,6 @@ EnemyPiece* EnemySystem::AdvanceSingleUnit()
 EnemyPiece* EnemySystem::RandomizePieceSelection()
 {
 	// Might want to add some selection conditions here
-	EnemyPiece* EP = InternalEnemyContainer[Math::RandIntMinMax(0, InternalEnemyContainer.size() - 1)];
+	EnemyPiece* EP = (EnemyPiece*)InternalEnemyContainer[Math::RandIntMinMax(0, InternalEnemyContainer.size() - 1)];
 	return EP;
 }

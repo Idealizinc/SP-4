@@ -36,7 +36,7 @@ void PlayerSystem::Update(const float& dt)
 	case (S_ACTION) : // I Spawn/Move a Unit
 		// Input Detection
 		HandleUserInput();
-		
+
 		if (SelectedUnit != nullptr)
 			CurrentTurnState = S_TURNEND;
 		break;
@@ -66,12 +66,22 @@ void PlayerSystem::Update(const float& dt)
 		}
 		break;
 	}
-	//GameLogicSystem::Instance().SetCurrentState(GameLogicSystem::Instance().EnemyTurn);
+	for (std::vector<UnitPiece*>::iterator it = InternalUnitContainer.begin(); it != InternalUnitContainer.end();)
+	{
+		if (!(*it)->Active)
+		{
+			delete *it;
+			it = InternalUnitContainer.erase(it);
+		}
+		else ++it;
+	}
 }
 
 void PlayerSystem::Render(void)
 {
+	if (InternalUnitContainer.size())
 	for (auto it : InternalUnitContainer)
+	if (it->Active)
 		it->Render();
 }
 

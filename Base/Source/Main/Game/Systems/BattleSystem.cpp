@@ -1,6 +1,7 @@
 #include "BattleSystem.h"
 #include "../../Engine/System/SceneSystem.h"
 #include "../Objects/Characters/MeleeCharacter.h"
+#include "GameLogicSystem.h"
 
 BattleSystem::BattleSystem()
 {
@@ -18,6 +19,7 @@ void BattleSystem::Init()
 
 	SpawnPosition_Enemy = Vector3(-20, 1, 0);
 	SpawnPosition_Player = Vector3(20, 1, 0);
+	CurrentBattleTile = nullptr;
 }
 
 void BattleSystem::Update(const float& dt)
@@ -26,6 +28,26 @@ void BattleSystem::Update(const float& dt)
 	UpdateCharacterLogic(InternalPlayerCharacterList, dt);
 	UpdateCharacterLogic(InternalEnemyCharacterList, dt);
 	UpdateProjectileLogic(dt);
+	if (InternalEnemyCharacterList.size() <= 0 && InternalPlayerCharacterList.size() > 0)
+	{
+		// Player won
+		GameLogicSystem::Instance().SetCurrentState(GameLogicSystem::Instance().PlayerTurn);
+		SceneSystem::Instance().SwitchScene("1_Scene");
+		for (auto it : CurrentBattleTile->EnemyUnitList)
+			it->Active = false;
+		CurrentBattleTile->EnemyUnitList.clear();
+		ClearCharacterCounters();
+	}
+	else if (InternalEnemyCharacterList.size() > 0 && InternalPlayerCharacterList.size() <= 0)
+	{
+		// Enemy won
+		GameLogicSystem::Instance().SetCurrentState(GameLogicSystem::Instance().EnemyTurn);
+		SceneSystem::Instance().SwitchScene("1_Scene");
+		for (auto it : CurrentBattleTile->PlayerUnitList)
+			it->Active = false;
+		CurrentBattleTile->PlayerUnitList.clear();
+		ClearCharacterCounters();
+	}
 }
 
 void BattleSystem::Render()
@@ -83,16 +105,27 @@ void BattleSystem::SetUpUnits(Terrain* BattlefieldTile)
 	// Set up the Player
 	for (auto it : BattlefieldTile->PlayerUnitList){
 		for (auto it2 : it->InternalBattalionList)
-			CurrentPlayerUnitCount.insert(std::pair<std::string, unsigned short>(it2.first, it2.second));
+		{
+			auto it3 = CurrentPlayerUnitCount.find(it2.first);
+			if (it3 != CurrentPlayerUnitCount.end())
+				it3->second += it2.second;
+			else CurrentPlayerUnitCount.insert(std::pair<std::string, unsigned short>(it2.first, it2.second));
+		}
 	}
 	// Set up the Enemy
 	for (auto it : BattlefieldTile->EnemyUnitList){
 		for (auto it2 : it->InternalBattalionList)
-			CurrentEnemyUnitCount.insert(std::pair<std::string, unsigned short>(it2.first, it2.second));
+		{
+			auto it3 = CurrentEnemyUnitCount.find(it2.first);
+			if (it3 != CurrentEnemyUnitCount.end())
+				it3->second += it2.second;
+			else CurrentEnemyUnitCount.insert(std::pair<std::string, unsigned short>(it2.first, it2.second));
+		}
 	}
 	// Spawn the characters
 	SpawnPlayerCharacters(CurrentPlayerUnitCount);
 	SpawnEnemyCharacters(CurrentEnemyUnitCount);
+	CurrentBattleTile = BattlefieldTile;
 }
 
 void BattleSystem::AddNewProjectile(Projectile* P)
@@ -118,23 +151,47 @@ void BattleSystem::ClearCharacterCounters()
 {
 	CurrentPlayerUnitCount.clear();
 	CurrentEnemyUnitCount.clear();
+	while (InternalPlayerCharacterList.size() > 0)
+	{
+		CharacterEntity* obj = InternalPlayerCharacterList.back();
+		obj->Exit();
+		delete obj;
+		InternalPlayerCharacterList.pop_back();
+	}
+	while (InternalEnemyCharacterList.size() > 0)
+	{
+		CharacterEntity* obj = InternalEnemyCharacterList.back();
+		obj->Exit();
+		delete obj;
+		InternalEnemyCharacterList.pop_back();
+	}
+	CurrentBattleTile = nullptr;
 }
 
 void BattleSystem::UpdateCharacterLogic(std::vector<CharacterEntity*>& CharacterList, const float& dt)
 {
-	for (auto it : CharacterList)
+	for (std::vector<CharacterEntity*>::iterator it = CharacterList.begin(); it != CharacterList.end();)
 	{
-		// The character will update it's StateManager as well as it's own Kinematic State if possible
-		// I will need to do other updates here such as friction/limiting walkspeed
-		if (!it->GetVelocity().IsZero())
+		if ((*it)->Active)
 		{
-			Vector3 Direction = it->GetVelocity();
-			if (it->GetVelocity().LengthSquared() > it->WalkSpeed * it->WalkSpeed)
+			// The character will update it's StateManager as well as it's own Kinematic State if possible
+			// I will need to do other updates here such as friction/limiting walkspeed
+			if (!(*it)->GetVelocity().IsZero())
 			{
-				it->SetVelocity(Direction.Normalize() * (float)it->WalkSpeed);
+				Vector3 Direction = (*it)->GetVelocity();
+				if ((*it)->GetVelocity().LengthSquared() > (*it)->WalkSpeed * (*it)->WalkSpeed)
+				{
+					(*it)->SetVelocity(Direction.Normalize() * (*it)->WalkSpeed);
+				}
+
 			}
+			(*it)->Update(dt);
+			++it;
 		}
-		it->Update(dt);
+		else {
+			delete *it;
+			it = CharacterList.erase(it);
+		}
 	}
 }
 

@@ -34,6 +34,7 @@ class UnitPiece : public BaseObject
 public:
 	UnitPiece()
 	{
+		Active = true;
 		SetParameters("gbullet", 1, 0, Vector3(3, 3, 3), 0, 0, Vector3(0, 1, 0));
 		// for testing
 		InternalBattalionList.insert(std::make_pair("Crusader", 5));
@@ -44,6 +45,7 @@ public:
 	std::map<std::string, unsigned short> InternalBattalionList;
 	TerrainNode* TargetNode;
 	Vector3 TargetPosition;
+	bool Active;
 protected:
 
 };

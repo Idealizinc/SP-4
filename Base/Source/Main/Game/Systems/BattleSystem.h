@@ -35,6 +35,7 @@ public:
 	std::vector<Projectile*>& GetProjectileList();
 	void SetUpUnits(Terrain* BattlefieldTile);
 	void AddNewProjectile(Projectile* P);
+	Terrain* CurrentBattleTile;
 
 	// Data Store
 	UnitDataLoader UnitData;
@@ -45,7 +46,7 @@ private:
 	Vector3 SpawnPosition_Player;
 	Vector3 SpawnPosition_Enemy;
 	const float UnitSize = 10.f;
-
+	
 	// Containers
 	std::vector<Projectile*> InternalProjectileList;
 	std::vector<CharacterEntity*> InternalPlayerCharacterList;

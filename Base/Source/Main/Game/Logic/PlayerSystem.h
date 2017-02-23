@@ -29,6 +29,7 @@ public:
 
 	virtual void Render(void);
 
+	std::vector<UnitPiece*> InternalUnitContainer;
 private:
 	enum TurnState
 	{
@@ -39,7 +40,6 @@ private:
 	// Internals
 	TurnState CurrentTurnState;
 	UnitPiece* SelectedUnit;
-	std::vector<UnitPiece*> InternalUnitContainer;
 	TerrainNode* MouseDownSelection;
 	TerrainNode* MouseUpSelection;
 	TerrainNode* TargetedNode;
