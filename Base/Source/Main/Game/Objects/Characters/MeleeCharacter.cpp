@@ -21,7 +21,7 @@ void MeleeCharacter::SetCharacter(UnitType* Type, UnitRace* Race)
 	RaceType = Race->GetRace();
 	SetSprite(Type->GetMeshName());
 	//SetMesh(Type->GetMeshName());
-	SetMesh(MeshBuilder::GenerateQuad("cosyoloidontevenknow", 0, 1));
+	SetMesh(MeshBuilder::GenerateQuad("Remember to delete this", 0, 1));
 	//anim->SetSprite(Type->GetMeshName());
 	SetRotationAxis(Vector3(0, 1, 0));
 
@@ -47,7 +47,7 @@ void MeleeCharacter::Init()
 		delete InternalStateManager;
 	InternalStateManager = new MeleeStateManager();
 	InternalStateManager->Init();
-	SetEntityID("Crusader");
+	//SetEntityID("Crusader");
 
 	InternalStateManager->SetInternalCharacter(this);
 }

@@ -35,6 +35,7 @@ public:
 	std::vector<Projectile*>& GetProjectileList();
 	void SetUpUnits(Terrain* BattlefieldTile);
 	void AddNewProjectile(Projectile* P);
+	Terrain* CurrentBattleTile;
 
 private:
 	// Internals
@@ -45,7 +46,7 @@ private:
 
 	// Data Store
 	UnitDataLoader UnitData;
-
+	
 	// Containers
 	std::vector<Projectile*> InternalProjectileList;
 	std::vector<CharacterEntity*> InternalPlayerCharacterList;

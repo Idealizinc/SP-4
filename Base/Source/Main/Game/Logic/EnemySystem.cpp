@@ -74,11 +74,22 @@ void EnemySystem::Update(const float& dt)
 		}
 		break;
 	}
+	for (std::vector<UnitPiece*>::iterator it = InternalEnemyContainer.begin(); it != InternalEnemyContainer.end();)
+	{
+		if (!(*it)->Active)
+		{
+			delete *it;
+			it = InternalEnemyContainer.erase(it);
+		}
+		else ++it;
+	}
 }
 
 void EnemySystem::Render(void)
 {
+	if (InternalEnemyContainer.size())
 	for (auto it : InternalEnemyContainer)
+	if (it->Active)
 		it->Render();
 }
 
@@ -122,6 +133,6 @@ EnemyPiece* EnemySystem::AdvanceSingleUnit()
 EnemyPiece* EnemySystem::RandomizePieceSelection()
 {
 	// Might want to add some selection conditions here
-	EnemyPiece* EP = InternalEnemyContainer[Math::RandIntMinMax(0, InternalEnemyContainer.size() - 1)];
+	EnemyPiece* EP = (EnemyPiece*)InternalEnemyContainer[Math::RandIntMinMax(0, InternalEnemyContainer.size() - 1)];
 	return EP;
 }
