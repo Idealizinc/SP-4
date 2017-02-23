@@ -19,8 +19,8 @@ void UnitCreationInterface::Init()
 	WarningLayer->SetOriginalPosition(Vector3(0, 0, 0));
 	WarningLayer->SetTargetPosition(Vector3(0, 0, 0));
 
-	NoUnitPopup = WarningLayer->CreateNewInterfaceElement("NoUnit", "quad1", Vector3(ScreenHalfDimension.x, ScreenHalfDimension.y * 2.5, 0), Vector3(ScreenHalfDimension.x *0.6f, ScreenHalfDimension.y*0.2f, 1));
-	NoUnitPopup->SetTargetPosition(Vector3(ScreenHalfDimension.x, ScreenHalfDimension.y * 1.3, 0));
+	NoUnitPopup = WarningLayer->CreateNewInterfaceElement("NoUnit", "quad1", Vector3(ScreenHalfDimension.x, ScreenHalfDimension.y * 2.5f, 0), Vector3(ScreenHalfDimension.x *0.6f, ScreenHalfDimension.y*0.2f, 1.f));
+	NoUnitPopup->SetTargetPosition(Vector3(ScreenHalfDimension.x, ScreenHalfDimension.y * 1.3f, 0));
 	NoUnitPopup->SetText("No Unit Selected");
 	NoUnitPopup->SetTextColor(0);
 
@@ -247,8 +247,8 @@ void UnitCreationInterface::OpenInterface()
 {
 	if (firstTime == 0)
 	{
-		UnitSelectLayer->SetTargetPosition(Vector3(ScreenHalfDimension.x * 1.5,0, 0));
-		UnitInfoLayer->SetTargetPosition(Vector3(ScreenHalfDimension.x * 0.5, 0, 0));
+		UnitSelectLayer->SetTargetPosition(Vector3(ScreenHalfDimension.x * 1.5f,0, 0));
+		UnitInfoLayer->SetTargetPosition(Vector3(ScreenHalfDimension.x * 0.5f, 0, 0));
 		firstTime = 1;
 	}
 	else
