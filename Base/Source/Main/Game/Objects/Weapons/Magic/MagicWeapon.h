@@ -28,20 +28,20 @@ public:
 		// Bullet Fire
 		if (this->Type == WeaponType::T_MAGIC_PROJECTILE)
 		{
-			Vector3 AltDirVec = (CE->TargetEnemy->GetPosition() + 0.001f * Vector3(Math::RandFloatMinMax(-DirVec.LengthSquared(), DirVec.LengthSquared()), Math::RandFloatMinMax(-DirVec.LengthSquared(), DirVec.LengthSquared())) - CE->GetPosition());
-			Projectile* Magic = new Projectile("Magical", Damage, 0, 10);
-			Magic->OwnerID = CE->GetEntityID();
-			Vector3 Velocity = AltDirVec.Normalized() * (float)CE->WalkSpeed * 5;
-			Magic->SetParameters("Magical", 1, CE->GetPosition(), Vector3(CE->GetDimensions().x * 0.3f, CE->GetDimensions().y * 0.3f, 1), Velocity, 0, Vector3(0, 0, 1));
-			ObjectManager::Instance().AddNewProjectile(Magic);
+			//Vector3 AltDirVec = (CE->TargetEnemy->GetPosition() + 0.001f * Vector3(Math::RandFloatMinMax(-DirVec.LengthSquared(), DirVec.LengthSquared()), Math::RandFloatMinMax(-DirVec.LengthSquared(), DirVec.LengthSquared())) - CE->GetPosition());
+			//Projectile* Magic = new Projectile("Magical", Damage, 0, 10);
+			//Magic->OwnerID = CE->GetEntityID();
+			//Vector3 Velocity = AltDirVec.Normalized() * (float)CE->WalkSpeed * 5;
+			//Magic->SetParameters("Magical", 1, CE->GetPosition(), Vector3(CE->GetDimensions().x * 0.3f, CE->GetDimensions().y * 0.3f, 1), Velocity, 0, Vector3(0, 0, 1));
+			//ObjectManager::Instance().AddNewProjectile(Magic);
 		}
 		else if (this->Type == WeaponType::T_MAGIC_AOE)
 		{
-			Projectile* Magic = new Projectile("Magical", Damage, 0, 10);
-			Magic->OwnerID = CE->GetEntityID();
-			Magic->SetParameters("Magical", 1, CE->TargetEnemy->GetPosition(), Vector3(CE->GetDimensions().x * 3.f, CE->GetDimensions().y * 3.f, 1), 0, 0, Vector3(0, 0, 1));
-			ObjectManager::Instance().AddNewProjectile(Magic);
-
+			//Projectile* Magic = new Projectile("Magical", Damage, 0, 10);
+			//Magic->OwnerID = CE->GetEntityID();
+			//Magic->SetParameters("Magical", 1, CE->TargetEnemy->GetPosition(), Vector3(CE->GetDimensions().x * 3.f, CE->GetDimensions().y * 3.f, 1), 0, 0, Vector3(0, 0, 1));
+			//ObjectManager::Instance().AddNewProjectile(Magic);
+			//
 		}
 
 		//// Magic Particle

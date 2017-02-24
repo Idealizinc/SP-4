@@ -27,10 +27,13 @@ void UnitSpawnSystem::CreateUnitUIElement(InterfaceLayer* layer)
 	Vector3 BackingDimension = Vector3(HalfDimension.x *0.6f, HalfDimension.y*0.3f, 1);
 
 	std::stringstream ss;
-	//InterfaceElement* tempElement = new InterfaceElement();
-	//tempElement = layer->CreateNewInterfaceElement("Scroll", "quad3", (Vector3(0, HalfDimension.y * 1.5f, 0)) + Vector3(BackingDimension.x * 0.6f, BackingDimension.y * 0.3f), Vector3(HalfDimension.x *0.025f, HalfDimension.y*0.1f, 1));
-	//tempElement->SetTargetPosition((Vector3(0, HalfDimension.y * 1.5f, 0)) + Vector3(BackingDimension.x * 0.5f, BackingDimension.y * 0.3f));
-	for (auto it : GameLogicSystem::Instance().InternalBattleSystem->UnitData.UnitMap)
+
+	std::map<std::string, UnitType*>UnitMap;
+	if (GameLogicSystem::Instance().PlayerFaction == GameLogicSystem::F_LIVING)
+		UnitMap = GameLogicSystem::Instance().InternalBattleSystem->UnitData.LivingMap;
+	else
+		UnitMap = GameLogicSystem::Instance().InternalBattleSystem->UnitData.UndeadMap;
+	for (auto it : UnitMap)
 	{
 		Vector3 Pos = Vector3(0, HalfDimension.y * 1.8f, 0) - Offset * counter;
 		

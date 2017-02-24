@@ -6,7 +6,6 @@
 #include "../../Engine/System/MusicSystem.h"
 #include "../Mains/Application.h"
 #include "../SceneManagement/ScenePartitionGraph.h"
-#include "../Systems/ObjectManager.h"
 #include "../Systems/GameLogicSystem.h"
 
 std::string SceneTown1::id_ = "1_Scene";
@@ -131,9 +130,6 @@ void SceneTown1::Update(const float& dt)
 	{
 		ScenePartition->ShowPartitions = true;
 	}
-
-	for (auto it : ObjectManager::Instance().GetParticleList())
-		it->Update(dt);
 
 	if (SceneSystem::Instance().cSS_InputManager->GetMouseInput(InputManager::KEY_RMB) == InputManager::MOUSE_HOLD)
 	{

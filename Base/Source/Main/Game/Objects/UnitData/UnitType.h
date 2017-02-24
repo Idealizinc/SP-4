@@ -22,6 +22,7 @@ private:
 	int Damage;
 	double Walkspeed;
 	float Range;
+	int Cost;
 
 public:
 
@@ -54,6 +55,7 @@ public:
 	void SetDamage(int damage) { this->Damage = damage; }
 	void SetWalkspeed(double walkspeed) { this->Walkspeed = walkspeed; }
 	void SetRange(float range) { this->Range = range; }
+	void SetCost(int cost) { this->Cost = cost; }
 
 	std::string GetName() { return UnitName; }
 	int GetType() { return Type; }
@@ -63,6 +65,7 @@ public:
 	int GetDamage(){ return Damage; }
 	double GetWalkspeed(){ return Walkspeed; }
 	float GetRange(){ return Range; }
+	int GetCost(){ return Cost; }
 
 };
 

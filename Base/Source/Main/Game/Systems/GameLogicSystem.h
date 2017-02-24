@@ -42,6 +42,13 @@ Enemy System
 class GameLogicSystem : public SingletonTemplate<GameLogicSystem>, public StateManager
 {
 public:
+	enum Faction
+	{
+		F_LIVING = 0,
+		F_UNDEAD = 1,
+		F_MAX,
+	};
+
 	virtual ~GameLogicSystem();
 
 	// Initiallization of objects that can only be initiallized once
@@ -63,6 +70,7 @@ public:
 	const std::string EnemyTurn = "Enemy's Turn";
 	const std::string BattlePhase = "Battle Phase";
 	TerrainDataLoader TerrainLoader;
+	Faction PlayerFaction = F_UNDEAD;
 
 //private:
 	PlayerSystem* InternalPlayerSystem;
