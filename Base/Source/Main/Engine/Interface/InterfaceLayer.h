@@ -24,6 +24,8 @@ public:
 	virtual void Render(void);
 	virtual void Exit(void);
 
+	Vector3 GetTargetPosition();
+
 	void SetTargetPosition(const Vector3& Position);
 	void SetOriginalPosition(const Vector3& Position);
 

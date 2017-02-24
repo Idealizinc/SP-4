@@ -83,3 +83,8 @@ std::vector<InterfaceElement*>& InterfaceLayer::GetContainer()
 {
 	return InternalElementContainer;
 }
+
+Vector3 InterfaceLayer::GetTargetPosition()
+{
+	return TargetPosition;
+}

@@ -45,7 +45,7 @@ private:
 	TerrainNode* TargetedNode;
 
 	// Functions
-	UnitPiece* GenerateNewUnit();
+	UnitPiece* GenerateNewUnit(const std::map<std::string, unsigned short>& Battalion);
 	UnitPiece* AdvanceSingleUnit(UnitPiece* Selection, TerrainNode* Target);
 	void HandleUserInput();
 

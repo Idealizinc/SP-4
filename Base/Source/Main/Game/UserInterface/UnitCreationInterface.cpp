@@ -8,6 +8,9 @@ UnitCreationInterface::UnitCreationInterface()
 
 UnitCreationInterface::~UnitCreationInterface()
 {
+	if (UnitSpawnMap)
+		delete UnitSpawnMap;
+	UnitSpawnMap = nullptr;
 	Exit();
 }
 
@@ -204,16 +207,6 @@ void UnitCreationInterface::HandleUserInput()
 	}
 }
 
-InterfaceLayer* UnitCreationInterface::CreateNewInterfaceLayer(const std::string& LayerID, const Vector3& OriginalPosition, const Vector3& TargetPosition)
-{
-	InterfaceLayer* NewL = new InterfaceLayer();
-	NewL->SetEntityID(LayerID);
-	NewL->SetOriginalPosition(OriginalPosition);
-	NewL->SetTargetPosition(TargetPosition);
-	InternalLayerContainer.push_back(NewL);
-	return NewL;
-}
-
 void UnitCreationInterface::OpenInterface()
 {
 	if (firstTime == 0)
@@ -246,20 +239,6 @@ void UnitCreationInterface::CheckDeployed()
 		UnitSpawnMap->resetUnitMap();
 	}
 }
-
-
-//void UnitCreationInterface::CloseInterface()
-//{
-//	UnitSelectLayer->SwapOriginalWithTarget();
-//	UnitInfoLayer->SwapOriginalWithTarget();
-//	UnitSpawnMap->resetUnitMap();
-//	//UIDisplayed = false;
-//}
-
-//std::map<int, int> UnitCreationInterface::returnUnitSpawnMap()
-//{
-//	return UnitSpawnMap->returnUnitMap();
-//}
 
 UnitSpawnSystem* UnitCreationInterface::returnUnitSpawnSys()
 {

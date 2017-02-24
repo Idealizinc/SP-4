@@ -97,4 +97,9 @@ void SceneSystem::ClearMemoryUsage()
 	{
 		SceneHistory.pop();
 	}
+
+	if (cSS_InputManager)
+	{
+		delete cSS_InputManager;
+	}
 }

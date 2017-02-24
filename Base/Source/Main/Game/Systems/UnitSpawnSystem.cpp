@@ -16,7 +16,6 @@ UnitSpawnSystem::UnitSpawnSystem()
 
 UnitSpawnSystem::~UnitSpawnSystem()
 {
-
 }
 
 

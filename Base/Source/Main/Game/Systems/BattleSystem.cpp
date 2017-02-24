@@ -9,6 +9,7 @@ BattleSystem::BattleSystem()
 
 BattleSystem::~BattleSystem()
 {
+	Exit();
 }
 
 void BattleSystem::Init()
@@ -21,42 +22,46 @@ void BattleSystem::Init()
 	SpawnPosition_Player = Vector3(20, 1, 0);
 	CurrentBattleTile = nullptr;
 	BSI = new BattleScreenInterface();
-	BSI->Init();
 }
 
 void BattleSystem::Update(const float& dt)
 {
 	BSI->Update(dt);
 
-	// I will need to update all my characters, projectiles and other miscellaneous game objects
-	UpdateCharacterLogic(InternalPlayerCharacterList, dt);
-	UpdateCharacterLogic(InternalEnemyCharacterList, dt);
-	UpdateProjectileLogic(dt);
-	if (InternalEnemyCharacterList.size() <= 0 && InternalPlayerCharacterList.size() > 0)
+	if (BSI->StartBattle)
 	{
-		// Player won
-		GameLogicSystem::Instance().SetCurrentState(GameLogicSystem::Instance().PlayerTurn);
-		SceneSystem::Instance().SwitchScene("1_Scene");
-		for (auto it : CurrentBattleTile->EnemyUnitList)
-			it->Active = false;
-		CurrentBattleTile->EnemyUnitList.clear();
-		ClearCharacterCounters();
-	}
-	else if (InternalEnemyCharacterList.size() > 0 && InternalPlayerCharacterList.size() <= 0)
-	{
-		// Enemy won
-		GameLogicSystem::Instance().SetCurrentState(GameLogicSystem::Instance().EnemyTurn);
-		SceneSystem::Instance().SwitchScene("1_Scene");
-		for (auto it : CurrentBattleTile->PlayerUnitList)
-			it->Active = false;
-		CurrentBattleTile->PlayerUnitList.clear();
-		ClearCharacterCounters();
+		// I will need to update all my characters, projectiles and other miscellaneous game objects
+		UpdateCharacterLogic(InternalPlayerCharacterList, dt);
+		UpdateCharacterLogic(InternalEnemyCharacterList, dt);
+		UpdateProjectileLogic(dt);
+		if (InternalEnemyCharacterList.size() <= 0 && InternalPlayerCharacterList.size() > 0)
+		{
+			// Player won
+			GameLogicSystem::Instance().SetCurrentState(GameLogicSystem::Instance().PlayerTurn);
+			SceneSystem::Instance().SwitchScene("1_Scene");
+			for (auto it : CurrentBattleTile->EnemyUnitList)
+				it->Active = false;
+			CurrentBattleTile->EnemyUnitList.clear();
+			ClearCharacterCounters();
+			BSI->ResetAll();
+		}
+		else if (InternalEnemyCharacterList.size() > 0 && InternalPlayerCharacterList.size() <= 0)
+		{
+			// Enemy won
+			GameLogicSystem::Instance().SetCurrentState(GameLogicSystem::Instance().EnemyTurn);
+			SceneSystem::Instance().SwitchScene("1_Scene");
+			for (auto it : CurrentBattleTile->PlayerUnitList)
+				it->Active = false;
+			CurrentBattleTile->PlayerUnitList.clear();
+			ClearCharacterCounters();
+			BSI->ResetAll();
+		}
 	}
 }
 
 void BattleSystem::Render()
 {
-	BSI->Render();
+	//BSI->Render();
 	for (auto it : InternalPlayerCharacterList)
 		it->Render();
 	for (auto it : InternalEnemyCharacterList)
@@ -67,32 +72,13 @@ void BattleSystem::Render()
 
 void BattleSystem::Exit()
 {
-	while (InternalPlayerCharacterList.size() > 0)
-	{
-		CharacterEntity* obj = InternalPlayerCharacterList.back();
-		obj->Exit();
-		delete obj;
-		InternalPlayerCharacterList.pop_back();
-	}
-	while (InternalEnemyCharacterList.size() > 0)
-	{
-		CharacterEntity* obj = InternalEnemyCharacterList.back();
-		obj->Exit();
-		delete obj;
-		InternalEnemyCharacterList.pop_back();
-	}
-	while (InternalProjectileList.size() > 0)
-	{
-		Projectile* obj = InternalProjectileList.back();
-		obj->Exit();
-		delete obj;
-		InternalProjectileList.pop_back();
-	}
+	ClearCharacterCounters();
 	if (BSI)
 	{
-	BSI->Exit();
-	delete BSI;
-	BSI = nullptr;
+		BSI->StartBattle = false;
+		BSI->Exit();
+		delete BSI;
+		BSI = nullptr;
 	}
 }
 
@@ -177,6 +163,13 @@ void BattleSystem::ClearCharacterCounters()
 		delete obj;
 		InternalEnemyCharacterList.pop_back();
 	}
+	while (InternalProjectileList.size() > 0)
+	{
+		Projectile* obj = InternalProjectileList.back();
+		obj->Exit();
+		delete obj;
+		InternalProjectileList.pop_back();
+	}
 	CurrentBattleTile = nullptr;
 }
 
@@ -201,6 +194,7 @@ void BattleSystem::UpdateCharacterLogic(std::vector<CharacterEntity*>& Character
 			++it;
 		}
 		else {
+			(*it)->Exit();
 			delete *it;
 			it = CharacterList.erase(it);
 		}

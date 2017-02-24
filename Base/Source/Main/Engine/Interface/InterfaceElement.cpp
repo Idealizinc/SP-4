@@ -51,7 +51,7 @@ void InterfaceElement::Render(const Vector3& LayerPosition)
 		{
 			Renderer->RenderTextOnScreen(WrappedTextContainer[i], Color(TextColor.x, TextColor.y, TextColor.z), Dimensions.y * 0.275f, Position.x - Dimensions.x * 0.5f + (Dimensions.y * 0.25f) + LayerPosition.x, Position.y + LayerPosition.y + (0.5f * Dimensions.y * 0.25f) - (i * Dimensions.y * 0.25f));
 		}
-		if (MeshName != "Transparent")
+		if (MeshName != "")
 			Renderer->RenderMeshIn2D(*StoredMesh, false, Dimensions.x, Dimensions.y, Position.x + LayerPosition.x, Position.y + LayerPosition.y);
 		Renderer->SetHUD(false);
 		glEnable(GL_CULL_FACE);
