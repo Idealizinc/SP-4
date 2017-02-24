@@ -21,7 +21,7 @@ class UnitDataLoader
 {
 public:
 	UnitDataLoader(){};
-	~UnitDataLoader(){};
+	~UnitDataLoader();
 
 	std::map<std::string, WeaponType*> WeaponMap;
 	std::map<std::string, UnitType*> UnitMap;

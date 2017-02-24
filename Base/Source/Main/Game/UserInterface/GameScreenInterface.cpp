@@ -7,7 +7,7 @@ GameScreenInterface::GameScreenInterface()
 
 GameScreenInterface::~GameScreenInterface()
 {
-
+	Exit();
 }
 
 void GameScreenInterface::Init()
@@ -58,16 +58,6 @@ void GameScreenInterface::Exit()
 		delete it;
 	}
 	InternalLayerContainer.clear();
-}
-
-InterfaceLayer* GameScreenInterface::CreateNewInterfaceLayer(const std::string& LayerID, const Vector3& OriginalPosition, const Vector3& TargetPosition)
-{
-	InterfaceLayer* NewL = new InterfaceLayer();
-	NewL->SetEntityID(LayerID);
-	NewL->SetOriginalPosition(OriginalPosition);
-	NewL->SetTargetPosition(TargetPosition);
-	InternalLayerContainer.push_back(NewL);
-	return NewL;
 }
 
 void GameScreenInterface::PopUpDelay(const float& dt)

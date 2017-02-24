@@ -19,7 +19,7 @@ class GameScreenInterface : public InterfaceSystem
 {
 public:
 	GameScreenInterface();
-	~GameScreenInterface();
+	virtual ~GameScreenInterface();
 
 	virtual void Init(void);
 	virtual void Update(const float& dt);
@@ -27,8 +27,6 @@ public:
 	virtual void Exit(void);
 
 private:
-	InterfaceLayer* CreateNewInterfaceLayer(const std::string& LayerID, const Vector3& OriginalPosition, const Vector3& TargetPosition);
-
 	void PopUpDelay(const float& dt);
 	void PopUpReset();
 
@@ -40,7 +38,6 @@ private:
 	bool PopUpDone = 0;
 	Vector3 CenterTarget = Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.9f, 0);
 
-	std::vector<InterfaceLayer*> InternalLayerContainer;
 
 	bool PlayerTurn;
 };

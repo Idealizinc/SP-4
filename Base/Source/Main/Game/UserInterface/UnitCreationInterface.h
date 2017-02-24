@@ -22,7 +22,7 @@ public:
 	bool UIDisplayed;
 
 	UnitCreationInterface();
-	~UnitCreationInterface();
+	virtual ~UnitCreationInterface();
 
 	virtual void Init(void);
 	virtual void Update(const float& dt);
@@ -41,8 +41,6 @@ public:
 private:
 	void HandleUserInput();
 	bool firstTime;
-	InterfaceLayer* CreateNewInterfaceLayer(const std::string& LayerID, const Vector3& OriginalPosition, const Vector3& TargetPosition);
-	std::vector<InterfaceLayer*> InternalLayerContainer;
 
 	InterfaceLayer* UnitSelectLayer;
 
@@ -61,7 +59,6 @@ private:
 
 	bool warningDisplayed;
 	float warningTime;
-
 
 };
 

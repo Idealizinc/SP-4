@@ -9,6 +9,7 @@ BattleSystem::BattleSystem()
 
 BattleSystem::~BattleSystem()
 {
+	Exit();
 }
 
 void BattleSystem::Init()
@@ -62,27 +63,7 @@ void BattleSystem::Render()
 
 void BattleSystem::Exit()
 {
-	while (InternalPlayerCharacterList.size() > 0)
-	{
-		CharacterEntity* obj = InternalPlayerCharacterList.back();
-		obj->Exit();
-		delete obj;
-		InternalPlayerCharacterList.pop_back();
-	}
-	while (InternalEnemyCharacterList.size() > 0)
-	{
-		CharacterEntity* obj = InternalEnemyCharacterList.back();
-		obj->Exit();
-		delete obj;
-		InternalEnemyCharacterList.pop_back();
-	}
-	while (InternalProjectileList.size() > 0)
-	{
-		Projectile* obj = InternalProjectileList.back();
-		obj->Exit();
-		delete obj;
-		InternalProjectileList.pop_back();
-	}
+	ClearCharacterCounters();
 }
 
 std::vector<CharacterEntity*>& BattleSystem::GetPlayerCharacterList()
@@ -165,6 +146,13 @@ void BattleSystem::ClearCharacterCounters()
 		delete obj;
 		InternalEnemyCharacterList.pop_back();
 	}
+	while (InternalProjectileList.size() > 0)
+	{
+		Projectile* obj = InternalProjectileList.back();
+		obj->Exit();
+		delete obj;
+		InternalProjectileList.pop_back();
+	}
 	CurrentBattleTile = nullptr;
 }
 
@@ -189,6 +177,7 @@ void BattleSystem::UpdateCharacterLogic(std::vector<CharacterEntity*>& Character
 			++it;
 		}
 		else {
+			(*it)->Exit();
 			delete *it;
 			it = CharacterList.erase(it);
 		}

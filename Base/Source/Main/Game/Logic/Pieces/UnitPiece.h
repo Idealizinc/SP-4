@@ -11,6 +11,7 @@ Purpose       : Defines a UnitPiece, a piece that represents an Enemy/Player's B
 */
 
 #include "../../SceneManagement/Objects/TerrainNode.h"
+#include "../Terrain/Terrain.h"
 #include <map>
 
 /*
@@ -26,8 +27,9 @@ The Number of Each Type of Unit
 A UnitPiece's stats can only be changed upon creation <- May change in future
 */
 
-class Terrain;
+
 class TerrainNode;
+class Terrain;
 
 class UnitPiece : public BaseObject
 {

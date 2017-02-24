@@ -23,7 +23,6 @@ UnitSpawnSystem::UnitSpawnSystem()
 
 UnitSpawnSystem::~UnitSpawnSystem()
 {
-
 }
 
 void UnitSpawnSystem::CreateUnitUIElement(InterfaceLayer* layer)

@@ -8,6 +8,8 @@
 #include "../../Engine/System/SceneSystem.h"
 #include "../../Engine/System/RenderSystem.h"
 #include "../../Engine/System/MusicSystem.h"
+#include "../../Engine/State/StateList.h"
+#include "../Systems/GameLogicSystem.h"
 
 // Scenes
 #include "../Scene/SceneTown1.h"
@@ -161,7 +163,7 @@ void Application::Init()
 	// Initiallize used scenes
 	//Scene_MainMenu *MM = new Scene_MainMenu();	
 	SceneTown1 *Town1 = new SceneTown1();
-	BattleScene *Battle = new BattleScene();
+	//BattleScene *Battle = new BattleScene();
 
     MusicSystem::Instance().Init();
 }
@@ -187,7 +189,9 @@ void Application::Run()
 		// Frame rate limiter. Limits each frame to a specified time in ms.   
 		m_timer.waitUntil(frameTime);
 
-	} //Check if the ESC key had been pressed or if the window had been closed
+	} //Check if the ESC key had been pressed or if the window has been closed
+	StateList::Instance().Exit();
+	GameLogicSystem::Instance().Exit();
 	SceneSystem::Instance().ClearMemoryUsage();
 	MusicSystem::Instance().ClearMemoryUsage();
 }
