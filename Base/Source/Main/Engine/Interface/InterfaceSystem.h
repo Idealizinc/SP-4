@@ -31,9 +31,9 @@ public:
 
 
 private:
-	std::vector<InterfaceLayer*> InternalLayerContainer;
 
 protected:
+	std::vector<InterfaceLayer*> InternalLayerContainer;
 
 };
 

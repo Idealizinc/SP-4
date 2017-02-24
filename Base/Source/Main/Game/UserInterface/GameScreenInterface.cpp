@@ -60,16 +60,6 @@ void GameScreenInterface::Exit()
 	InternalLayerContainer.clear();
 }
 
-InterfaceLayer* GameScreenInterface::CreateNewInterfaceLayer(const std::string& LayerID, const Vector3& OriginalPosition, const Vector3& TargetPosition)
-{
-	InterfaceLayer* NewL = new InterfaceLayer();
-	NewL->SetEntityID(LayerID);
-	NewL->SetOriginalPosition(OriginalPosition);
-	NewL->SetTargetPosition(TargetPosition);
-	InternalLayerContainer.push_back(NewL);
-	return NewL;
-}
-
 void GameScreenInterface::PopUpDelay(const float& dt)
 {
 	if (PlayerTurnPopup->GetPosition().y <= PlayerTurnPopup->GetTargetPosition().y + 3 && PopUpDone == false && PlayerTurn == 1)

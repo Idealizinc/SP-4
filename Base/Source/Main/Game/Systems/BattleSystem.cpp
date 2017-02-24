@@ -28,29 +28,34 @@ void BattleSystem::Update(const float& dt)
 {
 	BSI->Update(dt);
 
-	// I will need to update all my characters, projectiles and other miscellaneous game objects
-	UpdateCharacterLogic(InternalPlayerCharacterList, dt);
-	UpdateCharacterLogic(InternalEnemyCharacterList, dt);
-	UpdateProjectileLogic(dt);
-	if (InternalEnemyCharacterList.size() <= 0 && InternalPlayerCharacterList.size() > 0)
+	if (BSI->StartBattle)
 	{
-		// Player won
-		GameLogicSystem::Instance().SetCurrentState(GameLogicSystem::Instance().PlayerTurn);
-		SceneSystem::Instance().SwitchScene("1_Scene");
-		for (auto it : CurrentBattleTile->EnemyUnitList)
-			it->Active = false;
-		CurrentBattleTile->EnemyUnitList.clear();
-		ClearCharacterCounters();
-	}
-	else if (InternalEnemyCharacterList.size() > 0 && InternalPlayerCharacterList.size() <= 0)
-	{
-		// Enemy won
-		GameLogicSystem::Instance().SetCurrentState(GameLogicSystem::Instance().EnemyTurn);
-		SceneSystem::Instance().SwitchScene("1_Scene");
-		for (auto it : CurrentBattleTile->PlayerUnitList)
-			it->Active = false;
-		CurrentBattleTile->PlayerUnitList.clear();
-		ClearCharacterCounters();
+		// I will need to update all my characters, projectiles and other miscellaneous game objects
+		UpdateCharacterLogic(InternalPlayerCharacterList, dt);
+		UpdateCharacterLogic(InternalEnemyCharacterList, dt);
+		UpdateProjectileLogic(dt);
+		if (InternalEnemyCharacterList.size() <= 0 && InternalPlayerCharacterList.size() > 0)
+		{
+			// Player won
+			GameLogicSystem::Instance().SetCurrentState(GameLogicSystem::Instance().PlayerTurn);
+			SceneSystem::Instance().SwitchScene("1_Scene");
+			for (auto it : CurrentBattleTile->EnemyUnitList)
+				it->Active = false;
+			CurrentBattleTile->EnemyUnitList.clear();
+			ClearCharacterCounters();
+			BSI->ResetAll();
+		}
+		else if (InternalEnemyCharacterList.size() > 0 && InternalPlayerCharacterList.size() <= 0)
+		{
+			// Enemy won
+			GameLogicSystem::Instance().SetCurrentState(GameLogicSystem::Instance().EnemyTurn);
+			SceneSystem::Instance().SwitchScene("1_Scene");
+			for (auto it : CurrentBattleTile->PlayerUnitList)
+				it->Active = false;
+			CurrentBattleTile->PlayerUnitList.clear();
+			ClearCharacterCounters();
+			BSI->ResetAll();
+		}
 	}
 }
 
@@ -90,9 +95,10 @@ void BattleSystem::Exit()
 	}
 	if (BSI)
 	{
-	BSI->Exit();
-	delete BSI;
-	BSI = nullptr;
+		BSI->StartBattle = false;
+		BSI->Exit();
+		delete BSI;
+		BSI = nullptr;
 	}
 }
 

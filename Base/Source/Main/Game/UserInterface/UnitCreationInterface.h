@@ -43,8 +43,6 @@ private:
 	void HandleUserInput();
 	void ShowDisplay();
 	bool firstTime;
-	InterfaceLayer* CreateNewInterfaceLayer(const std::string& LayerID, const Vector3& OriginalPosition, const Vector3& TargetPosition);
-	std::vector<InterfaceLayer*> InternalLayerContainer;
 
 	InterfaceLayer* UnitSelectLayer;
 

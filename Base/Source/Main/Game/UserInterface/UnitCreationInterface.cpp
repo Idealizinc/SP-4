@@ -175,16 +175,6 @@ void UnitCreationInterface::HandleUserInput()
 	}
 }
 
-InterfaceLayer* UnitCreationInterface::CreateNewInterfaceLayer(const std::string& LayerID, const Vector3& OriginalPosition, const Vector3& TargetPosition)
-{
-	InterfaceLayer* NewL = new InterfaceLayer();
-	NewL->SetEntityID(LayerID);
-	NewL->SetOriginalPosition(OriginalPosition);
-	NewL->SetTargetPosition(TargetPosition);
-	InternalLayerContainer.push_back(NewL);
-	return NewL;
-}
-
 void UnitCreationInterface::OpenInterface()
 {
 	if (firstTime == 0)

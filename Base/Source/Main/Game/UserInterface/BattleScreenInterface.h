@@ -9,21 +9,19 @@ class BattleScreenInterface : public InterfaceSystem
 {
 public:
 	BattleScreenInterface();
-	~BattleScreenInterface();
+	virtual ~BattleScreenInterface();
 
 	virtual void Init(void);
 	virtual void Update(const float& dt);
 	virtual void Render(void);
-	virtual void Exit(void);
 	
 	void SetTerrain(Terrain* T);
+	void ResetAll();
+	bool StartBattle;
 
 private:
-	InterfaceLayer* CreateNewInterfaceLayer(const std::string& LayerID, const Vector3& OriginalPosition, const Vector3& TargetPosition);
 
 	void PopUpDelay(const float& dt);
-	void PopUpReset();
-	void ResetAll();
 
 	InterfaceLayer* TurnPopup;
 	InterfaceElement* BattleWordPopup;
@@ -32,25 +30,31 @@ private:
 	InterfaceLayer* TerrainInfoLayer;
 	InterfaceElement* TerrainInfoBackElement;
 	InterfaceElement* TerrainInfoFrame;
+	InterfaceElement* TerrainAdvantage;
 	InterfaceElement* TerrainHealthBoostValue;
 	InterfaceElement* TerrainMeleeBoostValue;
 	InterfaceElement* TerrainMagicBoostValue;
 	InterfaceElement* TerrainRangeBoostValue;
+	InterfaceElement* TerrainDisadvantage;
+	InterfaceElement* TerrainHealthMinusValue;
+	InterfaceElement* TerrainMeleeMinusValue;
+	InterfaceElement* TerrainMagicMinusValue;
+	InterfaceElement* TerrainRangeMinusValue;
 
 	Terrain* currentTerrain;
 
 	//InterfaceElement* PlayerTurnPopup;
 
-	float TurnPopupTimer = 0;
-	bool PoppedUp = 0;
-	bool PopUpDone = 0;
-	bool PoppedUp2 = 0;
-	bool PopUpDone2 = 0;
+	float TurnPopupTimer = 1;
+	float TurnPopoutTimer = 1;
+	float TurnPopupTimer2 = 0.5f;
+	float TurnPopoutTimer2 = 1;
+	float TerrainInfoTimer = 2;
 	Vector3 CenterTarget = Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.5f, 0);
-	float floatValueReader;
 
-	std::vector<InterfaceLayer*> InternalLayerContainer;
+	int negativeHeight = -(SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight);
 
+	bool ShowTerrainInfo;
 	bool Initiation;
 	bool Followup;
 	bool Finished;

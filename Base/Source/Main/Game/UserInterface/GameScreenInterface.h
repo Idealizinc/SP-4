@@ -27,8 +27,6 @@ public:
 	virtual void Exit(void);
 
 private:
-	InterfaceLayer* CreateNewInterfaceLayer(const std::string& LayerID, const Vector3& OriginalPosition, const Vector3& TargetPosition);
-
 	void PopUpDelay(const float& dt);
 	void PopUpReset();
 
