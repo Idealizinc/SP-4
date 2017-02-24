@@ -61,7 +61,7 @@ void BattleSystem::Update(const float& dt)
 
 void BattleSystem::Render()
 {
-	//BSI->Render();
+	BSI->Render();
 	for (auto it : InternalPlayerCharacterList)
 		it->Render();
 	for (auto it : InternalEnemyCharacterList)
