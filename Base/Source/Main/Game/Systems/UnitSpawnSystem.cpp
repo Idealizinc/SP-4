@@ -187,15 +187,18 @@ void UnitSpawnSystem::HandleUserInput(const Vector3& MousePos, const Vector3& La
 	{
 		if (it.second->DetectUserInput(MousePos,LayerPos))
 		{
-			auto it2 = RecordedUnitMap.find(it.first);
-			if (it2 != RecordedUnitMap.end())
+			if (getCurrentUnitCount() < 10)
 			{
-				//if found and already existing
-				++it2->second;
-			}
-			else
-			{
-				RecordedUnitMap.insert(std::pair<std::string, unsigned short>(it.first, 1));
+				auto it2 = RecordedUnitMap.find(it.first);
+				if (it2 != RecordedUnitMap.end())
+				{
+					//if found and already existing
+					++it2->second;
+				}
+				else
+				{
+					RecordedUnitMap.insert(std::pair<std::string, unsigned short>(it.first, 1));
+				}
 			}
 		}
 	}
