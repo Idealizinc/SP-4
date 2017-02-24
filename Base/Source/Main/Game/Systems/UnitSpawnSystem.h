@@ -33,8 +33,11 @@ public:
 
 	void HandleUserInput(const Vector3& MousePos, const Vector3& LayerPos);
 
+	int CalculateCost();
+
 private:
 	std::map<std::string, unsigned short> RecordedUnitMap;
+	std::map<std::string, int> UnitCost;
 
 	InterfaceLayer* DisplayIcons;
 

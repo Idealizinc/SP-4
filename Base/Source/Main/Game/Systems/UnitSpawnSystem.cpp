@@ -38,8 +38,8 @@ void UnitSpawnSystem::CreateUnitUIElement(InterfaceLayer* layer)
 		InterfaceElement* tempElement = nullptr;
 		
 		// Image Icon
-		tempElement = layer->CreateNewInterfaceElement("UnitInfoBacking", "weed2", Pos - Vector3(BackingDimension.x * 0.15f,-( BackingDimension.y * 0.05f)), Vector3(HalfDimension.x *0.15f, HalfDimension.y*0.25f, 1));
-		tempElement->SetTargetPosition(Pos - Vector3(BackingDimension.x * 0.15f, -(BackingDimension.y * 0.05f)));
+		tempElement = layer->CreateNewInterfaceElement("UnitInfoBacking", it.second->GetMeshName(), Pos - Vector3(BackingDimension.x * 0.2f,-( BackingDimension.y * 0.05f)), Vector3(HalfDimension.x *0.12f, HalfDimension.y*0.2f, 1));
+		tempElement->SetTargetPosition(Pos - Vector3(BackingDimension.x * 0.2f, -(BackingDimension.y * 0.05f)));
 		tempElement = layer->CreateNewInterfaceElement("UnitInfoName", "Transparent", Pos - Vector3(BackingDimension.x * 0.4f, -BackingDimension.y * 0.3f), Vector3(HalfDimension.x *0.1f, HalfDimension.y*0.075f, 1));
 		tempElement->SetTargetPosition(Pos - Vector3(BackingDimension.x * 0.4f, -BackingDimension.y * 0.3f));
 		tempElement->SetText(it.first);

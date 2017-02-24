@@ -36,9 +36,6 @@ void UnitCreationInterface::Init()
 	UnitSelectLayer->SetOriginalPosition(Vector3(ScreenHalfDimension.x * 4.f,0, 0));
 	UnitSelectLayer->SetTargetPosition(Vector3(ScreenHalfDimension.x * 4.f,0, 0));
 
-	
-
-
 	CountLayer = CreateNewInterfaceLayer("Count", 0, 0);
 	CountLayer->SetOriginalPosition(Vector3(ScreenHalfDimension.x * 3.f, 0, 0));
 	CountLayer->SetTargetPosition(Vector3(ScreenHalfDimension.x * 3.f, 0, 0));
@@ -51,18 +48,29 @@ void UnitCreationInterface::Init()
 	{
 		InterfaceElement* tempElement = nullptr;
 
-		tempElement = IconLayer->CreateNewInterfaceElement("Icon" + it.second->GetName(), "weed2", Vector3(ScreenHalfDimension.x * 0.5f, ScreenHalfDimension.y * 3.f, 0), Vector3(ScreenHalfDimension.x *0.15f, ScreenHalfDimension.y*0.25f, 1));
-		tempElement->SetTargetPosition(Vector3(ScreenHalfDimension.x * 0.5f, ScreenHalfDimension.y * 3.f, 0));
+		tempElement = IconLayer->CreateNewInterfaceElement("Icon" + it.second->GetName(), it.second->GetMeshName(), Vector3(ScreenHalfDimension.x * 0.3f, ScreenHalfDimension.y * 3.f, 0), Vector3(ScreenHalfDimension.x *0.12f, ScreenHalfDimension.y*0.20f, 1));
+		tempElement->SetTargetPosition(Vector3(ScreenHalfDimension.x * 0.3f, ScreenHalfDimension.y * 3.f, 0));
 
 		IconMap.insert(std::pair<std::string, InterfaceElement*>(it.second->GetName(), tempElement));
+
+		tempElement = IconLayer->CreateNewInterfaceElement("IconCount" + it.second->GetName(), "Transparent", Vector3(ScreenHalfDimension.x * 0.5f, ScreenHalfDimension.y * 3.f, 0), Vector3(ScreenHalfDimension.x *0.15f, ScreenHalfDimension.y*0.25f, 1));
+		tempElement->SetTargetPosition(Vector3(ScreenHalfDimension.x * 0.5f, ScreenHalfDimension.y * 2.f, 0));
+		IconCounterMap.insert(std::pair<std::string, InterfaceElement*>(it.second->GetName(), tempElement));
 	}
 	
 
 	UnitSpawnMap->CreateUnitUIElement(UnitSelectLayer);
 
-	DeployButton = UnitSelectLayer->CreateNewInterfaceElement("Deploy", "quad1", Vector3(-ScreenHalfDimension.x, ScreenHalfDimension.y * 0.5f, 0), Vector3(ScreenHalfDimension.x *0.6f, ScreenHalfDimension.y*0.2f, 1.f));
-	DeployButton->SetTargetPosition(Vector3(-ScreenHalfDimension.x, ScreenHalfDimension.y * 0.5f, 0));
+	UnitDisplayLayer = CreateNewInterfaceLayer("Left", 0, 0);
+	UnitDisplayLayer->SetOriginalPosition(Vector3(ScreenHalfDimension.x * 0.25f, 0, 0));
+	UnitDisplayLayer->SetTargetPosition(Vector3(ScreenHalfDimension.x * 0.25f, 0, 0));
+
+	DeployButton = UnitDisplayLayer->CreateNewInterfaceElement("Deploy", "quad1", Vector3(-ScreenHalfDimension.x  * 0.9f, ScreenHalfDimension.y * 0.5f, 0), Vector3(ScreenHalfDimension.x *0.6f, ScreenHalfDimension.y*0.2f, 1.f));
+	DeployButton->SetTargetPosition(Vector3(-ScreenHalfDimension.x  * 0.9f, ScreenHalfDimension.y * 0.5f, 0));
 	DeployButton->SetText("Deploy");
+
+	DisplayQuad = UnitDisplayLayer->CreateNewInterfaceElement("Display", "quad", Vector3(-ScreenHalfDimension.x  *0.9f, ScreenHalfDimension.y * 1.6f, 0), Vector3(ScreenHalfDimension.x *0.7f, ScreenHalfDimension.y*0.6f, 1.f));
+	DisplayQuad->SetTargetPosition(Vector3(-ScreenHalfDimension.x * 0.9f, ScreenHalfDimension.y * 1.6f, 0));
 
 	firstTime = 0;
 	UIDisplayed = 0;
@@ -124,6 +132,7 @@ void UnitCreationInterface::ShowDisplay()
 		InterfaceElement* tempElement = nullptr;
 
 		int count = 1;
+		int count2 = 1;
 		for (auto it2 : IconMap)
 		{
 			bool displayed = false;
@@ -133,6 +142,27 @@ void UnitCreationInterface::ShowDisplay()
 				{
 					it2.second->SetTargetPosition(Vector3(lowestPt.x + IconSpaceWidth * count , highestPt.y));
 					++count;
+					displayed = true;
+					break;
+				}
+			}
+			if (displayed == false)
+			{
+				it2.second->SetTargetPosition(it2.second->GetOriginalPosition());
+			}
+		}
+
+		for (auto it2 : IconCounterMap)
+		{
+			bool displayed = false;
+			for (auto it : currentUnitMap)
+			{
+				if (it2.first == it.first)
+				{
+					it2.second->SetTargetPosition(Vector3(lowestPt.x + IconSpaceWidth * count2, highestPt.y - HalfDimension.y * 0.3f));
+					it2.second->SetText("x" + std::to_string(it.second));
+					it2.second->SetTextColor(0);
+					++count2;
 					displayed = true;
 					break;
 				}
@@ -164,7 +194,6 @@ void UnitCreationInterface::HandleUserInput()
 
 		if (DeployButton->DetectUserInput(MousePos, UnitSelectLayer->GetPosition()))
 		{
-			
 			deploy = 1;
 		}
 	}
@@ -190,12 +219,13 @@ void UnitCreationInterface::OpenInterface()
 	if (firstTime == 0)
 	{
 		UnitSelectLayer->SetTargetPosition(Vector3(ScreenHalfDimension.x * 1.5f,0, 0));
-	
+		UnitDisplayLayer->SetTargetPosition(Vector3(ScreenHalfDimension.x * 1.5f, 0, 0));
 		firstTime = 1;
 	}
 	else
 	{
 		UnitSelectLayer->SwapOriginalWithTarget();
+		UnitDisplayLayer->SwapOriginalWithTarget();
 	
 	}
 	UnitSpawnMap->resetUnitMap();

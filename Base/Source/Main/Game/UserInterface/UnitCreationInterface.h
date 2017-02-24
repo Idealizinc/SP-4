@@ -47,12 +47,14 @@ private:
 	std::vector<InterfaceLayer*> InternalLayerContainer;
 
 	InterfaceLayer* UnitSelectLayer;
+	InterfaceLayer* UnitDisplayLayer;
 
 	//LInterfaceLayer* ScrollingLayer;
 	InterfaceLayer* IconLayer;
 	InterfaceLayer* CountLayer;
 
 	InterfaceElement* DeployButton;
+	InterfaceElement* DisplayQuad;
 
 	InterfaceLayer* WarningLayer;
 	InterfaceElement* NoUnitPopup;
@@ -66,6 +68,8 @@ private:
 
 	std::map<std::string, InterfaceElement*> IconMap;
 	std::map<std::string, InterfaceElement*> IconCounterMap;
+
+	
 
 
 };
