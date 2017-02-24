@@ -9,14 +9,16 @@ BattleSystem::BattleSystem()
 
 BattleSystem::~BattleSystem()
 {
-	Exit();
 }
 
 void BattleSystem::Init()
 {
 	UnitData.LoadWeaponData("CSVFiles/WeaponDataLoader.csv");
-	UnitData.LoadUnitData("CSVFiles/UnitDataLoader.csv");
+	//UnitData.LoadUnitData("CSVFiles/UnitDataLoader.csv");
 	UnitData.LoadRaceData("CSVFiles/RaceDataLoader.csv");
+	UnitData.LoadLivingFactionData("CSVFiles/LivingFactionLoader.csv");
+	UnitData.LoadUndeadFactionData("CSVFiles/UndeadFactionLoader.csv");
+
 
 	SpawnPosition_Enemy = Vector3(-20, 1, 0);
 	SpawnPosition_Player = Vector3(20, 1, 0);
@@ -61,7 +63,7 @@ void BattleSystem::Update(const float& dt)
 
 void BattleSystem::Render()
 {
-	//BSI->Render();
+	BSI->Render();
 	for (auto it : InternalPlayerCharacterList)
 		it->Render();
 	for (auto it : InternalEnemyCharacterList)
@@ -287,7 +289,13 @@ void BattleSystem::SpawnPlayerCharacters(std::map<std::string, unsigned short> P
 {
 	for (auto PCL : PlayerCharacterList)
 	{
-		UnitType* UT = UnitData.UnitMap.find(PCL.first)->second;
+		std::map<std::string, UnitType*>UnitMap;
+		if (GameLogicSystem::Instance().PlayerFaction == GameLogicSystem::F_LIVING)
+			UnitMap = GameLogicSystem::Instance().InternalBattleSystem->UnitData.LivingMap;
+		else
+			UnitMap = GameLogicSystem::Instance().InternalBattleSystem->UnitData.UndeadMap;
+
+		UnitType* UT = UnitMap.find(PCL.first)->second;
 		if (UT != nullptr)
 		{
 			for (unsigned int i = 0; i < PCL.second; ++i)
@@ -318,7 +326,14 @@ void BattleSystem::SpawnEnemyCharacters(std::map<std::string, unsigned short> En
 {
 	for (auto ECL : EnemyCharacterList)
 	{
-		UnitType* UT = UnitData.UnitMap.find(ECL.first)->second;
+		std::map<std::string, UnitType*>UnitMap;
+		if (GameLogicSystem::Instance().PlayerFaction != GameLogicSystem::F_LIVING)
+			UnitMap = GameLogicSystem::Instance().InternalBattleSystem->UnitData.LivingMap;
+		else
+			UnitMap = GameLogicSystem::Instance().InternalBattleSystem->UnitData.UndeadMap;
+
+		UnitType* UT = UnitMap.find(ECL.first)->second;
+
 		if (UT != nullptr)
 		{
 			for (unsigned int i = 0; i < ECL.second; ++i)

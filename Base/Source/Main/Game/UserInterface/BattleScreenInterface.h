@@ -40,6 +40,10 @@ private:
 	InterfaceElement* TerrainMagicMinusValue;
 	InterfaceElement* TerrainRangeMinusValue;
 
+	InterfaceLayer* UnitCountInfoLayer;
+	InterfaceElement* PlayerUnitCount;
+	InterfaceElement* EnemyUnitCount;
+
 	Terrain* currentTerrain;
 
 	float TurnPopupTimer = 1;

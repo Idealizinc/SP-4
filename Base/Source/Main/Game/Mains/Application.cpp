@@ -194,6 +194,7 @@ void Application::Run()
 	GameLogicSystem::Instance().Exit();
 	SceneSystem::Instance().ClearMemoryUsage();
 	MusicSystem::Instance().ClearMemoryUsage();
+	MusicSystem::Instance().Exit();
 }
 
 void Application::Update()

@@ -12,7 +12,12 @@ TerrainDataLoader::TerrainDataLoader()
 
 TerrainDataLoader::~TerrainDataLoader()
 {
-
+	for (auto it : TerrainMap)
+	{
+		delete it.second;
+		it.second = nullptr;
+	}
+	TerrainMap.clear();
 }
 
 bool TerrainDataLoader::LoadTerrainData(const char* file_path)

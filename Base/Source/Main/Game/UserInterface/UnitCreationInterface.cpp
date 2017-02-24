@@ -47,7 +47,12 @@ void UnitCreationInterface::Init()
 	IconLayer->SetOriginalPosition(Vector3(0, 0, 0));
 	IconLayer->SetTargetPosition(Vector3(0, 0, 0));
 
-	for (auto it : GameLogicSystem::Instance().InternalBattleSystem->UnitData.UnitMap)
+	std::map<std::string, UnitType*>UnitMap;
+	if (GameLogicSystem::Instance().PlayerFaction == GameLogicSystem::F_LIVING)
+		UnitMap = GameLogicSystem::Instance().InternalBattleSystem->UnitData.LivingMap;
+	else
+		UnitMap = GameLogicSystem::Instance().InternalBattleSystem->UnitData.UndeadMap;
+	for (auto it : UnitMap)
 	{
 		InterfaceElement* tempElement = nullptr;
 

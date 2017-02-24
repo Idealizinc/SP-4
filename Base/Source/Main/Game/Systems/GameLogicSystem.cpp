@@ -98,6 +98,12 @@ void GameLogicSystem::QuickExit()
 		delete InternalEnemySystem;
 		InternalEnemySystem = nullptr;
 	}
+	if (InternalBattleSystem)
+	{
+		InternalBattleSystem->Exit();
+		delete InternalBattleSystem;
+		InternalBattleSystem = nullptr;
+	}
 	if (UnitInterface)
 	{
 		UnitInterface->Exit();

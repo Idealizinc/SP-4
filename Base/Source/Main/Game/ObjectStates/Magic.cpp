@@ -1,7 +1,6 @@
 #include "Magic.h"
 #include "../../Engine/State/StateList.h"
 #include "../Objects/Characters/MagicCharacter.h"
-#include "../Systems/ObjectManager.h"
 #include "../Systems/EventSystem.h"
 
 MagicStateManager::MagicStateManager()
@@ -167,38 +166,38 @@ bool MagicStateManager::WithinMagic(CharacterEntity* C1, CharacterEntity* C2)
 
 CharacterEntity* MagicStateManager::FindNearestEnemy(CharacterEntity* RC)
 {
-	std::vector<CharacterEntity*> Container = ObjectManager::Instance().GetCharacterList();
-	if (Container.size() > 1 && RC->TargetEnemy == nullptr)
-	{
-		// Radius Check
-		// Find a nearby TargetEnemy, Iterate char list, set TargetEnemy found, select closest one
-		float DistanceBetween = FLT_MAX;
-		for (std::vector<CharacterEntity*>::iterator it = Container.begin(); it != Container.end(); ++it)
-		{
-			if (*it != RC && (*it)->Active && !DeathCheck(*it) && (*it)->GetEntityID() != "Magic")
-			{
-				ObjectManager::Instance().WorldHeight;
-				Vector3 Position = (*it)->GetPosition();
-				// I can only target stuff inside the map, no spawn killing
-				if (Position.x > 0 && Position.x < ObjectManager::Instance().WorldWidth && Position.y > 0 && Position.y < ObjectManager::Instance().WorldHeight)
-				{
-					if (WithinMagic(RC, *it))
-					{
-						// Check if target is within FOV by comparing the current angle against the angle between the two characters
-						Vector3 DirVec = RC->GetPosition() - (*it)->GetPosition();
-						int AngleBetween = ((int)Math::RadianToDegree(atan2(-DirVec.x, DirVec.y))) % 360;
-						int CurrentAngle = (int)RC->GetRotationAngle() % 360;
-						int FOVAddition = 90 - (int)(RC->FieldOfView * 0.5f);
-
-						if (!(AngleBetween < CurrentAngle + 90 + FOVAddition && AngleBetween > CurrentAngle - 90 - FOVAddition))
-						{
-							return *it;
-						}
-					}
-				}
-			}
-		}
-	}
+	//std::vector<CharacterEntity*> Container = ObjectManager::Instance().GetCharacterList();
+	//if (Container.size() > 1 && RC->TargetEnemy == nullptr)
+	//{
+	//	// Radius Check
+	//	// Find a nearby TargetEnemy, Iterate char list, set TargetEnemy found, select closest one
+	//	float DistanceBetween = FLT_MAX;
+	//	for (std::vector<CharacterEntity*>::iterator it = Container.begin(); it != Container.end(); ++it)
+	//	{
+	//		if (*it != RC && (*it)->Active && !DeathCheck(*it) && (*it)->GetEntityID() != "Magic")
+	//		{
+	//			ObjectManager::Instance().WorldHeight;
+	//			Vector3 Position = (*it)->GetPosition();
+	//			// I can only target stuff inside the map, no spawn killing
+	//			if (Position.x > 0 && Position.x < ObjectManager::Instance().WorldWidth && Position.y > 0 && Position.y < ObjectManager::Instance().WorldHeight)
+	//			{
+	//				if (WithinMagic(RC, *it))
+	//				{
+	//					// Check if target is within FOV by comparing the current angle against the angle between the two characters
+	//					Vector3 DirVec = RC->GetPosition() - (*it)->GetPosition();
+	//					int AngleBetween = ((int)Math::RadianToDegree(atan2(-DirVec.x, DirVec.y))) % 360;
+	//					int CurrentAngle = (int)RC->GetRotationAngle() % 360;
+	//					int FOVAddition = 90 - (int)(RC->FieldOfView * 0.5f);
+	//
+	//					if (!(AngleBetween < CurrentAngle + 90 + FOVAddition && AngleBetween > CurrentAngle - 90 - FOVAddition))
+	//					{
+	//						return *it;
+	//					}
+	//				}
+	//			}
+	//		}
+	//	}
+	//}
 	return nullptr;
 }
 

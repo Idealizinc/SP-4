@@ -43,18 +43,18 @@ public:
 		for (int i = 0; i < NumberOfBullets; ++i)
 		{
 				
-			// Bullet Fire
-			Vector3 AltDirVec = (CE->TargetEnemy->GetPosition() + 0.005f * Vector3(Math::RandFloatMinMax(-DirVec.LengthSquared(), DirVec.LengthSquared()), Math::RandFloatMinMax(-DirVec.LengthSquared(), DirVec.LengthSquared())) - CE->GetPosition());
-			Projectile* Bullet = new Projectile("Bullet", Damage, 10);
-			Bullet->OwnerID = CE->GetEntityID();
-			Vector3 Velocity = AltDirVec.Normalized() * (float)CE->WalkSpeed * (float)CE->WalkSpeed;
-			Bullet->SetParameters("Bullet", 1, CE->GetPosition() + Velocity * 0.01f, Vector3(CE->GetDimensions().x * 0.1f, CE->GetDimensions().y * 0.3f, 1), Velocity, 0, Vector3(0, 0, 1));
-			ObjectManager::Instance().AddNewProjectile(Bullet);
-
-			// Smoke Particle
-			float ParticleSpeed = Math::RandFloatMinMax(2.f, 3.f);
-			float ParticleLifeTime = Math::RandFloatMinMax(0.25f, 0.5f);
-			ObjectManager::Instance().AddNewParticle(new Particle("Smoke", 1, Bullet->GetPosition() + Bullet->GetVelocity() * 0.015f, CE->GetDimensions() * Math::RandFloatMinMax(0.3f, 0.5f), Vector3(Math::RandFloatMinMax(-ParticleSpeed, ParticleSpeed), Math::RandFloatMinMax(-ParticleSpeed, ParticleSpeed), Math::RandFloatMinMax(0, ParticleSpeed)), Vector3(0, 0, 100), ParticleLifeTime));
+			//// Bullet Fire
+			//Vector3 AltDirVec = (CE->TargetEnemy->GetPosition() + 0.005f * Vector3(Math::RandFloatMinMax(-DirVec.LengthSquared(), DirVec.LengthSquared()), Math::RandFloatMinMax(-DirVec.LengthSquared(), DirVec.LengthSquared())) - CE->GetPosition());
+			//Projectile* Bullet = new Projectile("Bullet", Damage, 10);
+			//Bullet->OwnerID = CE->GetEntityID();
+			//Vector3 Velocity = AltDirVec.Normalized() * (float)CE->WalkSpeed * (float)CE->WalkSpeed;
+			//Bullet->SetParameters("Bullet", 1, CE->GetPosition() + Velocity * 0.01f, Vector3(CE->GetDimensions().x * 0.1f, CE->GetDimensions().y * 0.3f, 1), Velocity, 0, Vector3(0, 0, 1));
+			////ObjectManager::Instance().AddNewProjectile(Bullet);
+			//
+			//// Smoke Particle
+			//float ParticleSpeed = Math::RandFloatMinMax(2.f, 3.f);
+			//float ParticleLifeTime = Math::RandFloatMinMax(0.25f, 0.5f);
+			//ObjectManager::Instance().AddNewParticle(new Particle("Smoke", 1, Bullet->GetPosition() + Bullet->GetVelocity() * 0.015f, CE->GetDimensions() * Math::RandFloatMinMax(0.3f, 0.5f), Vector3(Math::RandFloatMinMax(-ParticleSpeed, ParticleSpeed), Math::RandFloatMinMax(-ParticleSpeed, ParticleSpeed), Math::RandFloatMinMax(0, ParticleSpeed)), Vector3(0, 0, 100), ParticleLifeTime));
 			
 		}
 		Attackability = false;

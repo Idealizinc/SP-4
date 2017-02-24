@@ -1,7 +1,6 @@
 #include "Melee.h"
 #include "../../Engine/State/StateList.h"
 #include "../Objects/Characters/MeleeCharacter.h"
-#include "../Systems/ObjectManager.h"
 #include "../Systems/BattleSystem.h"
 #include "../Systems/GameLogicSystem.h"
 
