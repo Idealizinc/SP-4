@@ -40,8 +40,8 @@ void UnitCreationInterface::Init()
 	UnitSelectLayer->SetTargetPosition(Vector3(ScreenHalfDimension.x * 4.f,0, 0));
 
 	CountLayer = CreateNewInterfaceLayer("Count", 0, 0);
-	CountLayer->SetOriginalPosition(Vector3(ScreenHalfDimension.x * 3.f, 0, 0));
-	CountLayer->SetTargetPosition(Vector3(ScreenHalfDimension.x * 3.f, 0, 0));
+	CountLayer->SetOriginalPosition(Vector3(0, 0, 0));
+	CountLayer->SetTargetPosition(Vector3(0, 0, 0));
 
 	IconLayer = CreateNewInterfaceLayer("Icons", 0, 0);
 	IconLayer->SetOriginalPosition(Vector3(0, 0, 0));
@@ -80,6 +80,10 @@ void UnitCreationInterface::Init()
 	DisplayQuad = UnitDisplayLayer->CreateNewInterfaceElement("Display", "quad", Vector3(-ScreenHalfDimension.x  *0.9f, ScreenHalfDimension.y * 1.6f, 0), Vector3(ScreenHalfDimension.x *0.7f, ScreenHalfDimension.y*0.6f, 1.f));
 	DisplayQuad->SetTargetPosition(Vector3(-ScreenHalfDimension.x * 0.9f, ScreenHalfDimension.y * 1.6f, 0));
 
+	TotalCost = UnitDisplayLayer->CreateNewInterfaceElement("Cost", "quad", Vector3(-ScreenHalfDimension.x  *0.9f, ScreenHalfDimension.y * 1.f, 0), Vector3(ScreenHalfDimension.x *0.2f, ScreenHalfDimension.y*0.15f, 1.f));
+	TotalCost->SetTargetPosition(Vector3(-ScreenHalfDimension.x * 0.9f, ScreenHalfDimension.y * 1.f, 0));
+	TotalCost->SetTextColor(0);
+
 	firstTime = 0;
 	UIDisplayed = 0;
 	deploy = 0;
@@ -96,6 +100,7 @@ void UnitCreationInterface::Update(const float& dt)
 
 	HandleUserInput();
 	ShowDisplay();
+	TotalCost->SetText("$" + std::to_string(UnitSpawnMap->CalculateCost()) + "/$30");
 	//UnitSpawnMap->CreateUnitDisplayElement(IconLayer);
 	if (deploy == true && UnitSpawnMap->getCurrentUnitCount() == 0)
 	{
@@ -127,6 +132,38 @@ void UnitCreationInterface::ShowDisplay()
 	Vector3 HalfDimension = SceneSystem::Instance().cSS_InputManager->ScreenCenter;
 	std::map<std::string, unsigned short> currentUnitMap = UnitSpawnMap->returnRecordedUnitMap();
 	int IconCount = currentUnitMap.size();
+	//if (IconCount > 1)
+	//{
+	//	++IconCount;
+	//}
+	////if (IconCount > 0)
+	//{
+	//	Vector3 TrueDisplayQuadPos = DisplayQuad->GetPosition() - (UnitDisplayLayer->GetOriginalPosition().x -  UnitDisplayLayer->GetPosition().x);
+	//	float DisplayQuadMinX = TrueDisplayQuadPos.x - (DisplayQuad->GetDimensions().x * 0.5f);
+	//	int IntervalCounter = 0;
+	//	float XInterval = DisplayQuad->GetDimensions().x / IconCount;
+	//	for (auto it2 : IconMap)
+	//	{
+	//		auto it = currentUnitMap.find(it2.first);
+	//		auto it3 = IconCounterMap.find(it2.first);
+
+	//			
+	//			if (it != currentUnitMap.end() && it3 != IconCounterMap.end())
+	//			{
+	//				++IntervalCounter;
+	//				it2.second->SetTargetPosition(Vector3(DisplayQuadMinX + IntervalCounter * XInterval, DisplayQuad->GetPosition().y + it2.second->GetDimensions().y * 0.5f));
+	//				it3->second->SetTargetPosition(Vector3(DisplayQuadMinX + IntervalCounter * XInterval, DisplayQuad->GetPosition().y - it3->second->GetDimensions().y * 0.5f));
+	//				if (IntervalCounter >= IconCount)
+	//					break;
+	//			}
+	//			else
+	//			{
+	//				it2.second->ResetToOriginal();
+	//				it3->second->ResetToOriginal();
+	//			}
+	//	}
+	//		
+	//}
 
 		Vector3 lowestPt(HalfDimension.x * 0.2f, HalfDimension.y);
 		Vector3 highestPt(HalfDimension.x * 1.5f, HalfDimension.y * 1.7f);
@@ -140,46 +177,25 @@ void UnitCreationInterface::ShowDisplay()
 		InterfaceElement* tempElement = nullptr;
 
 		int count = 1;
-		int count2 = 1;
 		for (auto it2 : IconMap)
 		{
-			bool displayed = false;
-			for (auto it : currentUnitMap)
-			{
-				if (it2.first == it.first)
-				{
-					it2.second->SetTargetPosition(Vector3(lowestPt.x + IconSpaceWidth * count , highestPt.y));
-					++count;
-					displayed = true;
-					break;
-				}
-			}
-			if (displayed == false)
+			auto it = currentUnitMap.find(it2.first);
+			auto it3 = IconCounterMap.find(it2.first);
+			if (it == currentUnitMap.end())
 			{
 				it2.second->SetTargetPosition(it2.second->GetOriginalPosition());
+				it3->second->SetTargetPosition(it3->second->GetOriginalPosition());
+			}
+			else
+			{
+				it2.second->SetTargetPosition(Vector3(lowestPt.x + IconSpaceWidth * (count), highestPt.y));
+				it3->second->SetTargetPosition(Vector3(lowestPt.x + IconSpaceWidth * (count), highestPt.y - it2.second->GetDimensions().y * 0.75f));
+				it3->second->SetText("x" + std::to_string(it->second));
+				it3->second->SetTextColor(0);
+				++count;
 			}
 		}
 
-		for (auto it2 : IconCounterMap)
-		{
-			bool displayed = false;
-			for (auto it : currentUnitMap)
-			{
-				if (it2.first == it.first)
-				{
-					it2.second->SetTargetPosition(Vector3(lowestPt.x + IconSpaceWidth * count2, highestPt.y - HalfDimension.y * 0.3f));
-					it2.second->SetText("x" + std::to_string(it.second));
-					it2.second->SetTextColor(0);
-					++count2;
-					displayed = true;
-					break;
-				}
-			}
-			if (displayed == false)
-			{
-				it2.second->SetTargetPosition(it2.second->GetOriginalPosition());
-			}
-		}
 }
 
 void UnitCreationInterface::Render()

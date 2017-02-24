@@ -52,9 +52,9 @@ private:
 	float TurnPopoutTimer2 = 1;
 	float TerrainInfoTimer = 2;
 
-	Vector3 CenterTarget = Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.5f, 0);
+	Vector3 CenterTarget;
 
-	int negativeHeight = -(SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight);
+	int negativeHeight;
 
 	bool ShowTerrainInfo;
 	bool Initiation;

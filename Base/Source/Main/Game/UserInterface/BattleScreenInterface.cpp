@@ -24,6 +24,9 @@ void BattleScreenInterface::Init()
 {
 	TurnPopup = CreateNewInterfaceLayer("StartLayer", 0, 0);
 
+	negativeHeight = -((int)SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight);
+	CenterTarget = SceneSystem::Instance().cSS_InputManager->ScreenCenter;
+
 	BattleWordPopup = TurnPopup->CreateNewInterfaceElement("BattleWordPopUp", "quad1", Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 2.5f, 0), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.5f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.2f, 0));
 	BattleWordPopup->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 2.5f, 0));
 	BattleWordPopup->SetText("Battle");
@@ -137,7 +140,7 @@ void BattleScreenInterface::PopUpDelay(const float& dt)
 			TerrainInfoTimer -= dt;
 			if (TerrainInfoTimer <= 0)
 			{
-				TerrainInfoLayer->SetTargetPosition(Vector3(0, negativeHeight, 0));
+				TerrainInfoLayer->SetTargetPosition(Vector3(0, (float)negativeHeight, 0));
 				if (TerrainInfoLayer->GetPosition().y >= TerrainInfoLayer->GetTargetPosition().y + 3)
 				{
 					Initiation = true;

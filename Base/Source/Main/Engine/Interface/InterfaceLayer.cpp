@@ -88,3 +88,8 @@ Vector3 InterfaceLayer::GetTargetPosition()
 {
 	return TargetPosition;
 }
+
+Vector3 InterfaceLayer::GetOriginalPosition()
+{
+	return OriginalPosition;
+}

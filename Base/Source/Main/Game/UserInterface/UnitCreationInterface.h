@@ -50,6 +50,7 @@ private:
 
 	InterfaceElement* DeployButton;
 	InterfaceElement* DisplayQuad;
+	InterfaceElement* TotalCost;
 
 	InterfaceLayer* WarningLayer;
 	InterfaceElement* NoUnitPopup;
