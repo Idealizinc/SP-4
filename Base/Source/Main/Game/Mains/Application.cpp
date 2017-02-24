@@ -163,7 +163,7 @@ void Application::Init()
 	// Initiallize used scenes
 	//Scene_MainMenu *MM = new Scene_MainMenu();	
 	SceneTown1 *Town1 = new SceneTown1();
-	//BattleScene *Battle = new BattleScene();
+	BattleScene *Battle = new BattleScene();
 
     MusicSystem::Instance().Init();
 }

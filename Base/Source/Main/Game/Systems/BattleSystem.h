@@ -8,6 +8,8 @@
 #include "../Logic/Terrain/Terrain.h"
 #include <vector>
 #include <map>
+#include "../UserInterface/BattleScreenInterface.h"
+
 
 /*
 Description
@@ -36,6 +38,8 @@ public:
 	void SetUpUnits(Terrain* BattlefieldTile);
 	void AddNewProjectile(Projectile* P);
 	Terrain* CurrentBattleTile;
+
+	BattleScreenInterface * BSI;
 
 	// Data Store
 	UnitDataLoader UnitData;

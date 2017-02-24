@@ -38,8 +38,6 @@ public:
 	{
 		Active = true;
 		SetParameters("gbullet", 1, 0, Vector3(3, 3, 3), 0, 0, Vector3(0, 1, 0));
-		// for testing
-		InternalBattalionList.insert(std::make_pair("Crusader", 5));
 	}
 	// Add functions in relation to the IBL
 

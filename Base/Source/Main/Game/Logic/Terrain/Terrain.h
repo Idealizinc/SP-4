@@ -78,13 +78,13 @@ public:
 	std::vector<UnitPiece*> PlayerUnitList;
 	std::vector<UnitPiece*> EnemyUnitList;
 
+	std::map<int, float> UnitAdvantage;
+	std::map<int, float> UnitDisadvantage;
+
 private:
 	std::string EntityID;
 	std::string TerrainName;
 	int TerrainType;
-
-	std::map<int, float> UnitAdvantage;
-	std::map<int, float> UnitDisadvantage;
 
 };
 

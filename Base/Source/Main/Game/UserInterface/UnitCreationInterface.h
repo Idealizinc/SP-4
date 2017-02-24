@@ -13,6 +13,7 @@ Purpose       : InterfaceSystem class that handles UI for unit spawning menu
 #include "../../Engine/Interface/InterfaceSystem.h"
 #include "../../Engine/System/SceneSystem.h"
 #include "../Systems/UnitSpawnSystem.h"
+#include <map>
 
 
 class UnitCreationInterface: public InterfaceSystem
@@ -27,12 +28,9 @@ public:
 	virtual void Init(void);
 	virtual void Update(const float& dt);
 	virtual void Render(void);
-	//virtual void Exit(void);
+	virtual void Exit(void);
 
 	void OpenInterface();
-	//void CloseInterface();
-
-	//std::map<int, int> returnUnitSpawnMap();
 
 	UnitSpawnSystem* returnUnitSpawnSys();
 
@@ -40,15 +38,18 @@ public:
 
 private:
 	void HandleUserInput();
+	void ShowDisplay();
 	bool firstTime;
 
 	InterfaceLayer* UnitSelectLayer;
+	InterfaceLayer* UnitDisplayLayer;
 
 	//LInterfaceLayer* ScrollingLayer;
 	InterfaceLayer* IconLayer;
 	InterfaceLayer* CountLayer;
 
 	InterfaceElement* DeployButton;
+	InterfaceElement* DisplayQuad;
 
 	InterfaceLayer* WarningLayer;
 	InterfaceElement* NoUnitPopup;
@@ -60,6 +61,8 @@ private:
 	bool warningDisplayed;
 	float warningTime;
 
+	std::map<std::string, InterfaceElement*> IconMap;
+	std::map<std::string, InterfaceElement*> IconCounterMap;
 };
 
 #endif

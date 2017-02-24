@@ -21,7 +21,6 @@ public:
 	~UnitSpawnSystem();
 
 	void CreateUnitUIElement(InterfaceLayer*);
-	void CreateUnitDisplayElement(InterfaceLayer* IconLayer);
 
 	void editUnit(std::string type, unsigned short count);
 	std::map<std::string, unsigned short> returnRecordedUnitMap();
@@ -34,11 +33,13 @@ public:
 
 	void HandleUserInput(const Vector3& MousePos, const Vector3& LayerPos);
 
+	int CalculateCost();
+
 private:
 	std::map<std::string, unsigned short> RecordedUnitMap;
+	std::map<std::string, int> UnitCost;
 
-	std::map<std::string, InterfaceElement*> IconMap;
-	std::map<std::string, InterfaceElement*> IconCounterMap;
+	InterfaceLayer* DisplayIcons;
 
 	int maxUnit; //unused
 	int interval = 0;

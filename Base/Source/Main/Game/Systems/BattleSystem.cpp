@@ -21,10 +21,13 @@ void BattleSystem::Init()
 	SpawnPosition_Enemy = Vector3(-20, 1, 0);
 	SpawnPosition_Player = Vector3(20, 1, 0);
 	CurrentBattleTile = nullptr;
+	BSI = new BattleScreenInterface();
 }
 
 void BattleSystem::Update(const float& dt)
 {
+	BSI->Update(dt);
+
 	// I will need to update all my characters, projectiles and other miscellaneous game objects
 	UpdateCharacterLogic(InternalPlayerCharacterList, dt);
 	UpdateCharacterLogic(InternalEnemyCharacterList, dt);
@@ -53,6 +56,7 @@ void BattleSystem::Update(const float& dt)
 
 void BattleSystem::Render()
 {
+	//BSI->Render();
 	for (auto it : InternalPlayerCharacterList)
 		it->Render();
 	for (auto it : InternalEnemyCharacterList)
@@ -64,6 +68,12 @@ void BattleSystem::Render()
 void BattleSystem::Exit()
 {
 	ClearCharacterCounters();
+	if (BSI)
+	{
+	BSI->Exit();
+	delete BSI;
+	BSI = nullptr;
+	}
 }
 
 std::vector<CharacterEntity*>& BattleSystem::GetPlayerCharacterList()
@@ -81,6 +91,7 @@ std::vector<Projectile*>& BattleSystem::GetProjectileList()
 
 void BattleSystem::SetUpUnits(Terrain* BattlefieldTile)
 {
+	BSI->SetTerrain(BattlefieldTile);
 	ClearCharacterCounters();
 	// For every of the Units within the tile, I am  going to put the entirety of the battalions into my counters
 	// Set up the Player
@@ -169,7 +180,7 @@ void BattleSystem::UpdateCharacterLogic(std::vector<CharacterEntity*>& Character
 				Vector3 Direction = (*it)->GetVelocity();
 				if ((*it)->GetVelocity().LengthSquared() > (*it)->WalkSpeed * (*it)->WalkSpeed)
 				{
-					(*it)->SetVelocity(Direction.Normalize() * (*it)->WalkSpeed);
+					(*it)->SetVelocity(Direction.Normalize() * (float)((*it)->WalkSpeed));
 				}
 
 			}
