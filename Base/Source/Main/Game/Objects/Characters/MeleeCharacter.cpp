@@ -74,7 +74,7 @@ void MeleeCharacter::Update(const float& dt)
 		if (!GetVelocity().IsZero())
 			LookVector = GetVelocity().Normalized();
 		if (GetVelocity().LengthSquared() > 0)
-			SetRotationAngle(Math::RadianToDegree(atan2(-GetVelocity().x, GetVelocity().z)));
+			SetRotationAngle(Math::RadianToDegree(atan2(-GetVelocity().x, -GetVelocity().z)));
 
 
 		if (Timer > anim_Time)
@@ -94,9 +94,8 @@ void MeleeCharacter::Exit()
 {
 	if (InternalStateManager)
 	{
-		MeleeStateManager* SM = dynamic_cast<MeleeStateManager*>(InternalStateManager);
-		SM->Exit();
-		delete SM;
+		InternalStateManager->Exit();
+		delete InternalStateManager;
 		InternalStateManager = nullptr;
 	}
 

@@ -756,8 +756,14 @@ bool RenderSystem::LoadCSVSpriteMeshes(const std::string &fileLocation)
 				size_t pos = it - theKeys.begin();
 				std::string theName = theValues[pos];
 				//MESH
-				Mesh* AssignedMesh = MeshBuilder::GenerateQuad(theName, Color(1,0,0), 1.f);
-				MeshList.insert(std::pair<std::string, Mesh*>(AssignedMesh->name, AssignedMesh));
+				Mesh* AssignedMesh = nullptr;
+				std::map<std::string, Mesh*>::iterator iter = MeshList.find(theName);
+				if (iter == MeshList.end())
+				{
+					AssignedMesh = MeshBuilder::GenerateQuad(theName, Color(1, 0, 0), 1.f);
+					MeshList.insert(std::pair<std::string, Mesh*>(AssignedMesh->name, AssignedMesh));
+				}
+				else AssignedMesh = iter->second;
 				//ANIMATIONSTATE
 				it = std::find(theKeys.begin(), theKeys.end(), "ANIMATIONSTATE");
 				pos = it - theKeys.begin();

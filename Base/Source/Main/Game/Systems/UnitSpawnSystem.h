@@ -7,8 +7,8 @@ File Name     : UnitSpawnSystem.h
 Purpose       : Class that stores units to be spawned
 */
 
-#ifndef UnitSpawnSystem_H
-#define UnitSpawnSystem_H
+#ifndef UNIT_SPAWN_SYSTEM_H
+#define UNIT_SPAWN_SYSTEM_H
 #include <map>
 #include "../Systems/BattleSystem.h"
 #include "../Objects/UnitData/UnitType.h"
@@ -33,8 +33,11 @@ public:
 
 	void HandleUserInput(const Vector3& MousePos, const Vector3& LayerPos);
 
+	int CalculateCost();
+
 private:
 	std::map<std::string, unsigned short> RecordedUnitMap;
+	std::map<std::string, int> UnitCost;
 
 	InterfaceLayer* DisplayIcons;
 

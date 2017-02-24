@@ -37,12 +37,12 @@ public:
 	{
 		CE->HealthPoints -= Damage;
 		int NumParticles = Math::RandIntMinMax(2, 4);
-		for (int i = 0; i < NumParticles; ++i)
+		/*for (int i = 0; i < NumParticles; ++i)
 		{
 			float ParticleSpeed = Math::RandFloatMinMax(3.f, 6.f);
 			float ParticleLifeTime = Math::RandFloatMinMax(0.75f, 1.5f);
 			ObjectManager::Instance().AddNewParticle(new Particle(CE->GetEntityID(), 1, CE->GetPosition(), CE->GetDimensions() * Math::RandFloatMinMax(0.3f, 0.75f), Vector3(Math::RandFloatMinMax(-ParticleSpeed, ParticleSpeed), Math::RandFloatMinMax(-ParticleSpeed, ParticleSpeed), Math::RandFloatMinMax(0, ParticleSpeed)), Vector3(0,0,100), ParticleLifeTime));
-		}
+		}*/
 		Attackability = false;
 	}
 

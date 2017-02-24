@@ -28,8 +28,6 @@ public:
 
 	InterfaceLayer* CreateNewInterfaceLayer(const std::string& LayerID, const Vector3& OriginalPosition, const Vector3& TargetPosition);
 
-
-
 private:
 
 protected:

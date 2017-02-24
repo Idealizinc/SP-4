@@ -85,10 +85,11 @@ void PlayerSystem::Render(void)
 		it->Render();
 }
 
-UnitPiece* PlayerSystem::GenerateNewUnit()
+UnitPiece* PlayerSystem::GenerateNewUnit(const std::map<std::string, unsigned short>& Battalion)
 {
 	// Create a new unit and assign him to the start
 	UnitPiece* UP = new UnitPiece();
+	UP->InternalBattalionList = Battalion;
 	BaseObject* Spawn = SceneSystem::Instance().GetCurrentScene().ScenePartition->PlayerBase->GetEntity();
 	UP->TargetPosition = Spawn->GetPosition() + Vector3(0, Spawn->GetDimensions().y + UP->GetDimensions().y);
 	UP->SetPosition(UP->TargetPosition + Vector3(0, 10, 0));
@@ -143,12 +144,6 @@ void PlayerSystem::HandleUserInput()
 			// Clicked the same tile
 			CA->CameraMoveTargetPosition = MouseDownSelection->GetEntity()->GetPosition();
 
-			if (GameLogicSystem::Instance().UnitInterface->deploy == true && GameLogicSystem::Instance().UnitInterface->returnUnitSpawnSys()->getCurrentUnitCount() != 0)
-			{
-				GameLogicSystem::Instance().UnitInterface->returnUnitSpawnSys()->returnRecordedUnitMap(); //this returns the map of units
-				SelectedUnit = GenerateNewUnit();
-				GameLogicSystem::Instance().UnitInterface->CheckDeployed();
-			}
 			if (MouseDownSelection == SceneSystem::Instance().GetCurrentScene().ScenePartition->PlayerBase)
 			{
 				//SelectedUnit = GenerateNewUnit();
@@ -173,5 +168,11 @@ void PlayerSystem::HandleUserInput()
 			}
 		}
 		MouseDownSelection = MouseUpSelection = nullptr;
+	}
+	if (GameLogicSystem::Instance().UnitInterface->deploy == true && GameLogicSystem::Instance().UnitInterface->returnUnitSpawnSys()->getCurrentUnitCount() != 0)
+	{
+		SelectedUnit = GenerateNewUnit(GameLogicSystem::Instance().UnitInterface->returnUnitSpawnSys()->returnRecordedUnitMap());
+		GameLogicSystem::Instance().UnitInterface->CheckDeployed();
+		GameLogicSystem::Instance().UnitInterface->OpenInterface();
 	}
 }

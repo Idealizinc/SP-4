@@ -31,9 +31,6 @@ public:
 	virtual void Exit(void);
 
 	void OpenInterface();
-	//void CloseInterface();
-
-	//std::map<int, int> returnUnitSpawnMap();
 
 	UnitSpawnSystem* returnUnitSpawnSys();
 
@@ -45,12 +42,14 @@ private:
 	bool firstTime;
 
 	InterfaceLayer* UnitSelectLayer;
+	InterfaceLayer* UnitDisplayLayer;
 
 	//LInterfaceLayer* ScrollingLayer;
 	InterfaceLayer* IconLayer;
 	InterfaceLayer* CountLayer;
 
 	InterfaceElement* DeployButton;
+	InterfaceElement* DisplayQuad;
 
 	InterfaceLayer* WarningLayer;
 	InterfaceElement* NoUnitPopup;
@@ -64,8 +63,6 @@ private:
 
 	std::map<std::string, InterfaceElement*> IconMap;
 	std::map<std::string, InterfaceElement*> IconCounterMap;
-
-
 };
 
 #endif

@@ -4,6 +4,25 @@
 #include "UnitDataLoader.h"
 #include <vector>
 
+UnitDataLoader::~UnitDataLoader()
+{
+	for (auto it : WeaponMap)
+		delete it.second;
+	WeaponMap.clear();
+
+	for (auto it : UnitMap)
+		delete it.second;
+	UnitMap.clear();
+
+	for (auto it : RaceMap)
+		delete it.second;
+	RaceMap.clear();
+
+	for (auto it : TerrainMap)
+		delete it.second;
+	TerrainMap.clear();
+}
+
 bool UnitDataLoader::LoadWeaponData(const char *file_path)
 {
 	std::ifstream fileStream(file_path, std::ios::binary);

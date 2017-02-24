@@ -2,7 +2,6 @@
 #include <sstream>
 #include <iomanip>
 
-
 template <typename T>
 std::string to_string_with_precision(const T a_value, const int n = 2)
 {
@@ -13,12 +12,12 @@ std::string to_string_with_precision(const T a_value, const int n = 2)
 
 BattleScreenInterface::BattleScreenInterface()
 {
-	
+	Init();
 }
 
 BattleScreenInterface::~BattleScreenInterface()
 {
-
+	Exit();
 }
 
 void BattleScreenInterface::Init()
@@ -177,11 +176,6 @@ void BattleScreenInterface::PopUpDelay(const float& dt)
 			}
 		}
 	}
-
-	//if (Finished && BattleWordPopup->GetPosition() != BattleWordPopup->GetOriginalPosition())
-	//	BattleWordPopup->ResetToOriginal();
-	//if (Finished && StartWordPopup->GetPosition() != StartWordPopup->GetOriginalPosition())
-	//	StartWordPopup->ResetToOriginal();
 }
 
 

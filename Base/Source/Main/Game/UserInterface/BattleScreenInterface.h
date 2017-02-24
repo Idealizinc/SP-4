@@ -20,7 +20,6 @@ public:
 	bool StartBattle;
 
 private:
-
 	void PopUpDelay(const float& dt);
 
 	InterfaceLayer* TurnPopup;
@@ -43,13 +42,12 @@ private:
 
 	Terrain* currentTerrain;
 
-	//InterfaceElement* PlayerTurnPopup;
-
 	float TurnPopupTimer = 1;
 	float TurnPopoutTimer = 1;
 	float TurnPopupTimer2 = 0.5f;
 	float TurnPopoutTimer2 = 1;
 	float TerrainInfoTimer = 2;
+
 	Vector3 CenterTarget = Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.5f, 0);
 
 	int negativeHeight = -(SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight);

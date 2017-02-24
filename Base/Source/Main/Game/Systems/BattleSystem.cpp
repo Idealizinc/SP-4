@@ -9,6 +9,7 @@ BattleSystem::BattleSystem()
 
 BattleSystem::~BattleSystem()
 {
+	Exit();
 }
 
 void BattleSystem::Init()
@@ -21,7 +22,6 @@ void BattleSystem::Init()
 	SpawnPosition_Player = Vector3(20, 1, 0);
 	CurrentBattleTile = nullptr;
 	BSI = new BattleScreenInterface();
-	BSI->Init();
 }
 
 void BattleSystem::Update(const float& dt)
@@ -61,7 +61,7 @@ void BattleSystem::Update(const float& dt)
 
 void BattleSystem::Render()
 {
-	BSI->Render();
+	//BSI->Render();
 	for (auto it : InternalPlayerCharacterList)
 		it->Render();
 	for (auto it : InternalEnemyCharacterList)
@@ -72,27 +72,7 @@ void BattleSystem::Render()
 
 void BattleSystem::Exit()
 {
-	while (InternalPlayerCharacterList.size() > 0)
-	{
-		CharacterEntity* obj = InternalPlayerCharacterList.back();
-		obj->Exit();
-		delete obj;
-		InternalPlayerCharacterList.pop_back();
-	}
-	while (InternalEnemyCharacterList.size() > 0)
-	{
-		CharacterEntity* obj = InternalEnemyCharacterList.back();
-		obj->Exit();
-		delete obj;
-		InternalEnemyCharacterList.pop_back();
-	}
-	while (InternalProjectileList.size() > 0)
-	{
-		Projectile* obj = InternalProjectileList.back();
-		obj->Exit();
-		delete obj;
-		InternalProjectileList.pop_back();
-	}
+	ClearCharacterCounters();
 	if (BSI)
 	{
 		BSI->StartBattle = false;
@@ -183,6 +163,13 @@ void BattleSystem::ClearCharacterCounters()
 		delete obj;
 		InternalEnemyCharacterList.pop_back();
 	}
+	while (InternalProjectileList.size() > 0)
+	{
+		Projectile* obj = InternalProjectileList.back();
+		obj->Exit();
+		delete obj;
+		InternalProjectileList.pop_back();
+	}
 	CurrentBattleTile = nullptr;
 }
 
@@ -207,6 +194,7 @@ void BattleSystem::UpdateCharacterLogic(std::vector<CharacterEntity*>& Character
 			++it;
 		}
 		else {
+			(*it)->Exit();
 			delete *it;
 			it = CharacterList.erase(it);
 		}
