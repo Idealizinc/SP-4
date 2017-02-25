@@ -4,11 +4,7 @@
 #include <vector>
 #include <map>
 #include "BaseObject.h"
-//Include GLEW
-#include <GL/glew.h>
-
-//Include GLFW
-#include <GLFW/glfw3.h>
+#include "../../Game/Mains/Application.h"
 
 class SpriteObject : public BaseObject
 {

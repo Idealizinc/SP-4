@@ -13,7 +13,7 @@ public:
     virtual void Init();
     virtual void Update(const float& dt);
 	virtual void Render(){};
-	virtual void Exit(){};
+	virtual void Exit();
    
     ISoundEngine *SoundEngine;
 
