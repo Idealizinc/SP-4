@@ -21,3 +21,4 @@ M_ArchDemon,Scout,Image//SpriteTarga//ArchDemon1.tga,Image//SpriteTarga//ArchDem
 M_SkeletonArcher,Idle,Image//SpriteTarga//SkeletonArcher1.tga,,,,,,,
 M_SkeletonArcher,Scout,Image//SpriteTarga//SkeletonArcher1.tga,Image//SpriteTarga//SkeletonArcher2.tga,Image//SpriteTarga//SkeletonArcher1.tga,Image//SpriteTarga//SkeletonArcher3.tga,,,,
 M_SkeletonArcher,Attack,Image//SpriteTarga//SkeletonArcherAttack1.tga,Image//SpriteTarga//SkeletonArcherAttack2.tga,Image//SpriteTarga//SkeletonArcherAttack3.tga,,,,,
+M_Zombie,Idle,Image//SpriteTarga//Zombie.tga,,,,,,,

@@ -30,6 +30,7 @@ public:
 	virtual void Render(void);
 
 	std::vector<UnitPiece*> InternalEnemyContainer;
+	int RemainingGold;
 
 private:
 	enum TurnState
@@ -46,11 +47,13 @@ private:
 	float InternalTimer = 0;
 	EnemyPiece* SelectedUnit;
 	TerrainNode* TargetedNode;
+	const float SpawningCoefficient = 2.f; // Higher == Increased Spawn Rate
 
 	// Functions
-	EnemyPiece* GenerateNewEnemy();
+	EnemyPiece* GenerateNewEnemy(std::map<std::string, unsigned short>&);
 	EnemyPiece* AdvanceSingleUnit();
 	EnemyPiece* RandomizePieceSelection();
+	std::map<std::string, unsigned short> GenerateBattalion();
 
 protected:
 

@@ -39,7 +39,7 @@ void GameLogicSystem::QuickInit()
 	UnitInterface = new UnitCreationInterface();
 	GameInterface = new GameScreenInterface();
 
-
+	InternalEnemySystem->RemainingGold = UnitInterface->returnUnitSpawnSys()->maxUnitCost * maxStartingUnits;
 	//InternalPlayerSystem->SetCash(/*UnitInterface->returnUnitSpawnSys()->maxUnitCost * maxStartingUnits*/1000);
 }
 
