@@ -1,16 +1,14 @@
-#include "SceneTown1.h"
+#include "MainMenuScene.h"
 #include <sstream>
-#include <iomanip>
 
 #include "SimpleCommand.h"
 #include "../../Engine/System/MusicSystem.h"
 #include "../Mains/Application.h"
 #include "../SceneManagement/ScenePartitionGraph.h"
-#include "../Systems/GameLogicSystem.h"
 
-std::string SceneTown1::id_ = "1_Scene";
+std::string MainMenuScene::id_ = "MainMenuScene";
 
-SceneTown1::SceneTown1()
+MainMenuScene::MainMenuScene()
 	: SceneEntity()
 {
 	framerates = 0;
@@ -19,56 +17,58 @@ SceneTown1::SceneTown1()
 	Player = nullptr;
 	SceneSystem::Instance().AddScene(*this);
 	Init();
+
+	MenuInterface = new MainMenuInterface();
 }
 
-SceneTown1::~SceneTown1()
+MainMenuScene::~MainMenuScene()
 {
 
 }
 
-void SceneTown1::QuickInit()
+void MainMenuScene::QuickInit()
 {
 	RenderSystem *Renderer = dynamic_cast<RenderSystem*>(&SceneSystem::Instance().GetRenderSystem());
 
 	// Set Terrain Size
-	TerrainScale.Set(500.f, 50.f, 500.f);
+	TerrainScale.Set(400.f, 25.f, 400.f);
 	ScenePartition = new ScenePartitionGraph();
 	ScenePartition->AssignGridParameters(Vector3(), Vector3(TerrainScale.x, TerrainScale.z), 4);
 
+	Mtx44 perspective;
+	perspective.SetToPerspective(45.0f, SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth / SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight, 0.1f, 10000.0f);
+	projectionStack->LoadMatrix(perspective);
+
 	CameraAerial* CA = new CameraAerial();
-	
 	camera = CA;
-	CA->AltInit(/*Player Character Position*/Vector3(0, 0, 0), Vector3(0, 100, 0.01f), Vector3(0, 1, 0));
+	CA->AltInit(/*Player Character Position*/Vector3(0, 0, 0), Vector3(0, 100, 1), Vector3(0, 1, 0));
 	CenterPosition.Set(SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth * 0.5f, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.5f, 0);
 
 	// Initiallise Model Specific Meshes Here
-	Mesh* newMesh = MeshBuilder::GenerateTerrain("Town 1", "HeightMapFiles//heightmap_Town1.raw", m_heightMap);
+	Mesh* newMesh = MeshBuilder::GenerateTerrain("MainMenu", "HeightMapFiles//heightmap_Town1.raw", m_heightMap);
 	newMesh->material.kAmbient.Set(0.2f, 0.2f, 0.2f);
 	newMesh->material.kDiffuse.Set(0.2f, 0.2f, 0.2f);
 	newMesh->material.kSpecular.Set(0.0f, 0.0f, 0.0f);
 	newMesh->textureArray[0] = LoadTGA("Image//RockTex.tga");
 	newMesh->textureArray[1] = LoadTGA("Image//GrassStoneTex.tga");
 	Renderer->MeshList.insert(std::pair<std::string, Mesh*>(newMesh->name, newMesh));
-		
-	GameLogicSystem::Instance().TerrainLoader.LoadTerrainData("CSVFiles/TerrainDataLoader.csv");
+
 	InteractiveMap = new GameMap();
-	InteractiveMap->ScenePartition = ScenePartition;
-	InteractiveMap->SetEntityID("SceneMap");
-	//InteractiveMap->LoadMap("CSVFiles//Town1Layout.csv", true, m_heightMap, TerrainScale, EntityList, BManager);
-	InteractiveMap->LoadMap("CSVFiles//Town1Layout.csv", true, m_heightMap, TerrainScale, EntityList, BManager);
-	GameLogicSystem::Instance().Init();
+	GameMap *theMap = dynamic_cast<GameMap*>(InteractiveMap);
+	theMap->ScenePartition = ScenePartition;
+	theMap->SetEntityID("MainMenu");
+	theMap->LoadMap("CSVFiles//BattlefieldLayout1.csv", false, m_heightMap, TerrainScale, EntityList, BManager);
 
 	SceneSystem::Instance().cSS_InputManager->cIM_inMouseMode = true;
 }
 
-void SceneTown1::QuickExit()
+void MainMenuScene::QuickExit()
 {
 	if (ScenePartition)
 	{
 		ScenePartition->Exit();
 		delete ScenePartition;
 	}
-
 	if (InteractiveMap)
 		delete InteractiveMap;
 	for (auto it : EntityList)
@@ -80,26 +80,24 @@ void SceneTown1::QuickExit()
 		delete Player;
 	if (camera)
 		delete camera;
-	/*if (GSI)
-	{
-		GSI->Exit();
-		delete GSI;
-		GSI = nullptr;
-	}*/
-}
 
-void SceneTown1::Init()
+	if (MenuInterface)
+	{
+		MenuInterface->Exit();
+		delete MenuInterface;
+		MenuInterface = nullptr;
+	}
+}
+void MainMenuScene::Init()
 {
 	QuickInit();
 }
 
-void SceneTown1::Update(const float& dt)
+void MainMenuScene::Update(const float& dt)
 {
 	RenderSystem *Renderer = dynamic_cast<RenderSystem*>(&SceneSystem::Instance().GetRenderSystem());
 
 	Renderer->Update(dt);
-
-	//GSI->Update(dt);
 
 	float Speed = 50.f;
 	CameraAerial* CA = (CameraAerial*)camera;
@@ -131,41 +129,37 @@ void SceneTown1::Update(const float& dt)
 		ScenePartition->ShowPartitions = true;
 	}
 
-	if (SceneSystem::Instance().cSS_InputManager->GetMouseInput(InputManager::KEY_RMB) == InputManager::MOUSE_HOLD)
-	{
-		CA->CameraMoveTargetPosition.y = 100.f;
-	}
-	else CA->CameraMoveTargetPosition.y = 0;
-
 	CA->Update(dt);
 	//MusicSystem::Instance().playBackgroundMusic("battle");
 	BManager.UpdateContainer(dt, CA->position);
-	
+
 	ScenePartition->Update(dt);
-	GameLogicSystem::Instance().Update(dt);
-	
+
+	MenuInterface->Update(dt);
+
 	framerates = 1 / dt;
 }
 
-void SceneTown1::RenderTerrain()
+
+
+void MainMenuScene::RenderTerrain()
 {
 	RenderSystem *Renderer = dynamic_cast<RenderSystem*>(&SceneSystem::Instance().GetRenderSystem());
 	modelStack->PushMatrix();
 	modelStack->Scale(TerrainScale.x, TerrainScale.y, TerrainScale.z);
-	Renderer->RenderMesh("Town 1", true);
+	Renderer->RenderMesh("MainMenu", true);
 	modelStack->PopMatrix();
 }
 
-void SceneTown1::RenderShadowCasters()
+void MainMenuScene::RenderShadowCasters()
 {
 	glEnable(GL_CULL_FACE);
 	glCullFace(GL_BACK);
 	//RenderTerrain();
 	RenderSystem *Renderer = dynamic_cast<RenderSystem*>(&SceneSystem::Instance().GetRenderSystem());
-	RenderTerrain();
+
 	ScenePartition->Render();
 
-	GameLogicSystem::Instance().Render();
 
 	for (std::vector<Particle*>::iterator it = BManager.BillboardContainer.begin(); it != BManager.BillboardContainer.end(); ++it)
 	{
@@ -182,44 +176,42 @@ void SceneTown1::RenderShadowCasters()
 	}
 }
 
-void SceneTown1::RenderSkybox()
+void MainMenuScene::RenderSkybox()
 {
-	float Offset = SkyboxSize *0.001f * 2.f;
 	RenderSystem *Renderer = dynamic_cast<RenderSystem*>(&SceneSystem::Instance().GetRenderSystem());
 	//left
 	modelStack->PushMatrix();
-	modelStack->Translate(camera->position.x, camera->position.y, camera->position.z);
 	modelStack->Rotate(90, 0, 1, 0);
 	modelStack->PushMatrix();
 	modelStack->Rotate(90, 0, 1, 0);
-	modelStack->Translate(0, 0, -SkyboxSize *0.5f + Offset);
+	modelStack->Translate(0, 0, -SkyboxSize / 2 + 2.f);
 	modelStack->Scale(SkyboxSize, SkyboxSize, SkyboxSize);
 	Renderer->RenderMesh("SB_Left", false);
 	modelStack->PopMatrix();
 
 	modelStack->PushMatrix();
 	modelStack->Rotate(-90, 0, 1, 0);
-	modelStack->Translate(0, 0, -SkyboxSize *0.5f + Offset);
+	modelStack->Translate(0, 0, -SkyboxSize / 2 + 2.f);
 	modelStack->Scale(SkyboxSize, SkyboxSize, SkyboxSize);
 	Renderer->RenderMesh("SB_Right", false);
 	modelStack->PopMatrix();
 
 	modelStack->PushMatrix();
-	modelStack->Translate(0, 0, -SkyboxSize *0.5f + Offset);
+	modelStack->Translate(0, 0, -SkyboxSize / 2 + 2.f);
 	modelStack->Scale(SkyboxSize, SkyboxSize, SkyboxSize);
 	Renderer->RenderMesh("SB_Front", false);
 	modelStack->PopMatrix();
 
 	modelStack->PushMatrix();
 	modelStack->Rotate(180, 0, 1, 0);
-	modelStack->Translate(0, 0, -SkyboxSize*0.5f + Offset);
+	modelStack->Translate(0, 0, -SkyboxSize / 2 + 2.f);
 	modelStack->Scale(SkyboxSize, SkyboxSize, SkyboxSize);
 	Renderer->RenderMesh("SB_Back", false);
 	modelStack->PopMatrix();
 
 	modelStack->PushMatrix();
 	modelStack->Rotate(90, 1, 0, 0);
-	modelStack->Translate(0, 0, -SkyboxSize *0.5f + Offset);
+	modelStack->Translate(0, 0, -SkyboxSize / 2 + 2.f);
 	modelStack->Rotate(90, 0, 0, 1);
 	modelStack->Scale(SkyboxSize, SkyboxSize, SkyboxSize);
 	Renderer->RenderMesh("SB_Top", false);
@@ -227,14 +219,15 @@ void SceneTown1::RenderSkybox()
 
 	modelStack->PushMatrix();
 	modelStack->Rotate(-90, 1, 0, 0);
-	modelStack->Translate(0, 0, -SkyboxSize *0.5f + Offset);
+	modelStack->Translate(0, 0, -SkyboxSize / 2 + 2.f);
+	//modelStack->Rotate(-90, 0, 0, 1);
 	modelStack->Scale(SkyboxSize, SkyboxSize, SkyboxSize);
 	Renderer->RenderMesh("SB_Bottom", false);
 	modelStack->PopMatrix();
 	modelStack->PopMatrix();
 }
 
-void SceneTown1::RenderPassGPass()
+void MainMenuScene::RenderPassGPass()
 {
 	RenderSystem *Renderer = dynamic_cast<RenderSystem*>(&SceneSystem::Instance().GetRenderSystem());
 	Renderer->m_renderPass = RenderSystem::RENDER_PASS::RENDER_PASS_PRE;
@@ -251,9 +244,6 @@ void SceneTown1::RenderPassGPass()
 	}
 	else
 	{
-		//CameraAerial* CA = (CameraAerial*)SceneSystem::Instance().GetCurrentScene().camera;
-		//Renderer->m_lightDepthProj.SetToPerspective(CA->FieldOfView, SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth / SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight, 0.1f, 2000.0f);
-
 		Renderer->m_lightDepthProj.SetToPerspective(90, 1.f, 0.1, 20);
 	}
 	Renderer->m_lightDepthView.SetToLookAt(Renderer->lights[0].position.x, Renderer->lights[0].position.y, Renderer->lights[0].position.z, 0, 0, 0, 0, 1, 0);
@@ -261,7 +251,7 @@ void SceneTown1::RenderPassGPass()
 	RenderShadowCasters();
 }
 
-void SceneTown1::RenderPassMain()
+void MainMenuScene::RenderPassMain()
 {
 	RenderSystem *Renderer = dynamic_cast<RenderSystem*>(&SceneSystem::Instance().GetRenderSystem());
 	Renderer->m_renderPass = RenderSystem::RENDER_PASS::RENDER_PASS_MAIN;
@@ -297,8 +287,7 @@ void SceneTown1::RenderPassMain()
 	Renderer->SetHUD(false);
 
 	Mtx44 perspective;
-	CameraAerial* CA = (CameraAerial*)SceneSystem::Instance().GetCurrentScene().camera;
-	perspective.SetToPerspective(CA->FieldOfView, SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth / SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight, 0.1f, 2000.0f);
+	perspective.SetToPerspective(60.0f, SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth / SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight, 0.1f, 1000.0f);
 	projectionStack->LoadMatrix(perspective);
 
 	// Camera matrix
@@ -311,32 +300,24 @@ void SceneTown1::RenderPassMain()
 	// Model matrix : an identity matrix (model will be at the origin)
 	modelStack->LoadIdentity();
 
-	//Renderer->RenderMesh("reference", false);
+	Renderer->RenderMesh("reference", false);
 
-	modelStack->PushMatrix();
+	MenuInterface->Render();
+
+	RenderTerrain();
 	RenderSkybox();
 	RenderShadowCasters();
-	modelStack->PopMatrix();
-
-	//for (auto it : ObjectManager::Instance().GetParticleList())
-	//	it->Render();
-	
-	//GSI->Render();
 
 	Renderer->SetHUD(true);
 	std::stringstream ss;
 	ss.str("");
 	ss << "FPS: " << framerates;
 	Renderer->RenderTextOnScreen(ss.str(), Color(), SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth* 0.02f, SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth* 0.01f, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.1f);
-	ss.str(""); 
-	for (auto it : GameLogicSystem::Instance().UnitInterface->returnUnitSpawnSys()->returnRecordedUnitMap())
-		ss << it.first << ": " << it.second << " | ";
-	Renderer->RenderTextOnScreen(ss.str(), Color(), SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth* 0.015f, SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth* 0.01f, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.05f);
 
 	Renderer->SetHUD(false);
 }
 
-void SceneTown1::Render()
+void MainMenuScene::Render()
 {
 	//*********************************
 	//		PRE RENDER PASS
@@ -348,7 +329,7 @@ void SceneTown1::Render()
 	RenderPassMain();
 }
 
-void SceneTown1::Exit()
+void MainMenuScene::Exit()
 {
 	QuickExit();
 }

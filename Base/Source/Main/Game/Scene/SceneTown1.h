@@ -10,13 +10,6 @@
 #include "../Miscellaneous/CameraAerial.h"
 #include"../UserInterface/GameScreenInterface.h"
 
-class Enemy
-{
-public:
-	Vector3 currPos;
-	std::vector<TerrainNode*> targetNode;
-};
-
 class SceneTown1 : public SceneEntity
 {
 public:
@@ -50,8 +43,6 @@ private:
     GameMap *InteractiveMap;
 	std::vector<GameObject*> EntityList;
 	Vector3 CenterPosition;
-
-	GameScreenInterface* GSI = new GameScreenInterface();
 	
 };
 

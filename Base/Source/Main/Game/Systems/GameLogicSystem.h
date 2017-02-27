@@ -20,7 +20,10 @@ Purpose       : Defines the GameLogicSystem that handles the both the player and
 #include "../Logic/Terrain/TerrainDataLoader.h"
 #include "../Systems/BattleSystem.h"
 
-#include"../UserInterface/UnitCreationInterface.h"
+#include "../UserInterface/UnitCreationInterface.h"
+#include "../UserInterface/GameScreenInterface.h"
+
+
 
 /*
 Description
@@ -79,6 +82,9 @@ public:
 	float PieceAnimationSpeed = 3.f;
 	float PieceMinimumDistance = 0.01f;
 	UnitCreationInterface* UnitInterface;
+	GameScreenInterface* GameInterface;
+
+	const int maxStartingUnits = 10;
 protected:
 
 };

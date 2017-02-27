@@ -35,6 +35,10 @@ public:
 
 	int CalculateCost();
 
+	const int maxUnitCost = 100;
+
+	void MapReset();
+
 private:
 	std::map<std::string, unsigned short> RecordedUnitMap;
 	//int UnitCost;
@@ -42,7 +46,7 @@ private:
 
 	InterfaceLayer* DisplayIcons;
 
-	const int maxUnitCost = 30;
+
 	int interval = 0;
 
 };

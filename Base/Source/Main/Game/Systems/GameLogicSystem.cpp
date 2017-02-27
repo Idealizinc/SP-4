@@ -37,6 +37,10 @@ void GameLogicSystem::QuickInit()
 	InternalBattleSystem->Init();
 	//Init UI
 	UnitInterface = new UnitCreationInterface();
+	GameInterface = new GameScreenInterface();
+
+
+	//InternalPlayerSystem->SetCash(/*UnitInterface->returnUnitSpawnSys()->maxUnitCost * maxStartingUnits*/1000);
 }
 
 void GameLogicSystem::Update(const float& dt)
@@ -57,6 +61,7 @@ void GameLogicSystem::Update(const float& dt)
 	}
 
 	UnitInterface->Update(dt);
+	GameInterface->Update(dt);
 }
 
 void GameLogicSystem::Render()
@@ -67,6 +72,7 @@ void GameLogicSystem::Render()
 		{
 			InternalPlayerSystem->Render();
 			UnitInterface->Render();
+			GameInterface->Render();
 		}
 		if (InternalEnemySystem)
 		{
@@ -109,6 +115,12 @@ void GameLogicSystem::QuickExit()
 		UnitInterface->Exit();
 		delete UnitInterface;
 		UnitInterface = nullptr;
+	}
+	if (GameInterface)
+	{
+		GameInterface->Exit();
+		delete GameInterface;
+		GameInterface = nullptr;
 	}
 }
 
