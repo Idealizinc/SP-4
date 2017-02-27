@@ -36,6 +36,12 @@ public:
 
 	void CheckDeployed();
 
+	void NoMoneyError();
+	
+	void InterfaceReset();
+
+	void InterfaceExit();
+
 private:
 	void HandleUserInput();
 	void ShowDisplay();
@@ -46,7 +52,6 @@ private:
 
 	//LInterfaceLayer* ScrollingLayer;
 	InterfaceLayer* IconLayer;
-	InterfaceLayer* CountLayer;
 
 	InterfaceElement* DeployButton;
 	InterfaceElement* DisplayQuad;
@@ -54,16 +59,19 @@ private:
 
 	InterfaceLayer* WarningLayer;
 	InterfaceElement* NoUnitPopup;
+	InterfaceElement* NoMoneyPopup;
 
-	UnitSpawnSystem* UnitSpawnMap;
+	UnitSpawnSystem* UnitSpawner;
 
 	Vector3 ScreenHalfDimension;
 
 	bool warningDisplayed;
+	bool warningDisplayed2;
 	float warningTime;
 
 	std::map<std::string, InterfaceElement*> IconMap;
 	std::map<std::string, InterfaceElement*> IconCounterMap;
+
 };
 
 #endif

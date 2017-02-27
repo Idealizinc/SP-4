@@ -38,8 +38,7 @@ void UnitSpawnSystem::CreateUnitUIElement(InterfaceLayer* layer)
 		Vector3 Pos = Vector3(0, HalfDimension.y * 1.8f, 0) - Offset * counter;
 		
 		InterfaceElement* tempElement = nullptr;
-		
-		// Image Icon
+				// Image Icon
 		tempElement = layer->CreateNewInterfaceElement("UnitKImage", it.second->GetMeshName(), Pos - Vector3(BackingDimension.x * 0.18f, BackingDimension.y * 0.15f), Vector3(HalfDimension.x *0.12f, HalfDimension.y*0.2f, 1));
 		tempElement->SetTargetPosition(Pos - Vector3(BackingDimension.x * 0.18f, BackingDimension.y * 0.15f));
 		tempElement = layer->CreateNewInterfaceElement("UnitInfoName", "Transparent", Pos - Vector3(BackingDimension.x * 0.25f, -BackingDimension.y * 0.35f), Vector3(HalfDimension.x *0.15f, HalfDimension.y*0.125f, 1));
@@ -164,6 +163,14 @@ void UnitSpawnSystem::CreateUnitUIElement(InterfaceLayer* layer)
 }
 
 
+
+void UnitSpawnSystem::MapReset()
+{
+	
+	UnitAdditionIconMap.clear();
+	UnitSubtractionIconMap.clear();
+
+}
 
 void UnitSpawnSystem::editUnit(std::string type, unsigned short count)
 {

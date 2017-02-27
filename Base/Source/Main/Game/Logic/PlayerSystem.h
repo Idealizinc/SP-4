@@ -30,6 +30,10 @@ public:
 	virtual void Render(void);
 
 	std::vector<UnitPiece*> InternalUnitContainer;
+
+	int GetCash();
+	void SetCash(int amt);
+
 private:
 	enum TurnState
 	{
@@ -48,6 +52,8 @@ private:
 	UnitPiece* GenerateNewUnit(const std::map<std::string, unsigned short>& Battalion);
 	UnitPiece* AdvanceSingleUnit(UnitPiece* Selection, TerrainNode* Target);
 	void HandleUserInput();
+
+	int Cash;
 
 protected:
 

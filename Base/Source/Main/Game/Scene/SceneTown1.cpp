@@ -76,12 +76,12 @@ void SceneTown1::QuickExit()
 		delete Player;
 	if (camera)
 		delete camera;
-	if (GSI)
+	/*if (GSI)
 	{
 		GSI->Exit();
 		delete GSI;
 		GSI = nullptr;
-	}
+	}*/
 }
 
 void SceneTown1::Init()
@@ -95,7 +95,7 @@ void SceneTown1::Update(const float& dt)
 
 	Renderer->Update(dt);
 
-	GSI->Update(dt);
+	//GSI->Update(dt);
 
 	float Speed = 50.f;
 	CameraAerial* CA = (CameraAerial*)camera;
@@ -317,7 +317,7 @@ void SceneTown1::RenderPassMain()
 	//for (auto it : ObjectManager::Instance().GetParticleList())
 	//	it->Render();
 	
-	GSI->Render();
+	//GSI->Render();
 
 	Renderer->SetHUD(true);
 	std::stringstream ss;

@@ -39,25 +39,33 @@ void BattleSystem::Update(const float& dt)
 		UpdateProjectileLogic(dt);
 		if (InternalEnemyCharacterList.size() <= 0 && InternalPlayerCharacterList.size() > 0)
 		{
+			BSI->ShowResult = true;
 			// Player won
-			GameLogicSystem::Instance().SetCurrentState(GameLogicSystem::Instance().PlayerTurn);
-			SceneSystem::Instance().SwitchScene("1_Scene");
-			for (auto it : CurrentBattleTile->EnemyUnitList)
-				it->Active = false;
-			CurrentBattleTile->EnemyUnitList.clear();
-			ClearCharacterCounters();
-			BSI->ResetAll();
+			if (BSI->ShowResult && BSI->EndResult)
+			{
+				GameLogicSystem::Instance().SetCurrentState(GameLogicSystem::Instance().PlayerTurn);
+				SceneSystem::Instance().SwitchScene("1_Scene");
+				for (auto it : CurrentBattleTile->EnemyUnitList)
+					it->Active = false;
+				CurrentBattleTile->EnemyUnitList.clear();
+				ClearCharacterCounters();
+				BSI->ResetAll();
+			}
 		}
 		else if (InternalEnemyCharacterList.size() > 0 && InternalPlayerCharacterList.size() <= 0)
 		{
+			BSI->ShowResult = true;
 			// Enemy won
-			GameLogicSystem::Instance().SetCurrentState(GameLogicSystem::Instance().EnemyTurn);
-			SceneSystem::Instance().SwitchScene("1_Scene");
-			for (auto it : CurrentBattleTile->PlayerUnitList)
-				it->Active = false;
-			CurrentBattleTile->PlayerUnitList.clear();
-			ClearCharacterCounters();
-			BSI->ResetAll();
+			if (BSI->ShowResult && BSI->EndResult)
+			{
+				GameLogicSystem::Instance().SetCurrentState(GameLogicSystem::Instance().EnemyTurn);
+				SceneSystem::Instance().SwitchScene("1_Scene");
+				for (auto it : CurrentBattleTile->PlayerUnitList)
+					it->Active = false;
+				CurrentBattleTile->PlayerUnitList.clear();
+				ClearCharacterCounters();
+				BSI->ResetAll();
+			}
 		}
 	}
 }
