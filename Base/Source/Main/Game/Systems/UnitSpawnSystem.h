@@ -37,11 +37,12 @@ public:
 
 private:
 	std::map<std::string, unsigned short> RecordedUnitMap;
-	std::map<std::string, int> UnitCost;
+	//int UnitCost;
+	//std::map<std::string, int> UnitCost;
 
 	InterfaceLayer* DisplayIcons;
 
-	int maxUnit; //unused
+	const int maxUnitCost = 30;
 	int interval = 0;
 
 };

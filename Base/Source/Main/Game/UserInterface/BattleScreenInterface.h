@@ -75,9 +75,9 @@ private:
 	Vector3 currentEnemyBarPos;
 	float EnemyRateofChange;
 
-	Vector3 CenterTarget = Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.5f, 0);
 
 	float negativeHeight = -(SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight);
+	Vector3 CenterTarget;
 
 	bool ShowTerrainInfo;
 	bool Initiation;

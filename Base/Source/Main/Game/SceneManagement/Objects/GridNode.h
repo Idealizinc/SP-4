@@ -17,6 +17,7 @@ class GridNode : public Node
 {
 public:
 	GridNode();
+	~GridNode();
 
 	void SetDimensions(const Vector3&);
 	void SetPosition(const Vector3&);

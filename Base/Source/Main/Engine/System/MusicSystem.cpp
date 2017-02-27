@@ -14,7 +14,16 @@ void MusicSystem::Init()
     m_accumulatedTime = TimeUpdate = 0;
 }
 
-//This is gonna be a pain
+void MusicSystem::Exit()
+{
+	for (auto it : cMS_SoundList)
+	{
+		it.second->Exit();
+		delete it.second;
+	}
+	cMS_SoundList.clear();
+}
+
 void MusicSystem::Update(const float& dt)
 {
     //How to update listener position

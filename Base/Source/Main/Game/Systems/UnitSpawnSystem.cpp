@@ -24,7 +24,7 @@ void UnitSpawnSystem::CreateUnitUIElement(InterfaceLayer* layer)
 	Vector3 HalfDimension = SceneSystem::Instance().cSS_InputManager->ScreenCenter;
 	Vector3 Offset(0, HalfDimension.y*0.4f, 0);
 	unsigned short counter = 0;
-	Vector3 BackingDimension = Vector3(HalfDimension.x *0.6f, HalfDimension.y*0.3f, 1);
+	Vector3 BackingDimension = Vector3(HalfDimension.x *0.65f, HalfDimension.y*0.3f, 1);
 
 	std::stringstream ss;
 
@@ -40,15 +40,15 @@ void UnitSpawnSystem::CreateUnitUIElement(InterfaceLayer* layer)
 		InterfaceElement* tempElement = nullptr;
 		
 		// Image Icon
-		tempElement = layer->CreateNewInterfaceElement("UnitInfoBacking", it.second->GetMeshName(), Pos - Vector3(BackingDimension.x * 0.2f,-( BackingDimension.y * 0.05f)), Vector3(HalfDimension.x *0.12f, HalfDimension.y*0.2f, 1));
-		tempElement->SetTargetPosition(Pos - Vector3(BackingDimension.x * 0.2f, -(BackingDimension.y * 0.05f)));
-		tempElement = layer->CreateNewInterfaceElement("UnitInfoName", "Transparent", Pos - Vector3(BackingDimension.x * 0.4f, -BackingDimension.y * 0.3f), Vector3(HalfDimension.x *0.1f, HalfDimension.y*0.075f, 1));
-		tempElement->SetTargetPosition(Pos - Vector3(BackingDimension.x * 0.4f, -BackingDimension.y * 0.3f));
+		tempElement = layer->CreateNewInterfaceElement("UnitKImage", it.second->GetMeshName(), Pos - Vector3(BackingDimension.x * 0.18f, BackingDimension.y * 0.15f), Vector3(HalfDimension.x *0.12f, HalfDimension.y*0.2f, 1));
+		tempElement->SetTargetPosition(Pos - Vector3(BackingDimension.x * 0.18f, BackingDimension.y * 0.15f));
+		tempElement = layer->CreateNewInterfaceElement("UnitInfoName", "Transparent", Pos - Vector3(BackingDimension.x * 0.25f, -BackingDimension.y * 0.35f), Vector3(HalfDimension.x *0.15f, HalfDimension.y*0.125f, 1));
+		tempElement->SetTargetPosition(Pos - Vector3(BackingDimension.x * 0.25f, -BackingDimension.y * 0.35f));
 		tempElement->SetText(it.first);
 		tempElement->SetTextColor(0);
 
-		tempElement = layer->CreateNewInterfaceElement("UnitInfoType", "Transparent", Pos - Vector3(BackingDimension.x * 0.4f, -(BackingDimension.y * -0.15f)), Vector3(HalfDimension.x *0.1f, HalfDimension.y*0.075f, 1));
-		tempElement->SetTargetPosition(Pos - Vector3(BackingDimension.x * 0.4f, -(BackingDimension.y * -0.15f)));
+		tempElement = layer->CreateNewInterfaceElement("UnitInfoType", "Transparent", Pos - Vector3(BackingDimension.x * 0.4f, -(BackingDimension.y * -0.15f)), Vector3(HalfDimension.x *0.12f, HalfDimension.y*0.1f, 1));
+		tempElement->SetTargetPosition(Pos - Vector3(BackingDimension.x * 0.37f, -(BackingDimension.y * -0.15f)));
 		if (it.second->GetType() == 0)
 		{
 			tempElement->SetText("Warrior");
@@ -69,6 +69,17 @@ void UnitSpawnSystem::CreateUnitUIElement(InterfaceLayer* layer)
 		ss.str("");
 		ss << "Health: " << it.second->GetMaxHealth();
 		tempElement->SetText(ss.str());*/
+
+		//tempElement = layer->CreateNewInterfaceElement("HealthImage", "health", Pos - Vector3(BackingDimension.x * 0.f, BackingDimension.y * -0.3f), Vector3(HalfDimension.x *0.05f, HalfDimension.y*0.1f, 1));
+		//tempElement->SetTargetPosition(Pos - Vector3(BackingDimension.x * 0.f, BackingDimension.y * -0.3f));
+
+		tempElement = layer->CreateNewInterfaceElement("CostStats", "Transparent", Pos + Vector3(BackingDimension.x * 0.3f), Vector3(HalfDimension.x *0.2f, HalfDimension.y*0.1f, 1));
+		tempElement->SetTargetPosition(Pos + Vector3(BackingDimension.x * 0.3f));
+		ss.str("");
+		ss << "$" << it.second->GetCost();
+		tempElement->SetText(ss.str());
+		tempElement->SetTextColor(0);
+
 		tempElement = layer->CreateNewInterfaceElement("HealthImage", "health", Pos - Vector3(BackingDimension.x * 0.f, BackingDimension.y * -0.3f), Vector3(HalfDimension.x *0.05f, HalfDimension.y*0.1f, 1));
 		tempElement->SetTargetPosition(Pos - Vector3(BackingDimension.x * 0.f, BackingDimension.y * -0.3f));
 
@@ -190,14 +201,33 @@ void UnitSpawnSystem::HandleUserInput(const Vector3& MousePos, const Vector3& La
 		if (it.second->DetectUserInput(MousePos,LayerPos))
 		{
 			auto it2 = RecordedUnitMap.find(it.first);
-			if (it2 != RecordedUnitMap.end())
+			bool EntryExists = true;
+			if (it2 == RecordedUnitMap.end())
 			{
-				//if found and already existing
-				++it2->second;
+				// I cannot find so i will make a new entry
+				EntryExists = false;
 			}
+
+			// Set up the correct container
+			std::map<std::string, UnitType*>UnitMap;
+			if (GameLogicSystem::Instance().PlayerFaction == GameLogicSystem::F_LIVING)
+				UnitMap = GameLogicSystem::Instance().InternalBattleSystem->UnitData.LivingMap;
 			else
+				UnitMap = GameLogicSystem::Instance().InternalBattleSystem->UnitData.UndeadMap;
+
+			if (CalculateCost() + UnitMap.find(it.first)->second->GetCost() <= maxUnitCost)
 			{
-				RecordedUnitMap.insert(std::pair<std::string, unsigned short>(it.first, 1));
+				// Create a new entry if needed
+				if (!EntryExists)
+					RecordedUnitMap.insert(std::pair<std::string, unsigned short>(it.first, 1));
+				else
+				{
+					// Add to a previously existing entry
+					std::map<std::string, unsigned short>::iterator NewEntry = RecordedUnitMap.find(it.first);
+
+					// Add it in
+					++NewEntry->second;
+				}
 			}
 		}
 	}
@@ -219,4 +249,24 @@ void UnitSpawnSystem::HandleUserInput(const Vector3& MousePos, const Vector3& La
 			
 		}
 	}
+}
+
+int UnitSpawnSystem::CalculateCost()
+{
+	std::map<std::string, UnitType*>UnitMap;
+	if (GameLogicSystem::Instance().PlayerFaction == GameLogicSystem::F_LIVING)
+		UnitMap = GameLogicSystem::Instance().InternalBattleSystem->UnitData.LivingMap;
+	else
+		UnitMap = GameLogicSystem::Instance().InternalBattleSystem->UnitData.UndeadMap;
+	int CumulativeCost = 0;
+	for (auto it2 : RecordedUnitMap)
+	{
+		auto it = UnitMap.find(it2.first);
+		if (it != UnitMap.end())
+		{
+			// This unit exists, getting the cost.
+			CumulativeCost += it->second->GetCost() * it2.second;
+		}
+	}
+	return CumulativeCost;
 }

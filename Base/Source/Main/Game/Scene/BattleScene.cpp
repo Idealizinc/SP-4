@@ -44,7 +44,7 @@ void BattleScene::QuickInit()
 	CenterPosition.Set(SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth * 0.5f, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.5f, 0);
 
 	// Initiallise Model Specific Meshes Here
-	Mesh* newMesh = MeshBuilder::GenerateTerrain("Town 1", "HeightMapFiles//heightmap_Town1.raw", m_heightMap);
+	Mesh* newMesh = MeshBuilder::GenerateTerrain("BattleScreen", "HeightMapFiles//heightmap_Town1.raw", m_heightMap);
 	newMesh->material.kAmbient.Set(0.2f, 0.2f, 0.2f);
 	newMesh->material.kDiffuse.Set(0.2f, 0.2f, 0.2f);
 	newMesh->material.kSpecular.Set(0.0f, 0.0f, 0.0f);
@@ -70,10 +70,6 @@ void BattleScene::QuickExit()
 	}
 	if (InteractiveMap)
 		delete InteractiveMap;
-	for (auto it : EntityList)
-	{
-		delete it;
-	}
 	EntityList.clear();
 	if (Player)
 		delete Player;

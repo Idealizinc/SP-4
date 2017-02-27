@@ -25,6 +25,7 @@ public:
 	virtual void Exit(void);
 
 	Vector3 GetTargetPosition();
+	Vector3 GetOriginalPosition();
 
 	void SetTargetPosition(const Vector3& Position);
 	void SetOriginalPosition(const Vector3& Position);

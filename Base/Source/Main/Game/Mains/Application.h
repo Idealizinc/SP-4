@@ -6,6 +6,11 @@
 #include <string>
 #include "Vector3.h"
 
+//Include GLEW
+#include <GL/glew.h>
+//Include GLFW
+#include <GLFW/glfw3.h>
+
 // Notation of c[ClassInitials]_Variable, cA_
 class Application
 {
