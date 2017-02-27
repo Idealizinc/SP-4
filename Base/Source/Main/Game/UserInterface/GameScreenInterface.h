@@ -12,8 +12,9 @@ Purpose       : InterfaceSystem class that handles UI for game screen
 
 #include "../../Engine/Interface/InterfaceSystem.h"
 #include "../../Engine/System/SceneSystem.h"
-#include "../Systems/GameLogicSystem.h"
+//#include "../Systems/GameLogicSystem.h"
 
+class GameLogicSystem;
 
 class GameScreenInterface : public InterfaceSystem
 {
@@ -26,13 +27,32 @@ public:
 	virtual void Render(void);
 	virtual void Exit(void);
 
+	void ShowCashReduction(int amount);
+
 private:
 	void PopUpDelay(const float& dt);
 	void PopUpReset();
+	void InitSurrender();
+	void checkUserInput();
 
 	InterfaceLayer* TurnPopup;
 	InterfaceElement* PlayerTurnPopup;
 	InterfaceElement* EnemyTurnPopup;
+
+	InterfaceLayer* CashDisplayLayer;
+	InterfaceElement* CashTotalDisplay;
+	InterfaceElement* CashAddDisplay;
+	InterfaceElement* CashSubstractDisplay;
+	InterfaceElement* SurrenderButton;
+
+	InterfaceLayer* SurrenderLayer;
+	InterfaceElement* SurrenderBackground;
+	InterfaceElement* SurrenderYesButton;
+	InterfaceElement* SurrenderNoButton;
+
+	float CashDisplayTimer;
+	int CashEditAmt;
+
 	float TurnPopupTimer = 0;
 	bool PoppedUp = 0;
 	bool PopUpDone = 0;

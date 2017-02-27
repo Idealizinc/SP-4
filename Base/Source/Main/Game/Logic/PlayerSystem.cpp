@@ -12,6 +12,7 @@ void PlayerSystem::Init(void)
 	CurrentTurnState = S_TURNSTART;
 	SelectedUnit = nullptr;
 	MouseDownSelection = MouseUpSelection = TargetedNode = nullptr;
+
 }
 
 void PlayerSystem::Exit(void)
@@ -171,8 +172,28 @@ void PlayerSystem::HandleUserInput()
 	}
 	if (GameLogicSystem::Instance().UnitInterface->deploy == true && GameLogicSystem::Instance().UnitInterface->returnUnitSpawnSys()->getCurrentUnitCount() != 0)
 	{
-		SelectedUnit = GenerateNewUnit(GameLogicSystem::Instance().UnitInterface->returnUnitSpawnSys()->returnRecordedUnitMap());
-		GameLogicSystem::Instance().UnitInterface->CheckDeployed();
-		GameLogicSystem::Instance().UnitInterface->OpenInterface();
+		if (Cash >= GameLogicSystem::Instance().UnitInterface->returnUnitSpawnSys()->CalculateCost())
+		{
+			SelectedUnit = GenerateNewUnit(GameLogicSystem::Instance().UnitInterface->returnUnitSpawnSys()->returnRecordedUnitMap());
+			GameLogicSystem::Instance().GameInterface->ShowCashReduction(GameLogicSystem::Instance().UnitInterface->returnUnitSpawnSys()->CalculateCost());
+			GameLogicSystem::Instance().UnitInterface->OpenInterface();
+			GameLogicSystem::Instance().UnitInterface->CheckDeployed();
+		}
+		else
+		{
+			GameLogicSystem::Instance().UnitInterface->NoMoneyError();
+		}
+
+		
 	}
+}
+
+int PlayerSystem::GetCash()
+{
+	return Cash;
+}
+
+void PlayerSystem::SetCash(int amt)
+{
+	Cash = amt;
 }
