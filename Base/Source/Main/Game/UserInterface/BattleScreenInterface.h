@@ -19,7 +19,11 @@ public:
 	void ResetAll();
 	bool StartBattle;
 
+	bool ShowResult;
+	bool EndResult;
+
 private:
+	void HandleUserInput();
 	void PopUpDelay(const float& dt);
 
 	InterfaceLayer* TurnPopup;
@@ -42,7 +46,17 @@ private:
 
 	InterfaceLayer* UnitCountInfoLayer;
 	InterfaceElement* PlayerUnitCount;
+	InterfaceElement* PlayerUnitCountText;
 	InterfaceElement* EnemyUnitCount;
+	InterfaceElement* EnemyUnitCountText;
+	InterfaceElement* PlayerUnitCountBackground;
+	InterfaceElement* EnemyUnitCountBackground;
+
+	InterfaceLayer *ResultInfoLayer;
+	InterfaceElement* ResultInfoBackElement;
+	InterfaceElement* ResultInfoFrame;
+	InterfaceElement* ResultInfo;
+	InterfaceElement* CloseResultButton;
 
 	Terrain* currentTerrain;
 
@@ -52,14 +66,26 @@ private:
 	float TurnPopoutTimer2 = 1;
 	float TerrainInfoTimer = 2;
 
+	int CNOPU; // CurrentNumberOfPlayerUnit
+	int CNOMPU; // CUrrentNumberOfMaxPlayerUnit
+	Vector3 currentPlayerBarPos;
+	float PlayerRateofChange;
+	int CNOEU; //CurrentNumberOfEnemyUnit
+	int CNOMEU; //CurrentNumberOfEnemyMaxUnit;
+	Vector3 currentEnemyBarPos;
+	float EnemyRateofChange;
+
 	Vector3 CenterTarget = Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.5f, 0);
 
-	int negativeHeight = -(SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight);
+	float negativeHeight = -(SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight);
 
 	bool ShowTerrainInfo;
 	bool Initiation;
 	bool Followup;
 	bool Finished;
+	bool GetMaxData;
+
+	Vector3 defaultbarSize;
 };
 
 #endif

@@ -1,6 +1,7 @@
 #include "BattleScreenInterface.h"
 #include <sstream>
 #include <iomanip>
+#include "../Systems/GameLogicSystem.h"
 
 template <typename T>
 std::string to_string_with_precision(const T a_value, const int n = 2)
@@ -22,6 +23,7 @@ BattleScreenInterface::~BattleScreenInterface()
 
 void BattleScreenInterface::Init()
 {
+	//Start Battle Interface
 	TurnPopup = CreateNewInterfaceLayer("StartLayer", 0, 0);
 
 	BattleWordPopup = TurnPopup->CreateNewInterfaceElement("BattleWordPopUp", "quad1", Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 2.5f, 0), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.5f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.2f, 0));
@@ -34,6 +36,7 @@ void BattleScreenInterface::Init()
 	StartWordPopup->SetText("Start!");
 	StartWordPopup->SetTextColor(0);
 
+	//Show terrain info Interface
 	TerrainInfoLayer = CreateNewInterfaceLayer("BottomLayer", 0, 0);
 
 	TerrainInfoFrame = TerrainInfoLayer->CreateNewInterfaceElement("TerrainInfoBackground", "WoodFrameRect", Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * -2.5f, 0), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 1.3f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.5f, 0));
@@ -82,14 +85,48 @@ void BattleScreenInterface::Init()
 	TerrainInfoBackElement = TerrainInfoLayer->CreateNewInterfaceElement("TerrainInfoBackground", "Background", Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * -2.5f, 0), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 1.2f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.4f, 0));
 	TerrainInfoBackElement->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.2f, 0));
 
+	//Show Player unit data interface
 	UnitCountInfoLayer = CreateNewInterfaceLayer("UnitCountLayer", 0, 0);
 
-	PlayerUnitCount = UnitCountInfoLayer->CreateNewInterfaceElement("PlayerUnitCount", "quad2", Vector3(SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth*-0.2f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * -1.75f, 0), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.2f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.1f, 0));
-	PlayerUnitCount->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.71f, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.22f, 0));
+	CNOPU = CNOEU = 0;
+	defaultbarSize = Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.5f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.1f, 0);
 
-	EnemyUnitCount = UnitCountInfoLayer->CreateNewInterfaceElement("PlayerUnitCount", "quad2", Vector3(SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth*1.2f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * -1.75f, 0), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.2f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.1f, 0));
-	EnemyUnitCount->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.71f, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.22f, 0));
+	PlayerUnitCountText = UnitCountInfoLayer->CreateNewInterfaceElement("PlayerUnitCountText", "Transparent", Vector3(SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth*-0.2f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * -1.75f, 0), defaultbarSize);
+	PlayerUnitCountText->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.5f, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.8f, 0));
+	PlayerUnitCountText->SetTextColor(0);
 
+	PlayerUnitCount = UnitCountInfoLayer->CreateNewInterfaceElement("PlayerUnitCount", "quad2", Vector3(SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth*-0.2f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * -1.75f, 0), defaultbarSize);
+	PlayerUnitCount->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.5f, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.8f, 0));
+
+	PlayerUnitCountBackground = UnitCountInfoLayer->CreateNewInterfaceElement("PlayerUnitCountMAX", "quad1", Vector3(SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth*-0.2f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * -1.75f, 0), defaultbarSize);
+	PlayerUnitCountBackground->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.5f, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.8f, 0));
+
+	EnemyUnitCountText = UnitCountInfoLayer->CreateNewInterfaceElement("EnemyUnitCountText", "Transparent", Vector3(SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth*1.2f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * -1.75f, 0), defaultbarSize);
+	EnemyUnitCountText->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 1.5f, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.8f, 0));
+	EnemyUnitCountText->SetTextColor(0);
+
+	EnemyUnitCount = UnitCountInfoLayer->CreateNewInterfaceElement("EnemyUnitCount", "quad2", Vector3(SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth*1.2f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * -1.75f, 0), defaultbarSize);
+	EnemyUnitCount->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 1.5f, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.8f, 0));
+
+	EnemyUnitCountBackground = UnitCountInfoLayer->CreateNewInterfaceElement("EnemyUnitCountMAX", "quad1", Vector3(SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth*1.2f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * -1.75f, 0), defaultbarSize);
+	EnemyUnitCountBackground->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 1.5f, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.8f, 0));
+
+	PlayerRateofChange = EnemyRateofChange = 0;
+
+	//Show Result Interface
+	ResultInfoLayer = CreateNewInterfaceLayer("ResultInfoLayer", 0, 0);
+
+	ResultInfoFrame = ResultInfoLayer->CreateNewInterfaceElement("ResultInfoFrame", "WoodFrameRect", Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * -1.75f, 0), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.55f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.45f, 0));
+	CloseResultButton = ResultInfoLayer->CreateNewInterfaceElement("CloseInfo", "quad1", Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * -1.8f, 0), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.15f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.1f, 0));
+	ResultInfo = ResultInfoLayer->CreateNewInterfaceElement("ResultInfo", "Transparent", Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * -1.65f, 0), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.3f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.2f, 0));
+	ResultInfoBackElement = ResultInfoLayer->CreateNewInterfaceElement("ResultInfoBackground", "Background", Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * -1.75f, 0), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.5f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.4f, 0));
+
+	ResultInfoFrame->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x, negativeHeight * 0.2f, 0));
+	CloseResultButton->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x, negativeHeight * 0.2f, 0));
+	ResultInfo->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x, negativeHeight * 0.15f, 0));
+	ResultInfoBackElement->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x, negativeHeight * 0.2f, 0));
+
+	ResultInfo->SetTextColor(0);
 
 	ResetAll();
 }
@@ -101,6 +138,35 @@ void BattleScreenInterface::SetTerrain(Terrain* T)
 
 void BattleScreenInterface::Update(const float& dt)
 {
+	if (GetMaxData)
+	{
+		CNOMPU = GameLogicSystem::Instance().InternalBattleSystem->GetPlayerCharacterList().size();
+		CNOMEU = GameLogicSystem::Instance().InternalBattleSystem->GetEnemyCharacterList().size();
+		currentPlayerBarPos = PlayerUnitCountBackground->GetPosition();
+		currentEnemyBarPos = EnemyUnitCountBackground->GetPosition();
+		GetMaxData = false;
+	}
+
+	if (StartBattle)
+	{
+		CNOPU = GameLogicSystem::Instance().InternalBattleSystem->GetPlayerCharacterList().size();
+		CNOEU = GameLogicSystem::Instance().InternalBattleSystem->GetEnemyCharacterList().size();
+
+
+		PlayerRateofChange = defaultbarSize.x - PlayerUnitCount->GetDimensions().x;
+		currentPlayerBarPos = PlayerUnitCountBackground->GetPosition() - Vector3(PlayerRateofChange * 0.5f, 0, 0);
+		PlayerUnitCount->SetTargetPosition(currentPlayerBarPos);
+
+
+		EnemyRateofChange = defaultbarSize.x - EnemyUnitCount->GetDimensions().x;
+		currentEnemyBarPos = EnemyUnitCountBackground->GetPosition() + Vector3(EnemyRateofChange * 0.5f, 0, 0);
+		EnemyUnitCount->SetTargetPosition(currentEnemyBarPos);
+
+
+		PlayerUnitCount->SetDimensions(Vector3(defaultbarSize.x * ((float)CNOPU / (float)CNOMPU), PlayerUnitCount->GetDimensions().y, 0));
+		EnemyUnitCount->SetDimensions(Vector3(defaultbarSize.x * ((float)CNOEU / (float)CNOMEU), EnemyUnitCount->GetDimensions().y, 0));
+	}
+
 	for (auto it : InternalLayerContainer)
 	{
 		if (it->Active)
@@ -117,6 +183,25 @@ void BattleScreenInterface::Update(const float& dt)
 	TerrainMeleeMinusValue->SetText("Melee: x" + to_string_with_precision(currentTerrain->UnitDisadvantage.find(Terrain::T_MELEE)->second));
 	TerrainMagicMinusValue->SetText("Magic: x" + to_string_with_precision(currentTerrain->UnitDisadvantage.find(Terrain::T_MAGIC)->second));
 	TerrainRangeMinusValue->SetText("Range: x" + to_string_with_precision(currentTerrain->UnitDisadvantage.find(Terrain::T_RANGE)->second));
+
+	PlayerUnitCountText->SetText("Player Unit Count: " + std::to_string(CNOPU));
+	EnemyUnitCountText->SetText("Enemy Unit Count: " + std::to_string(CNOEU));
+
+	if (ShowResult)
+	{
+		ResultInfoLayer->SetTargetPosition(Vector3(0, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight, 0));
+
+		if (CNOPU != 0)
+		{
+			ResultInfo->SetText("Player Won");
+		}
+		else if (CNOEU != 0)
+		{
+			ResultInfo->SetText("Enemy Won");
+		}
+
+		HandleUserInput();
+	}
 }
 
 void BattleScreenInterface::Render()
@@ -125,6 +210,24 @@ void BattleScreenInterface::Render()
 	{
 		if (it->Active && it->Visible)
 			it->Render();
+	}
+}
+
+void BattleScreenInterface::HandleUserInput()
+{
+	Vector3 MousePos = SceneSystem::Instance().cSS_InputManager->GetMousePosition();
+
+	if (SceneSystem::Instance().cSS_InputManager->GetMouseInput(InputManager::KEY_LMB) == InputManager::MOUSE_DOWN)
+	{
+		if (CloseResultButton->DetectUserInput(MousePos, ResultInfoLayer->GetPosition()))
+		{
+			EndResult = true;
+		}
+	}
+	else if (SceneSystem::Instance().cSS_InputManager->GetMouseInput(InputManager::KEY_LMB) == InputManager::MOUSE_UP)
+	{
+
+
 	}
 }
 
@@ -187,7 +290,6 @@ void BattleScreenInterface::PopUpDelay(const float& dt)
 	}
 }
 
-
 void BattleScreenInterface::ResetAll()
 {
 	ResetAllToOriginal();
@@ -201,5 +303,15 @@ void BattleScreenInterface::ResetAll()
 	Finished = false;
 	Followup = false;
 	StartBattle = false;
+	GetMaxData = true;
+	ShowResult = false;
+	EndResult = false;
 	TerrainInfoLayer->SetTargetPosition(Vector3(0, 0, 0));
+	ResultInfoLayer->SetTargetPosition(Vector3(0, 0, 0));
+	PlayerUnitCount->SetTargetPosition(PlayerUnitCountBackground->GetTargetPosition());
+	EnemyUnitCount->SetTargetPosition(EnemyUnitCountBackground->GetTargetPosition());
+	ResultInfoFrame->SetTargetPosition(ResultInfoFrame->GetOriginalPosition());
+	ResultInfo->SetTargetPosition(ResultInfo->GetOriginalPosition());
+	ResultInfoBackElement->SetTargetPosition(ResultInfoBackElement->GetOriginalPosition());
+	CloseResultButton->SetTargetPosition(CloseResultButton->GetOriginalPosition());
 }

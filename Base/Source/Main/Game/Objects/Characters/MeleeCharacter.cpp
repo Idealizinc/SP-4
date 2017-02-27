@@ -1,5 +1,5 @@
 #include "MeleeCharacter.h"
-#include "../../Miscellaneous/MeshBuilder.h"
+#include "../../../Engine/System/RenderSystem.h"
 
 MeleeCharacter::MeleeCharacter()
 {
@@ -82,7 +82,7 @@ void MeleeCharacter::Update(const float& dt)
 
 		CurrentFrameMultiplier = Timer / anim_Time;
 		CurrentFrame = (int)(CurrentAnimation.size() * CurrentFrameMultiplier);
-
+		//Math::Clamp(CurrentFrame, 0, CurrentAnimation.size() - 1);
 		// This will set the texture to be rendered with the mesh to the one of the correct animation frame
 		StoredMesh->textureArray[0] = CurrentAnimation[CurrentFrame];
 
