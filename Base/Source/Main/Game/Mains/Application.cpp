@@ -14,6 +14,7 @@
 // Scenes
 #include "../Scene/SceneTown1.h"
 #include "../Scene/BattleScene.h"
+#include "../Scene/EndOfGameScene.h"
 
 // Miscellaneous
 #include "SimpleCommand.h"
@@ -158,6 +159,9 @@ void Application::Init()
 	//Scene_MainMenu *MM = new Scene_MainMenu();	
 	SceneTown1 *Town1 = new SceneTown1();
 	BattleScene *Battle = new BattleScene();
+	EndOfGameScene *End = new EndOfGameScene();
+	
+	//SceneSystem::Instance().SwitchScene("EndOfGameScene");
 
     MusicSystem::Instance().Init();
 }
