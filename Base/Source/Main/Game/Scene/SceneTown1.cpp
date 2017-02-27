@@ -33,7 +33,7 @@ void SceneTown1::QuickInit()
 	// Set Terrain Size
 	TerrainScale.Set(500.f, 50.f, 500.f);
 	ScenePartition = new ScenePartitionGraph();
-	ScenePartition->AssignGridParameters(Vector3(), Vector3(TerrainScale.x, TerrainScale.z), 4);
+	ScenePartition->AssignGridParameters(0, Vector3(TerrainScale.x, TerrainScale.z), 8);
 
 	CameraAerial* CA = new CameraAerial();
 	
@@ -55,7 +55,7 @@ void SceneTown1::QuickInit()
 	InteractiveMap->ScenePartition = ScenePartition;
 	InteractiveMap->SetEntityID("SceneMap");
 	//InteractiveMap->LoadMap("CSVFiles//Town1Layout.csv", true, m_heightMap, TerrainScale, EntityList, BManager);
-	InteractiveMap->LoadMap("CSVFiles//Town1Layout.csv", true, m_heightMap, TerrainScale, EntityList, BManager);
+	InteractiveMap->LoadMap("CSVFiles//Tutorial.csv", true, m_heightMap, TerrainScale, EntityList, BManager);
 	GameLogicSystem::Instance().Init();
 
 	SceneSystem::Instance().cSS_InputManager->cIM_inMouseMode = true;

@@ -67,6 +67,7 @@ void ScenePartitionGraph::Render()
 	{
 		(*it)->Render();
 	}
+	
 }
 
 void ScenePartitionGraph::Exit()
@@ -85,6 +86,12 @@ void ScenePartitionGraph::Exit()
 		}
 	}
 	PartitionGraphContainer.clear();
+	for (auto it : WaypointList)
+	{
+		it->Exit();
+		delete it;
+	}
+	WaypointList.clear();
 }
 
 
@@ -103,12 +110,13 @@ void ScenePartitionGraph::GenerateGrid()
 			GN->SetPosition(Vector3(XInterval * j - XInterval * Interval, YInterval * i - YInterval * Interval) + GridCenter);
 			GN->SetDimensions(Vector3(XInterval, YInterval));
 			GN->SetGridIndex(Index);
-			//BaseObject* Cube = new BaseObject();
-			//Cube->SetMesh("Partition");
-			//Cube->GetMesh()->mode = Cube->GetMesh()->DRAW_LINES;
-			//Cube->SetPosition(Vector3(GN->GetPosition().x, 0, GN->GetPosition().y));
-			//Cube->SetDimensions(Vector3(GN->GetDimensions().x, 1, GN->GetDimensions().y));
-			//GN->SetEntity(Cube);
+			BaseObject* Cube = new BaseObject();
+			Cube->SetMesh("Partition");
+			Cube->GetMesh()->mode = Cube->GetMesh()->DRAW_LINES;
+			Cube->SetPosition(Vector3(GN->GetPosition().x, 0, GN->GetPosition().y));
+			Cube->SetDimensions(Vector3(GN->GetDimensions().x, 1, GN->GetDimensions().y));
+			Cube->LightEnabled = false;
+			GN->SetEntity(Cube);
 			PartitionGraphContainer.push_back(GN);
 		}
 	}

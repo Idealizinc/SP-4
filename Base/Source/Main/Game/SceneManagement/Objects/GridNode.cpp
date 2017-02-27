@@ -62,8 +62,21 @@ void GridNode::Update(const float& dt)
 	if (Object != nullptr)
 		if (!Object->Static)
 			Object->Update(dt);
+
+	// Cleanup
+	for (std::vector<Node*>::iterator it = ChildNodeList.begin(); it != ChildNodeList.end(); ++it)
+	{
+		if (!(*it)->GetEntity()->Active)
+		{
+			delete *it;
+			it = ChildNodeList.erase(it);
+			if (ChildNodeList.size() <= 0)
+				break;
+		}
+	}
+
 	// Update Child Nodes
-	for (std::vector<Node*>::iterator it = ChildNodeList.begin(), end = ChildNodeList.end(); it != end; ++it)
+	for (std::vector<Node*>::iterator it = ChildNodeList.begin(); it != ChildNodeList.end(); ++it)
 	{
 		if (!(*it)->GetEntity()->Static)
 		{

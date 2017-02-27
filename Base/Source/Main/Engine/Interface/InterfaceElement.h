@@ -11,7 +11,7 @@ Purpose       : Defines an InterfaceElement, a 2D user interface element that ex
 #define _INTERFACE_ELEMENT_H
 
 #include "../Objects/BaseObject.h"
-#include "../../Game/Objects/Miscellaneous/Boundary2D.h"
+#include "../Objects/Boundary2D.h"
 #include <vector>
 
 

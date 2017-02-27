@@ -12,7 +12,7 @@ Defines the Billboard manager that holds billboards
 #ifndef BILLBOARDMANAGER_H
 #define BILLBOARDMANAGER_H
 
-#include "../Objects/Miscellaneous/Particle.h"
+#include "../Objects/Particle.h"
 #include <vector>
 #include "LoadHmap.h"
 #include "../../Engine/Internal/System.h"

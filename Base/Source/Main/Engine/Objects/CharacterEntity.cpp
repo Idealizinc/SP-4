@@ -15,7 +15,6 @@ CharacterEntity::~CharacterEntity()
 void CharacterEntity::Init()
 {
 	WalkSpeed = 5.0;
-	InternalTimer = 0;
 	TargetEnemy = nullptr;
 	HealthPoints = 100;
 	TargetItem = nullptr;
@@ -25,7 +24,7 @@ void CharacterEntity::Init()
 
 void CharacterEntity::Render()
 {
-	if (Active && Visible)
+	if (Active && Visible && StoredMesh)
 	{
 		RenderSystem *Renderer = dynamic_cast<RenderSystem*>(&SceneSystem::Instance().GetRenderSystem());
 		SceneSystem::Instance().GetCurrentScene().modelStack->PushMatrix();
@@ -33,6 +32,7 @@ void CharacterEntity::Render()
 		SceneSystem::Instance().GetCurrentScene().modelStack->Rotate(GetRotationAngle(), GetRotationAxis().x, GetRotationAxis().y, GetRotationAxis().z);
 		SceneSystem::Instance().GetCurrentScene().modelStack->Rotate(90, -1, 0, 0);
 		SceneSystem::Instance().GetCurrentScene().modelStack->Scale(GetDimensions().x, GetDimensions().y, GetDimensions().z);
+		if (Dimensions.LengthSquared() > 0.05f)
 		Renderer->RenderMesh(*GetMesh(), true);
 		SceneSystem::Instance().GetCurrentScene().modelStack->PopMatrix();
 	}

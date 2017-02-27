@@ -124,9 +124,9 @@ void RenderSystem::Init()
 	glUniform1i(m_parameters[U_SHADOW_SAMPLING_AMOUNT], 12);
 
 	lights[0].type = Light::LIGHT_DIRECTIONAL;
-	lights[0].position.Set(200, 175, 62.5f);
+	lights[0].position.Set(180, 125, 32.5f);
 	lights[0].color.Set(1, 0.9f, 0.85f);
-	lights[0].power = 1;
+	lights[0].power = 2;
 	lights[0].kC = 1.f;
 	lights[0].kL = 0.01f;
 	lights[0].kQ = 0.001f;
