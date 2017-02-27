@@ -15,17 +15,13 @@
 #include "../Scene/SceneTown1.h"
 #include "../Scene/BattleScene.h"
 #include "../Scene/MainMenuScene.h"
+#include "../Scene/EndOfGameScene.h"
+
 
 // Miscellaneous
 #include "SimpleCommand.h"
 #include <sstream>
 #include <fstream>
-
-//Include GLEW
-#include <GL/glew.h>
-
-//Include GLFW
-#include <GLFW/glfw3.h>
 
 //Include the standard C++ headers
 #include <stdio.h>
@@ -167,8 +163,10 @@ void Application::Init()
 	SceneTown1 *Town1 = new SceneTown1();
 	BattleScene *Battle = new BattleScene();
 	MainMenuScene *MainMenu = new MainMenuScene();
-
 	SceneSystem::Instance().SwitchScene("MainMenuScene");
+	EndOfGameScene *End = new EndOfGameScene();
+	//SceneSystem::Instance().SwitchScene("EndOfGameScene");
+
 
     MusicSystem::Instance().Init();
 }

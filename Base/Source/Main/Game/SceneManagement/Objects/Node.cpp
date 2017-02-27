@@ -78,6 +78,11 @@ void Node::Render()
 void Node::Exit()
 {
 	//ClearNodeList();
+	if (Object != nullptr)
+	{
+		delete Object;
+		Object = nullptr;
+	}
 }
 
 

@@ -55,7 +55,7 @@ void SceneTown1::QuickInit()
 	InteractiveMap->ScenePartition = ScenePartition;
 	InteractiveMap->SetEntityID("SceneMap");
 	//InteractiveMap->LoadMap("CSVFiles//Town1Layout.csv", true, m_heightMap, TerrainScale, EntityList, BManager);
-	InteractiveMap->LoadMap("CSVFiles//Town1Layout.csv", true, m_heightMap, TerrainScale, EntityList, BManager);
+	InteractiveMap->LoadMap("CSVFiles//Tutorial.csv", true, m_heightMap, TerrainScale, EntityList, BManager);
 	GameLogicSystem::Instance().Init();
 
 	SceneSystem::Instance().cSS_InputManager->cIM_inMouseMode = true;
@@ -71,10 +71,6 @@ void SceneTown1::QuickExit()
 
 	if (InteractiveMap)
 		delete InteractiveMap;
-	for (auto it : EntityList)
-	{
-		delete it;
-	}
 	EntityList.clear();
 	if (Player)
 		delete Player;

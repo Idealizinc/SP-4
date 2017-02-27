@@ -9,6 +9,13 @@ GridNode::GridNode()
 	// ParentNode = SPG->GetRootNode();
 }
 
+GridNode::~GridNode()
+{
+	if (Object)
+		delete Object;
+	Object = nullptr;
+}
+
 void GridNode::SetDimensions(const Vector3& V)
 {
 	Dimensions = V;

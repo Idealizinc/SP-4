@@ -10,15 +10,15 @@ Purpose       : Defines the statistics within a Terrain Tile
 #ifndef _TERRAIN_H
 #define _TERRAIN_H
 
+#include "../../../Engine/Internal/Entity.h"
 #include <string>
 #include <map>
-#include <vector>
 #include "../Pieces/UnitPiece.h"
 
-class TerrainNode;
+//class TerrainNode;
 class UnitPiece;
 
-class Terrain
+class Terrain : public Entity
 {
 public:
 	enum TerrainStatEnum
@@ -30,50 +30,25 @@ public:
 		T_NORMAL,
 		T_MAX,
 	};
+
+	virtual ~Terrain();
+
+	virtual void Init(){};
+	virtual void Update(const float&){};
+	virtual void Render(){};
+	virtual void Exit();
 	
 	// Getters
-	std::string GetEntityID()
-	{
-		return EntityID;
-	}
-	std::string GetTerrainName()
-	{
-		return TerrainName;
-	}
-	int GetTerrainType()
-	{
-		return TerrainType;
-	}
-	float GetUnitAdvantage(int stat)
-	{
-		return UnitAdvantage.find(stat)->second;
-	}
-	float GetUnitDisadvantage(int stat)
-	{
-		return UnitDisadvantage.find(stat)->second;
-	}
+	std::string GetTerrainName();
+	int GetTerrainType();
+	float GetUnitAdvantage(int stat);
+	float GetUnitDisadvantage(int stat);
 
 	// Setters
-	void SetEntityID(std::string EntityID)
-	{
-		this->EntityID = EntityID;
-	}
-	void SetTerrainName(std::string TerrainName)
-	{
-		this->TerrainName = TerrainName;
-	}
-	void SetTerrainType(int TerrainType)
-	{
-		this->TerrainType = TerrainType;
-	}
-	void SetUnitAdvantage(int stat, float value)
-	{
-		UnitAdvantage.insert(std::pair<int, float>(stat,value));
-	}
-	void SetUnitDisadvantage(int stat, float value)
-	{
-		UnitDisadvantage.insert(std::pair<int, float>(stat, value));
-	}
+	void SetTerrainName(std::string TerrainName);
+	void SetTerrainType(int TerrainType);
+	void SetUnitAdvantage(int stat, float value);
+	void SetUnitDisadvantage(int stat, float value);
 
 	std::vector<UnitPiece*> PlayerUnitList;
 	std::vector<UnitPiece*> EnemyUnitList;
