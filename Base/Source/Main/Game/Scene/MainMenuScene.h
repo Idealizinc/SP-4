@@ -4,9 +4,9 @@
 #include "../../Engine/Objects/SceneEntity.h"
 #include "../../Engine/System/SceneSystem.h"
 #include "../../Engine/System/RenderSystem.h"
-#include "../Objects/Miscellaneous/GameObject.h"
+#include "../../Engine/Objects/GameObject.h"
 #include "../Systems/BillboardManager.h"
-#include "../Objects/Miscellaneous/GameMap.h"
+#include "../Objects/GameMap.h"
 #include "../Miscellaneous/CameraAerial.h"
 #include "../UserInterface/MainMenuInterface.h"
 

@@ -11,7 +11,7 @@ Purpose       : Class that stores units to be spawned
 #define UNIT_SPAWN_SYSTEM_H
 #include <map>
 #include "../Systems/BattleSystem.h"
-#include "../Objects/UnitData/UnitType.h"
+#include "../Logic/UnitData/UnitType.h"
 #include "../../Engine/Interface/InterfaceLayer.h"
 
 class UnitSpawnSystem

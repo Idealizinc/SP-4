@@ -15,7 +15,7 @@ void main(){
 	{
 		alpha = texture2D( colorTexture[0], texCoord ).a;
 	}
-	 if (alpha < 0.3)
+	 if (alpha < 0.1)
 		discard;
 
     fragmentdepth = gl_FragCoord.z;

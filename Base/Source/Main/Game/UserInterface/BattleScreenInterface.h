@@ -46,8 +46,10 @@ private:
 
 	InterfaceLayer* UnitCountInfoLayer;
 	InterfaceElement* PlayerUnitCount;
+	InterfaceElement* PlayerUnitBarFrame;
 	InterfaceElement* PlayerUnitCountText;
 	InterfaceElement* EnemyUnitCount;
+	InterfaceElement* EnemyUnitBarFrame;
 	InterfaceElement* EnemyUnitCountText;
 	InterfaceElement* PlayerUnitCountBackground;
 	InterfaceElement* EnemyUnitCountBackground;

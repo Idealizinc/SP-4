@@ -35,10 +35,17 @@ void EndOfGameScene::QuickInit()
 	CenterPosition.Set(SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth * 0.5f, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.5f, 0);
 
 	SceneSystem::Instance().cSS_InputManager->cIM_inMouseMode = true;
+	EOGI = new EndOfGameInterface();
 }
 
 void EndOfGameScene::QuickExit()
 {
+	if (EOGI)
+	{
+		EOGI->Exit();
+		delete EOGI;
+		EOGI = nullptr;
+	}
 	if (camera)
 		delete camera;
 }

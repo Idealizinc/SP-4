@@ -187,9 +187,11 @@ float getShadowEffect(float cosTheta)
 		float SampleSpread = 2000 - (shadowSamplingCount * 25); // How near samples are to one another, nearer = more
 		for (int i = 0; i < shadowSamplingCount; i++){
 			if (texture(shadowMap, shadowCoord.xy + poissonDisk[i]/SampleSpread ).x < shadowCoord.z - bias){
-				visibility -= 1.f / shadowSamplingCount;
+				visibility -= 1.f / (shadowSamplingCount * 0.75f);
 			}
 		}
+		if (visibility < 0.f)
+			visibility = 0.f;
 	}
 	return visibility;
 }

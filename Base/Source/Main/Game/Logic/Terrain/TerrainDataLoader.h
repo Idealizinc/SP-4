@@ -11,6 +11,8 @@ public:
 	TerrainDataLoader();
 	~TerrainDataLoader();
 
+	void ClearTerrainData();
+
 	bool LoadTerrainData(const char *file_path);
 
 	bool removingSpecificCharInStr(std::string &theStr, const char &theChar);

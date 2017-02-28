@@ -29,6 +29,7 @@ public:
 	bool Active = true;		// Updates if true
 	bool Visible = true;	// Renders if it and Active is true 
 	bool Static = false;	// Doesn't move
+	bool LightEnabled = true; // Affected by light
 
 	// Virtual
 	virtual void Init(){};

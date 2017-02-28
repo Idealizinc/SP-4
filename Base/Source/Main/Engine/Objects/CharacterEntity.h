@@ -39,11 +39,12 @@ public:
 	CharacterEntity* TargetEnemy = nullptr;
 	BaseObject* TargetItem = nullptr;
 
+	Vector3 LookVector;
+
 	int HealthPoints;
 	int MaxHealthPoints;
-	Vector3 LookVector;
-	float InternalTimer;
-	double WalkSpeed;
+	std::vector<float> InternalTimerVector;
+	float WalkSpeed;
 	float DetectionRadius;
 	int FieldOfView;
 	float HealRate;

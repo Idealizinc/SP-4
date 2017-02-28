@@ -12,6 +12,7 @@ Purpose       : Defines a Grid Node that acts as a spatial partition that holds 
 #define _GRID_NODE_H
 
 #include "Node.h"
+#include "../../../Engine/Objects/GameObject.h"
 
 class GridNode : public Node
 {
@@ -33,6 +34,7 @@ public:
 	virtual void Update(const float& dt);
 
 	unsigned LODLevel;
+
 private:
 	Vector3 Position;
 	Vector3 Dimensions;

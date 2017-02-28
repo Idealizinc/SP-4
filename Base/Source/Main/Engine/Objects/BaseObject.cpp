@@ -5,6 +5,7 @@
 // Constructors
 BaseObject::BaseObject()
 {
+	LightEnabled = true;
 	Static = false;
 	SetParameters(nullptr, 0, Vector3(), Vector3(1, 1, 1), Vector3(), 0, Vector3(0, 0, 1));
 }
@@ -30,15 +31,15 @@ void BaseObject::Init(const std::string& MeshName, const float& Mass, const Vect
 
 void BaseObject::Render()
 {
-	if (Active && Visible)
+	if (Active && Visible && StoredMesh)
 	{
 		RenderSystem *Renderer = dynamic_cast<RenderSystem*>(&SceneSystem::Instance().GetRenderSystem());
 		SceneSystem::Instance().GetCurrentScene().modelStack->PushMatrix();
 		SceneSystem::Instance().GetCurrentScene().modelStack->Translate(Position.x, Position.y, Position.z);
 		SceneSystem::Instance().GetCurrentScene().modelStack->Rotate(RotationAngle, RotationAxis.x, RotationAxis.y, RotationAxis.z);
+		SceneSystem::Instance().GetCurrentScene().modelStack->Scale(Dimensions.x, Dimensions.y, Dimensions.z);
 		if (Dimensions.LengthSquared() > 0.05f)
-			SceneSystem::Instance().GetCurrentScene().modelStack->Scale(Dimensions.x, Dimensions.y, Dimensions.z);
-		Renderer->RenderMesh(*StoredMesh, true);
+		Renderer->RenderMesh(*StoredMesh, LightEnabled);
 		SceneSystem::Instance().GetCurrentScene().modelStack->PopMatrix();
 	}
 }
