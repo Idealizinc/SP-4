@@ -33,7 +33,7 @@ private:
 	void QuickExit();
 
 	Vector3 CenterPosition;
-	EndOfGameInterface* EOGI = new EndOfGameInterface();
+	EndOfGameInterface* EOGI;
 
 protected:
 };

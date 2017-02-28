@@ -34,8 +34,9 @@ void BattleSystem::Update(const float& dt)
 	if (BSI->StartBattle)
 	{
 		// I will need to update all my characters, projectiles and other miscellaneous game objects
-		UpdateCharacterLogic(InternalPlayerCharacterList, dt);
 		UpdateCharacterLogic(InternalEnemyCharacterList, dt);
+		UpdateCharacterLogic(InternalPlayerCharacterList, dt);
+
 		UpdateProjectileLogic(dt);
 		if (InternalEnemyCharacterList.size() <= 0 && InternalPlayerCharacterList.size() > 0)
 		{
@@ -345,7 +346,7 @@ void BattleSystem::SpawnEnemyCharacters(std::map<std::string, unsigned short> En
 			for (unsigned int i = 0; i < ECL.second; ++i)
 			{
 				BattleScreenCharacter* NewChar = new BattleScreenCharacter();
-				NewChar->InitiallizeCharacter(UT, UnitData.RaceMap.find("Elven")->second, Tile, false);
+				NewChar->InitiallizeCharacter(UT, UnitData.RaceMap.find("Human")->second, Tile, true);
 				NewChar->IsPlayerCharacter = false;
 				NewChar->SetPosition(SpawnPosition_Enemy);
 				if (GameLogicSystem::Instance().PlayerFaction == GameLogicSystem::F_LIVING)

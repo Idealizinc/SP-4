@@ -32,15 +32,6 @@ void EnemySystem::Exit(void)
 
 void EnemySystem::Update(const float& dt)
 {
-	for (std::vector<UnitPiece*>::iterator it = InternalEnemyContainer.begin(); it != InternalEnemyContainer.end();)
-	{
-		if (!(*it)->Active)
-		{
-			delete *it;
-			it = InternalEnemyContainer.erase(it);
-		}
-		else ++it;
-	}
 	std::map<std::string, unsigned short> Battalion;
 	switch (CurrentTurnState)
 	{
@@ -98,6 +89,15 @@ void EnemySystem::Update(const float& dt)
 		}
 		break;
 	}
+	for (std::vector<UnitPiece*>::iterator it = InternalEnemyContainer.begin(); it != InternalEnemyContainer.end();)
+	{
+		if (!(*it)->Active)
+		{
+			delete *it;
+			it = InternalEnemyContainer.erase(it);
+		}
+		else ++it;
+	}
 }
 
 void EnemySystem::Render(void)
@@ -119,6 +119,7 @@ EnemyPiece* EnemySystem::GenerateNewEnemy(std::map<std::string, unsigned short>&
 	InternalEnemyContainer.push_back(EP);
 	// Add to the tile he is on
 	EP->InternalDefinedPath.front()->TerrainTile->EnemyUnitList.push_back(EP);
+	EP->TargetNode = SceneSystem::Instance().GetCurrentScene().ScenePartition->EnemyBase;
 	return EP;
 }
 
@@ -142,6 +143,7 @@ EnemyPiece* EnemySystem::AdvanceSingleUnit()
 	// Add to the tile he is on
 	EP->InternalDefinedPath.front()->TerrainTile->EnemyUnitList.push_back(EP);
 	TargetedNode = EP->InternalDefinedPath.front();
+	EP->TargetNode = TargetedNode;
 	EP->TargetPosition = EP->InternalDefinedPath.front()->GetEntity()->GetPosition() + Vector3(0, EP->InternalDefinedPath.front()->GetEntity()->GetDimensions().y + EP->GetDimensions().y);
 	return EP;
 }

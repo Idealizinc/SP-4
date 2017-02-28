@@ -260,7 +260,7 @@ void BattleScreenCharacter::SetCharacter(UnitType* Type, UnitRace* Race, Terrain
 	// Initiallize his statistics
 	SetEntityID(Type->GetName());
 	HealthPoints = (int)(Type->GetHealth() * Race->GetHealthModifier());
-	WalkSpeed = Type->GetWalkspeed();
+	WalkSpeed = (float)Type->GetWalkspeed();
 	DetectionRadius = Type->GetRange();
 	RaceType = Race->GetRace();
 	SetSprite(Type->GetMeshName());

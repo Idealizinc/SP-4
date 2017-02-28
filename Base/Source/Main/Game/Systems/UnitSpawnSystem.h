@@ -35,7 +35,7 @@ public:
 
 	int CalculateCost();
 
-	const int maxUnitCost = 100;
+	const int maxUnitCost = 50;
 
 	void MapReset();
 

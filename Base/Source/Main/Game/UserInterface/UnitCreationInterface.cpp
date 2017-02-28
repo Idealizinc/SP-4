@@ -52,6 +52,11 @@ void UnitCreationInterface::Init()
 	TotalCost->SetTargetPosition(Vector3(-ScreenHalfDimension.x * 0.9f, ScreenHalfDimension.y * 1.f, 0));
 	TotalCost->SetTextColor(0);
 
+	CostBox = UnitDisplayLayer->CreateNewInterfaceElement("CostBox", "quad", Vector3(-ScreenHalfDimension.x  *0.9f, ScreenHalfDimension.y * 0.9f, 0), Vector3(ScreenHalfDimension.x *0.25f, ScreenHalfDimension.y*0.15f, 1.f));
+	CostBox->SetTargetPosition(Vector3(-ScreenHalfDimension.x * 0.9f, ScreenHalfDimension.y * 0.9f, 0));
+	CostBox->SetText("Unit Cost");
+	CostBox->SetTextColor(0);
+
 	UIDisplayed = 0;
 	deploy = 0;
 
@@ -95,10 +100,6 @@ void UnitCreationInterface::InterfaceReset()
 
 void UnitCreationInterface::InterfaceExit()
 {
-	if (UIDisplayed == 1)
-	{
-		//OpenInterface();
-	}
 	if (IconLayer)
 	{
 		for (std::vector<InterfaceLayer*>::iterator it = InternalLayerContainer.begin(); it != InternalLayerContainer.end(); ++it)
@@ -127,6 +128,8 @@ void UnitCreationInterface::InterfaceExit()
 	//delete IconMap;
 	IconCounterMap.clear();
 	returnUnitSpawnSys()->MapReset();
+	UnitDisplayLayer->SetOriginalPosition(Vector3(ScreenHalfDimension.x * 0.25f, 0, 0));
+	UnitDisplayLayer->SetTargetPosition(Vector3(ScreenHalfDimension.x * 0.25f, 0, 0));
 }
 
 void UnitCreationInterface::Update(const float& dt)
@@ -292,7 +295,6 @@ void UnitCreationInterface::OpenInterface()
 	{
 		UnitSelectLayer->SwapOriginalWithTarget();
 		UnitDisplayLayer->SwapOriginalWithTarget();
-	
 	}
 	UnitSpawner->resetUnitMap();
 	deploy = false;

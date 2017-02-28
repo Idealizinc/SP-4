@@ -1,9 +1,9 @@
 WeaponID,WeaponName,WeaponType,WeaponDamage,AttackRate
-1,OneHandedSword,0,10,0.5
+1,OneHandedSword,0,15,0.5
 2,TwoHandedSword,1,50,1
-3,DualSword,2,30,0.2
+3,DualSword,2,10,0.2
 4,FireProjectile,3,30,1
 5,FireOnPoint,4,5,3
-6,FastShoot,5,8,0.4
+6,FastShoot,5,10,0.7
 7,SlowShoot,6,30,1
-8,RapidShoot,7,5,0.2
+8,RapidShoot,7,6,0.4

@@ -40,11 +40,11 @@ void BattleScene::QuickInit()
 
 	CameraAerial* CA = new CameraAerial();
 	camera = CA;
-	CA->AltInit(/*Player Character Position*/Vector3(0, 0, 0), Vector3(0, 200, 1), Vector3(0, 1, 0));
+	CA->AltInit(/*Player Character Position*/Vector3(0, 0, 0), Vector3(0, 100, 50), Vector3(0, 1, 0));
 	CenterPosition.Set(SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth * 0.5f, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.5f, 0);
 
 	// Initiallise Model Specific Meshes Here
-	Mesh* newMesh = MeshBuilder::GenerateTerrain("BattleScreen", "HeightMapFiles//heightmap_Town1.raw", m_heightMap);
+	Mesh* newMesh = MeshBuilder::GenerateTerrain("BattleScreen", "HeightMapFiles//heightmap_MainMenu.raw", m_heightMap);
 	newMesh->material.kAmbient.Set(0.2f, 0.2f, 0.2f);
 	newMesh->material.kDiffuse.Set(0.2f, 0.2f, 0.2f);
 	newMesh->material.kSpecular.Set(0.0f, 0.0f, 0.0f);
