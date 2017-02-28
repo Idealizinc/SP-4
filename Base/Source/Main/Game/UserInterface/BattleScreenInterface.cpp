@@ -2,6 +2,7 @@
 #include <sstream>
 #include <iomanip>
 #include "../Systems/GameLogicSystem.h"
+#include "../Miscellaneous/CameraAerial.h"
 
 template <typename T>
 std::string to_string_with_precision(const T a_value, const int n = 2)
@@ -150,13 +151,15 @@ void BattleScreenInterface::Update(const float& dt)
 		currentPlayerBarPos = PlayerUnitCountBackground->GetPosition();
 		currentEnemyBarPos = EnemyUnitCountBackground->GetPosition();
 		GetMaxData = false;
+
+		CameraAerial* CA = (CameraAerial*)SceneSystem::Instance().GetCurrentScene().camera;
+		CA->CameraMoveTargetPosition = GameLogicSystem::Instance().InternalBattleSystem->SpawnPosition_Player;
 	}
 
 	if (StartBattle)
 	{
 		CNOPU = GameLogicSystem::Instance().InternalBattleSystem->GetPlayerCharacterList().size();
 		CNOEU = GameLogicSystem::Instance().InternalBattleSystem->GetEnemyCharacterList().size();
-
 
 		PlayerRateofChange = defaultbarSize.x - PlayerUnitCount->GetDimensions().x;
 		currentPlayerBarPos = PlayerUnitCountBackground->GetPosition() - Vector3(PlayerRateofChange * 0.5f, 0, 0);

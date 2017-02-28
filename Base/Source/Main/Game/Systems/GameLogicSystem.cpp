@@ -41,27 +41,64 @@ void GameLogicSystem::QuickInit()
 
 	InternalEnemySystem->RemainingGold = UnitInterface->returnUnitSpawnSys()->maxUnitCost * maxStartingUnits;
 	//InternalPlayerSystem->SetCash(/*UnitInterface->returnUnitSpawnSys()->maxUnitCost * maxStartingUnits*/1000);
+	GameOver = false;
+	PlayerWon = false;
 }
 
 void GameLogicSystem::Update(const float& dt)
 {
-	State* CurrentState = GetCurrentState();
+	if (!GameOver)
+	{
+		State* CurrentState = GetCurrentState();
 
-	if (CurrentState->GetStateName() == PlayerTurn)
-	{
-		InternalPlayerSystem->Update(dt);
-	}
-	else if (CurrentState->GetStateName() == EnemyTurn)
-	{
-		InternalEnemySystem->Update(dt);
-	}
-	else if (CurrentState->GetStateName() == BattlePhase)
-	{
-		InternalBattleSystem->Update(dt);
-	}
+		if (CurrentState->GetStateName() == PlayerTurn)
+		{
+			InternalPlayerSystem->Update(dt);
+		}
+		else if (CurrentState->GetStateName() == EnemyTurn)
+		{
+			InternalEnemySystem->Update(dt);
+		}
+		else if (CurrentState->GetStateName() == BattlePhase)
+		{
+			InternalBattleSystem->Update(dt);
+		}
 
-	UnitInterface->Update(dt);
-	GameInterface->Update(dt);
+		UnitInterface->Update(dt);
+		GameInterface->Update(dt);
+	}
+	else SceneSystem::Instance().SwitchScene("EndOfGameScene");
+}
+
+bool GameLogicSystem::DetectWinner()
+{
+	// Checking the enemy
+	TerrainNode* EnemyBase = SceneSystem::Instance().GetCurrentScene().ScenePartition->EnemyBase;
+	if (EnemyBase)
+	{
+		// Theres a player here and no defending units
+		if (EnemyBase->TerrainTile->PlayerUnitList.size() > 0 &&
+			EnemyBase->TerrainTile->EnemyUnitList.size() <= 0)
+		{
+			PlayerWon = true;
+			GameOver = true;
+			return true;
+		}
+	}
+	// Checking the Player
+	TerrainNode* PlayerBase = SceneSystem::Instance().GetCurrentScene().ScenePartition->PlayerBase;
+	if (PlayerBase)
+	{
+		// Theres a player here and no defending units
+		if (PlayerBase->TerrainTile->PlayerUnitList.size() <= 0 &&
+			PlayerBase->TerrainTile->EnemyUnitList.size() > 0)
+		{
+			PlayerWon = false;
+			GameOver = true;
+			return true;
+		}
+	}
+	return false;
 }
 
 void GameLogicSystem::Render()

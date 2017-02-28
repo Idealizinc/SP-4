@@ -51,6 +51,7 @@ void BattleSystem::Update(const float& dt)
 				CurrentBattleTile->EnemyUnitList.clear();
 				ClearCharacterCounters();
 				BSI->ResetAll();
+				GameLogicSystem::Instance().DetectWinner();
 			}
 		}
 		else if (InternalEnemyCharacterList.size() > 0 && InternalPlayerCharacterList.size() <= 0)
@@ -66,6 +67,7 @@ void BattleSystem::Update(const float& dt)
 				CurrentBattleTile->PlayerUnitList.clear();
 				ClearCharacterCounters();
 				BSI->ResetAll();
+				GameLogicSystem::Instance().DetectWinner();
 			}
 		}
 	}

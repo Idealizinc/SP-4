@@ -49,6 +49,7 @@ void EndOfGameInterface::Update(const float& dt)
 			it->Update(dt * 10);
 	}
 	PopUpDelay(dt);
+	HandleUserInput();
 
 	if (GameLogicSystem::Instance().PlayerFaction == GameLogicSystem::F_LIVING)
 	{
@@ -62,7 +63,7 @@ void EndOfGameInterface::Update(const float& dt)
 			EndScreenFrame->SetMesh("WoodFrameRect");
 			EndScreenBackground->SetMesh("LivingFaction");
 		}
-		else if (GameLogicSystem::Instance().GameOver)
+		else
 		{
 			EndScreenWinOrLose->SetText("Defeated!");
 			EndScreenNextButton->SetText("Try Again");
@@ -85,7 +86,7 @@ void EndOfGameInterface::Update(const float& dt)
 			EndScreenFrame->SetMesh("BlueFrameRect");
 			EndScreenBackground->SetMesh("UndeadFaction");
 		}
-		else if (GameLogicSystem::Instance().GameOver)
+		else
 		{
 			EndScreenWinOrLose->SetText("Defeated!");
 			EndScreenNextButton->SetText("Try Again");
@@ -116,10 +117,49 @@ void EndOfGameInterface::HandleUserInput()
 	{
 		if (EndScreenNextButton->DetectUserInput(MousePos, EndScreenLayer->GetPosition()))
 		{
+
 		}
 
 		else if (EndScreenReturnButton->DetectUserInput(MousePos, EndScreenLayer->GetPosition()))
 		{
+			GameLogicSystem::Instance().PlayerWon = false;
+			GameLogicSystem::Instance().GameOver = false;
+
+			GameLogicSystem::Instance().UnitInterface->InterfaceExit();
+			SceneSystem::Instance().SwitchScene("MainMenuScene");
+			if (GameLogicSystem::Instance().InternalPlayerSystem->InternalUnitContainer.size() > 0)
+			for (auto it : GameLogicSystem::Instance().InternalPlayerSystem->InternalUnitContainer)
+			{
+				for (std::vector<UnitPiece*>::iterator it2 = it->TargetNode->TerrainTile->PlayerUnitList.begin(); it2 != it->TargetNode->TerrainTile->PlayerUnitList.end();)
+				{
+					if (it == *it2)
+					{
+						it->TargetNode->TerrainTile->PlayerUnitList.erase(it2);
+						break;
+					}
+					++it2;
+				}
+				it->Exit();
+				delete it;
+			}
+			GameLogicSystem::Instance().InternalPlayerSystem->InternalUnitContainer.clear();
+
+			if (GameLogicSystem::Instance().InternalEnemySystem->InternalEnemyContainer.size() > 0)
+			for (auto it : GameLogicSystem::Instance().InternalEnemySystem->InternalEnemyContainer)
+			{
+				for (std::vector<UnitPiece*>::iterator it2 = it->TargetNode->TerrainTile->EnemyUnitList.begin(); it2 != it->TargetNode->TerrainTile->EnemyUnitList.end();)
+				{
+					if (it == *it2)
+					{
+						it->TargetNode->TerrainTile->EnemyUnitList.erase(it2);
+						break;
+					}
+					++it2;
+				}
+				it->Exit();
+				delete it;
+			}
+			GameLogicSystem::Instance().InternalEnemySystem->InternalEnemyContainer.clear();
 		}
 	}
 	else if (SceneSystem::Instance().cSS_InputManager->GetMouseInput(InputManager::KEY_LMB) == InputManager::MOUSE_UP)

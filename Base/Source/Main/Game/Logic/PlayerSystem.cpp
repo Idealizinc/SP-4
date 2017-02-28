@@ -57,11 +57,14 @@ void PlayerSystem::Update(const float& dt)
 			SelectedUnit = nullptr;
 			if (TargetedNode != nullptr)
 			{
-				if (TargetedNode->TerrainTile->PlayerUnitList.size() > 0 && TargetedNode->TerrainTile->EnemyUnitList.size() > 0)
+				if (!GameLogicSystem::Instance().DetectWinner())
 				{
-					SceneSystem::Instance().SwitchScene("BattleScene");
-					GameLogicSystem::Instance().SetCurrentState(GameLogicSystem::Instance().BattlePhase);
-					GameLogicSystem::Instance().InternalBattleSystem->SetUpUnits(TargetedNode->TerrainTile);
+					if (TargetedNode->TerrainTile->PlayerUnitList.size() > 0 && TargetedNode->TerrainTile->EnemyUnitList.size() > 0)
+					{
+						SceneSystem::Instance().SwitchScene("BattleScene");
+						GameLogicSystem::Instance().SetCurrentState(GameLogicSystem::Instance().BattlePhase);
+						GameLogicSystem::Instance().InternalBattleSystem->SetUpUnits(TargetedNode->TerrainTile);
+					}
 				}
 				TargetedNode = nullptr;
 			}

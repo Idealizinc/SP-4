@@ -1,4 +1,5 @@
 #include "MainMenuInterface.h"
+#include "../Mains/Application.h"
 
 MainMenuInterface::MainMenuInterface()
 {
@@ -153,6 +154,10 @@ void MainMenuInterface::CheckMenuUserInput(Vector3 mousePos)
 	{
 		//SceneSystem::Instance().SwitchScene("1_Scene");
 		nextLayer = L_FACTION;
+	}
+	if (ExitButton->DetectUserInput(mousePos, MainLayer->GetPosition()))
+	{
+		Application::ExitGame = true;
 	}
 }
 

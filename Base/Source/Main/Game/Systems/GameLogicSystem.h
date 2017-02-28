@@ -88,6 +88,9 @@ public:
 	GameScreenInterface* GameInterface;
 
 	const int maxStartingUnits = 10;
+
+	bool DetectWinner();
+
 protected:
 
 };

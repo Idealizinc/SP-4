@@ -97,24 +97,42 @@ void SceneTown1::Update(const float& dt)
 
 	//GSI->Update(dt);
 
-	float Speed = 50.f;
+	float Speed = 80.f;
 	CameraAerial* CA = (CameraAerial*)camera;
+	float DetectionOffset = 0.1f;
+	if (!GameLogicSystem::Instance().UnitInterface->UIDisplayed)
+	{
+		if (SceneSystem::Instance().cSS_InputManager->GetKeyValue(SimpleCommand::m_allTheKeys[SimpleCommand::FORWARD_COMMAND]) ||
+			SceneSystem::Instance().cSS_InputManager->GetMousePosition().y > SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * (1.f - DetectionOffset))
+		{
+			CA->CameraMoveTargetPosition.z -= Speed*dt;
+		}
+		if (SceneSystem::Instance().cSS_InputManager->GetKeyValue(SimpleCommand::m_allTheKeys[SimpleCommand::BACK_COMMAND]) ||
+			SceneSystem::Instance().cSS_InputManager->GetMousePosition().y < SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * DetectionOffset)
+		{
+			CA->CameraMoveTargetPosition.z += Speed*dt;
+		}
+		if (SceneSystem::Instance().cSS_InputManager->GetKeyValue(SimpleCommand::m_allTheKeys[SimpleCommand::RIGHT_COMMAND]) ||
+			SceneSystem::Instance().cSS_InputManager->GetMousePosition().x > SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth * (1.f - DetectionOffset))
+		{
+			CA->CameraMoveTargetPosition.x += Speed*dt;
+		}
+		if (SceneSystem::Instance().cSS_InputManager->GetKeyValue(SimpleCommand::m_allTheKeys[SimpleCommand::LEFT_COMMAND]) ||
+			SceneSystem::Instance().cSS_InputManager->GetMousePosition().x < SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth * DetectionOffset)
+		{
+			CA->CameraMoveTargetPosition.x -= Speed*dt;
+		}
+		float XOffset = TerrainScale.x * 0.5f;
+		if (CA->CameraMoveTargetPosition.x < -XOffset)
+			CA->CameraMoveTargetPosition.x = -XOffset;
+		else if (CA->CameraMoveTargetPosition.x > XOffset)
+			CA->CameraMoveTargetPosition.x = XOffset;
 
-	if (SceneSystem::Instance().cSS_InputManager->GetKeyValue(SimpleCommand::m_allTheKeys[SimpleCommand::FORWARD_COMMAND]))
-	{
-		CA->CameraMoveTargetPosition.z -= Speed*dt;
-	}
-	if (SceneSystem::Instance().cSS_InputManager->GetKeyValue(SimpleCommand::m_allTheKeys[SimpleCommand::BACK_COMMAND]))
-	{
-		CA->CameraMoveTargetPosition.z += Speed*dt;
-	}
-	if (SceneSystem::Instance().cSS_InputManager->GetKeyValue(SimpleCommand::m_allTheKeys[SimpleCommand::RIGHT_COMMAND]))
-	{
-		CA->CameraMoveTargetPosition.x += Speed*dt;
-	}
-	if (SceneSystem::Instance().cSS_InputManager->GetKeyValue(SimpleCommand::m_allTheKeys[SimpleCommand::LEFT_COMMAND]))
-	{
-		CA->CameraMoveTargetPosition.x -= Speed*dt;
+		float ZOffset = TerrainScale.z * 0.5f;
+		if (CA->CameraMoveTargetPosition.z < -ZOffset)
+			CA->CameraMoveTargetPosition.z = -ZOffset;
+		else if (CA->CameraMoveTargetPosition.z > ZOffset)
+			CA->CameraMoveTargetPosition.z = ZOffset;
 	}
 
 	if (Application::IsKeyPressed(VK_OEM_MINUS))
