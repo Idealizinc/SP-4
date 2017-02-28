@@ -32,15 +32,6 @@ void EnemySystem::Exit(void)
 
 void EnemySystem::Update(const float& dt)
 {
-	for (std::vector<UnitPiece*>::iterator it = InternalEnemyContainer.begin(); it != InternalEnemyContainer.end();)
-	{
-		if (!(*it)->Active)
-		{
-			delete *it;
-			it = InternalEnemyContainer.erase(it);
-		}
-		else ++it;
-	}
 	std::map<std::string, unsigned short> Battalion;
 	switch (CurrentTurnState)
 	{
@@ -97,6 +88,15 @@ void EnemySystem::Update(const float& dt)
 			}
 		}
 		break;
+	}
+	for (std::vector<UnitPiece*>::iterator it = InternalEnemyContainer.begin(); it != InternalEnemyContainer.end();)
+	{
+		if (!(*it)->Active)
+		{
+			delete *it;
+			it = InternalEnemyContainer.erase(it);
+		}
+		else ++it;
 	}
 }
 

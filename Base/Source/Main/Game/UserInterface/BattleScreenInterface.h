@@ -27,6 +27,7 @@ private:
 	void PopUpDelay(const float& dt);
 
 	InterfaceLayer* TurnPopup;
+	InterfaceElement* BattleScreenFrame;
 	InterfaceElement* BattleWordPopup;
 	InterfaceElement* StartWordPopup;
 

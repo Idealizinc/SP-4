@@ -73,7 +73,10 @@ public:
 	const std::string EnemyTurn = "Enemy's Turn";
 	const std::string BattlePhase = "Battle Phase";
 	TerrainDataLoader TerrainLoader;
-	Faction PlayerFaction = F_LIVING;
+
+	Faction PlayerFaction;
+	bool PlayerWon = false;
+	bool GameOver = false;
 
 //private:
 	PlayerSystem* InternalPlayerSystem;

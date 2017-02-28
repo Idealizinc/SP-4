@@ -1,4 +1,5 @@
 #include "EndOfGameInterface.h"
+#include "../Systems/GameLogicSystem.h"
 
 EndOfGameInterface::EndOfGameInterface()
 {
@@ -49,52 +50,52 @@ void EndOfGameInterface::Update(const float& dt)
 	}
 	PopUpDelay(dt);
 
-	//if (Faction = LIVING)
-	//{
-	//	if (Win)
-	//	{
-	//		EndScreenWinOrLose->SetText("Victorious!");
-	//		EndScreenNextButton->SetText("Next Game");
-	//		EndScreenNextButton->SetTextColor(Vector3(1, 1, 0));
-	//		EndScreenReturnButton->SetText("Main Menu");
-	//		EndScreenReturnButton->SetTextColor(Vector3(1, 1, 0));
-	//		EndScreenFrame->SetMesh("WoodFrameRect");
-	//		EndScreenBackground->SetMesh("LivingFaction");
-	//	}
-	//	else
-	//	{
-	//		EndScreenWinOrLose->SetText("Defeated!");
-	//		EndScreenNextButton->SetText("Try Again");
-	//		EndScreenNextButton->SetTextColor(Vector3(0, 0, 1));
-	//		EndScreenReturnButton->SetText("Main Menu");
-	//		EndScreenReturnButton->SetTextColor(Vector3(0,0, 1));
-	//		EndScreenFrame->SetMesh("BlueFrameRect");
-	//		EndScreenBackground->SetMesh("UndeadFaction");
-	//	}
-	//}
-	//else if (Faction = UNDEAD)
-	//{
-	//	if (Win)
-	//	{
-	//		EndScreenWinOrLose->SetText("Victorious!");
-	//		EndScreenNextButton->SetText("Next Game");
-	//		EndScreenNextButton->SetTextColor(Vector3(0, 0, 1));
-	//		EndScreenReturnButton->SetText("Main Menu");
-	//		EndScreenReturnButton->SetTextColor(Vector3(0, 0, 1));
-	//		EndScreenFrame->SetMesh("BlueFrameRect");
-	//		EndScreenBackground->SetMesh("UndeadFaction");
-	//	}
-	//	else
-	//	{
-	//		EndScreenWinOrLose->SetText("Defeated!");
-	//		EndScreenNextButton->SetText("Try Again");
-	//		EndScreenNextButton->SetTextColor(Vector3(1, 1, 0));
-	//		EndScreenReturnButton->SetText("Main Menu");
-	//		EndScreenReturnButton->SetTextColor(Vector3(1, 1, 0));
-	//		EndScreenFrame->SetMesh("WoodFrameRect");
-	//		EndScreenBackground->SetMesh("LivingFaction");
-	//	}
-	//}
+	if (GameLogicSystem::Instance().PlayerFaction == GameLogicSystem::F_LIVING)
+	{
+		if (GameLogicSystem::Instance().PlayerWon)
+		{
+			EndScreenWinOrLose->SetText("Victorious!");
+			EndScreenNextButton->SetText("Next Game");
+			EndScreenNextButton->SetTextColor(Vector3(1, 1, 0));
+			EndScreenReturnButton->SetText("Main Menu");
+			EndScreenReturnButton->SetTextColor(Vector3(1, 1, 0));
+			EndScreenFrame->SetMesh("WoodFrameRect");
+			EndScreenBackground->SetMesh("LivingFaction");
+		}
+		else if (GameLogicSystem::Instance().GameOver)
+		{
+			EndScreenWinOrLose->SetText("Defeated!");
+			EndScreenNextButton->SetText("Try Again");
+			EndScreenNextButton->SetTextColor(Vector3(0, 0, 1));
+			EndScreenReturnButton->SetText("Main Menu");
+			EndScreenReturnButton->SetTextColor(Vector3(0,0, 1));
+			EndScreenFrame->SetMesh("BlueFrameRect");
+			EndScreenBackground->SetMesh("UndeadFaction");
+		}
+	}
+	else if (GameLogicSystem::Instance().PlayerFaction == GameLogicSystem::F_UNDEAD)
+	{
+		if (GameLogicSystem::Instance().PlayerWon)
+		{
+			EndScreenWinOrLose->SetText("Victorious!");
+			EndScreenNextButton->SetText("Next Game");
+			EndScreenNextButton->SetTextColor(Vector3(0, 0, 1));
+			EndScreenReturnButton->SetText("Main Menu");
+			EndScreenReturnButton->SetTextColor(Vector3(0, 0, 1));
+			EndScreenFrame->SetMesh("BlueFrameRect");
+			EndScreenBackground->SetMesh("UndeadFaction");
+		}
+		else if (GameLogicSystem::Instance().GameOver)
+		{
+			EndScreenWinOrLose->SetText("Defeated!");
+			EndScreenNextButton->SetText("Try Again");
+			EndScreenNextButton->SetTextColor(Vector3(1, 1, 0));
+			EndScreenReturnButton->SetText("Main Menu");
+			EndScreenReturnButton->SetTextColor(Vector3(1, 1, 0));
+			EndScreenFrame->SetMesh("WoodFrameRect");
+			EndScreenBackground->SetMesh("LivingFaction");
+		}
+	}
 
 }
 

@@ -26,18 +26,20 @@ void BattleScreenInterface::Init()
 	//Start Battle Interface
 	TurnPopup = CreateNewInterfaceLayer("StartLayer", 0, 0);
 
+
 	negativeHeight = -((float)SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight);
+
 	CenterTarget = SceneSystem::Instance().cSS_InputManager->ScreenCenter;
 
-	BattleWordPopup = TurnPopup->CreateNewInterfaceElement("BattleWordPopUp", "quad1", Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 2.5f, 0), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.5f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.2f, 0));
-	BattleWordPopup->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 2.5f, 0));
-	BattleWordPopup->SetText("Battle");
-	BattleWordPopup->SetTextColor(0);
+	BattleScreenFrame = TurnPopup->CreateNewInterfaceElement("BattleScreenFrame", "BattleScreenFrame", Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y, 0), Vector3(SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight, 0));
+	BattleScreenFrame->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y, 0));
 
-	StartWordPopup = TurnPopup->CreateNewInterfaceElement("StartWordPopUp", "quad2", Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 2.5f, 0), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.5f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.2f, 0));
+
+	BattleWordPopup = TurnPopup->CreateNewInterfaceElement("BattleWordPopUp", "BattleFont", Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 2.5f, 0), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.5f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.2f, 0));
+	BattleWordPopup->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 2.5f, 0));
+
+	StartWordPopup = TurnPopup->CreateNewInterfaceElement("StartWordPopUp", "StartFont", Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 2.5f, 0), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.5f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.2f, 0));
 	StartWordPopup->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 2.5f, 0));
-	StartWordPopup->SetText("Start!");
-	StartWordPopup->SetTextColor(0);
 
 	//Show terrain info Interface
 	TerrainInfoLayer = CreateNewInterfaceLayer("BottomLayer", 0, 0);
@@ -85,48 +87,42 @@ void BattleScreenInterface::Init()
 	TerrainRangeMinusValue->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 1.31f, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.12f, 0));
 	TerrainRangeMinusValue->SetTextColor(0);
 
-	TerrainInfoBackElement = TerrainInfoLayer->CreateNewInterfaceElement("TerrainInfoBackground", "Background", Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * -2.5f, 0), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 1.2f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.4f, 0));
+	TerrainInfoBackElement = TerrainInfoLayer->CreateNewInterfaceElement("TerrainInfoBackground", "Background", Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * -2.5f, 0), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 1.2f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.5f, 0));
 	TerrainInfoBackElement->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.2f, 0));
 
 	//Show Player unit data interface
 	UnitCountInfoLayer = CreateNewInterfaceLayer("UnitCountLayer", 0, 0);
 
 	CNOPU = CNOEU = 0;
-	defaultbarSize = Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.1f, 0);
+	defaultbarSize = Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.2f, 0);
 
 	PlayerUnitCountText = UnitCountInfoLayer->CreateNewInterfaceElement("PlayerUnitCountText", "Transparent", Vector3(SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth*-0.2f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * -1.75f, 0), defaultbarSize);
 	PlayerUnitCountText->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.5f, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.8f, 0));
 	PlayerUnitCountText->SetTextColor(0);
 
-	PlayerUnitBarFrame = UnitCountInfoLayer->CreateNewInterfaceElement("PlayerUnitCountMAX", "UnitBar", Vector3(SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth*-0.2f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * -1.75f, 0), defaultbarSize);
-	PlayerUnitBarFrame->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.5f, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight, 0));
+	PlayerUnitCount = UnitCountInfoLayer->CreateNewInterfaceElement("PlayerUnitCount", "quad2", Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.5f, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight*0.95f, 0), defaultbarSize);
+	PlayerUnitCount->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.5f, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight*0.95f, 0));
 
-	PlayerUnitCount = UnitCountInfoLayer->CreateNewInterfaceElement("PlayerUnitCount", "quad2", Vector3(SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth*-0.2f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * -1.75f, 0), defaultbarSize);
-	PlayerUnitCount->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.5f, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight, 0));
-
-	PlayerUnitCountBackground = UnitCountInfoLayer->CreateNewInterfaceElement("PlayerUnitCountMAX", "quad1", Vector3(SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth*-0.2f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * -1.75f, 0), defaultbarSize);
-	PlayerUnitCountBackground->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.5f, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight, 0));
+	PlayerUnitCountBackground = UnitCountInfoLayer->CreateNewInterfaceElement("PlayerUnitCountMAX", "quad1", Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.5f, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.95f, 0), defaultbarSize);
+	PlayerUnitCountBackground->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.5f, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.95f, 0));
 
 	EnemyUnitCountText = UnitCountInfoLayer->CreateNewInterfaceElement("EnemyUnitCountText", "Transparent", Vector3(SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth*1.2f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * -1.75f, 0), defaultbarSize);
 	EnemyUnitCountText->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 1.5f, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.8f, 0));
 	EnemyUnitCountText->SetTextColor(0);
 
-	EnemyUnitBarFrame = UnitCountInfoLayer->CreateNewInterfaceElement("PlayerUnitCountMAX", "UnitBar", Vector3(SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth*1.2f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * -1.75f, 0), defaultbarSize);
-	EnemyUnitBarFrame->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 1.5f, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight, 0));
+	EnemyUnitCount = UnitCountInfoLayer->CreateNewInterfaceElement("EnemyUnitCount", "quad2", Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 1.5f, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.95f, 0), defaultbarSize);
+	EnemyUnitCount->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 1.5f, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.95f, 0));
 
-	EnemyUnitCount = UnitCountInfoLayer->CreateNewInterfaceElement("EnemyUnitCount", "quad2", Vector3(SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth*1.2f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * -1.75f, 0), defaultbarSize);
-	EnemyUnitCount->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 1.5f, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight, 0));
-
-	EnemyUnitCountBackground = UnitCountInfoLayer->CreateNewInterfaceElement("EnemyUnitCountMAX", "quad1", Vector3(SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth*1.2f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * -1.75f, 0), defaultbarSize);
-	EnemyUnitCountBackground->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 1.5f, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight, 0));
+	EnemyUnitCountBackground = UnitCountInfoLayer->CreateNewInterfaceElement("EnemyUnitCountMAX", "quad1", Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 1.5f, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.95f, 0), defaultbarSize);
+	EnemyUnitCountBackground->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 1.5f, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.95f, 0));
 
 	PlayerRateofChange = EnemyRateofChange = 0;
 
 	//Show Result Interface
 	ResultInfoLayer = CreateNewInterfaceLayer("ResultInfoLayer", 0, 0);
 
-	ResultInfoFrame = ResultInfoLayer->CreateNewInterfaceElement("ResultInfoFrame", "WoodFrameRect", Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * -1.75f, 0), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.55f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.45f, 0));
-	CloseResultButton = ResultInfoLayer->CreateNewInterfaceElement("CloseInfo", "quad1", Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * -1.8f, 0), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.15f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.1f, 0));
+	ResultInfoFrame = ResultInfoLayer->CreateNewInterfaceElement("ResultInfoFrame", "WoodFrameRect", Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * -1.75f, 0), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.54f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.44f, 0));
+	CloseResultButton = ResultInfoLayer->CreateNewInterfaceElement("CloseInfo", "WoodButton", Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * -1.8f, 0), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.15f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.1f, 0));
 	ResultInfo = ResultInfoLayer->CreateNewInterfaceElement("ResultInfo", "Transparent", Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * -1.65f, 0), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.3f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.2f, 0));
 	ResultInfoBackElement = ResultInfoLayer->CreateNewInterfaceElement("ResultInfoBackground", "Background", Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * -1.75f, 0), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.5f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.4f, 0));
 
@@ -135,6 +131,8 @@ void BattleScreenInterface::Init()
 	ResultInfo->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x, negativeHeight * 0.15f, 0));
 	ResultInfoBackElement->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x, negativeHeight * 0.2f, 0));
 
+	CloseResultButton->SetText("Continue");
+	CloseResultButton->SetTextColor(Vector3(1, 1, 0));
 	ResultInfo->SetTextColor(0);
 
 	ResetAll();
@@ -198,7 +196,7 @@ void BattleScreenInterface::Update(const float& dt)
 
 	if (ShowResult)
 	{
-		ResultInfoLayer->SetTargetPosition(Vector3(0, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight, 0));
+		ResultInfoLayer->SetTargetPosition(Vector3(0, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 1.3f, 0));
 
 		if (CNOPU != 0)
 		{
@@ -323,4 +321,6 @@ void BattleScreenInterface::ResetAll()
 	ResultInfo->SetTargetPosition(ResultInfo->GetOriginalPosition());
 	ResultInfoBackElement->SetTargetPosition(ResultInfoBackElement->GetOriginalPosition());
 	CloseResultButton->SetTargetPosition(CloseResultButton->GetOriginalPosition());
+	PlayerUnitCount->SetDimensions(defaultbarSize);
+	EnemyUnitCount->SetDimensions(defaultbarSize);
 }
