@@ -3,12 +3,12 @@
 
 #include "../../Engine/Internal/System.h"
 #include "../../Engine/Objects/CharacterEntity.h"
-#include "../Objects/Miscellaneous/Projectile.h"
-#include "../Objects/UnitData/UnitDataLoader.h"
+#include "../Logic/UnitData/UnitDataLoader.h"
 #include "../Logic/Terrain/Terrain.h"
+#include "../Objects/Projectile.h"
+#include "../UserInterface/BattleScreenInterface.h"
 #include <vector>
 #include <map>
-#include "../UserInterface/BattleScreenInterface.h"
 
 
 /*
@@ -43,13 +43,13 @@ public:
 
 	// Data Store
 	UnitDataLoader UnitData;
+	const float UnitSize = 10.f;
 
 private:
 	// Internals
 	// Miscellaneous
 	Vector3 SpawnPosition_Player;
 	Vector3 SpawnPosition_Enemy;
-	const float UnitSize = 10.f;
 	
 	// Containers
 	std::vector<Projectile*> InternalProjectileList;
@@ -64,8 +64,8 @@ private:
 	void ClearCharacterCounters();
 	void UpdateCharacterLogic(std::vector<CharacterEntity*>& CharacterList , const float& dt);
 	void UpdateProjectileLogic(const float& dt);
-	void SpawnPlayerCharacters(std::map<std::string, unsigned short> PlayerCharacterList);
-	void SpawnEnemyCharacters(std::map<std::string, unsigned short> EnemyCharacterList);
+	void SpawnPlayerCharacters(std::map<std::string, unsigned short> PlayerCharacterList, Terrain* Tile);
+	void SpawnEnemyCharacters(std::map<std::string, unsigned short> EnemyCharacterList, Terrain* Tile);
 };
 
 

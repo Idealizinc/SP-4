@@ -71,11 +71,6 @@ void MainMenuScene::QuickExit()
 	}
 	if (InteractiveMap)
 		delete InteractiveMap;
-	for (auto it : EntityList)
-	{
-		delete it;
-	}
-	EntityList.clear();
 	if (Player)
 		delete Player;
 	if (camera)

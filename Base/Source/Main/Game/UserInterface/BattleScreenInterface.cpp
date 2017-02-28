@@ -319,4 +319,6 @@ void BattleScreenInterface::ResetAll()
 	ResultInfo->SetTargetPosition(ResultInfo->GetOriginalPosition());
 	ResultInfoBackElement->SetTargetPosition(ResultInfoBackElement->GetOriginalPosition());
 	CloseResultButton->SetTargetPosition(CloseResultButton->GetOriginalPosition());
+	PlayerUnitCount->SetDimensions(defaultbarSize);
+	EnemyUnitCount->SetDimensions(defaultbarSize);
 }

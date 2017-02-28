@@ -4,7 +4,7 @@
 #include "../../Engine/Objects/SceneEntity.h"
 #include "../../Engine/System/SceneSystem.h"
 #include "../../Engine/System/RenderSystem.h"
-#include "../Objects/Miscellaneous/GameObject.h"
+#include "../../Engine/Objects/GameObject.h"
 #include "../Systems/BillboardManager.h"
 #include "../Miscellaneous/CameraAerial.h"
 #include "../../Game/UserInterface/EndOfGameInterface.h"
@@ -33,7 +33,7 @@ private:
 	void QuickExit();
 
 	Vector3 CenterPosition;
-	EndOfGameInterface* EOGI = new EndOfGameInterface();
+	EndOfGameInterface* EOGI;
 
 protected:
 };

@@ -22,8 +22,8 @@ public:
 		SetParameters("EnemyPiece", 1, 0, Vector3(3, 3, 3), 0, 0, Vector3(0, 1, 0));
 
 		// for testing
-		InternalBattalionList.insert(std::make_pair("Beastman", 5));
-		InternalBattalionList.insert(std::make_pair("Crusader", 10));
+		InternalBattalionList.insert(std::make_pair("Demonmage", 3));
+		InternalBattalionList.insert(std::make_pair("ArchDemon", 0));
 	}
 //private: < Temp
 	std::vector<TerrainNode*> InternalDefinedPath;

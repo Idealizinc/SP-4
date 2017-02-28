@@ -48,13 +48,6 @@ void Node::Render()
 			if (ParentNode->GetEntityID() == "Partition")
 			{
 				GridNode* Parent = dynamic_cast<GridNode*>(ParentNode);
-				//if (ParentNode != ScenePartitionGraph::Instance().FindGridForPosition(GlobalPlayer::Instance().GetCurrentPosition()))
-				//{
-				//	float LODDistance = (ScenePartitionGraph::Instance().GridDimensions.x / ScenePartitionGraph::Instance().GridDivisions) * 0.25f;
-				//	float PlayerDistance = (GlobalPlayer::Instance().GetCurrentPosition() - Object->GetPosition()).LengthSquared();
-				//	Parent->LODLevel = Math::Clamp((int)(PlayerDistance / (LODDistance * LODDistance)), 0, 2);
-				//}
-				//else Parent->LODLevel = 0;
 
 				RenderSystem *Renderer = dynamic_cast<RenderSystem*>(&SceneSystem::Instance().GetRenderSystem());
 				SceneSystem::Instance().GetRenderSystem().modelStack->PushMatrix();
@@ -62,10 +55,7 @@ void Node::Render()
 				SceneSystem::Instance().GetRenderSystem().modelStack->Rotate(GetEntity()->GetRotationAngle(), GetEntity()->GetRotationAxis().x, GetEntity()->GetRotationAxis().y, GetEntity()->GetRotationAxis().z);
 				SceneSystem::Instance().GetRenderSystem().modelStack->Scale(GetEntity()->GetDimensions().x, GetEntity()->GetDimensions().y, GetEntity()->GetDimensions().z);
 
-				/*std::map<std::string, std::vector<Mesh*>>::iterator iter = ScenePartitionGraph::Instance().LODList.find(Object->GetEntityID());
-				if (iter != ScenePartitionGraph::Instance().LODList.end())
-					Renderer->RenderMesh(*iter->second.at(Parent->LODLevel), true);
-				else */Renderer->RenderMesh(*Object->GetMesh(), true);
+				Renderer->RenderMesh(*Object->GetMesh(), Object->LightEnabled);
 
 				SceneSystem::Instance().GetRenderSystem().modelStack->PopMatrix();
 				Parent->LODLevel = 0;
@@ -191,6 +181,8 @@ void Node::ClearNodeList()
 		ChildNodeList.clear();
 	}
 	// Reset the pointers for this node
+	if (Object != nullptr)
+		delete Object;
 	Object = nullptr;
 	ParentNode = nullptr;
 }

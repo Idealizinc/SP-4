@@ -1,7 +1,8 @@
 #include "BattleSystem.h"
 #include "../../Engine/System/SceneSystem.h"
-#include "../Objects/Characters/MeleeCharacter.h"
+#include "../Logic/Characters/BaseClasses/BattleScreenCharacter.h"
 #include "GameLogicSystem.h"
+#include "LoadHmap.h"
 
 BattleSystem::BattleSystem()
 {
@@ -9,19 +10,19 @@ BattleSystem::BattleSystem()
 
 BattleSystem::~BattleSystem()
 {
+	Exit();
 }
 
 void BattleSystem::Init()
 {
 	UnitData.LoadWeaponData("CSVFiles/WeaponDataLoader.csv");
-	//UnitData.LoadUnitData("CSVFiles/UnitDataLoader.csv");
 	UnitData.LoadRaceData("CSVFiles/RaceDataLoader.csv");
 	UnitData.LoadLivingFactionData("CSVFiles/LivingFactionLoader.csv");
 	UnitData.LoadUndeadFactionData("CSVFiles/UndeadFactionLoader.csv");
 
 
-	SpawnPosition_Enemy = Vector3(-20, 1, 0);
-	SpawnPosition_Player = Vector3(20, 1, 0);
+	SpawnPosition_Enemy = Vector3(-100, 1, 100);
+	SpawnPosition_Player = Vector3(100, 1, -100);
 	CurrentBattleTile = nullptr;
 	BSI = new BattleScreenInterface();
 }
@@ -33,8 +34,9 @@ void BattleSystem::Update(const float& dt)
 	if (BSI->StartBattle)
 	{
 		// I will need to update all my characters, projectiles and other miscellaneous game objects
-		UpdateCharacterLogic(InternalPlayerCharacterList, dt);
 		UpdateCharacterLogic(InternalEnemyCharacterList, dt);
+		UpdateCharacterLogic(InternalPlayerCharacterList, dt);
+
 		UpdateProjectileLogic(dt);
 		if (InternalEnemyCharacterList.size() <= 0 && InternalPlayerCharacterList.size() > 0)
 		{
@@ -107,8 +109,9 @@ std::vector<Projectile*>& BattleSystem::GetProjectileList()
 
 void BattleSystem::SetUpUnits(Terrain* BattlefieldTile)
 {
-	BSI->SetTerrain(BattlefieldTile);
 	ClearCharacterCounters();
+	BSI->SetTerrain(BattlefieldTile);
+	CurrentBattleTile = BattlefieldTile;
 	// For every of the Units within the tile, I am  going to put the entirety of the battalions into my counters
 	// Set up the Player
 	for (auto it : BattlefieldTile->PlayerUnitList){
@@ -131,27 +134,26 @@ void BattleSystem::SetUpUnits(Terrain* BattlefieldTile)
 		}
 	}
 	// Spawn the characters
-	SpawnPlayerCharacters(CurrentPlayerUnitCount);
-	SpawnEnemyCharacters(CurrentEnemyUnitCount);
-	CurrentBattleTile = BattlefieldTile;
+	SpawnPlayerCharacters(CurrentPlayerUnitCount, BattlefieldTile);
+	SpawnEnemyCharacters(CurrentEnemyUnitCount, BattlefieldTile);
 }
 
 void BattleSystem::AddNewProjectile(Projectile* P)
 {
-	Projectile* Fetched = nullptr;
-	for (std::vector<Projectile*>::iterator it = InternalProjectileList.begin(); it != InternalProjectileList.end(); ++it)
-	{
-		if ((*it)->Active = false)
-		{
-			Fetched = *it;
-			it = InternalProjectileList.erase(it);
-			delete Fetched;
-			Fetched = P;
-			InternalProjectileList.push_back(Fetched);
-			break;
-		}
-	}
-	if (Fetched == nullptr)
+	//Projectile* Fetched = nullptr;
+	//for (std::vector<Projectile*>::iterator it = InternalProjectileList.begin(); it != InternalProjectileList.end(); ++it)
+	//{
+	//	if ((*it)->Active = false)
+	//	{
+	//		Fetched = *it;
+	//		it = InternalProjectileList.erase(it);
+	//		delete Fetched;
+	//		Fetched = P;
+	//		InternalProjectileList.push_back(Fetched);
+	//		break;
+	//	}
+	//}
+	//if (Fetched == nullptr)
 		InternalProjectileList.push_back(P);
 }
 
@@ -159,27 +161,27 @@ void BattleSystem::ClearCharacterCounters()
 {
 	CurrentPlayerUnitCount.clear();
 	CurrentEnemyUnitCount.clear();
-	while (InternalPlayerCharacterList.size() > 0)
+	for (auto it : InternalPlayerCharacterList)
 	{
-		CharacterEntity* obj = InternalPlayerCharacterList.back();
-		obj->Exit();
-		delete obj;
-		InternalPlayerCharacterList.pop_back();
+		it->Exit();
+		delete it;
 	}
-	while (InternalEnemyCharacterList.size() > 0)
+	InternalPlayerCharacterList.clear(); 
+	
+	for (auto it : InternalEnemyCharacterList)
 	{
-		CharacterEntity* obj = InternalEnemyCharacterList.back();
-		obj->Exit();
-		delete obj;
-		InternalEnemyCharacterList.pop_back();
+		it->Exit();
+		delete it;
 	}
-	while (InternalProjectileList.size() > 0)
+	InternalEnemyCharacterList.clear();
+	
+	for (auto it : InternalProjectileList)
 	{
-		Projectile* obj = InternalProjectileList.back();
-		obj->Exit();
-		delete obj;
-		InternalProjectileList.pop_back();
+		it->Exit();
+		delete it;
 	}
+	InternalProjectileList.clear();
+
 	CurrentBattleTile = nullptr;
 }
 
@@ -215,7 +217,7 @@ bool CheckCollision(BaseObject *o1, BaseObject *o2, std::string type)
 {
 	if (type == "Circle")
 	{
-		float CombinedRadiusSquared = (o1->GetDimensions().x + o2->GetDimensions().x) * (o1->GetDimensions().x + o2->GetDimensions().x);
+		float CombinedRadiusSquared = (o1->GetDimensions().x + o2->GetDimensions().x) * (o1->GetDimensions().x + o2->GetDimensions().x)* 0.35f;
 		float DistSquared = (o1->GetPosition() - o2->GetPosition()).LengthSquared();
 		if (DistSquared < CombinedRadiusSquared)
 		{
@@ -236,6 +238,13 @@ void BattleSystem::UpdateProjectileLogic(const float& dt)
 	{
 		if (it->Active)
 		{
+			float TargetPositionY = SceneSystem::Instance().GetCurrentScene().TerrainScale.y * ReadHeightMap(SceneSystem::Instance().GetCurrentScene().m_heightMap, it->GetPosition().x / SceneSystem::Instance().GetCurrentScene().TerrainScale.x, it->GetPosition().z / SceneSystem::Instance().GetCurrentScene().TerrainScale.z);
+			if (TargetPositionY > it->GetPosition().y)
+			if (it->DespawnOnHit)
+				it->Active = false;
+		}
+		if (it->Active)
+		{
 			// Find Current Grid
 			GridNode* GN = SceneSystem::Instance().GetCurrentScene().ScenePartition->FindGridForPosition(it->GetPosition());
 			// Check Collision Here
@@ -252,7 +261,8 @@ void BattleSystem::UpdateProjectileLogic(const float& dt)
 							Boundary* B = GO->GetBoundary();
 							if (B->CheckCollision(it->GetPosition()))
 							{
-								it->Active = false;
+								if (it->DespawnOnHit)
+									it->Active = false;
 							}
 						}
 					}
@@ -260,7 +270,7 @@ void BattleSystem::UpdateProjectileLogic(const float& dt)
 				if (it->Active)
 				{
 					std::vector<CharacterEntity*> Container;
-					if (it->PlayerTeam)
+					if (it->OwnerFaction != GameLogicSystem::Instance().PlayerFaction)
 						Container = InternalPlayerCharacterList;
 					else Container = InternalEnemyCharacterList;
 
@@ -271,7 +281,8 @@ void BattleSystem::UpdateProjectileLogic(const float& dt)
 						{
 							if (CheckCollision(it, obj2, "Circle"))
 							{
-								it->Active = false;
+								if (it->DespawnOnHit)
+									it->Active = false;
 								CharacterEntity* CE = it2;
 								//Gets Hit
 								CE->HealthPoints -= (it)->GetDamageDealt();
@@ -287,13 +298,15 @@ void BattleSystem::UpdateProjectileLogic(const float& dt)
 							}
 						}
 					}
+					if (it->Active)
+						it->Update(dt);
 				}
 			}
 		}
 	}
 }
 
-void BattleSystem::SpawnPlayerCharacters(std::map<std::string, unsigned short> PlayerCharacterList)
+void BattleSystem::SpawnPlayerCharacters(std::map<std::string, unsigned short> PlayerCharacterList, Terrain* Tile)
 {
 	for (auto PCL : PlayerCharacterList)
 	{
@@ -302,35 +315,23 @@ void BattleSystem::SpawnPlayerCharacters(std::map<std::string, unsigned short> P
 			UnitMap = GameLogicSystem::Instance().InternalBattleSystem->UnitData.LivingMap;
 		else
 			UnitMap = GameLogicSystem::Instance().InternalBattleSystem->UnitData.UndeadMap;
-
 		UnitType* UT = UnitMap.find(PCL.first)->second;
 		if (UT != nullptr)
 		{
 			for (unsigned int i = 0; i < PCL.second; ++i)
 			{
-				CharacterEntity* NewChar = nullptr;
-				if (UT->GetType() == UnitType::T_MELEE)
-				{
-					NewChar = new MeleeCharacter();
-					MeleeCharacter* MC = dynamic_cast<MeleeCharacter*>(NewChar);
-					MC->SetCharacter(UT, UnitData.RaceMap.find("Human")->second);
-					MC->isPlayer = true;
-					NewChar->SetDimensions(Vector3(UnitSize, UnitSize, UnitSize));
-					//int RNG = Math::RandIntMinMax(0, PlayerSpawnPoints.size() - 1);
-					//MC->TargetDir.x = (SpawnPosition_Enemy.x - SpawnPosition_Player.x) / 20;
-					NewChar->SetPosition(SpawnPosition_Player);
-				}
-
-				if (NewChar != nullptr)
-				{
-					InternalPlayerCharacterList.push_back(NewChar);
-				}
+				BattleScreenCharacter* NewChar =  new BattleScreenCharacter();
+				NewChar->InitiallizeCharacter(UT, UnitData.RaceMap.find("Human")->second, Tile, true);
+				NewChar->IsPlayerCharacter = true;
+				NewChar->SetPosition(SpawnPosition_Player);
+				NewChar->CharacterFaction = GameLogicSystem::Instance().PlayerFaction;
+				InternalPlayerCharacterList.push_back(NewChar);
 			}
 		}
 	}
 }
 
-void BattleSystem::SpawnEnemyCharacters(std::map<std::string, unsigned short> EnemyCharacterList)
+void BattleSystem::SpawnEnemyCharacters(std::map<std::string, unsigned short> EnemyCharacterList, Terrain* Tile)
 {
 	for (auto ECL : EnemyCharacterList)
 	{
@@ -339,30 +340,19 @@ void BattleSystem::SpawnEnemyCharacters(std::map<std::string, unsigned short> En
 			UnitMap = GameLogicSystem::Instance().InternalBattleSystem->UnitData.LivingMap;
 		else
 			UnitMap = GameLogicSystem::Instance().InternalBattleSystem->UnitData.UndeadMap;
-
 		UnitType* UT = UnitMap.find(ECL.first)->second;
-
 		if (UT != nullptr)
 		{
 			for (unsigned int i = 0; i < ECL.second; ++i)
 			{
-				CharacterEntity* NewChar = nullptr;
-				if (UT->GetType() == UnitType::T_MELEE)
-				{
-					NewChar = new MeleeCharacter();
-					MeleeCharacter* MC = dynamic_cast<MeleeCharacter*>(NewChar);
-					MC->SetCharacter(UT, UnitData.RaceMap.find("Elven")->second);
-					MC->isPlayer = false;
-					NewChar->SetDimensions(Vector3(UnitSize, UnitSize, UnitSize));
-					//int RNG = Math::RandIntMinMax(0, EnemySpawnPoints.size() - 1);
-					//MC->TargetDir.x = (SpawnPosition_Player.x - SpawnPosition_Enemy.x) / 20;
-					NewChar->SetPosition(SpawnPosition_Enemy);
-				}
-
-				if (NewChar != nullptr)
-				{
-					InternalEnemyCharacterList.push_back(NewChar);
-				}
+				BattleScreenCharacter* NewChar = new BattleScreenCharacter();
+				NewChar->InitiallizeCharacter(UT, UnitData.RaceMap.find("Human")->second, Tile, true);
+				NewChar->IsPlayerCharacter = false;
+				NewChar->SetPosition(SpawnPosition_Enemy);
+				if (GameLogicSystem::Instance().PlayerFaction == GameLogicSystem::F_LIVING)
+					NewChar->CharacterFaction = GameLogicSystem::F_UNDEAD;
+				else NewChar->CharacterFaction = GameLogicSystem::F_LIVING;
+				InternalEnemyCharacterList.push_back(NewChar);
 			}
 		}
 	}

@@ -45,6 +45,7 @@ public:
 	bool ShowPartitions = false;
 	TerrainNode* PlayerBase;
 	TerrainNode* EnemyBase;
+	std::vector<GameObject*> WaypointList;
 private:
 	std::vector<GridNode*> PartitionGraphContainer;
 

@@ -30,9 +30,9 @@ void BattleScene::QuickInit()
 	RenderSystem *Renderer = dynamic_cast<RenderSystem*>(&SceneSystem::Instance().GetRenderSystem());
 
 	// Set Terrain Size
-	TerrainScale.Set(400.f, 25.f, 400.f);
+	TerrainScale.Set(400.f, 50.f, 400.f);
 	ScenePartition = new ScenePartitionGraph();
-	ScenePartition->AssignGridParameters(Vector3(), Vector3(TerrainScale.x, TerrainScale.z), 4);
+	ScenePartition->AssignGridParameters(Vector3(), Vector3(TerrainScale.x, TerrainScale.z), 10);
 
 	Mtx44 perspective;
 	perspective.SetToPerspective(45.0f, SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth / SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight, 0.1f, 10000.0f);
@@ -40,11 +40,11 @@ void BattleScene::QuickInit()
 
 	CameraAerial* CA = new CameraAerial();
 	camera = CA;
-	CA->AltInit(/*Player Character Position*/Vector3(0, 0, 0), Vector3(0, 100, 1), Vector3(0, 1, 0));
+	CA->AltInit(/*Player Character Position*/Vector3(0, 0, 0), Vector3(0, 100, 50), Vector3(0, 1, 0));
 	CenterPosition.Set(SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth * 0.5f, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.5f, 0);
 
 	// Initiallise Model Specific Meshes Here
-	Mesh* newMesh = MeshBuilder::GenerateTerrain("BattleScreen", "HeightMapFiles//heightmap_Town1.raw", m_heightMap);
+	Mesh* newMesh = MeshBuilder::GenerateTerrain("BattleScreen", "HeightMapFiles//heightmap_MainMenu.raw", m_heightMap);
 	newMesh->material.kAmbient.Set(0.2f, 0.2f, 0.2f);
 	newMesh->material.kDiffuse.Set(0.2f, 0.2f, 0.2f);
 	newMesh->material.kSpecular.Set(0.0f, 0.0f, 0.0f);
@@ -131,58 +131,7 @@ void BattleScene::Update(const float& dt)
 //Start of Changes
 void BattleScene::UpdateCharacterLogic(double dt)
 {
-	//std::vector<CharacterEntity*> Container = ObjectManager::Instance().GetCharacterList();
-	//NumCharacters = 0;
-	//for (std::vector<CharacterEntity*>::iterator it = Container.begin(); it != Container.end(); ++it)
-	//{
-	//	CharacterEntity* CE = *it;
-	//	if (CE->Active)
-	//	{
-	//		BS.CurrentPlayerUnitCount.find(CE->GetEntityID())->second += 1;
-	//		Vector3 Pos = CE->GetPosition();
-	//		//Inverse Velocity if Character is about to leave screen
-	//		float DistBuffer = CE->GetDimensions().x * 3.f;
-	//		//if ((CE->GetPosition().x > ObjectManager::Instance().WorldWidth - DistBuffer && CE->GetVelocity().x > 0) || (CE->GetPosition().x < DistBuffer && CE->GetVelocity().x < 0))
-	//		//{
-	//		//	Vector3 Velocity = CE->GetVelocity();
-	//		//	Velocity.x = 2 * -CE->GetVelocity().x;
-	//		//	CE->SetVelocity(Velocity);
-	//		//}
-	//		//if ((CE->GetPosition().z > ObjectManager::Instance().WorldWidth - DistBuffer && CE->GetVelocity().z > 0) || (CE->GetPosition().z < DistBuffer && CE->GetVelocity().z < 0))
-	//		//{
-	//		//	Vector3 Velocity = CE->GetVelocity();
-	//		//	Velocity.z = 2 * -CE->GetVelocity().z;
-	//		//	CE->SetVelocity(Velocity);
-	//		//}
-	//		//// 
-	//		//if ((CE->GetPosition().z < ObjectManager::Instance().WorldHeight && CE->GetPosition().z > 0) && (CE->GetPosition().x < ObjectManager::Instance().WorldWidth && CE->GetPosition().x > 0))
-	//		//{
-	//		//	CE->SetVelocity(CE->GetVelocity() - CE->GetVelocity() * 0.5f * (float)dt);
-	//		//}
-	//		//else
-	//		//{
-	//		//	float SpeedCap = (float)CE->WalkSpeed * 1.5f;
-	//		//	if (CE->GetVelocity().x > SpeedCap)
-	//		//	{
-	//		//		Vector3 Vel = CE->GetVelocity();
-	//		//		if (Vel.x > 0.f)
-	//		//			Vel.x = SpeedCap;
-	//		//		else Vel.x = -SpeedCap;
-	//		//		CE->SetVelocity(Vel);
-	//		//	}
-	//		//	if (CE->GetVelocity().z > SpeedCap)
-	//		//	{
-	//		//		Vector3 Vel = CE->GetVelocity();
-	//		//		if (Vel.z > 0.f)
-	//		//			Vel.z = SpeedCap;
-	//		//		else Vel.z = -SpeedCap;
-	//		//		CE->SetVelocity(Vel);
-	//		//	}
-	//		//}
-	//		CE->Update((float)dt);
-	//		NumCharacters++;
-	//	}
-	//}
+	
 }
 
 void BattleScene::UpdateInternals(double dt)
@@ -192,12 +141,10 @@ void BattleScene::UpdateInternals(double dt)
 	//{
 	//	BaseObject *obj = (BaseObject*)*it;
 	//	Vector3 Pos = obj->GetPosition();
-
 	//	if (Pos.z > ObjectManager::Instance().WorldHeight) obj->Active = false;
 	//	if (Pos.z < 0) obj->Active = false;
 	//	if (Pos.x > ObjectManager::Instance().WorldWidth) obj->Active = false;
 	//	if (Pos.x < 0) obj->Active = false;
-
 	//	if (obj->Active)
 	//	{
 	//		for (std::vector<CharacterEntity*>::iterator it2 = ObjectManager::Instance().GetCharacterList().begin(); it2 != ObjectManager::Instance().GetCharacterList().end(); ++it2)
@@ -211,13 +158,11 @@ void BattleScene::UpdateInternals(double dt)
 	//					CharacterEntity* CE = *it2;
 	//					//Get Hitted
 	//					CE->HealthPoints -= (*it)->GetDamageDealt();
-
 	//					int NumParticles = Math::RandIntMinMax(2, 4);
 	//					for (int i = 0; i < NumParticles; ++i)
 	//					{
 	//						float ParticleSpeed = Math::RandFloatMinMax(3.f, 6.f);
 	//						float ParticleLifeTime = Math::RandFloatMinMax(0.75f, 1.5f);
-
 	//						//ObjectManager::Instance().AddNewParticle(new Particle(obj2->GetEntityID(), 1, CE->GetPosition() * Math::RandFloatMinMax(0.3f, 0.75f), Vector3(Math::RandFloatMinMax(-ParticleSpeed, ParticleSpeed), Math::RandFloatMinMax(-ParticleSpeed, ParticleSpeed), Math::RandFloatMinMax(0, ParticleSpeed)), camera.position, ParticleLifeTime));
 	//					}
 	//				}
@@ -227,7 +172,6 @@ void BattleScene::UpdateInternals(double dt)
 	//	//Update if the object is still exists
 	//	if (obj->Active && !obj->Static)
 	//		obj->Update((float)dt);
-
 	//	//Particle Update
 	//	for (std::vector<Particle*>::iterator it = ObjectManager::Instance().GetParticleList().begin(); it != ObjectManager::Instance().GetParticleList().end(); ++it)
 	//	{
@@ -270,8 +214,8 @@ void BattleScene::RenderTerrain()
 {
 	RenderSystem *Renderer = dynamic_cast<RenderSystem*>(&SceneSystem::Instance().GetRenderSystem());
 	modelStack->PushMatrix();
-	modelStack->Scale(TerrainScale.x, TerrainScale.y, TerrainScale.z);
-	Renderer->RenderMesh("Town 1", true);
+	modelStack->Scale(TerrainScale.x, TerrainScale.y - 5.f, TerrainScale.z);
+	Renderer->RenderMesh("BattleScreen", true);
 	modelStack->PopMatrix();
 }
 
@@ -281,6 +225,8 @@ void BattleScene::RenderShadowCasters()
 	glCullFace(GL_BACK);
 	//RenderTerrain();
 	RenderSystem *Renderer = dynamic_cast<RenderSystem*>(&SceneSystem::Instance().GetRenderSystem());
+
+	RenderTerrain();
 
 	ScenePartition->Render();
 
@@ -427,7 +373,6 @@ void BattleScene::RenderPassMain()
 
 	Renderer->RenderMesh("reference", false);
 
-	RenderTerrain();
 	RenderSkybox();
 	RenderShadowCasters();
 

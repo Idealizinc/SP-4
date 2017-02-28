@@ -48,14 +48,12 @@ private:
 	bool firstTime;
 
 	InterfaceLayer* UnitSelectLayer;
-	InterfaceLayer* UnitDisplayLayer;
+	
 
 	//LInterfaceLayer* ScrollingLayer;
 	InterfaceLayer* IconLayer;
 
-	InterfaceElement* DeployButton;
-	InterfaceElement* DisplayQuad;
-	InterfaceElement* TotalCost;
+
 
 	InterfaceLayer* WarningLayer;
 	InterfaceElement* NoUnitPopup;
@@ -64,6 +62,12 @@ private:
 	UnitSpawnSystem* UnitSpawner;
 
 	Vector3 ScreenHalfDimension;
+
+	InterfaceLayer* UnitDisplayLayer;
+	InterfaceElement* DeployButton;
+	InterfaceElement* TotalCost;
+	InterfaceElement* CostBox;
+	InterfaceElement* DisplayQuad = nullptr;
 
 	bool warningDisplayed;
 	bool warningDisplayed2;

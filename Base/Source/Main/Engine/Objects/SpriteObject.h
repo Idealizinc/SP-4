@@ -3,15 +3,17 @@
 
 #include <vector>
 #include <map>
-#include "BaseObject.h"
+#include "GameObject.h"
 #include "../../Game/Mains/Application.h"
+#include "../../Engine/Objects/Boundary.h"
 
-class SpriteObject : public BaseObject
+class SpriteObject : public GameObject
 {
 public:
 	virtual void Init();
 	virtual void Update(double dt);
 	virtual void Render();
+	virtual void Exit();
 
 	void SetSprite(const std::string&);
 

@@ -1,8 +1,8 @@
 #include "GameLogicSystem.h"
+#include "../../Engine/Objects/Boundary2D.h"
 #include "../../Engine/State/StateList.h"
 #include "../SceneManagement/ScenePartitionGraph.h"
-#include "../Objects/Miscellaneous/GameObject.h"
-#include "../Objects/Miscellaneous/Boundary2D.h"
+#include "../../Engine/Objects/GameObject.h"
 
 // Constructor and Destructor
 GameLogicSystem::~GameLogicSystem()
@@ -39,7 +39,7 @@ void GameLogicSystem::QuickInit()
 	UnitInterface = new UnitCreationInterface();
 	GameInterface = new GameScreenInterface();
 
-
+	InternalEnemySystem->RemainingGold = UnitInterface->returnUnitSpawnSys()->maxUnitCost * maxStartingUnits;
 	//InternalPlayerSystem->SetCash(/*UnitInterface->returnUnitSpawnSys()->maxUnitCost * maxStartingUnits*/1000);
 }
 

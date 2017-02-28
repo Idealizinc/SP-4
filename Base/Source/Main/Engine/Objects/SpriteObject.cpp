@@ -4,6 +4,7 @@
 
 void SpriteObject::Init()
 {
+	Bounds = nullptr;
 }
 
 void SpriteObject::Update(double dt)
@@ -36,6 +37,15 @@ void SpriteObject::Render()
 			SceneSystem::Instance().GetCurrentScene().modelStack->Scale(Dimensions.x, Dimensions.y, Dimensions.z);
 		Renderer->RenderMesh(*StoredMesh, true);
 		SceneSystem::Instance().GetCurrentScene().modelStack->PopMatrix();
+	}
+}
+
+void SpriteObject::Exit()
+{
+	if (Bounds)
+	{
+		delete Bounds;
+		Bounds = nullptr;
 	}
 }
 

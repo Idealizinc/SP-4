@@ -12,6 +12,11 @@ TerrainDataLoader::TerrainDataLoader()
 
 TerrainDataLoader::~TerrainDataLoader()
 {
+	ClearTerrainData();
+}
+
+void TerrainDataLoader::ClearTerrainData()
+{
 	for (auto it : TerrainMap)
 	{
 		delete it.second;
@@ -22,6 +27,9 @@ TerrainDataLoader::~TerrainDataLoader()
 
 bool TerrainDataLoader::LoadTerrainData(const char* file_path)
 {
+	if (TerrainMap.size())
+		ClearTerrainData();
+
 	std::ifstream fileStream(file_path, std::ios::binary);
 	if (!fileStream.is_open())
 	{
