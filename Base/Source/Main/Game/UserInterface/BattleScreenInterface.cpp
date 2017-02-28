@@ -26,7 +26,7 @@ void BattleScreenInterface::Init()
 	//Start Battle Interface
 	TurnPopup = CreateNewInterfaceLayer("StartLayer", 0, 0);
 
-	negativeHeight = -((int)SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight);
+	negativeHeight = -((float)SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight);
 	CenterTarget = SceneSystem::Instance().cSS_InputManager->ScreenCenter;
 
 	BattleWordPopup = TurnPopup->CreateNewInterfaceElement("BattleWordPopUp", "quad1", Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 2.5f, 0), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.5f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.2f, 0));

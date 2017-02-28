@@ -65,6 +65,7 @@ private:
 
 	InterfaceLayer* UnitDisplayLayer;
 	InterfaceElement* DeployButton;
+	InterfaceElement* BackButton;
 	InterfaceElement* TotalCost;
 	InterfaceElement* CostBox;
 	InterfaceElement* DisplayQuad = nullptr;

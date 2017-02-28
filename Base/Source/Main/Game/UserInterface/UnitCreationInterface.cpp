@@ -44,9 +44,15 @@ void UnitCreationInterface::Init()
 	UnitDisplayLayer->SetOriginalPosition(Vector3(ScreenHalfDimension.x * 0.25f, 0, 0));
 	UnitDisplayLayer->SetTargetPosition(Vector3(ScreenHalfDimension.x * 0.25f, 0, 0));
 
-	DeployButton = UnitDisplayLayer->CreateNewInterfaceElement("Deploy", "quad1", Vector3(-ScreenHalfDimension.x  * 0.9f, ScreenHalfDimension.y * 0.5f, 0), Vector3(ScreenHalfDimension.x *0.6f, ScreenHalfDimension.y*0.2f, 1.f));
+	DeployButton = UnitDisplayLayer->CreateNewInterfaceElement("Deploy", "quad2", Vector3(-ScreenHalfDimension.x  * 0.9f, ScreenHalfDimension.y * 0.5f, 0), Vector3(ScreenHalfDimension.x *0.6f, ScreenHalfDimension.y*0.2f, 1.f));
 	DeployButton->SetTargetPosition(Vector3(-ScreenHalfDimension.x  * 0.9f, ScreenHalfDimension.y * 0.5f, 0));
 	DeployButton->SetText("Deploy");
+	DeployButton->SetTextColor(0);
+
+	BackButton = UnitDisplayLayer->CreateNewInterfaceElement("Back", "quad1", Vector3(-ScreenHalfDimension.x  * 0.9f, ScreenHalfDimension.y * 0.3f, 0), Vector3(ScreenHalfDimension.x *0.3f, ScreenHalfDimension.y*0.1f, 1.f));
+	BackButton->SetTargetPosition(Vector3(-ScreenHalfDimension.x  * 0.9f, ScreenHalfDimension.y * 0.3f, 0));
+	BackButton->SetText("Back");
+	BackButton->SetTextColor(0);
 
 	TotalCost = UnitDisplayLayer->CreateNewInterfaceElement("Cost", "quad", Vector3(-ScreenHalfDimension.x  *0.9f, ScreenHalfDimension.y * 1.f, 0), Vector3(ScreenHalfDimension.x *0.25f, ScreenHalfDimension.y*0.15f, 1.f));
 	TotalCost->SetTargetPosition(Vector3(-ScreenHalfDimension.x * 0.9f, ScreenHalfDimension.y * 1.f, 0));
@@ -97,6 +103,7 @@ void UnitCreationInterface::InterfaceReset()
 
 	firstTime = 0;
 }
+
 
 void UnitCreationInterface::InterfaceExit()
 {
@@ -219,7 +226,7 @@ void UnitCreationInterface::ShowDisplay()
 	//		
 	//}
 
-		Vector3 lowestPt(HalfDimension.x * 0.2f, HalfDimension.y);
+		Vector3 lowestPt(HalfDimension.x * 0.35f, HalfDimension.y);
 		Vector3 highestPt(HalfDimension.x * 1.5f, HalfDimension.y * 1.7f);
 
 		float DisplayWidth = (highestPt.x - lowestPt.x);
@@ -230,7 +237,7 @@ void UnitCreationInterface::ShowDisplay()
 
 		InterfaceElement* tempElement = nullptr;
 
-		int count = 1;
+		int count = 0;
 		for (auto it2 : IconMap)
 		{
 			auto it = currentUnitMap.find(it2.first);
@@ -273,6 +280,12 @@ void UnitCreationInterface::HandleUserInput()
 		if (DeployButton->DetectUserInput(MousePos, UnitSelectLayer->GetPosition()) && warningDisplayed == false && warningDisplayed2 == false)
 		{
 			deploy = 1;
+		}
+
+		if (BackButton->DetectUserInput(MousePos, UnitSelectLayer->GetPosition()))
+		{
+			GameLogicSystem::Instance().UnitInterface->OpenInterface();
+			GameLogicSystem::Instance().GameInterface->toggleSurrender();
 		}
 	}
 	else if (SceneSystem::Instance().cSS_InputManager->GetMouseInput(InputManager::KEY_LMB) == InputManager::MOUSE_UP)
