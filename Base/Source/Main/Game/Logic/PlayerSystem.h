@@ -34,6 +34,8 @@ public:
 	int GetCash();
 	void SetCash(int amt);
 
+	bool selectingUnit;
+
 private:
 	enum TurnState
 	{

@@ -28,12 +28,20 @@ public:
 	virtual void Exit(void);
 
 	void ShowCashReduction(int amount);
+	void toggleSurrender();
+
+	void MultipleUnitSelect(std::vector<UnitPiece*> Selections);
+
+	UnitPiece* UnitSelected;
+	InterfaceLayer* MultipleUnitLayer;
+	std::map<UnitPiece*, InterfaceElement*> MultipleUnitElements;
 
 private:
 	void PopUpDelay(const float& dt);
 	void PopUpReset();
 	void InitSurrender();
-	void checkUserInput();
+	//void checkUserInput();
+
 
 	InterfaceLayer* TurnPopup;
 	InterfaceElement* PlayerTurnPopup;
@@ -44,6 +52,7 @@ private:
 	InterfaceElement* CashAddDisplay;
 	InterfaceElement* CashSubstractDisplay;
 	InterfaceElement* SurrenderButton;
+
 
 	InterfaceLayer* SurrenderLayer;
 	InterfaceElement* SurrenderBackground;
@@ -58,7 +67,7 @@ private:
 	bool PopUpDone = 0;
 	Vector3 CenterTarget = Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.9f, 0);
 
-
+	bool SurrenderOn;
 	bool PlayerTurn;
 };
 
