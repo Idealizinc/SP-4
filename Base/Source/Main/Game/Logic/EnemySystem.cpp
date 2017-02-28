@@ -119,6 +119,7 @@ EnemyPiece* EnemySystem::GenerateNewEnemy(std::map<std::string, unsigned short>&
 	InternalEnemyContainer.push_back(EP);
 	// Add to the tile he is on
 	EP->InternalDefinedPath.front()->TerrainTile->EnemyUnitList.push_back(EP);
+	EP->TargetNode = SceneSystem::Instance().GetCurrentScene().ScenePartition->EnemyBase;
 	return EP;
 }
 
@@ -142,6 +143,7 @@ EnemyPiece* EnemySystem::AdvanceSingleUnit()
 	// Add to the tile he is on
 	EP->InternalDefinedPath.front()->TerrainTile->EnemyUnitList.push_back(EP);
 	TargetedNode = EP->InternalDefinedPath.front();
+	EP->TargetNode = TargetedNode;
 	EP->TargetPosition = EP->InternalDefinedPath.front()->GetEntity()->GetPosition() + Vector3(0, EP->InternalDefinedPath.front()->GetEntity()->GetDimensions().y + EP->GetDimensions().y);
 	return EP;
 }

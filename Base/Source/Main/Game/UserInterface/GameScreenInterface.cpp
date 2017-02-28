@@ -152,6 +152,39 @@ void GameScreenInterface::Update(const float& dt)
 			SceneSystem::Instance().SwitchScene("MainMenuScene");
 			SurrenderLayer->SwapOriginalWithTarget();
 			SurrenderOn = 0;
+			if (GameLogicSystem::Instance().InternalPlayerSystem->InternalUnitContainer.size() > 0)
+			for (auto it : GameLogicSystem::Instance().InternalPlayerSystem->InternalUnitContainer)
+			{
+				for (std::vector<UnitPiece*>::iterator it2 = it->TargetNode->TerrainTile->PlayerUnitList.begin(); it2 != it->TargetNode->TerrainTile->PlayerUnitList.end();)
+				{
+					if (it == *it2)
+					{
+						it->TargetNode->TerrainTile->PlayerUnitList.erase(it2);
+						break;
+					}
+					++it2;
+				}
+				it->Exit();
+				delete it;
+			}
+			GameLogicSystem::Instance().InternalPlayerSystem->InternalUnitContainer.clear();
+
+			if (GameLogicSystem::Instance().InternalEnemySystem->InternalEnemyContainer.size() > 0)
+			for (auto it : GameLogicSystem::Instance().InternalEnemySystem->InternalEnemyContainer)
+			{
+				for (std::vector<UnitPiece*>::iterator it2 = it->TargetNode->TerrainTile->EnemyUnitList.begin(); it2 != it->TargetNode->TerrainTile->EnemyUnitList.end();)
+				{
+					if (it == *it2)
+					{
+						it->TargetNode->TerrainTile->EnemyUnitList.erase(it2);
+						break;
+					}
+					++it2;
+				}
+				it->Exit();
+				delete it;
+			}
+			GameLogicSystem::Instance().InternalEnemySystem->InternalEnemyContainer.clear();
 		}
 		if (MultipleUnitElements.size() > 0)
 		{

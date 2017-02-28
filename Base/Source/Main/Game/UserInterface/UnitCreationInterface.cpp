@@ -100,10 +100,6 @@ void UnitCreationInterface::InterfaceReset()
 
 void UnitCreationInterface::InterfaceExit()
 {
-	if (UIDisplayed == 1)
-	{
-		//OpenInterface();
-	}
 	if (IconLayer)
 	{
 		for (std::vector<InterfaceLayer*>::iterator it = InternalLayerContainer.begin(); it != InternalLayerContainer.end(); ++it)
@@ -132,6 +128,8 @@ void UnitCreationInterface::InterfaceExit()
 	//delete IconMap;
 	IconCounterMap.clear();
 	returnUnitSpawnSys()->MapReset();
+	UnitDisplayLayer->SetOriginalPosition(Vector3(ScreenHalfDimension.x * 0.25f, 0, 0));
+	UnitDisplayLayer->SetTargetPosition(Vector3(ScreenHalfDimension.x * 0.25f, 0, 0));
 }
 
 void UnitCreationInterface::Update(const float& dt)
@@ -297,7 +295,6 @@ void UnitCreationInterface::OpenInterface()
 	{
 		UnitSelectLayer->SwapOriginalWithTarget();
 		UnitDisplayLayer->SwapOriginalWithTarget();
-	
 	}
 	UnitSpawner->resetUnitMap();
 	deploy = false;
