@@ -37,7 +37,7 @@ public:
 	UnitPiece()
 	{
 		Active = true;
-		SetParameters("gbullet", 1, 0, Vector3(3, 3, 3), 0, 0, Vector3(0, 1, 0));
+		SetParameters("UnitPiece", 1, 0, Vector3(3, 3, 3), 0, 0, Vector3(0, 1, 0));
 	}
 	// Add functions in relation to the IBL
 

@@ -74,6 +74,8 @@ public:
 	const std::string BattlePhase = "Battle Phase";
 	TerrainDataLoader TerrainLoader;
 	Faction PlayerFaction = F_UNDEAD;
+	bool PlayerWon = false;
+	bool GameOver = false;
 
 //private:
 	PlayerSystem* InternalPlayerSystem;
