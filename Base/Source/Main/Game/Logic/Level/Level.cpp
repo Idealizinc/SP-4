@@ -4,6 +4,9 @@ Level::~Level()
 {
 
 }
+void Level::Exit()
+{
+}
 
 std::string Level::GetLevelMapName()
 {

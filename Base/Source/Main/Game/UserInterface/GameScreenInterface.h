@@ -37,6 +37,7 @@ public:
 	std::map<UnitPiece*, InterfaceElement*> MultipleUnitElements;
 	bool MultipleUnitUI;
 	bool SurrenderOn;
+	bool MenuOpen;
 
 private:
 	void PopUpDelay(const float& dt);
@@ -76,7 +77,7 @@ private:
 	bool PopUpDone = 0;
 	Vector3 CenterTarget = Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.9f, 0);
 
-	bool MenuOpen;
+	
 	bool PlayerTurn;
 };
 

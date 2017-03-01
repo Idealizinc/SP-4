@@ -119,13 +119,13 @@ void GameScreenInterface::toggleSurrender()
 			MenuLayer->SwapOriginalWithTarget();
 		}
 		SurrenderLayer->Visible = 0;
-		SurrenderLayer->Active = 0;
-		/*SurrenderButton->Visible = 0;
-		SurrenderButton->Active = 0;
-		DeployButton->Visible = 0;
-		DeployButton->Active = 0;*/
-		MenuLayer->Visible = 0;
-		MenuLayer->Active = 0;
+SurrenderLayer->Active = 0;
+/*SurrenderButton->Visible = 0;
+SurrenderButton->Active = 0;
+DeployButton->Visible = 0;
+DeployButton->Active = 0;*/
+MenuLayer->Visible = 0;
+MenuLayer->Active = 0;
 	}
 	else
 	{
@@ -138,7 +138,7 @@ void GameScreenInterface::toggleSurrender()
 		MenuLayer->Visible = 1;
 		MenuLayer->Active = 1;
 	}
-	
+
 }
 
 void GameScreenInterface::Update(const float& dt)
@@ -190,34 +190,47 @@ void GameScreenInterface::Update(const float& dt)
 	{
 		Vector3 MousePos = SceneSystem::Instance().cSS_InputManager->GetMousePosition();
 
-			if ((DeployButton->DetectUserInput(MousePos, MenuLayer->GetPosition())))
-			{ 
-				if (SceneSystem::Instance().GetCurrentScene().ScenePartition->PlayerBase->TerrainTile->PlayerUnitList.size() == 0)
-				{
-					GameLogicSystem::Instance().UnitInterface->OpenInterface();
-					GameLogicSystem::Instance().GameInterface->toggleSurrender();
-				}
-				else
-				{
-					if (GameLogicSystem::Instance().UnitInterface->warningDisplayed3 == 0)
-					{
-						GameLogicSystem::Instance().UnitInterface->NoSlotError();
-					}
-				}
-			}
-			if ((SurrenderButton->DetectUserInput(MousePos, MenuLayer->GetPosition()) || SurrenderNoButton->DetectUserInput(MousePos, SurrenderLayer->GetPosition())) && SurrenderLayer->Active == 1)
+		if ((DeployButton->DetectUserInput(MousePos, MenuLayer->GetPosition())))
+		{
+			if (SceneSystem::Instance().GetCurrentScene().ScenePartition->PlayerBase->TerrainTile->PlayerUnitList.size() == 0)
 			{
-				SurrenderLayer->SwapOriginalWithTarget();
-				MenuLayer->SwapOriginalWithTarget();
-				if (SurrenderOn == 1)
+				GameLogicSystem::Instance().UnitInterface->OpenInterface();
+				GameLogicSystem::Instance().GameInterface->toggleSurrender();
+			}
+			else
+			{
+				if (GameLogicSystem::Instance().UnitInterface->warningDisplayed3 == 0)
 				{
-					SurrenderOn = 0;
-				}
-				else
-				{
-					SurrenderOn = 1;
+					GameLogicSystem::Instance().UnitInterface->NoSlotError();
 				}
 			}
+		}
+		if (SurrenderButton->DetectUserInput(MousePos, MenuLayer->GetPosition()))
+		{
+			SurrenderLayer->SwapOriginalWithTarget();
+			MenuLayer->SwapOriginalWithTarget();
+			if (SurrenderOn == 1)
+			{
+				SurrenderOn = 0;
+			}
+			else
+			{
+				SurrenderOn = 1;
+			}
+		}
+		if (SurrenderNoButton->DetectUserInput(MousePos, SurrenderLayer->GetPosition()) && SurrenderLayer->Active == 1)
+		{
+			SurrenderLayer->SwapOriginalWithTarget();
+			if (SurrenderOn == 1)
+			{
+				SurrenderOn = 0;
+			}
+			else
+			{
+				SurrenderOn = 1;
+			}
+			MenuOpen = false;
+		}
 			if (SurrenderYesButton->DetectUserInput(MousePos, SurrenderLayer->GetPosition()) && SurrenderLayer->Active == 1)
 			{
 
