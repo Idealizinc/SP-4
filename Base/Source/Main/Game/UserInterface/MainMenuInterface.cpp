@@ -57,18 +57,24 @@ void MainMenuInterface::InitMainLayer()
 void MainMenuInterface::InitFactionLayer()
 {
 	FactionLayer = CreateNewInterfaceLayer(std::to_string(L_FACTION), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * -(2.5f), 0), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 1.2f, 0));
-	Faction1Button = FactionLayer->CreateNewInterfaceElement("Faction1Button", "quad", 0, Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.3f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.15f, 0));
-	Faction1Button->SetTargetPosition(0);
-	Faction1Button->SetText("Humans");
-	Faction1Button->SetTextColor(0);
+	Faction1Button = FactionLayer->CreateNewInterfaceElement("Faction1Button", "LivingFactionLogo", 0, Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 1.2f, 0));
+	Faction1Button->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * -(0.5f), SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * -(0.25f), 0));
 
-	Faction2Button = FactionLayer ->CreateNewInterfaceElement("Faction2Button", "quad", Vector3(0, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * -(0.1f), 0), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.3f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.15f, 0));
-	Faction2Button->SetTargetPosition(Vector3(0, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * -(0.1f), 0));
-	Faction2Button->SetText("Demons");
-	Faction2Button->SetTextColor(0);
+	Faction1Name = FactionLayer->CreateNewInterfaceElement("Faction1Name", "WoodButton", 0, Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.5f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y* 0.3f, 0));
+	Faction1Name->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * -(0.5f), SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.5f, 0));
+	Faction1Name->SetText("Humans");
+	Faction1Name->SetTextColor(Vector3(0.9f,0.7f,0));
+
+	Faction2Button = FactionLayer ->CreateNewInterfaceElement("Faction2Button", "UndeadFactionLogo", Vector3(0, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * -(0.1f), 0), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 1.2f, 0));
+	Faction2Button->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * (0.5f), SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * -(0.25f), 0));
+
+	Faction2Name = FactionLayer->CreateNewInterfaceElement("Faction2Name", "BlueButton", 0, Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.5f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.3f, 0));
+	Faction2Name->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * (0.5f), SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.5f, 0));
+	Faction2Name->SetText("Demons");
+	Faction2Name->SetTextColor(Vector3(0, 0.2f, 0.9f));
 
 	BackButtonF = FactionLayer->CreateNewInterfaceElement("BackButtonF", "quad", Vector3(0, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * -(0.2f), 0), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.3f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.15f, 0));
-	BackButtonF->SetTargetPosition(Vector3(0, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * -(0.2f), 0));
+	BackButtonF->SetTargetPosition(Vector3(0, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * -(0.5f), 0));
 	BackButtonF->SetText("Back");
 	BackButtonF->SetTextColor(0);
 }

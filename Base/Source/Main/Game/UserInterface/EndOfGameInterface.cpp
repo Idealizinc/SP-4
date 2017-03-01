@@ -65,8 +65,10 @@ void EndOfGameInterface::Update(const float& dt)
 		else if (GameLogicSystem::Instance().GameOver)
 		{
 			EndScreenWinOrLose->SetText("Defeated!");
+			EndScreenNextButton->SetMesh("BlueButton");
 			EndScreenNextButton->SetText("Try Again");
 			EndScreenNextButton->SetTextColor(Vector3(0, 0, 1));
+			EndScreenReturnButton->SetMesh("BlueButton");
 			EndScreenReturnButton->SetText("Main Menu");
 			EndScreenReturnButton->SetTextColor(Vector3(0,0, 1));
 			EndScreenFrame->SetMesh("BlueFrameRect");
@@ -78,8 +80,10 @@ void EndOfGameInterface::Update(const float& dt)
 		if (GameLogicSystem::Instance().PlayerWon)
 		{
 			EndScreenWinOrLose->SetText("Victorious!");
+			EndScreenNextButton->SetMesh("BlueButton");
 			EndScreenNextButton->SetText("Next Game");
 			EndScreenNextButton->SetTextColor(Vector3(0, 0, 1));
+			EndScreenReturnButton->SetMesh("BlueButton");
 			EndScreenReturnButton->SetText("Main Menu");
 			EndScreenReturnButton->SetTextColor(Vector3(0, 0, 1));
 			EndScreenFrame->SetMesh("BlueFrameRect");

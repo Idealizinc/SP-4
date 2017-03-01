@@ -207,37 +207,7 @@ void BattleScreenCharacter::HandleCharacterCollision()
 
 void BattleScreenCharacter::HandleProjectileCollision()
 {
-	// In need of rework
-	//std::vector<Bullet*> bulletList = GlobalPlayer::Instance().WeaponSystem.BulletList;
-	//// Create a boundary for testing against
-	//Boundary* temp = new Boundary();
-	//for (auto it : bulletList)
-	//{
-	//	if (it->Active)
-	//	if (temp->BoundaryCheckBullet(it->GetPosition(), this->GetPosition(), GetDimensions().x * 0.5f) ||
-	//		temp->BoundaryCheckBullet(it->PrevPos, this->GetPosition(), GetDimensions().x * 0.5f))
-	//	{
-	//		if (temp->CheckCollisionLaser(this->GetPosition(), (*it), GetDimensions().x * 0.5f))
-	//		{
-	//			float MinY = SceneSystem::Instance().GetCurrentScene().TerrainScale.y * ReadHeightMap(SceneSystem::Instance().GetCurrentScene().m_heightMap, GetPosition().x / SceneSystem::Instance().GetCurrentScene().TerrainScale.x, GetPosition().z / SceneSystem::Instance().GetCurrentScene().TerrainScale.z);
-	//			float MaxY = GetPosition().y + GetDimensions().y * 0.5f;
-	//
-	//			if (it->GetPosition().y > MinY && it->GetPosition().y < MaxY)
-	//			{
-	//				if (it->GetPosition().y < (MaxY - MinY) * 0.8f + MinY)
-	//				{
-	//					this->HealthPoints -= it->Damage;
-	//				}
-	//				else
-	//				{
-	//					this->HealthPoints = 0;
-	//				}
-	//				it->Active = false;
-	//			}
-	//		}
-	//	}
-	//}
-	//delete temp;
+	
 }
 
 void BattleScreenCharacter::InitiallizeCharacter(UnitType* Type, UnitRace* Race, Terrain* Terrain, bool GetsAdvantage)
@@ -279,7 +249,7 @@ void BattleScreenCharacter::SetCharacter(UnitType* Type, UnitRace* Race, Terrain
 	// Set up a weapon for use
 	WeaponType* InternalWeaponType = Type->PossibleWeapon[Math::RandIntMinMax(0, Type->PossibleWeapon.size() - 1)];
 	int WeaponDamage = (int)(InternalWeaponType->GetDamage() * Race->GetMeleeDamageModifier());
-
+	
 	// Set up weapon & statemanager
 	switch (Type->GetType())
 	{
@@ -308,6 +278,8 @@ void BattleScreenCharacter::SetCharacter(UnitType* Type, UnitRace* Race, Terrain
 		InternalStateManager->Init();
 		break;
 	}
+	InternalWeapon->SetEntityID(InternalWeaponType->GetName());
+
 	// We cannot Assign this character to the partition as we will not be able to tell how many are left alive
 	//AssignToSPG();
 }
