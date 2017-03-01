@@ -1,4 +1,5 @@
 #include "SceneSystem.h"
+#include "RenderSystem.h"
 #ifdef _DEBUG
 #include <assert.h>
 #endif
@@ -6,6 +7,7 @@
 void SceneSystem::Init()
 {
 	Renderer = nullptr;
+	PreviousScene = nullptr;
 	TransitionLayer = new InterfaceLayer();
 	cSS_InputManager = new InputManager();
 	AnimationActivated = AnimationDirectionInwards = false;
@@ -32,6 +34,7 @@ void SceneSystem::Update(const float& dt)
 	{
 		AnimateTransitionLayer(AnimationDirectionInwards = false);
 		//TransitToTargetedScene();
+		cSS_InputManager->CenterCursor();
 		Renderer->modelStack = SceneHistory.back()->modelStack;
 		Renderer->viewStack = SceneHistory.back()->viewStack;
 		Renderer->projectionStack = SceneHistory.back()->projectionStack;
@@ -42,6 +45,14 @@ void SceneSystem::RenderTransitionEffects()
 {
 	if (SceneSystem::Instance().AnimationActivated || SceneSystem::Instance().AnimationDirectionInwards)
 		SceneSystem::Instance().TransitionLayer->Render();
+}
+
+void SceneSystem::RenderMouseCursor(const Vector3& Dimensions, const std::string MeshName)
+{
+	RenderSystem *AlternativeRenderer = dynamic_cast<RenderSystem*>(&SceneSystem::Instance().GetRenderSystem());
+	AlternativeRenderer->SetHUD(true);
+	AlternativeRenderer->RenderMeshIn2D(MeshName, false, Dimensions.x, Dimensions.y, cSS_InputManager->GetMousePosition().x, cSS_InputManager->GetMousePosition().y);
+	AlternativeRenderer->SetHUD(false);
 }
 
 void SceneSystem::AddScene(SceneEntity &SceneObject)

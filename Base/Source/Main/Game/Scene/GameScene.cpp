@@ -337,7 +337,7 @@ void GameScene::RenderPassMain()
 	// Model matrix : an identity matrix (model will be at the origin)
 	modelStack->LoadIdentity();
 	SceneSystem::Instance().RenderTransitionEffects();
-
+	SceneSystem::Instance().RenderMouseCursor(Vector3(SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.05f, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.05f), "weed");
 	RenderSkybox();
 	RenderShadowCasters();
 

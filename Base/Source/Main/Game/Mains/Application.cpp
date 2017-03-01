@@ -147,10 +147,10 @@ void Application::Init()
 	m_dAccumulatedTime_ThreadTwo = 0.0;
 
 	// Hide mouse
-	//glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
+	glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
 
 	RenderSystem* Renderer = new RenderSystem();
-	SceneSystem::Instance().GenerateTransitionLayer(10);
+	SceneSystem::Instance().GenerateTransitionLayer(15, 1.f, "weed");
 
 #ifdef _DEBUG
     assert(LoadKeybinds());
@@ -187,7 +187,8 @@ void Application::Run()
 			Update();
 			if (!SceneSystem::Instance().AnimationDirectionInwards)
 				SceneSystem::Instance().GetCurrentScene().Render();
-			else SceneSystem::Instance().GetPreviousScene().Render();
+			else if (SceneSystem::Instance().PreviousScene)
+				SceneSystem::Instance().GetPreviousScene().Render();
         }
 		//Swap buffers
 		glfwSwapBuffers(m_window);

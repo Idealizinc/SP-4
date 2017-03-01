@@ -107,3 +107,8 @@ void InputManager::SetMouseToScreenCenter()
 {
 	SetCursorPos((int)cIM_ScreenWidth / 2, (int)cIM_ScreenHeight / 2);
 }
+
+void InputManager::CenterCursor()
+{
+	SetCursorPos((int)ScreenCenter.x, (int)ScreenCenter.y);
+}

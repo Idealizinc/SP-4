@@ -26,6 +26,7 @@ public:
 	virtual void Update(const float& dt);
 	virtual void Render(void){};
 	void RenderTransitionEffects();
+	void RenderMouseCursor(const Vector3& Dimensions, const std::string MeshName = "quad");
 	//virtual void SendMessage(const string&){};
 	virtual void Exit(void){};
 
@@ -47,9 +48,9 @@ public:
 	InterfaceLayer* TransitionLayer;
 	bool AnimationActivated;
 	bool AnimationDirectionInwards;
+	SceneEntity* PreviousScene;
 
 protected:
-	SceneEntity* PreviousScene;
 	std::string TargetScene;
 	int MaxStoredHistory;
 	std::queue<SceneEntity*> SceneHistory;
