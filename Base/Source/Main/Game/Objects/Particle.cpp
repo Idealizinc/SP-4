@@ -20,17 +20,7 @@ Particle::Particle(const std::string& MeshName, const float& Mass, const Vector3
 	this->Visible = true;
 }
 
-void Particle::SetMeshBasedOnID()
-{
-	RenderSystem* Renderer = dynamic_cast<RenderSystem*>(&SceneSystem::Instance().GetRenderSystem());
-	std::map<std::string, Mesh*>::iterator it = Renderer->MeshList.find(GetEntityID());
-	if (it != Renderer->MeshList.end())
-	{
-		StoredMesh = it->second;
-	}
-}
-
-void Particle::Update(double dt)
+void Particle::Update(const float& dt)
 {
 	if (Active) // Still can update if invisible
 	{
@@ -47,7 +37,49 @@ void Particle::Update(double dt)
 			//Velocity += m_gravity * dt; // For Gravity
 			if (!Static)
 				SetPosition(GetPosition() + (StoredVelocity + GetVelocity()) * 0.5f * (float)dt);
-			SetRotationAngle(Math::RadianToDegree(atan2(-GetVelocity().x, GetVelocity().y)));
+			SetRotationAngle(Math::RadianToDegree(atan2(PlayerPosition.x - GetPosition().x, PlayerPosition.z - GetPosition().z)));
+		}
+	}
+}
+
+void Particle::Render()
+{
+	RenderSystem *Renderer = dynamic_cast<RenderSystem*>(&SceneSystem::Instance().GetRenderSystem());
+
+	if (Active && Visible && StoredMesh)
+	{
+		RenderSystem *Renderer = dynamic_cast<RenderSystem*>(&SceneSystem::Instance().GetRenderSystem());
+		float TimeRatio = 1;
+		if (LifeTime != -1)
+		{
+			TimeRatio = 1.1f - CurrentTime / LifeTime;
+		}
+		if (InWorldSpace)
+		{
+			SceneSystem::Instance().GetCurrentScene().modelStack->PushMatrix();
+			SceneSystem::Instance().GetCurrentScene().modelStack->Translate(Position.x, Position.y, Position.z);
+			if (LifeTime != -1)
+			{
+				SceneSystem::Instance().GetCurrentScene().modelStack->Rotate(90, -1, 0, 0);
+				SceneSystem::Instance().GetCurrentScene().modelStack->Rotate(TimeRatio * 360, 0, 0, 1);
+			}
+			else SceneSystem::Instance().GetCurrentScene().modelStack->Rotate(Math::RadianToDegree(atan2(PlayerPosition.x - GetPosition().x, PlayerPosition.z - GetPosition().z)), 0, 1, 0);
+			SceneSystem::Instance().GetCurrentScene().modelStack->Scale(TimeRatio * GetDimensions().x, TimeRatio * GetDimensions().y, TimeRatio * GetDimensions().z);
+			if ((TimeRatio * GetDimensions()).LengthSquared() > 0.1f)
+				Renderer->RenderMesh(*StoredMesh, false);
+			SceneSystem::Instance().GetCurrentScene().modelStack->PopMatrix();
+		}
+		else
+		{
+			Renderer->SetHUD(true);
+			glDisable(GL_CULL_FACE);
+			SceneSystem::Instance().GetCurrentScene().modelStack->PushMatrix();
+			float TimeRatio = 1.1f - CurrentTime / LifeTime;
+			SceneSystem::Instance().GetCurrentScene().modelStack->Rotate(TimeRatio * 360, 0, 1, 0);
+			Renderer->RenderMeshIn2D(*StoredMesh, false, Dimensions.x, Dimensions.y, Position.x, Position.y); 
+			SceneSystem::Instance().GetCurrentScene().modelStack->PopMatrix();
+			glEnable(GL_CULL_FACE); 
+			Renderer->SetHUD(false);
 		}
 	}
 }
@@ -68,7 +100,7 @@ bool Particle::operator<(Particle& rhs){
 void Particle::Reset()
 {
 	SetMesh("");
-	SetMass(0);
+	SetMass(1);
 	SetPosition(Vector3());
 	DefaultDimensions = Vector3(1, 1, 1);
 	SetDimensions(DefaultDimensions);
@@ -79,4 +111,11 @@ void Particle::Reset()
 	this->Active = true;
 	this->Static = false;
 	this->Visible = true;
+	this->InWorldSpace = true;
+}
+
+void Particle::SetLifeTime(const float& LifeTime)
+{
+	this->LifeTime = LifeTime;
+	this->CurrentTime = 0.f;
 }

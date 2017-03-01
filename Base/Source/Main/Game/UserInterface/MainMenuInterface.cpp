@@ -1,4 +1,5 @@
 #include "MainMenuInterface.h"
+#include "../Mains/Application.h"
 
 MainMenuInterface::MainMenuInterface()
 {
@@ -69,22 +70,36 @@ void MainMenuInterface::InitMainLayer()
 void MainMenuInterface::InitFactionLayer()
 {
 	FactionLayer = CreateNewInterfaceLayer(std::to_string(L_FACTION), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * -(2.5f), 0), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 1.2f, 0));
-	Faction1Button = FactionLayer->CreateNewInterfaceElement("Faction1Button", "quad", 0, Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.3f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.15f, 0));
-	Faction1Button->SetTargetPosition(0);
+	Faction1Name = FactionLayer->CreateNewInterfaceElement("Faction1Button", "LivingFactionLogo", 0, Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.8, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.8f, 0));
+	Faction1Name->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * -(0.5f), 0, 0));
+
+	Faction1Button = FactionLayer->CreateNewInterfaceElement("Faction1Name", "BlueButton", 0, Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.4f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y* 0.2f, 0));
+	Faction1Button->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * -(0.5f), SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * -(0.5f), 0));
 	Faction1Button->SetText("Humans");
-	Faction1Button->SetTextColor(0);
+	Faction1Button->SetTextColor(Vector3(0, 0.2f, 0.9f));
 
-	Faction2Button = FactionLayer->CreateNewInterfaceElement("Faction2Button", "quad", Vector3(0, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * -(0.1f), 0), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.3f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.15f, 0));
-	Faction2Button->SetTargetPosition(Vector3(0, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * -(0.1f), 0));
+	Faction2Name = FactionLayer ->CreateNewInterfaceElement("Faction2Button", "UndeadFactionLogo", 0, Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.y* 0.8f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.8f, 0));
+	Faction2Name->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * (0.5f)));
+
+	Faction2Button = FactionLayer->CreateNewInterfaceElement("Faction2Name", "WoodButton", 0, Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.4f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.2f, 0));
+	Faction2Button->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * (0.5f), SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * -(0.5f), 0));
 	Faction2Button->SetText("Demons");
-	Faction2Button->SetTextColor(0);
+	Faction2Button->SetTextColor(Vector3(0.9f, 0.7f, 0));
 
-	BackButtonF = FactionLayer->CreateNewInterfaceElement("BackButtonFF", "WoodFrameRect", Vector3(0, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * -(0.2f), 0), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.4f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.15f, 0));
-	BackButtonF->SetTargetPosition(Vector3(0, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * -(0.2f), 0));
-	BackButtonF = FactionLayer->CreateNewInterfaceElement("BackButtonF", "Background", Vector3(0, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * -(0.2f), 0), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.4f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.15f, 0));
-	BackButtonF->SetTargetPosition(Vector3(0, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * -(0.2f), 0));
+	BackButtonF = FactionLayer->CreateNewInterfaceElement("BackButtonFF", "WoodFrameRect", Vector3(0, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * -(0.5f), 0), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.4f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.15f, 0));
+	BackButtonF->SetTargetPosition(Vector3(0, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * -(0.5f), 0));
+	BackButtonF = FactionLayer->CreateNewInterfaceElement("BackButtonF", "Background", Vector3(0, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * -(0.5f), 0), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.4f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.15f, 0));
+	BackButtonF->SetTargetPosition(Vector3(0, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * -(0.5f), 0));
 	BackButtonF->SetText("Back");
 	BackButtonF->SetTextColor(Vector3(0.5f, 0.3f, 0.3f));
+
+	FactionTitle = FactionLayer->CreateNewInterfaceElement("BackButtonFF", "WoodFrameRect", Vector3(0, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * (0.5f), 0), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.8f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.2f, 0));
+	FactionTitle->SetTargetPosition(Vector3(0, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * (0.3f), 0));
+	
+	FactionTitle = FactionLayer->CreateNewInterfaceElement("BackButtonF", "Background", Vector3(0, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * (0.5f), 0), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.8f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.2f, 0));
+	FactionTitle->SetTargetPosition(Vector3(0, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * (0.3f), 0));
+	FactionTitle->SetText("Select Your Faction!");
+	FactionTitle->SetTextColor(Vector3(0.5f, 0.3f, 0.3f));
 }
 
 void MainMenuInterface::InitInstructLayer()
@@ -245,9 +260,15 @@ void MainMenuInterface::CheckMenuUserInput(Vector3 mousePos)
 		//SceneSystem::Instance().SwitchScene("1_Scene");
 		nextLayer = L_FACTION;
 	}
+
 	if (InstructionsButton->DetectUserInput(mousePos, MainLayer->GetPosition()))
 	{
 		nextLayer = L_INSTRUCTIONS;
+	}
+
+	if (ExitButton->DetectUserInput(mousePos, MainLayer->GetPosition()))
+	{
+		Application::ExitGame = true;
 	}
 }
 

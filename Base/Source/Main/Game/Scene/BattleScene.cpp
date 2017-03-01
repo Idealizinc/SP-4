@@ -15,7 +15,7 @@ BattleScene::BattleScene()
 	framerates = 0;
 	SetEntityID(id_);
 	InteractiveMap = nullptr;
-	Player = nullptr;
+	ScenePartition = nullptr;
 	SceneSystem::Instance().AddScene(*this);
 	Init();
 }
@@ -27,36 +27,13 @@ BattleScene::~BattleScene()
 
 void BattleScene::QuickInit()
 {
-	RenderSystem *Renderer = dynamic_cast<RenderSystem*>(&SceneSystem::Instance().GetRenderSystem());
-
 	// Set Terrain Size
 	TerrainScale.Set(400.f, 50.f, 400.f);
-	ScenePartition = new ScenePartitionGraph();
-	ScenePartition->AssignGridParameters(Vector3(), Vector3(TerrainScale.x, TerrainScale.z), 10);
-
-	Mtx44 perspective;
-	perspective.SetToPerspective(45.0f, SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth / SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight, 0.1f, 10000.0f);
-	projectionStack->LoadMatrix(perspective);
-
+	
 	CameraAerial* CA = new CameraAerial();
 	camera = CA;
 	CA->AltInit(/*Player Character Position*/Vector3(0, 0, 0), Vector3(0, 100, 50), Vector3(0, 1, 0));
 	CenterPosition.Set(SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth * 0.5f, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.5f, 0);
-
-	// Initiallise Model Specific Meshes Here
-	Mesh* newMesh = MeshBuilder::GenerateTerrain("BattleScreen", "HeightMapFiles//heightmap_MainMenu.raw", m_heightMap);
-	newMesh->material.kAmbient.Set(0.2f, 0.2f, 0.2f);
-	newMesh->material.kDiffuse.Set(0.2f, 0.2f, 0.2f);
-	newMesh->material.kSpecular.Set(0.0f, 0.0f, 0.0f);
-	newMesh->textureArray[0] = LoadTGA("Image//RockTex.tga");
-	newMesh->textureArray[1] = LoadTGA("Image//GrassStoneTex.tga");
-	Renderer->MeshList.insert(std::pair<std::string, Mesh*>(newMesh->name, newMesh));
-
-	InteractiveMap = new GameMap();
-	GameMap *theMap = dynamic_cast<GameMap*>(InteractiveMap);
-	theMap->ScenePartition = ScenePartition;
-	theMap->SetEntityID("Battlefield");
-	theMap->LoadMap("CSVFiles//BattlefieldLayout1.csv", false, m_heightMap, TerrainScale, EntityList, BManager);
 
 	SceneSystem::Instance().cSS_InputManager->cIM_inMouseMode = true;
 }
@@ -71,8 +48,6 @@ void BattleScene::QuickExit()
 	if (InteractiveMap)
 		delete InteractiveMap;
 	EntityList.clear();
-	if (Player)
-		delete Player;
 	if (camera)
 		delete camera;
 }
@@ -89,22 +64,40 @@ void BattleScene::Update(const float& dt)
 
 	float Speed = 50.f;
 	CameraAerial* CA = (CameraAerial*)camera;
+	float DetectionOffset = 0.1f;
+	if (!GameLogicSystem::Instance().UnitInterface->UIDisplayed)
+	{
+		if (SceneSystem::Instance().cSS_InputManager->GetKeyValue(SimpleCommand::m_allTheKeys[SimpleCommand::FORWARD_COMMAND]) ||
+			SceneSystem::Instance().cSS_InputManager->GetMousePosition().y > SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * (1.f - DetectionOffset))
+		{
+			CA->CameraMoveTargetPosition.z -= Speed*dt;
+		}
+		if (SceneSystem::Instance().cSS_InputManager->GetKeyValue(SimpleCommand::m_allTheKeys[SimpleCommand::BACK_COMMAND]) ||
+			SceneSystem::Instance().cSS_InputManager->GetMousePosition().y < SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * DetectionOffset)
+		{
+			CA->CameraMoveTargetPosition.z += Speed*dt;
+		}
+		if (SceneSystem::Instance().cSS_InputManager->GetKeyValue(SimpleCommand::m_allTheKeys[SimpleCommand::RIGHT_COMMAND]) ||
+			SceneSystem::Instance().cSS_InputManager->GetMousePosition().x > SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth * (1.f - DetectionOffset))
+		{
+			CA->CameraMoveTargetPosition.x += Speed*dt;
+		}
+		if (SceneSystem::Instance().cSS_InputManager->GetKeyValue(SimpleCommand::m_allTheKeys[SimpleCommand::LEFT_COMMAND]) ||
+			SceneSystem::Instance().cSS_InputManager->GetMousePosition().x < SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth * DetectionOffset)
+		{
+			CA->CameraMoveTargetPosition.x -= Speed*dt;
+		}
+		float XOffset = TerrainScale.x * 0.5f;
+		if (CA->CameraMoveTargetPosition.x < -XOffset)
+			CA->CameraMoveTargetPosition.x = -XOffset;
+		else if (CA->CameraMoveTargetPosition.x > XOffset)
+			CA->CameraMoveTargetPosition.x = XOffset;
 
-	if (SceneSystem::Instance().cSS_InputManager->GetKeyValue(SimpleCommand::m_allTheKeys[SimpleCommand::FORWARD_COMMAND]))
-	{
-		CA->CameraMoveTargetPosition.z -= Speed*dt;
-	}
-	if (SceneSystem::Instance().cSS_InputManager->GetKeyValue(SimpleCommand::m_allTheKeys[SimpleCommand::BACK_COMMAND]))
-	{
-		CA->CameraMoveTargetPosition.z += Speed*dt;
-	}
-	if (SceneSystem::Instance().cSS_InputManager->GetKeyValue(SimpleCommand::m_allTheKeys[SimpleCommand::RIGHT_COMMAND]))
-	{
-		CA->CameraMoveTargetPosition.x += Speed*dt;
-	}
-	if (SceneSystem::Instance().cSS_InputManager->GetKeyValue(SimpleCommand::m_allTheKeys[SimpleCommand::LEFT_COMMAND]))
-	{
-		CA->CameraMoveTargetPosition.x -= Speed*dt;
+		float ZOffset = TerrainScale.z * 0.5f;
+		if (CA->CameraMoveTargetPosition.z < -ZOffset)
+			CA->CameraMoveTargetPosition.z = -ZOffset;
+		else if (CA->CameraMoveTargetPosition.z > ZOffset)
+			CA->CameraMoveTargetPosition.z = ZOffset;
 	}
 
 	if (Application::IsKeyPressed(VK_OEM_MINUS))
@@ -128,94 +121,45 @@ void BattleScene::Update(const float& dt)
 	framerates = 1 / dt;
 }
 
-//Start of Changes
-void BattleScene::UpdateCharacterLogic(double dt)
+void BattleScene::ReloadMap(Terrain* Terrain)
 {
-	
-}
+	RenderSystem *Renderer = dynamic_cast<RenderSystem*>(&SceneSystem::Instance().GetRenderSystem());
 
-void BattleScene::UpdateInternals(double dt)
-{
-	//std::vector<Projectile*> Container = ObjectManager::Instance().GetProjectileList();
-	//for (std::vector<Projectile*>::iterator it = Container.begin(); it != Container.end(); ++it)
-	//{
-	//	BaseObject *obj = (BaseObject*)*it;
-	//	Vector3 Pos = obj->GetPosition();
-	//	if (Pos.z > ObjectManager::Instance().WorldHeight) obj->Active = false;
-	//	if (Pos.z < 0) obj->Active = false;
-	//	if (Pos.x > ObjectManager::Instance().WorldWidth) obj->Active = false;
-	//	if (Pos.x < 0) obj->Active = false;
-	//	if (obj->Active)
-	//	{
-	//		for (std::vector<CharacterEntity*>::iterator it2 = ObjectManager::Instance().GetCharacterList().begin(); it2 != ObjectManager::Instance().GetCharacterList().end(); ++it2)
-	//		{
-	//			BaseObject *obj2 = dynamic_cast<BaseObject*>(*it2);
-	//			if (obj2->Active && (((*it)->OwnerID == "Magic" && obj2->GetEntityID() != "Magic") || (((*it)->OwnerID == "Mercedes" && obj2->GetEntityID() != "Mercedes")) && ((*it)->OwnerID == "Range" && obj2->GetEntityID() != "Melee")))
-	//			{
-	//				if (CheckCollision(obj, obj2))
-	//				{
-	//					obj->Active = false;
-	//					CharacterEntity* CE = *it2;
-	//					//Get Hitted
-	//					CE->HealthPoints -= (*it)->GetDamageDealt();
-	//					int NumParticles = Math::RandIntMinMax(2, 4);
-	//					for (int i = 0; i < NumParticles; ++i)
-	//					{
-	//						float ParticleSpeed = Math::RandFloatMinMax(3.f, 6.f);
-	//						float ParticleLifeTime = Math::RandFloatMinMax(0.75f, 1.5f);
-	//						//ObjectManager::Instance().AddNewParticle(new Particle(obj2->GetEntityID(), 1, CE->GetPosition() * Math::RandFloatMinMax(0.3f, 0.75f), Vector3(Math::RandFloatMinMax(-ParticleSpeed, ParticleSpeed), Math::RandFloatMinMax(-ParticleSpeed, ParticleSpeed), Math::RandFloatMinMax(0, ParticleSpeed)), camera.position, ParticleLifeTime));
-	//					}
-	//				}
-	//			}
-	//		}
-	//	}
-	//	//Update if the object is still exists
-	//	if (obj->Active && !obj->Static)
-	//		obj->Update((float)dt);
-	//	//Particle Update
-	//	for (std::vector<Particle*>::iterator it = ObjectManager::Instance().GetParticleList().begin(); it != ObjectManager::Instance().GetParticleList().end(); ++it)
-	//	{
-	//		Particle *obj = (Particle*)*it;
-	//		if (obj->Active && !obj->Visible)
-	//			obj->Update((float)dt);
-	//	}
-	//}
-}
+	// Find the Terrain Specific Mesh Here
+	TerrainMeshName = Terrain->TerrainMesh->name;
+	// The mesh should not be null as it should be generated when the Terrain is created.
 
-bool BattleScene::CheckCollision(BaseObject *o1, BaseObject *o2, std::string type)
-{
-	if (type == "Circle")
-	{
-		float CombinedRadiusSquared = (o1->GetDimensions().x + o2->GetDimensions().x) * (o1->GetDimensions().x + o2->GetDimensions().x);
-		float DistSquared = (o1->GetPosition() - o2->GetPosition()).LengthSquared();
-		if (DistSquared < CombinedRadiusSquared)
-		{
-			return true;
-		}
-		return false;
+	// I will need to clean up old lists if they exist
+	if (ScenePartition){
+		ScenePartition->Exit();
+		delete ScenePartition;
 	}
-	else if (type == "AABB")
-		return false;
-	else if (type == "OBB")
-		return false;
-	else return false;
-}
+	if (InteractiveMap)
+		delete InteractiveMap;
+	if (m_heightMap.size())
+		m_heightMap.clear();
+	BManager.Exit();
+	EntityList.clear();
 
-void BattleScene::RenderObjects(BaseObject *obj)
-{
-	if (obj->Active && obj->Visible && obj->GetEntityID() != "")
-	{
-		obj->Render();
-	}
+	// Set up HM stats
+	m_heightMap = Terrain->TerrainHeightMap;
+
+	// I will now begin generating the map with the csv file from the terrain
+	ScenePartition = new ScenePartitionGraph();
+	ScenePartition->AssignGridParameters(Vector3(), Vector3(TerrainScale.x, TerrainScale.z), 10);
+	InteractiveMap = new GameMap();
+	GameMap *theMap = dynamic_cast<GameMap*>(InteractiveMap);
+	theMap->ScenePartition = ScenePartition;
+	theMap->SetEntityID("Battlefield");
+	theMap->LoadMap(Terrain->CSVMapName, false, m_heightMap, TerrainScale, EntityList, BManager);
 }
-//End of changes
 
 void BattleScene::RenderTerrain()
 {
 	RenderSystem *Renderer = dynamic_cast<RenderSystem*>(&SceneSystem::Instance().GetRenderSystem());
 	modelStack->PushMatrix();
 	modelStack->Scale(TerrainScale.x, TerrainScale.y - 5.f, TerrainScale.z);
-	Renderer->RenderMesh("BattleScreen", true);
+	Renderer->RenderMesh(TerrainMeshName, true);
 	modelStack->PopMatrix();
 }
 

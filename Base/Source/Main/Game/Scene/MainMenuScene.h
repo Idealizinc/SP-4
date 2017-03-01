@@ -39,6 +39,7 @@ private:
 	const float SkyboxSize = 1500;
 
 	BillboardManager BManager;
+	BillboardManager ParticleManager;
 	GameObject* Player;
 
 	GameMap *InteractiveMap;

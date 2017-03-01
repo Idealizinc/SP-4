@@ -26,33 +26,48 @@ void GameScreenInterface::Init()
 	EnemyTurnPopup = TurnPopup->CreateNewInterfaceElement("EnemyPopUp", "quad1", Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 2.5f, 0), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.5f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.2f, 0));
 	EnemyTurnPopup->SetTargetPosition(EnemyTurnPopup->GetOriginalPosition());
 	EnemyTurnPopup->SetText("Enemy Turn");
-	EnemyTurnPopup->SetTextColor(0);
+	EnemyTurnPopup->SetTextColor(0);\
 
-	CashDisplayLayer = CreateNewInterfaceLayer("CashLayer", Vector3(SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth * 0.05f, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.95f, 0), 0);
+	MenuLayer = CreateNewInterfaceLayer("MenuLayer", Vector3(SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth * 0.9f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y, 0), Vector3(Vector3(SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y, 0)));
+	//MenuLayer->SwapOriginalWithTarget();
+	MenuFrame = MenuLayer->CreateNewInterfaceElement("MenuFrame", "Transparent", Vector3(SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth * 0.03f, 0, 0), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.5f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.4f, 0));
+	MenuFrame->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth * 0.03f, 0, 0));
+
+	SurrenderButton = MenuLayer->CreateNewInterfaceElement("WhiteFlag", "quad", Vector3(SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth * 0.05f, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * -(0.05f), 0), Vector3(SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth * 0.1f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.16f, 0));
+	SurrenderButton->SetTargetPosition(SurrenderButton->GetOriginalPosition());
+	SurrenderButton->SetText("Surrender");
+	SurrenderButton->SetTextColor(0);
+
+	DeployButton = MenuLayer->CreateNewInterfaceElement("DeployUI", "quad", Vector3(SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth * 0.05f, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.05f, 0), Vector3(SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth * 0.1f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.16f, 0));
+	DeployButton->SetTargetPosition(DeployButton->GetOriginalPosition());
+	DeployButton->SetText("Deploy");
+	DeployButton->SetTextColor(0);
+
+	MenuButton = MenuLayer->CreateNewInterfaceElement("MenuUI", "quad", Vector3(SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth * -(0.04f),0, 0), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.1f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.16f, 0));
+	MenuButton->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth * -(0.04f),0, 0));
+	MenuButton->SetText("Menu");
+	MenuButton->SetTextColor(0);
+
+	//Ingame Frame
+	IngameLayer = CreateNewInterfaceLayer("IngameLayer", 0 ,0);
+	
+	GameFrame = IngameLayer->CreateNewInterfaceElement("GameFrame", "Transparent", Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y, 0), Vector3(SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight, 0));
+	GameFrame->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y, 0));
+
+	//Cash
+	CashDisplayLayer = CreateNewInterfaceLayer("CashLayer", Vector3(SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth * 0.08f, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.94f, 0), 0);
 	CashDisplayLayer->SetTargetPosition(CashDisplayLayer->GetOriginalPosition());
-	CashTotalDisplay = CashDisplayLayer->CreateNewInterfaceElement("CashTotal", "quad", 0, Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.2f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.2f, 0));
+
+	CashTotalDisplay = CashDisplayLayer->CreateNewInterfaceElement("CashTotal", "quad", 0, Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.3f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.2f, 0));
 	CashTotalDisplay->SetTextColor(0);
+
+	CashSubstractFrame = CashDisplayLayer->CreateNewInterfaceElement("CashReduceFrame", "Transparent", Vector3(SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth * 0.0f, -(SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.09f)), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.15f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.15f, 0));
+	CashSubstractFrame->SetTargetPosition(0);
 
 	CashSubstractDisplay = CashDisplayLayer->CreateNewInterfaceElement("CashReduce", "quad1", Vector3(SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth * 0.0f, -(SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.09f)), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.15f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.15f, 0));
 	CashSubstractDisplay->SetTargetPosition(0);
 	CashSubstractDisplay->SetTextColor(0);
 
-	MenuLayer = CreateNewInterfaceLayer("MenuLayer", Vector3(SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth * 0.9f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y, 0), Vector3(Vector3(SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y, 0)));
-	//MenuLayer->SwapOriginalWithTarget();
-	SurrenderButton = MenuLayer->CreateNewInterfaceElement("WhiteFlag", "quad", Vector3(SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth * 0.05f, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * -(0.1f), 0), Vector3(SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth * 0.1f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.15f, 0));
-	SurrenderButton->SetTargetPosition(SurrenderButton->GetOriginalPosition());
-	SurrenderButton->SetText("Surrender");
-	SurrenderButton->SetTextColor(0);
-
-	DeployButton = MenuLayer->CreateNewInterfaceElement("DeployUI", "quad", Vector3(SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth * 0.05f, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.1f, 0), Vector3(SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth * 0.1f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.15f, 0));
-	DeployButton->SetTargetPosition(DeployButton->GetOriginalPosition());
-	DeployButton->SetText("Deploy");
-	DeployButton->SetTextColor(0);
-
-	MenuButton = MenuLayer->CreateNewInterfaceElement("MenuUI", "quad", Vector3(SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth * -(0.05f),0, 0), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.15f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.15f, 0));
-	MenuButton->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth * -(0.05f),0, 0));
-	MenuButton->SetText("Menu");
-	MenuButton->SetTextColor(0);
 
 	MultipleUnitLayer = CreateNewInterfaceLayer("multipleLayer", 0,0);
 
@@ -128,6 +143,19 @@ void GameScreenInterface::toggleSurrender()
 
 void GameScreenInterface::Update(const float& dt)
 {
+	if (GameLogicSystem::Instance().PlayerFaction == GameLogicSystem::F_LIVING)
+	{
+		CashSubstractFrame->SetMesh("LivingFrame");
+		GameFrame->SetMesh("IngameLivingFrame");
+		MenuFrame->SetMesh("LivingMenuFrame");
+	}
+	else
+	{
+		CashSubstractFrame->SetMesh("UndeadFrame");
+		GameFrame->SetMesh("IngameUndeadFrame");
+		MenuFrame->SetMesh("UndeadMenuFrame");
+	}
+
 	for (auto it : InternalLayerContainer)
 	{
 		if (it->Active)
@@ -375,6 +403,7 @@ void GameScreenInterface::ShowCashReduction(int amt)
 {
 	CashSubstractDisplay->SetText("-$" + std::to_string(amt));
 	CashSubstractDisplay->ResetToOriginal();
+	CashSubstractFrame->ResetToOriginal();
 	CashDisplayTimer = 1;
 	CashEditAmt -= amt;
 }

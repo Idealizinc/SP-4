@@ -54,8 +54,11 @@ private:
 
 	InterfaceLayer* FactionLayer;
 	InterfaceElement* Faction1Button;
+	InterfaceElement* Faction1Name;
 	InterfaceElement* Faction2Button;
+	InterfaceElement* Faction2Name;
 	InterfaceElement* BackButtonF;
+	InterfaceElement* FactionTitle;
 
 	InterfaceLayer* LevelSelectLayer;
 	std::vector<InterfaceElement*> LevelSelectData; // or map?
@@ -84,11 +87,11 @@ private:
 	void CheckMenuUserInput(Vector3 mousePos);
 	void CheckFactionUserInput(Vector3 mousePos);
 	void CheckInstructionsUserInput(Vector3 mousePos);
-
+	
 	void InitMainLayer();
-
 	void InitFactionLayer();
 	void InitInstructLayer();
+	void InitMapSelectLayer();
 
 	Vector3 LeftSide = Vector3(SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth * -(1.0f), SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 1.0f, 0);
 	Vector3 RightSide = Vector3(SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth * 2.0f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 1.0f, 0);

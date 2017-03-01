@@ -50,7 +50,7 @@ private:
 	bool firstTime;
 
 	InterfaceLayer* UnitSelectLayer;
-	
+	InterfaceElement *UnitSelectBackground;
 
 	//LInterfaceLayer* ScrollingLayer;
 	InterfaceLayer* IconLayer;
@@ -72,6 +72,7 @@ private:
 	InterfaceElement* TotalCost;
 	InterfaceElement* CostBox;
 	InterfaceElement* DisplayQuad = nullptr;
+	InterfaceElement* UnitDisplayBackground; 
 
 	bool warningDisplayed;
 	bool warningDisplayed2;

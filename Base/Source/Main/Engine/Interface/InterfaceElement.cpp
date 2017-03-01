@@ -40,7 +40,7 @@ void InterfaceElement::Render(const Vector3& LayerPosition)
 {
 	if (Active && Visible)
 	{
-		float Divisor = 0.4f;
+		float Divisor = 0.45f;
 		glDisable(GL_CULL_FACE);
 		RenderSystem *Renderer = dynamic_cast<RenderSystem*>(&SceneSystem::Instance().GetRenderSystem());
 		Renderer->SetHUD(true);

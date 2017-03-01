@@ -44,7 +44,8 @@ void BillboardManager::Exit()
     BillboardContainer.clear();
 }
 
-void BillboardManager::UpdateContainer(float dt, const Vector3 &CameraPosition){
+void BillboardManager::UpdateContainer(float dt, const Vector3 &CameraPosition)
+{
 	for (std::vector<Particle*>::iterator it = BillboardContainer.begin(); it != BillboardContainer.end(); it++)
 	{
 		Particle* B = *it;
@@ -85,13 +86,41 @@ void BillboardManager::AddHMapBillboard(const std::string& MeshName, std::vector
 	B->SetEntityID(MeshName);
 	B->SetParameters(MeshName, 1, Pos, Dimensions, 0, 0, Vector3(0, 1, 0));
 	B->PlayerPosition = PlayerPosition;
-	B->SetMeshBasedOnID();
+	B->SetMesh(MeshName);
+	B->Static = true;
 }
 
 void BillboardManager::AddBillboard(const std::string& MeshName, const Vector3& Position, const Vector3& Dimensions, const Vector3& Velocity, const Vector3& PlayerPosition)
 {
 	Particle* B = FetchB();
+	B->SetEntityID(MeshName);
 	B->SetParameters(MeshName, 1, Position, Dimensions, 0, 0, Vector3(0, 1, 0));
 	B->PlayerPosition = PlayerPosition;
-	B->SetMeshBasedOnID();
+	B->SetMesh(MeshName);
+	B->Static = true;
+}
+
+void BillboardManager::AddScreenSpaceParticle(const std::string& MeshName, const Vector3& Position, const Vector3& Dimensions, const Vector3& Velocity, const Vector3& PlayerPosition, const float& LifeTime)
+{
+	Particle* B = FetchB();
+	B->SetEntityID(MeshName);
+	B->SetParameters(MeshName, 1, Position, Dimensions, 0, 0, Vector3(0, 1, 0));
+	B->PlayerPosition = PlayerPosition;
+	B->SetVelocity(Velocity);
+	B->SetLifeTime(LifeTime);
+	B->Static = false;
+	B->DefaultDimensions = Dimensions;
+	B->InWorldSpace = false;
+}
+
+void BillboardManager::AddWorldSpaceParticle(const std::string& MeshName, const Vector3& Position, const Vector3& Dimensions, const Vector3& Velocity, const Vector3& PlayerPosition, const float& LifeTime)
+{
+	Particle* B = FetchB();
+	B->SetEntityID(MeshName);
+	B->SetParameters(MeshName, 1, Position, Dimensions, 0, 0, Vector3(0, 1, 0));
+	B->PlayerPosition = PlayerPosition;
+	B->SetVelocity(Velocity);
+	B->SetLifeTime(LifeTime);
+	B->SetMesh(MeshName);
+	B->DefaultDimensions = Dimensions;
 }
