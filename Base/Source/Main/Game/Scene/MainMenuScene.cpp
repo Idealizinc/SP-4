@@ -126,10 +126,10 @@ void MainMenuScene::Update(const float& dt)
 
 	if (SceneSystem::Instance().cSS_InputManager->GetMouseInput(InputManager::KEY_LMB) == InputManager::MOUSE_HOLD)
 	{
-		float Interval = SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.1f;
+		float Interval = SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 1.f;
 		Vector3 Dimensions = Vector3(Interval, Interval, Interval);
 		Vector3 Velocity = Vector3(Math::RandFloatMinMax(-Interval * 0.5f, Interval * 0.5f), Math::RandFloatMinMax(-Interval * 0.5f, Interval * 0.5f), 1.f);
-		ParticleManager.AddScreenSpaceParticle("weed", SceneSystem::Instance().cSS_InputManager->GetMousePosition(), Dimensions, Velocity, camera->position, 1.f);
+		ParticleManager.AddScreenSpaceParticle("weed2", SceneSystem::Instance().cSS_InputManager->GetMousePosition(), Dimensions, Velocity, camera->position, 1.f);
 		//ParticleManager.AddWorldSpaceParticle("weed", Vector3(0, 5, 0), Vector3(10, 10, 10), Velocity * 0.1f, camera->position, 1.f);
 	}
 
@@ -292,11 +292,12 @@ void MainMenuScene::RenderPassMain()
 
 	Renderer->RenderMesh("reference", false);
 
-	MenuInterface->Render();
-
+	
 	//RenderTerrain();
 	RenderSkybox();
 	RenderShadowCasters();
+
+	MenuInterface->Render();
 
 	Renderer->SetHUD(true);
 	std::stringstream ss;

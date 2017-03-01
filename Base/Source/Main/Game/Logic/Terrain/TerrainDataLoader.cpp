@@ -184,24 +184,6 @@ void TerrainDataLoader::convertStringToUpperCaps(std::string &theString)
 	}
 }
 
-//int TerrainDataLoader::getTerrainFileSize(const char* file_path)
-//{
-//	int size = 0;
-//	std::ifstream fileStream(file_path, std::ios::binary);
-//	if (!fileStream.is_open())
-//	{
-//		std::cout << "Impossible to open " << file_path << ". Are you in the right directory ?\n";
-//		return false;
-//	}
-//	std::string CurrentLineOfText = "";
-//	while (getline(fileStream, CurrentLineOfText))//while not at a empty row
-//	{
-//		++size;
-//	}
-//	return size;
-//
-//}
-
 Terrain* TerrainDataLoader::GetTerrain(std::string TerrainName)
 {
 	return TerrainMap.find(TerrainName)->second;
