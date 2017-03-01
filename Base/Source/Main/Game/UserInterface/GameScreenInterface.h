@@ -44,7 +44,6 @@ private:
 	void InitSurrender();
 	//void checkUserInput();
 
-
 	InterfaceLayer* TurnPopup;
 	InterfaceElement* PlayerTurnPopup;
 	InterfaceElement* EnemyTurnPopup;
@@ -53,17 +52,21 @@ private:
 	InterfaceElement* CashTotalDisplay;
 	InterfaceElement* CashAddDisplay;
 	InterfaceElement* CashSubstractDisplay;
+	InterfaceElement* CashSubstractFrame;
 
 	InterfaceLayer* MenuLayer;
 	InterfaceElement* SurrenderButton;
 	InterfaceElement* DeployButton;
 	InterfaceElement* MenuButton;
-
+	InterfaceElement* MenuFrame;
 
 	InterfaceLayer* SurrenderLayer;
 	InterfaceElement* SurrenderBackground;
 	InterfaceElement* SurrenderYesButton;
 	InterfaceElement* SurrenderNoButton;
+
+	InterfaceLayer* IngameLayer;
+	InterfaceElement* GameFrame;
 
 	float CashDisplayTimer;
 	int CashEditAmt;

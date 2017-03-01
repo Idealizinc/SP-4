@@ -69,6 +69,9 @@ void UnitCreationInterface::Init()
 	CostBox->SetText("Unit Cost");
 	CostBox->SetTextColor(0);
 
+	//UnitDisplayBackground = UnitDisplayLayer->CreateNewInterfaceElement("background", "quad1", Vector3(-ScreenHalfDimension.x, ScreenHalfDimension.y, 0), Vector3(ScreenHalfDimension.x, ScreenHalfDimension.y * 2, 1.f));
+	//UnitDisplayBackground->SetTargetPosition(Vector3(-ScreenHalfDimension.x, ScreenHalfDimension.y, 0));
+
 	UIDisplayed = 0;
 	deploy = 0;
 
