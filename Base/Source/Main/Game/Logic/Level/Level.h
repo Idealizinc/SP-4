@@ -7,6 +7,7 @@
 class Level : public Entity
 {
 public:
+	virtual ~Level();
 
 	std::string GetLevelMapName();
 	std::string GetLevelMapMesh();
@@ -20,12 +21,10 @@ public:
 	void SetLevelTexture1(std::string Texture1);
 	void SetLevelTexture2(std::string Texture2);
 
-	virtual ~Level();
-
 	virtual void Init(){};
 	virtual void Update(const float&){};
 	virtual void Render(){};
-	virtual void Exit();
+	virtual void Exit(){};
 
 private:
 	std::string MapName;

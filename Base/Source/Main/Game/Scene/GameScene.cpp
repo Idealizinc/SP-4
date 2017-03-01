@@ -94,7 +94,7 @@ void GameScene::Update(const float& dt)
 	float Speed = 80.f;
 	CameraAerial* CA = (CameraAerial*)camera;
 	float DetectionOffset = 0.1f;
-	if (!GameLogicSystem::Instance().UnitInterface->UIDisplayed)
+	if (!GameLogicSystem::Instance().UnitInterface->UIDisplayed && !GameLogicSystem::Instance().GameInterface->MenuOpen)
 	{
 		if (SceneSystem::Instance().cSS_InputManager->GetKeyValue(SimpleCommand::m_allTheKeys[SimpleCommand::FORWARD_COMMAND]) ||
 			SceneSystem::Instance().cSS_InputManager->GetMousePosition().y > SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * (1.f - DetectionOffset))

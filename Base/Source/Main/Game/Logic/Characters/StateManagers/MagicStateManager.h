@@ -60,6 +60,18 @@ public:
 				{
 					MWeapon->Attack(Character);
 				}
+				else {
+					int NumParticles = Math::RandIntMinMax(0, 1);
+					for (int i = 0; i < NumParticles; ++i)
+					{
+						float ParticleSpeed = Math::RandFloatMinMax(1.f, 2.f);
+						float ParticleLifeTime = Math::RandFloatMinMax(1.f, 1.5f);
+						float Interval = Character->GetDimensions().x * 0.5f;
+						Vector3 Dimensions = Vector3(Interval, Interval, Interval);
+						Vector3 Velocity = ParticleSpeed * Vector3(Math::RandFloatMinMax(-Interval, Interval), Interval * Math::RandFloatMinMax(1.f, 1.5f), Math::RandFloatMinMax(-Interval, Interval));
+						GameLogicSystem::Instance().InternalBattleSystem->ParticleSystem.AddWorldSpaceParticle("Explosion", Character->GetPosition() - Vector3(0, Character->GetDimensions().y * 0.25f), Dimensions, Velocity, SceneSystem::Instance().GetCurrentScene().camera->position, ParticleLifeTime);
+					}
+				}
 			}
 			else
 			{

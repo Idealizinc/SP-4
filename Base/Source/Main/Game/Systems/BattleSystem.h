@@ -7,6 +7,7 @@
 #include "../Logic/Terrain/Terrain.h"
 #include "../Objects/Projectile.h"
 #include "../UserInterface/BattleScreenInterface.h"
+#include "BillboardManager.h"
 #include <vector>
 #include <map>
 
@@ -47,10 +48,11 @@ public:
 	// Miscellaneous
 	Vector3 SpawnPosition_Player;
 	Vector3 SpawnPosition_Enemy;
+	BillboardManager ParticleSystem;
 
 private:
 	// Internals
-	
+
 	// Containers
 	std::vector<Projectile*> InternalProjectileList;
 	std::vector<CharacterEntity*> InternalPlayerCharacterList;
