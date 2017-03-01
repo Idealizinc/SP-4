@@ -54,9 +54,6 @@ private:
 
 	//LInterfaceLayer* ScrollingLayer;
 	InterfaceLayer* IconLayer;
-
-
-
 	InterfaceLayer* WarningLayer;
 	InterfaceElement* NoUnitPopup;
 	InterfaceElement* NoMoneyPopup;
@@ -66,7 +63,7 @@ private:
 
 	Vector3 ScreenHalfDimension;
 
-	InterfaceLayer* UnitDisplayLayer;
+	//InterfaceLayer* UnitDisplayLayer;
 	InterfaceElement* DeployButton;
 	InterfaceElement* BackButton;
 	InterfaceElement* TotalCost;

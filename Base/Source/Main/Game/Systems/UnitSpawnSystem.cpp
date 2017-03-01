@@ -72,8 +72,8 @@ void UnitSpawnSystem::CreateUnitUIElement(InterfaceLayer* layer)
 		//tempElement = layer->CreateNewInterfaceElement("HealthImage", "health", Pos - Vector3(BackingDimension.x * 0.f, BackingDimension.y * -0.3f), Vector3(HalfDimension.x *0.05f, HalfDimension.y*0.1f, 1));
 		//tempElement->SetTargetPosition(Pos - Vector3(BackingDimension.x * 0.f, BackingDimension.y * -0.3f));
 
-		tempElement = layer->CreateNewInterfaceElement("CostStats", "Transparent", Pos + Vector3(BackingDimension.x * 0.3f), Vector3(HalfDimension.x *0.2f, HalfDimension.y*0.1f, 1));
-		tempElement->SetTargetPosition(Pos + Vector3(BackingDimension.x * 0.3f));
+		tempElement = layer->CreateNewInterfaceElement("CostStats", "Transparent", Pos + Vector3(BackingDimension.x * 0.25f), Vector3(HalfDimension.x *0.25f, HalfDimension.y*0.15f, 1));
+		tempElement->SetTargetPosition(Pos + Vector3(BackingDimension.x * 0.25f));
 		ss.str("");
 		ss << "$" << it.second->GetCost();
 		tempElement->SetText(ss.str());
@@ -136,14 +136,16 @@ void UnitSpawnSystem::CreateUnitUIElement(InterfaceLayer* layer)
 		tempElement->SetTextColor(0);
 
 		// Plus Icon and Push to Plus Map
-		tempElement = layer->CreateNewInterfaceElement("Plus", "quad2", Pos + Vector3(BackingDimension.x * 0.4f, BackingDimension.y * 0.25f), Vector3(HalfDimension.x *0.05f, HalfDimension.y*0.075f, 1));
+		tempElement = layer->CreateNewInterfaceElement("Plus", "GreenBar", Pos + Vector3(BackingDimension.x * 0.4f, BackingDimension.y * 0.25f), Vector3(HalfDimension.y *0.1f, HalfDimension.y*0.1f, 1));
 		tempElement->SetTargetPosition(Pos + Vector3(BackingDimension.x * 0.4f, BackingDimension.y * 0.25f));
 		tempElement->SetText("+");
+		tempElement->SetTextColor(0);
 		UnitAdditionIconMap.insert(std::pair<std::string, InterfaceElement*>(it.first, tempElement));
 		// Minus Iconand Push to Minus Map
-		tempElement = layer->CreateNewInterfaceElement("Minus", "quad1", Pos + Vector3(BackingDimension.x * 0.4f, -BackingDimension.y * 0.25f), Vector3(HalfDimension.x *0.05f, HalfDimension.y*0.075f, 1));
+		tempElement = layer->CreateNewInterfaceElement("Minus", "RedBar", Pos + Vector3(BackingDimension.x * 0.4f, -BackingDimension.y * 0.25f), Vector3(HalfDimension.y *0.1f, HalfDimension.y*0.1f, 1));
 		tempElement->SetTargetPosition(Pos + Vector3(BackingDimension.x * 0.4f, -BackingDimension.y * 0.25f));
 		tempElement->SetText("-");
+		//tempElement->SetTextColor(0);
 		UnitSubtractionIconMap.insert(std::pair<std::string, InterfaceElement*>(it.first, tempElement));
 
 		//scroller

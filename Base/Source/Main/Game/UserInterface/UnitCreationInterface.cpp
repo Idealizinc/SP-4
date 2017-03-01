@@ -1,6 +1,8 @@
 #include "UnitCreationInterface.h"
 #include "../Systems/GameLogicSystem.h"
 
+Vector3 UnitBoxDimensions;
+
 UnitCreationInterface::UnitCreationInterface()
 {
 	Init();
@@ -16,10 +18,11 @@ UnitCreationInterface::~UnitCreationInterface()
 
 void UnitCreationInterface::Init()
 {
-
+	ScreenHalfDimension = SceneSystem::Instance().cSS_InputManager->ScreenCenter;
+	UnitBoxDimensions = Vector3(ScreenHalfDimension.x *0.7f, ScreenHalfDimension.y*0.6f, 1.f);
+	
 	UnitSpawner = new UnitSpawnSystem();
 
-	ScreenHalfDimension = SceneSystem::Instance().cSS_InputManager->ScreenCenter;
 	//popup stuff
 	warningDisplayed = 0;
 	warningDisplayed2 = 0;
@@ -27,50 +30,46 @@ void UnitCreationInterface::Init()
 	WarningLayer->SetOriginalPosition(Vector3(0, 0, 0));
 	WarningLayer->SetTargetPosition(Vector3(0, 0, 0));
 
-	NoUnitPopup = WarningLayer->CreateNewInterfaceElement("NoUnit", "quad1", Vector3(ScreenHalfDimension.x, ScreenHalfDimension.y * 2.5f, 0), Vector3(ScreenHalfDimension.x *0.6f, ScreenHalfDimension.y*0.2f, 1.f));
-	NoUnitPopup->SetTargetPosition(Vector3(ScreenHalfDimension.x, ScreenHalfDimension.y * 1.3f, 0));
-	NoUnitPopup->SetText("No Unit Selected");
-	NoUnitPopup->SetTextColor(0);
+	NoUnitPopup = WarningLayer->CreateNewInterfaceElement("NoUnit", "RedBar", Vector3(ScreenHalfDimension.x, ScreenHalfDimension.y * 2.5f, 0), Vector3(ScreenHalfDimension.x * 1.5f, ScreenHalfDimension.y*0.2f, 1.f));
+	NoUnitPopup->SetTargetPosition(Vector3(ScreenHalfDimension.x, ScreenHalfDimension.y, 0));
+	NoUnitPopup->SetText("Please select some units!");
+	//NoUnitPopup->SetTextColor(0);
 
-	NoMoneyPopup = WarningLayer->CreateNewInterfaceElement("NoMoney", "quad1", Vector3(ScreenHalfDimension.x, ScreenHalfDimension.y * 2.5f, 0), Vector3(ScreenHalfDimension.x *0.6f, ScreenHalfDimension.y*0.2f, 1.f));
-	NoMoneyPopup->SetTargetPosition(Vector3(ScreenHalfDimension.x, ScreenHalfDimension.y * 1.3f, 0));
-	NoMoneyPopup->SetText("Not Enough Money");
-	NoMoneyPopup->SetTextColor(0);
+	NoMoneyPopup = WarningLayer->CreateNewInterfaceElement("NoMoney", "RedBar", Vector3(ScreenHalfDimension.x, ScreenHalfDimension.y * 2.5f, 0), Vector3(ScreenHalfDimension.x * 1.5f, ScreenHalfDimension.y*0.2f, 1.f));
+	NoMoneyPopup->SetTargetPosition(Vector3(ScreenHalfDimension.x, ScreenHalfDimension.y, 0));
+	NoMoneyPopup->SetText("You do not have enough money...");
+	//NoMoneyPopup->SetTextColor(0);
 
-	NoSlotPopup = WarningLayer->CreateNewInterfaceElement("NoSlot", "quad1", Vector3(ScreenHalfDimension.x, ScreenHalfDimension.y * 2.5f, 0), Vector3(ScreenHalfDimension.x *0.6f, ScreenHalfDimension.y*0.2f, 1.f));
-	NoSlotPopup->SetTargetPosition(Vector3(ScreenHalfDimension.x, ScreenHalfDimension.y * 1.3f, 0));
-	NoSlotPopup->SetText("No Slot Left");
-	NoSlotPopup->SetTextColor(0);
+	NoSlotPopup = WarningLayer->CreateNewInterfaceElement("NoSlot", "RedBar", Vector3(ScreenHalfDimension.x, ScreenHalfDimension.y * 2.5f, 0), Vector3(ScreenHalfDimension.x * 1.5f, ScreenHalfDimension.y*0.2f, 1.f));
+	NoSlotPopup->SetTargetPosition(Vector3(ScreenHalfDimension.x, ScreenHalfDimension.y, 0));
+	NoSlotPopup->SetText("Full tile, you cannot move here!");
+	//NoSlotPopup->SetTextColor(0);
 
 	NoUnitPopup->SwapOriginalWithTarget();
 	NoMoneyPopup->SwapOriginalWithTarget();
 	NoSlotPopup->SwapOriginalWithTarget();
 
-	UnitDisplayLayer = CreateNewInterfaceLayer("Left", 0, 0);
+	/*UnitDisplayLayer = CreateNewInterfaceLayer("Left", 0, 0);
 	UnitDisplayLayer->SetOriginalPosition(Vector3(ScreenHalfDimension.x * 0.25f, 0, 0));
 	UnitDisplayLayer->SetTargetPosition(Vector3(ScreenHalfDimension.x * 0.25f, 0, 0));
 
-	DeployButton = UnitDisplayLayer->CreateNewInterfaceElement("Deploy", "quad2", Vector3(-ScreenHalfDimension.x  * 0.9f, ScreenHalfDimension.y * 0.5f, 0), Vector3(ScreenHalfDimension.x *0.6f, ScreenHalfDimension.y*0.2f, 1.f));
+	DeployButton = UnitDisplayLayer->CreateNewInterfaceElement("Deploy", "GreenBar", Vector3(-ScreenHalfDimension.x  * 0.9f, ScreenHalfDimension.y * 0.5f, 0), Vector3(ScreenHalfDimension.x *0.6f, ScreenHalfDimension.y*0.2f, 1.f));
 	DeployButton->SetTargetPosition(Vector3(-ScreenHalfDimension.x  * 0.9f, ScreenHalfDimension.y * 0.5f, 0));
 	DeployButton->SetText("Deploy");
 	DeployButton->SetTextColor(0);
 
-	BackButton = UnitDisplayLayer->CreateNewInterfaceElement("Back", "quad1", Vector3(-ScreenHalfDimension.x  * 0.9f, ScreenHalfDimension.y * 0.3f, 0), Vector3(ScreenHalfDimension.x *0.3f, ScreenHalfDimension.y*0.1f, 1.f));
+	BackButton = UnitDisplayLayer->CreateNewInterfaceElement("Back", "RedBar", Vector3(-ScreenHalfDimension.x  * 0.9f, ScreenHalfDimension.y * 0.3f, 0), Vector3(ScreenHalfDimension.x *0.3f, ScreenHalfDimension.y*0.1f, 1.f));
 	BackButton->SetTargetPosition(Vector3(-ScreenHalfDimension.x  * 0.9f, ScreenHalfDimension.y * 0.3f, 0));
 	BackButton->SetText("Back");
 	BackButton->SetTextColor(0);
-
-	TotalCost = UnitDisplayLayer->CreateNewInterfaceElement("Cost", "quad", Vector3(-ScreenHalfDimension.x  *0.9f, ScreenHalfDimension.y * 1.f, 0), Vector3(ScreenHalfDimension.x *0.25f, ScreenHalfDimension.y*0.15f, 1.f));
-	TotalCost->SetTargetPosition(Vector3(-ScreenHalfDimension.x * 0.9f, ScreenHalfDimension.y * 1.f, 0));
-	TotalCost->SetTextColor(0);
 
 	CostBox = UnitDisplayLayer->CreateNewInterfaceElement("CostBox", "quad", Vector3(-ScreenHalfDimension.x  *0.9f, ScreenHalfDimension.y * 0.9f, 0), Vector3(ScreenHalfDimension.x *0.25f, ScreenHalfDimension.y*0.15f, 1.f));
 	CostBox->SetTargetPosition(Vector3(-ScreenHalfDimension.x * 0.9f, ScreenHalfDimension.y * 0.9f, 0));
 	CostBox->SetText("Unit Cost");
 	CostBox->SetTextColor(0);
 
-	//UnitDisplayBackground = UnitDisplayLayer->CreateNewInterfaceElement("background", "quad1", Vector3(-ScreenHalfDimension.x, ScreenHalfDimension.y, 0), Vector3(ScreenHalfDimension.x, ScreenHalfDimension.y * 2, 1.f));
-	//UnitDisplayBackground->SetTargetPosition(Vector3(-ScreenHalfDimension.x, ScreenHalfDimension.y, 0));
+	UnitDisplayBackground = UnitDisplayLayer->CreateNewInterfaceElement("background", "RedBar", Vector3(-ScreenHalfDimension.x, ScreenHalfDimension.y, 0), Vector3(ScreenHalfDimension.x, ScreenHalfDimension.y * 2, 1.f));
+	UnitDisplayBackground->SetTargetPosition(Vector3(-ScreenHalfDimension.x, ScreenHalfDimension.y, 0));*/
 
 	UIDisplayed = 0;
 	deploy = 0;
@@ -90,6 +89,7 @@ void UnitCreationInterface::InterfaceReset()
 		UnitMap = GameLogicSystem::Instance().InternalBattleSystem->UnitData.LivingMap;
 	else
 		UnitMap = GameLogicSystem::Instance().InternalBattleSystem->UnitData.UndeadMap;
+
 	for (auto it : UnitMap)
 	{
 		InterfaceElement* tempElement = nullptr;
@@ -104,13 +104,35 @@ void UnitCreationInterface::InterfaceReset()
 	}
 
 	UnitSelectLayer = CreateNewInterfaceLayer("Right", 0, 0);
+
 	UnitSelectLayer->SetOriginalPosition(Vector3(ScreenHalfDimension.x * 4.f, 0, 0));
 	UnitSelectLayer->SetTargetPosition(Vector3(ScreenHalfDimension.x * 4.f, 0, 0));
 
 	UnitSpawner->CreateUnitUIElement(UnitSelectLayer);
 
-	DisplayQuad = UnitSelectLayer->CreateNewInterfaceElement("Display", "quad", Vector3(-ScreenHalfDimension.x  *0.9f, ScreenHalfDimension.y * 1.6f, 0), Vector3(ScreenHalfDimension.x *0.7f, ScreenHalfDimension.y*0.6f, 1.f));
-	DisplayQuad->SetTargetPosition(Vector3(-ScreenHalfDimension.x * 0.9f, ScreenHalfDimension.y * 1.6f, 0));
+	Vector3 UnitBoxPosition = Vector3(-ScreenHalfDimension.x  *0.9f, ScreenHalfDimension.y * 1.2f, 0);
+	TotalCost = UnitSelectLayer->CreateNewInterfaceElement("Header", "GreenBar", Vector3(-ScreenHalfDimension.x  *0.9f, ScreenHalfDimension.y * 1.f, 0), Vector3(UnitBoxDimensions.x * 1.1f, ScreenHalfDimension.y*0.15f, 1.f));
+	TotalCost->SetTargetPosition(UnitBoxPosition + Vector3(0, UnitBoxDimensions.y * 0.5f));
+	TotalCost->SetTextColor(0);
+	TotalCost->SetText("< Selected Units >");
+
+	TotalCost = UnitSelectLayer->CreateNewInterfaceElement("Cost", "BlueBar", Vector3(-ScreenHalfDimension.x  *0.9f, ScreenHalfDimension.y * 1.f, 0), Vector3(UnitBoxDimensions.x * 1.1f, ScreenHalfDimension.y*0.15f, 1.f));
+	TotalCost->SetTargetPosition(UnitBoxPosition - Vector3(0, UnitBoxDimensions.y * 0.5f));
+	TotalCost->SetTextColor(0);
+
+	DisplayQuad = UnitSelectLayer->CreateNewInterfaceElement("Display", "quad", UnitBoxDimensions, UnitBoxDimensions);
+	DisplayQuad->SetTargetPosition(UnitBoxPosition);
+
+	DeployButton = UnitSelectLayer->CreateNewInterfaceElement("Deploy", "GreenBar", Vector3(-ScreenHalfDimension.x  * 0.9f, ScreenHalfDimension.y * 0.5f, 0), Vector3(ScreenHalfDimension.x *0.6f, ScreenHalfDimension.y*0.2f, 1.f));
+	DeployButton->SetTargetPosition(Vector3(-ScreenHalfDimension.x  * 0.9f, ScreenHalfDimension.y * 0.5f, 0));
+	DeployButton->SetText("Deploy");
+	DeployButton->SetTextColor(0);
+
+	BackButton = UnitSelectLayer->CreateNewInterfaceElement("Back", "RedBar", Vector3(-ScreenHalfDimension.x  * 0.9f, ScreenHalfDimension.y * 0.3f, 0), Vector3(ScreenHalfDimension.x *0.3f, ScreenHalfDimension.y*0.1f, 1.f));
+	BackButton->SetTargetPosition(Vector3(-ScreenHalfDimension.x  * 0.9f, ScreenHalfDimension.y * 0.3f, 0));
+	BackButton->SetText("Back");
+	BackButton->SetTextColor(0);
+
 
 	firstTime = 0;
 }
@@ -146,8 +168,8 @@ void UnitCreationInterface::InterfaceExit()
 	//delete IconMap;
 	IconCounterMap.clear();
 	returnUnitSpawnSys()->MapReset();
-	UnitDisplayLayer->SetOriginalPosition(Vector3(ScreenHalfDimension.x * 0.25f, 0, 0));
-	UnitDisplayLayer->SetTargetPosition(Vector3(ScreenHalfDimension.x * 0.25f, 0, 0));
+	//UnitDisplayLayer->SetOriginalPosition(Vector3(ScreenHalfDimension.x * 0.25f, 0, 0));
+	//UnitDisplayLayer->SetTargetPosition(Vector3(ScreenHalfDimension.x * 0.25f, 0, 0));
 }
 
 void UnitCreationInterface::Update(const float& dt)
@@ -160,7 +182,7 @@ void UnitCreationInterface::Update(const float& dt)
 
 	HandleUserInput();
 	ShowDisplay();
-	TotalCost->SetText("$" + std::to_string(UnitSpawner->CalculateCost()) + "/$" + std::to_string(UnitSpawner->maxUnitCost));
+	TotalCost->SetText("Unit Cost: $" + std::to_string(UnitSpawner->CalculateCost()) + " / $" + std::to_string(UnitSpawner->maxUnitCost));
 	//UnitSpawner->CreateUnitDisplayElement(IconLayer);
 	if (deploy == true && UnitSpawner->getCurrentUnitCount() == 0)
 	{
@@ -218,68 +240,37 @@ void UnitCreationInterface::ShowDisplay()
 	Vector3 HalfDimension = SceneSystem::Instance().cSS_InputManager->ScreenCenter;
 	std::map<std::string, unsigned short> currentUnitMap = UnitSpawner->returnRecordedUnitMap();
 	int IconCount = currentUnitMap.size();
-	//if (IconCount > 1)
-	//{
-	//	++IconCount;
-	//}
-	////if (IconCount > 0)
-	//{
-	//	Vector3 TrueDisplayQuadPos = DisplayQuad->GetPosition() - (UnitDisplayLayer->GetOriginalPosition().x -  UnitDisplayLayer->GetPosition().x);
-	//	float DisplayQuadMinX = TrueDisplayQuadPos.x - (DisplayQuad->GetDimensions().x * 0.5f);
-	//	int IntervalCounter = 0;
-	//	float XInterval = DisplayQuad->GetDimensions().x / IconCount;
-	//	for (auto it2 : IconMap)
-	//	{
-	//		auto it = currentUnitMap.find(it2.first);
-	//		auto it3 = IconCounterMap.find(it2.first);
-	//			
-	//			if (it != currentUnitMap.end() && it3 != IconCounterMap.end())
-	//			{
-	//				++IntervalCounter;
-	//				it2.second->SetTargetPosition(Vector3(DisplayQuadMinX + IntervalCounter * XInterval, DisplayQuad->GetPosition().y + it2.second->GetDimensions().y * 0.5f));
-	//				it3->second->SetTargetPosition(Vector3(DisplayQuadMinX + IntervalCounter * XInterval, DisplayQuad->GetPosition().y - it3->second->GetDimensions().y * 0.5f));
-	//				if (IntervalCounter >= IconCount)
-	//					break;
-	//			}
-	//			else
-	//			{
-	//				it2.second->ResetToOriginal();
-	//				it3->second->ResetToOriginal();
-	//			}
-	//	}
-	//		
-	//}
 
-		Vector3 lowestPt(HalfDimension.x * 0.35f, HalfDimension.y);
-		Vector3 highestPt(HalfDimension.x * 1.5f, HalfDimension.y * 1.7f);
+	Vector3 lowestPt(DisplayQuad->GetOriginalPosition().x - UnitBoxDimensions.x * 0.5f, DisplayQuad->GetOriginalPosition().y - UnitBoxDimensions.y * 0.5f);
+	Vector3 highestPt(DisplayQuad->GetOriginalPosition().x + UnitBoxDimensions.x * 1.35f, DisplayQuad->GetOriginalPosition().y + UnitBoxDimensions.y);
 
-		float DisplayWidth = (highestPt.x - lowestPt.x);
-		float DisplayHeight = (highestPt.y - lowestPt.y);
+	float DisplayWidth = (highestPt.x - lowestPt.x);
+	float DisplayHeight = (highestPt.y - lowestPt.y);
 
-		float IconSpaceWidth = (DisplayWidth / IconCount) / 2;
-		float IconSpaceHeight = (DisplayHeight / IconCount) / 2;
+	float IconSpaceWidth = (DisplayWidth / IconCount) * 0.5f;
+	float IconSpaceHeight = (DisplayHeight / IconCount) * 0.5f;
 
-		InterfaceElement* tempElement = nullptr;
+	InterfaceElement* tempElement = nullptr;
 
-		int count = 0;
-		for (auto it2 : IconMap)
+	int count = 0;
+	for (auto it2 : IconMap)
+	{
+		auto it = currentUnitMap.find(it2.first);
+		auto it3 = IconCounterMap.find(it2.first);
+		if (it == currentUnitMap.end())
 		{
-			auto it = currentUnitMap.find(it2.first);
-			auto it3 = IconCounterMap.find(it2.first);
-			if (it == currentUnitMap.end())
-			{
-				it2.second->SetTargetPosition(it2.second->GetOriginalPosition());
-				it3->second->SetTargetPosition(it3->second->GetOriginalPosition());
-			}
-			else
-			{
-				it2.second->SetTargetPosition(Vector3(lowestPt.x + IconSpaceWidth * (count), highestPt.y));
-				it3->second->SetTargetPosition(Vector3(lowestPt.x + IconSpaceWidth * (count), highestPt.y - it2.second->GetDimensions().y * 0.75f));
-				it3->second->SetText("x" + std::to_string(it->second));
-				it3->second->SetTextColor(0);
-				++count;
-			}
+			it2.second->SetTargetPosition(it2.second->GetOriginalPosition());
+			it3->second->SetTargetPosition(it3->second->GetOriginalPosition());
 		}
+		else
+		{
+			it2.second->SetTargetPosition(Vector3(lowestPt.x + IconSpaceWidth * (count), highestPt.y));
+			it3->second->SetTargetPosition(Vector3(lowestPt.x + IconSpaceWidth * (count), highestPt.y - it2.second->GetDimensions().y * 0.75f));
+			it3->second->SetText("x" + std::to_string(it->second));
+			it3->second->SetTextColor(0);
+			++count;
+		}
+	}
 
 }
 
@@ -325,13 +316,13 @@ void UnitCreationInterface::OpenInterface()
 	if (firstTime == 0)
 	{
 		UnitSelectLayer->SetTargetPosition(Vector3(ScreenHalfDimension.x * 1.5f,0, 0));
-		UnitDisplayLayer->SetTargetPosition(Vector3(ScreenHalfDimension.x * 1.5f, 0, 0));
+		//UnitDisplayLayer->SetTargetPosition(Vector3(ScreenHalfDimension.x * 1.5f, 0, 0));
 		firstTime = 1;
 	}
 	else
 	{
 		UnitSelectLayer->SwapOriginalWithTarget();
-		UnitDisplayLayer->SwapOriginalWithTarget();
+		//UnitDisplayLayer->SwapOriginalWithTarget();
 	}
 	UnitSpawner->resetUnitMap();
 	deploy = false;

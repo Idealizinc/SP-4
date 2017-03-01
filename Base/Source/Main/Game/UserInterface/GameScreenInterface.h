@@ -31,12 +31,13 @@ public:
 	void toggleSurrender();
 
 	void MultipleUnitSelect(std::vector<UnitPiece*> Selections, bool interactive);
+	void MultipleUnitSelectE(std::vector<UnitPiece*> Selections);
 
 	UnitPiece* UnitSelected;
 	InterfaceLayer* MultipleUnitLayer;
 	std::map<UnitPiece*, InterfaceElement*> MultipleUnitElements;
 	bool MultipleUnitUI;
-	bool SurrenderOn; 
+	bool SurrenderOn;
 	bool MenuOpen;
 
 private:
@@ -76,7 +77,6 @@ private:
 	bool PoppedUp = 0;
 	bool PopUpDone = 0;
 	Vector3 CenterTarget = Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.9f, 0);
-
 	bool PlayerTurn;
 };
 
