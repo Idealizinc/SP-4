@@ -39,6 +39,8 @@ public:
 
 	void MapReset();
 
+	
+
 private:
 	std::map<std::string, unsigned short> RecordedUnitMap;
 	//int UnitCost;

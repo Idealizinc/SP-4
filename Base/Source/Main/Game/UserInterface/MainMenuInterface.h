@@ -56,7 +56,9 @@ private:
 
 	InterfaceLayer* FactionLayer;
 	InterfaceElement* Faction1Button;
+	InterfaceElement* Faction1Name;
 	InterfaceElement* Faction2Button;
+	InterfaceElement* Faction2Name;
 	InterfaceElement* BackButtonF;
 
 	InterfaceLayer* Faction1LevelSelectLayer;

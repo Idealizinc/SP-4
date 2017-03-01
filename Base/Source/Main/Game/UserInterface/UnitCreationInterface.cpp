@@ -37,16 +37,28 @@ void UnitCreationInterface::Init()
 	NoMoneyPopup->SetText("Not Enough Money");
 	NoMoneyPopup->SetTextColor(0);
 
+	NoSlotPopup = WarningLayer->CreateNewInterfaceElement("NoSlot", "quad1", Vector3(ScreenHalfDimension.x, ScreenHalfDimension.y * 2.5f, 0), Vector3(ScreenHalfDimension.x *0.6f, ScreenHalfDimension.y*0.2f, 1.f));
+	NoSlotPopup->SetTargetPosition(Vector3(ScreenHalfDimension.x, ScreenHalfDimension.y * 1.3f, 0));
+	NoSlotPopup->SetText("No Slot Left");
+	NoSlotPopup->SetTextColor(0);
+
 	NoUnitPopup->SwapOriginalWithTarget();
 	NoMoneyPopup->SwapOriginalWithTarget();
+	NoSlotPopup->SwapOriginalWithTarget();
 
 	UnitDisplayLayer = CreateNewInterfaceLayer("Left", 0, 0);
 	UnitDisplayLayer->SetOriginalPosition(Vector3(ScreenHalfDimension.x * 0.25f, 0, 0));
 	UnitDisplayLayer->SetTargetPosition(Vector3(ScreenHalfDimension.x * 0.25f, 0, 0));
 
-	DeployButton = UnitDisplayLayer->CreateNewInterfaceElement("Deploy", "quad1", Vector3(-ScreenHalfDimension.x  * 0.9f, ScreenHalfDimension.y * 0.5f, 0), Vector3(ScreenHalfDimension.x *0.6f, ScreenHalfDimension.y*0.2f, 1.f));
+	DeployButton = UnitDisplayLayer->CreateNewInterfaceElement("Deploy", "quad2", Vector3(-ScreenHalfDimension.x  * 0.9f, ScreenHalfDimension.y * 0.5f, 0), Vector3(ScreenHalfDimension.x *0.6f, ScreenHalfDimension.y*0.2f, 1.f));
 	DeployButton->SetTargetPosition(Vector3(-ScreenHalfDimension.x  * 0.9f, ScreenHalfDimension.y * 0.5f, 0));
 	DeployButton->SetText("Deploy");
+	DeployButton->SetTextColor(0);
+
+	BackButton = UnitDisplayLayer->CreateNewInterfaceElement("Back", "quad1", Vector3(-ScreenHalfDimension.x  * 0.9f, ScreenHalfDimension.y * 0.3f, 0), Vector3(ScreenHalfDimension.x *0.3f, ScreenHalfDimension.y*0.1f, 1.f));
+	BackButton->SetTargetPosition(Vector3(-ScreenHalfDimension.x  * 0.9f, ScreenHalfDimension.y * 0.3f, 0));
+	BackButton->SetText("Back");
+	BackButton->SetTextColor(0);
 
 	TotalCost = UnitDisplayLayer->CreateNewInterfaceElement("Cost", "quad", Vector3(-ScreenHalfDimension.x  *0.9f, ScreenHalfDimension.y * 1.f, 0), Vector3(ScreenHalfDimension.x *0.25f, ScreenHalfDimension.y*0.15f, 1.f));
 	TotalCost->SetTargetPosition(Vector3(-ScreenHalfDimension.x * 0.9f, ScreenHalfDimension.y * 1.f, 0));
@@ -57,9 +69,14 @@ void UnitCreationInterface::Init()
 	CostBox->SetText("Unit Cost");
 	CostBox->SetTextColor(0);
 
+	//UnitDisplayBackground = UnitDisplayLayer->CreateNewInterfaceElement("background", "quad1", Vector3(-ScreenHalfDimension.x, ScreenHalfDimension.y, 0), Vector3(ScreenHalfDimension.x, ScreenHalfDimension.y * 2, 1.f));
+	//UnitDisplayBackground->SetTargetPosition(Vector3(-ScreenHalfDimension.x, ScreenHalfDimension.y, 0));
+
 	UIDisplayed = 0;
 	deploy = 0;
 
+	warningTime2 = 0;
+	warningDisplayed3 = 0;
 }
 
 void UnitCreationInterface::InterfaceReset()
@@ -97,6 +114,7 @@ void UnitCreationInterface::InterfaceReset()
 
 	firstTime = 0;
 }
+
 
 void UnitCreationInterface::InterfaceExit()
 {
@@ -180,6 +198,19 @@ void UnitCreationInterface::Update(const float& dt)
 		}
 	}
 
+	if (warningDisplayed3 == 1)
+	{
+		if (warningTime2 > 0)
+		{
+			warningTime2 -= dt;
+		}
+		else
+		{
+			NoSlotPopup->SwapOriginalWithTarget();
+			warningDisplayed3 = 0;
+		}
+	}
+
 }
 
 void UnitCreationInterface::ShowDisplay()
@@ -219,7 +250,7 @@ void UnitCreationInterface::ShowDisplay()
 	//		
 	//}
 
-		Vector3 lowestPt(HalfDimension.x * 0.2f, HalfDimension.y);
+		Vector3 lowestPt(HalfDimension.x * 0.35f, HalfDimension.y);
 		Vector3 highestPt(HalfDimension.x * 1.5f, HalfDimension.y * 1.7f);
 
 		float DisplayWidth = (highestPt.x - lowestPt.x);
@@ -230,7 +261,7 @@ void UnitCreationInterface::ShowDisplay()
 
 		InterfaceElement* tempElement = nullptr;
 
-		int count = 1;
+		int count = 0;
 		for (auto it2 : IconMap)
 		{
 			auto it = currentUnitMap.find(it2.first);
@@ -274,6 +305,12 @@ void UnitCreationInterface::HandleUserInput()
 		{
 			deploy = 1;
 		}
+
+		if (BackButton->DetectUserInput(MousePos, UnitSelectLayer->GetPosition()))
+		{
+			GameLogicSystem::Instance().UnitInterface->OpenInterface();
+			GameLogicSystem::Instance().GameInterface->toggleSurrender();
+		}
 	}
 	else if (SceneSystem::Instance().cSS_InputManager->GetMouseInput(InputManager::KEY_LMB) == InputManager::MOUSE_UP)
 	{
@@ -308,6 +345,11 @@ void UnitCreationInterface::OpenInterface()
 		warningDisplayed2 = false;
 		NoMoneyPopup->SwapOriginalWithTarget();
 	}
+	/*if (warningDisplayed3 == true)
+	{
+		warningDisplayed3 = false;
+		NoMoneyPopup->SwapOriginalWithTarget();
+	}*/
 	if (UIDisplayed == 1)
 	{
 		UIDisplayed = 0;
@@ -333,6 +375,13 @@ void UnitCreationInterface::NoMoneyError()
 	warningDisplayed2 = 1;
 	warningTime = 2;
 	deploy = false;
+}
+
+void UnitCreationInterface::NoSlotError()
+{
+	NoSlotPopup->SwapOriginalWithTarget();
+	warningDisplayed3 = 1;
+	warningTime2 = 2;
 }
 
 UnitSpawnSystem* UnitCreationInterface::returnUnitSpawnSys()

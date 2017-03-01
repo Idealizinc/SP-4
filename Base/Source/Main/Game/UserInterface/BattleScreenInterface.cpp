@@ -3,6 +3,7 @@
 #include <iomanip>
 #include "../Systems/GameLogicSystem.h"
 #include "../Miscellaneous/CameraAerial.h"
+#include "../Logic/Characters/BaseClasses/BattleScreenCharacter.h"
 
 template <typename T>
 std::string to_string_with_precision(const T a_value, const int n = 2)
@@ -27,7 +28,9 @@ void BattleScreenInterface::Init()
 	//Start Battle Interface
 	TurnPopup = CreateNewInterfaceLayer("StartLayer", 0, 0);
 
-	negativeHeight = -(SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight);
+
+	negativeHeight = -((float)SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight);
+
 	CenterTarget = SceneSystem::Instance().cSS_InputManager->ScreenCenter;
 
 	BattleScreenFrame = TurnPopup->CreateNewInterfaceElement("BattleScreenFrame", "BattleScreenFrame", Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y, 0), Vector3(SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight, 0));
@@ -41,53 +44,64 @@ void BattleScreenInterface::Init()
 	StartWordPopup->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 2.5f, 0));
 
 	//Show terrain info Interface
-	TerrainInfoLayer = CreateNewInterfaceLayer("BottomLayer", 0, 0);
+	TerrainInfoLayer = CreateNewInterfaceLayer("LeftLayer", 0, 0);
 
-	TerrainInfoFrame = TerrainInfoLayer->CreateNewInterfaceElement("TerrainInfoBackground", "WoodFrameRect", Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * -2.5f, 0), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 1.3f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.5f, 0));
-	TerrainInfoFrame->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.2f, 0));
-
-	TerrainAdvantage = TerrainInfoLayer->CreateNewInterfaceElement("TerrainAdvantage", "Transparent", Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * -1.75f, 0), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.3f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.2f, 0));
-	TerrainAdvantage->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.27f, 0));
+	TerrainAdvantage = TerrainInfoLayer->CreateNewInterfaceElement("TerrainAdvantage", "Transparent", Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.5f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 1.3f, 0), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.3f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.2f, 0));
+	TerrainAdvantage->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.5f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 1.3f, 0));
 	TerrainAdvantage->SetTextColor(0);
 
-	TerrainHealthBoostValue = TerrainInfoLayer->CreateNewInterfaceElement("TerrainHealthBoostValue", "Transparent", Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.75f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * -1.75f, 0), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.2f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.1f, 0));
-	TerrainHealthBoostValue->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.71f, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.22f, 0));
+	TerrainHealthBoostValue = TerrainInfoLayer->CreateNewInterfaceElement("TerrainHealthBoostValue", "Transparent", Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.15f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 1.2f, 0), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.2f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.1f, 0));
+	TerrainHealthBoostValue->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.15f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y  * 1.2f, 0));
 	TerrainHealthBoostValue->SetTextColor(0);
 
-	TerrainMeleeBoostValue = TerrainInfoLayer->CreateNewInterfaceElement("TerrainMeleeBoostValue", "Transparent", Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.95f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * -1.75f, 0), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.2f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.1f, 0));
-	TerrainMeleeBoostValue->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.91f, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.22f, 0));
+	TerrainMeleeBoostValue = TerrainInfoLayer->CreateNewInterfaceElement("TerrainMeleeBoostValue", "Transparent", Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.35f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 1.2f, 00), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.2f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.1f, 0));
+	TerrainMeleeBoostValue->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.35f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y  * 1.2f, 0));
 	TerrainMeleeBoostValue->SetTextColor(0);
 
-	TerrainMagicBoostValue = TerrainInfoLayer->CreateNewInterfaceElement("TerrainMagicBoostValue", "Transparent", Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 1.15f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * -1.75f, 0), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.2f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.1f, 0));
-	TerrainMagicBoostValue->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 1.11f, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.22f, 0));
+	TerrainMagicBoostValue = TerrainInfoLayer->CreateNewInterfaceElement("TerrainMagicBoostValue", "Transparent", Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.55f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 1.2f, 0), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.2f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.1f, 0));
+	TerrainMagicBoostValue->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.55f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y  * 1.2f, 0));
 	TerrainMagicBoostValue->SetTextColor(0);
 
-	TerrainRangeBoostValue = TerrainInfoLayer->CreateNewInterfaceElement("TerrainRangeBoostValue", "Transparent", Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 1.35f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * -1.75f, 0), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.2f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.1f, 0));
-	TerrainRangeBoostValue->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 1.31f, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.22f, 0));
+	TerrainRangeBoostValue = TerrainInfoLayer->CreateNewInterfaceElement("TerrainRangeBoostValue", "Transparent", Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.75f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 1.2f, 0), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.2f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.1f, 0));
+	TerrainRangeBoostValue->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.75f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y  * 1.2f, 0));
 	TerrainRangeBoostValue->SetTextColor(0);
 
-	TerrainDisadvantage = TerrainInfoLayer->CreateNewInterfaceElement("TerrainDisAdvantage", "Transparent", Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * -1.75f, 0), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.3f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.2f, 0));
-	TerrainDisadvantage->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.17f, 0));
+	TerrainDisadvantage = TerrainInfoLayer->CreateNewInterfaceElement("TerrainDisAdvantage", "Transparent", Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x* 0.5f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y, 0), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.3f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.2f, 0));
+	TerrainDisadvantage->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.5f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y, 0));
 	TerrainDisadvantage->SetTextColor(0);
 
-	TerrainHealthMinusValue = TerrainInfoLayer->CreateNewInterfaceElement("TerrainHealthMinusValue", "Transparent", Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.75f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * -1.75f, 0), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.2f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.1f, 0));
-	TerrainHealthMinusValue->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.71f, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.12f, 0));
+	TerrainHealthMinusValue = TerrainInfoLayer->CreateNewInterfaceElement("TerrainHealthMinusValue", "Transparent", Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.15f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.8f, 0), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.2f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.1f, 0));
+	TerrainHealthMinusValue->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.15f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y  * 0.8f, 0));
 	TerrainHealthMinusValue->SetTextColor(0);
 
-	TerrainMeleeMinusValue = TerrainInfoLayer->CreateNewInterfaceElement("TerrainMeleeMinusValue", "Transparent", Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.95f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * -1.75f, 0), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.2f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.1f, 0));
-	TerrainMeleeMinusValue->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.91f, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.12f, 0));
+	TerrainMeleeMinusValue = TerrainInfoLayer->CreateNewInterfaceElement("TerrainMeleeMinusValue", "Transparent", Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.35f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.8f, 00), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.2f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.1f, 0));
+	TerrainMeleeMinusValue->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.35f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y  * 0.8f, 0));
 	TerrainMeleeMinusValue->SetTextColor(0);
 
-	TerrainMagicMinusValue = TerrainInfoLayer->CreateNewInterfaceElement("TerrainMagicMinusValue", "Transparent", Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 1.15f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * -1.75f, 0), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.2f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.1f, 0));
-	TerrainMagicMinusValue->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 1.11f, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.12f, 0));
+	TerrainMagicMinusValue = TerrainInfoLayer->CreateNewInterfaceElement("TerrainMagicMinusValue", "Transparent", Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.55f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.8f, 0), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.2f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.1f, 0));
+	TerrainMagicMinusValue->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.55f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y  * 0.8f, 0));
 	TerrainMagicMinusValue->SetTextColor(0);
 
-	TerrainRangeMinusValue = TerrainInfoLayer->CreateNewInterfaceElement("TerrainRangeMinusValue", "Transparent", Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 1.35f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * -1.75f, 0), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.2f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.1f, 0));
-	TerrainRangeMinusValue->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 1.31f, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.12f, 0));
+	TerrainRangeMinusValue = TerrainInfoLayer->CreateNewInterfaceElement("TerrainRangeMinusValue", "Transparent", Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.75f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.8f, 0), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.2f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.1f, 0));
+	TerrainRangeMinusValue->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.75f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y  * 0.8f, 0));
 	TerrainRangeMinusValue->SetTextColor(0);
 
-	TerrainInfoBackElement = TerrainInfoLayer->CreateNewInterfaceElement("TerrainInfoBackground", "Background", Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * -2.5f, 0), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 1.2f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.5f, 0));
-	TerrainInfoBackElement->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.2f, 0));
+	TerrainFrameButton = TerrainInfoLayer->CreateNewInterfaceElement("TerrainFrameButton", "Transparent", Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.98f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 1.025f, 0), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.075f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.3f, 0));
+	TerrainFrameButton->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.98f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y* 1.025f, 0));
+
+	TerrainInfoFrame = TerrainInfoLayer->CreateNewInterfaceElement("TerrainInfoBackground", "InfoFrame", Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.5f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y, 0), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y, 0));
+	TerrainInfoFrame->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.5f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y, 0));
+
+	//Show player unit data info interface
+	UnitDataLayer = CreateNewInterfaceLayer("RightLayer", 0, 0);
+
+	UnitDataFrameButton = UnitDataLayer->CreateNewInterfaceElement("UnitDtatFrameButton", "Transparent", Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x* 1.02f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 1.025f, 0), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.075f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.3f, 0));
+	UnitDataFrameButton->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 1.02f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 1.025f, 0));
+
+	UnitDataInfoText = UnitDataLayer->CreateNewInterfaceElement("UnitDtatInfoText", "Transparent", Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x* 1.53f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 1.4f, 0), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.25f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.15f, 0));
+	UnitDataInfoText->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 1.53f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 1.4f, 0));
+	UnitDataInfoText->SetText("Unit     Weapon Using    Rarity");
+	UnitDataInfoText->SetTextColor(0);
 
 	//Show Player unit data interface
 	UnitCountInfoLayer = CreateNewInterfaceLayer("UnitCountLayer", 0, 0);
@@ -95,24 +109,24 @@ void BattleScreenInterface::Init()
 	CNOPU = CNOEU = 0;
 	defaultbarSize = Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.2f, 0);
 
-	PlayerUnitCountText = UnitCountInfoLayer->CreateNewInterfaceElement("PlayerUnitCountText", "Transparent", Vector3(SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth*-0.2f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * -1.75f, 0), defaultbarSize);
-	PlayerUnitCountText->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.5f, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.8f, 0));
-	PlayerUnitCountText->SetTextColor(0);
+	PlayerFactionNameText = UnitCountInfoLayer->CreateNewInterfaceElement("PlayerUnitCountText", "Transparent", Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.55f, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight*0.88f, 0), defaultbarSize * 0.8f);
+	PlayerFactionNameText->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.55f, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.88f, 0));
+	PlayerFactionNameText->SetTextColor(0);
 
-	PlayerUnitCount = UnitCountInfoLayer->CreateNewInterfaceElement("PlayerUnitCount", "quad2", Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.5f, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight*0.95f, 0), defaultbarSize);
+	PlayerUnitCount = UnitCountInfoLayer->CreateNewInterfaceElement("PlayerUnitCount", "GreenBar", Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.5f, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight*0.95f, 0), defaultbarSize);
 	PlayerUnitCount->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.5f, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight*0.95f, 0));
 
-	PlayerUnitCountBackground = UnitCountInfoLayer->CreateNewInterfaceElement("PlayerUnitCountMAX", "quad1", Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.5f, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.95f, 0), defaultbarSize);
+	PlayerUnitCountBackground = UnitCountInfoLayer->CreateNewInterfaceElement("PlayerUnitCountMAX", "RedBar", Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.5f, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.95f, 0), defaultbarSize);
 	PlayerUnitCountBackground->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.5f, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.95f, 0));
 
-	EnemyUnitCountText = UnitCountInfoLayer->CreateNewInterfaceElement("EnemyUnitCountText", "Transparent", Vector3(SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth*1.2f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * -1.75f, 0), defaultbarSize);
-	EnemyUnitCountText->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 1.5f, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.8f, 0));
-	EnemyUnitCountText->SetTextColor(0);
+	EnemyFactionNameText = UnitCountInfoLayer->CreateNewInterfaceElement("EnemyUnitCountText", "Transparent", Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x*1.45f, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.88f, 0), defaultbarSize * 0.8f);
+	EnemyFactionNameText->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 1.45f, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.88f, 0));
+	EnemyFactionNameText->SetTextColor(0);
 
-	EnemyUnitCount = UnitCountInfoLayer->CreateNewInterfaceElement("EnemyUnitCount", "quad2", Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 1.5f, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.95f, 0), defaultbarSize);
+	EnemyUnitCount = UnitCountInfoLayer->CreateNewInterfaceElement("EnemyUnitCount", "GreenBar", Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 1.5f, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.95f, 0), defaultbarSize);
 	EnemyUnitCount->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 1.5f, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.95f, 0));
 
-	EnemyUnitCountBackground = UnitCountInfoLayer->CreateNewInterfaceElement("EnemyUnitCountMAX", "quad1", Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 1.5f, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.95f, 0), defaultbarSize);
+	EnemyUnitCountBackground = UnitCountInfoLayer->CreateNewInterfaceElement("EnemyUnitCountMAX", "RedBar", Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 1.5f, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.95f, 0), defaultbarSize);
 	EnemyUnitCountBackground->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 1.5f, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.95f, 0));
 
 	PlayerRateofChange = EnemyRateofChange = 0;
@@ -150,6 +164,69 @@ void BattleScreenInterface::Update(const float& dt)
 		CNOMEU = GameLogicSystem::Instance().InternalBattleSystem->GetEnemyCharacterList().size();
 		currentPlayerBarPos = PlayerUnitCountBackground->GetPosition();
 		currentEnemyBarPos = EnemyUnitCountBackground->GetPosition();
+		int Counter = 0; 
+		float offSet = SceneSystem::Instance().cSS_InputManager->ScreenCenter.x* 0.08f; 
+		Vector3 OriginPos = Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x* 1.18f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 1.25f, 0);
+		Vector3 IconDimensions = Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.1f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.1f, 0);
+		Vector3 WeaponBarDimensions = Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.1f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.1f, 0);
+
+		for (auto it : GameLogicSystem::Instance().InternalBattleSystem->GetPlayerCharacterList())
+		{
+			BattleScreenCharacter * BSC = (BattleScreenCharacter *)it;
+			UnitDataIcon = nullptr;
+
+			auto it2 = UnitMap.find(it->GetEntityID());
+			if (it2 == UnitMap.end())
+			{
+				std::map<std::string, int> Temp;
+				Temp.insert(std::pair<std::string, int>(BSC->InternalWeapon->GetEntityID(), 1));
+				UnitMap.insert(std::pair<std::string, std::map<std::string, int>>(it->GetEntityID(), Temp));
+				it2 = UnitMap.find(it->GetEntityID());
+			}
+			else
+			{
+				auto it3 = it2->second.find(BSC->InternalWeapon->GetEntityID());
+				if (it3 == it2->second.end())
+				{
+					it2->second.insert(std::pair<std::string, int>(BSC->InternalWeapon->GetEntityID(), 1));
+				}
+				else
+				{
+					it3->second++;
+				}
+			}
+
+			Vector3 CurrentUIPos = OriginPos + Vector3(0, -offSet * Counter);
+
+			//Icon
+			UnitDataIcon = UnitDataLayer->CreateNewInterfaceElement("Icon" + it->GetEntityID(), it->GetMeshName(), CurrentUIPos, IconDimensions);
+			UnitDataIcon->SetTargetPosition(CurrentUIPos);
+			// Weapon Bar[s]
+
+			for (auto it3 : it2->second)
+			{
+				// iterate the map of equip wepaon for this monster //it3.first = name
+				if (it3.first != BSC->InternalWeapon->GetEntityID())
+					continue;
+				
+				// decide how to offset the bars
+				float barOffset = SceneSystem::Instance().cSS_InputManager->ScreenCenter.x* 0.05f;
+				Vector3 barOriginPos = Vector3(UnitDataIcon->GetPosition().x  * 1.27f, UnitDataIcon->GetPosition().y, 0);
+				Vector3 textDimensions = Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.15f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.1f, 0);
+
+				// create the bars with the info
+				UnitWeaponDataName = UnitDataLayer->CreateNewInterfaceElement("Icon" + it->GetEntityID(), "Transparent", barOriginPos, textDimensions);
+				UnitWeaponDataName->SetTargetPosition(barOriginPos);
+				UnitWeaponDataName->SetText(it3.first);
+			}
+
+			Counter++;
+
+			//UnitWeaponDataName = UnitDataLayer->CreateNewInterfaceElement("Name" + BSC->InternalWeapon->GetEntityID(), "Transparent", Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x* 1.53f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 1.4f, 0), Vector3(50, 50, 0));
+		}
+		UnitDataInfoFrame = UnitDataLayer->CreateNewInterfaceElement("UnitDataInfoBackground", "InfoFrame2", Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 1.5f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y, 0), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y, 0));
+		UnitDataInfoFrame->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 1.5f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y, 0));
+
 		GetMaxData = false;
 
 		CameraAerial* CA = (CameraAerial*)SceneSystem::Instance().GetCurrentScene().camera;
@@ -192,13 +269,29 @@ void BattleScreenInterface::Update(const float& dt)
 	TerrainMagicMinusValue->SetText("Magic: x" + to_string_with_precision(currentTerrain->UnitDisadvantage.find(Terrain::T_MAGIC)->second));
 	TerrainRangeMinusValue->SetText("Range: x" + to_string_with_precision(currentTerrain->UnitDisadvantage.find(Terrain::T_RANGE)->second));
 
-	PlayerUnitCountText->SetText("Player Unit Count: " + std::to_string(CNOPU));
-	EnemyUnitCountText->SetText("Enemy Unit Count: " + std::to_string(CNOEU));
+	PlayerFactionNameText->SetText("Human Unit Count: " + std::to_string(CNOPU));
+	EnemyFactionNameText->SetText("Demon Unit Count: " + std::to_string(CNOEU));
+
+	//if (GameLogicSystem::Instance().PlayerFaction == GameLogicSystem::F_LIVING)
+	//	for (int i = 0; i < GameLogicSystem::Instance().InternalBattleSystem->UnitData.LivingMap.size; ++i)
+	//	{
+	//		
+	//		//UnitMap[i]->first = GameLogicSystem::Instance().InternalBattleSystem->UnitData.LivingMap[i].first;
+	//		//UnitMap.insert(std::pair<std::string, >(GameLogicSystem::Instance().InternalBattleSystem->UnitData.LivingMap[i].first, std::pair<std::string, int>(GameLogicSystem::Instance().InternalBattleSystem->UnitData.LivingMap[i].second))
+	//	}
+	//	//UnitMap.insert(std::pair<GameLogicSystem::Instance().InternalBattleSystem->UnitData.LivingMap;
+	//else
+	//	for (int i = 0; i < GameLogicSystem::Instance().InternalBattleSystem->UnitData.UndeadMap.size; ++i)
+	//	{
+	//		UnitMap[i]->first = GameLogicSystem::Instance().InternalBattleSystem->UnitData.UndeadMap[i].first;
+	//	}
+
 
 	if (ShowResult)
 	{
 		ResultInfoLayer->SetTargetPosition(Vector3(0, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 1.3f, 0));
-
+		TerrainInfoLayer->SetTargetPosition(Vector3(-(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x) * 0.925f, 0, 0));
+		UnitDataLayer->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.925f, 0, 0));
 		if (CNOPU != 0)
 		{
 			ResultInfo->SetText("Player Won");
@@ -207,9 +300,9 @@ void BattleScreenInterface::Update(const float& dt)
 		{
 			ResultInfo->SetText("Enemy Won");
 		}
-
-		HandleUserInput();
 	}
+	HandleUserInput();
+
 }
 
 void BattleScreenInterface::Render()
@@ -231,6 +324,21 @@ void BattleScreenInterface::HandleUserInput()
 		{
 			EndResult = true;
 		}
+
+		if (TerrainFrameButton->DetectUserInput(MousePos, TerrainInfoLayer->GetPosition()))
+		{
+			if ((TerrainInfoLayer->GetPosition() - TerrainInfoLayer->GetTargetPosition()).LengthSquared() < 1)
+				TerrainInfoLayer->SwapOriginalWithTarget();
+			else
+				TerrainInfoLayer->SwapOriginalWithTarget();
+		}
+		else if (UnitDataFrameButton->DetectUserInput(MousePos, UnitDataLayer->GetPosition()))
+		{
+			if ((UnitDataLayer->GetPosition() - UnitDataLayer->GetTargetPosition()).LengthSquared() < 1)
+				UnitDataLayer->SwapOriginalWithTarget();
+			else
+				UnitDataLayer->SwapOriginalWithTarget();
+		}
 	}
 	else if (SceneSystem::Instance().cSS_InputManager->GetMouseInput(InputManager::KEY_LMB) == InputManager::MOUSE_UP)
 	{
@@ -241,24 +349,24 @@ void BattleScreenInterface::HandleUserInput()
 
 void BattleScreenInterface::PopUpDelay(const float& dt)
 {
-	if (TerrainInfoFrame->GetPosition().y <= TerrainInfoFrame->GetTargetPosition().y + 3)
+	if (ShowTerrainInfo)
 	{
-		if (ShowTerrainInfo == false)
+		TerrainInfoTimer -= dt;
+		if (TerrainInfoTimer <= 0)
 		{
-			TerrainInfoTimer -= dt;
-			if (TerrainInfoTimer <= 0)
+			TerrainInfoLayer->SetTargetPosition(Vector3(-(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x) * 0.925f, 0, 0));
+			//TerrainInfoLayer->SetPosition(TerrainInfoLayer->GetTargetPosition());
+			UnitDataLayer->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.925f, 0, 0));
+			//UnitDataLayer->SetPosition(UnitDataLayer->GetTargetPosition());
+			if (TerrainInfoLayer->GetPosition().x <= TerrainInfoLayer->GetTargetPosition().x + 3)
 			{
-				TerrainInfoLayer->SetTargetPosition(Vector3(0, (float)negativeHeight, 0));
-				if (TerrainInfoLayer->GetPosition().y >= TerrainInfoLayer->GetTargetPosition().y + 3)
-				{
-					Initiation = true;
-					ShowTerrainInfo = true;
-				}
+				ShowTerrainInfo = false;
+				Initiation = true;
 			}
 		}
 	}
 
-	if (Initiation)
+	else if (Initiation)
 	{
 		TurnPopupTimer -= dt;
 		if (TurnPopupTimer <= 0)
@@ -269,7 +377,7 @@ void BattleScreenInterface::PopUpDelay(const float& dt)
 			{
 				BattleWordPopup->SetTargetPosition(BattleWordPopup->GetOriginalPosition());
 
-				if (BattleWordPopup->GetPosition().y <= BattleWordPopup->GetTargetPosition().y + 3)
+				if ((BattleWordPopup->GetPosition() - BattleWordPopup->GetTargetPosition()).LengthSquared() < 1)
 				{
 					Followup = true;
 					Initiation = false;
@@ -306,7 +414,7 @@ void BattleScreenInterface::ResetAll()
 	TurnPopupTimer2 = 0.5f;
 	TurnPopoutTimer2 = 1;
 	TerrainInfoTimer = 2;
-	ShowTerrainInfo = false;
+	ShowTerrainInfo = true;
 	Initiation = false;
 	Finished = false;
 	Followup = false;
@@ -314,7 +422,10 @@ void BattleScreenInterface::ResetAll()
 	GetMaxData = true;
 	ShowResult = false;
 	EndResult = false;
-	TerrainInfoLayer->SetTargetPosition(Vector3(0, 0, 0));
+	TerrainInfoLayer->SetTargetPosition(Vector3(0));
+	TerrainInfoLayer->SetPosition(TerrainInfoLayer->GetTargetPosition());
+	UnitDataLayer->SetTargetPosition(Vector3(0));
+	UnitDataLayer->SetPosition(UnitDataLayer->GetTargetPosition());
 	ResultInfoLayer->SetTargetPosition(Vector3(0, 0, 0));
 	PlayerUnitCount->SetTargetPosition(PlayerUnitCountBackground->GetTargetPosition());
 	EnemyUnitCount->SetTargetPosition(EnemyUnitCountBackground->GetTargetPosition());

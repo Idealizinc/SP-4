@@ -32,7 +32,6 @@ private:
 	InterfaceElement* StartWordPopup;
 
 	InterfaceLayer* TerrainInfoLayer;
-	InterfaceElement* TerrainInfoBackElement;
 	InterfaceElement* TerrainInfoFrame;
 	InterfaceElement* TerrainAdvantage;
 	InterfaceElement* TerrainHealthBoostValue;
@@ -44,14 +43,22 @@ private:
 	InterfaceElement* TerrainMeleeMinusValue;
 	InterfaceElement* TerrainMagicMinusValue;
 	InterfaceElement* TerrainRangeMinusValue;
+	InterfaceElement* TerrainFrameButton;
+
+	InterfaceLayer* UnitDataLayer;
+	InterfaceElement* UnitDataInfoFrame;
+	InterfaceElement* UnitDataInfoText;
+	InterfaceElement* UnitDataIcon;
+	InterfaceElement* UnitWeaponDataName;
+	InterfaceElement* UnitDataFrameButton;
 
 	InterfaceLayer* UnitCountInfoLayer;
 	InterfaceElement* PlayerUnitCount;
 	InterfaceElement* PlayerUnitBarFrame;
-	InterfaceElement* PlayerUnitCountText;
+	InterfaceElement* PlayerFactionNameText;
 	InterfaceElement* EnemyUnitCount;
 	InterfaceElement* EnemyUnitBarFrame;
-	InterfaceElement* EnemyUnitCountText;
+	InterfaceElement* EnemyFactionNameText;
 	InterfaceElement* PlayerUnitCountBackground;
 	InterfaceElement* EnemyUnitCountBackground;
 
@@ -89,6 +96,7 @@ private:
 	bool GetMaxData;
 
 	Vector3 defaultbarSize;
+	std::map<std::string, std::map<std::string, int>> UnitMap;
 };
 
 #endif
