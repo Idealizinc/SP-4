@@ -42,7 +42,7 @@ void SceneTown1::QuickInit()
 	CenterPosition.Set(SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth * 0.5f, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.5f, 0);
 
 	// Initiallise Model Specific Meshes Here
-	Mesh* newMesh = MeshBuilder::GenerateTerrain("Town 1", "HeightMapFiles//heightmap_Town1.raw", m_heightMap);
+	Mesh* newMesh = MeshBuilder::GenerateTerrain("Town 1", "HeightMapFiles//heightmap_test.raw", m_heightMap);
 	newMesh->material.kAmbient.Set(0.2f, 0.2f, 0.2f);
 	newMesh->material.kDiffuse.Set(0.2f, 0.2f, 0.2f);
 	newMesh->material.kSpecular.Set(0.0f, 0.0f, 0.0f);
@@ -55,7 +55,7 @@ void SceneTown1::QuickInit()
 	InteractiveMap->ScenePartition = ScenePartition;
 	InteractiveMap->SetEntityID("SceneMap");
 	//InteractiveMap->LoadMap("CSVFiles//Town1Layout.csv", true, m_heightMap, TerrainScale, EntityList, BManager);
-	InteractiveMap->LoadMap("CSVFiles//Tutorial.csv", true, m_heightMap, TerrainScale, EntityList, BManager);
+	InteractiveMap->LoadMap("CSVFiles//LevelDesign2.csv", true, m_heightMap, TerrainScale, EntityList, BManager);
 	GameLogicSystem::Instance().Init();
 
 	SceneSystem::Instance().cSS_InputManager->cIM_inMouseMode = true;

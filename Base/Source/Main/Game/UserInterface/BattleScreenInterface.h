@@ -56,9 +56,11 @@ private:
 	InterfaceElement* PlayerUnitCount;
 	InterfaceElement* PlayerUnitBarFrame;
 	InterfaceElement* PlayerFactionNameText;
+	InterfaceElement* PlayerFactionNameBack;
 	InterfaceElement* EnemyUnitCount;
 	InterfaceElement* EnemyUnitBarFrame;
 	InterfaceElement* EnemyFactionNameText;
+	InterfaceElement* EnemyFactionNameBack;
 	InterfaceElement* PlayerUnitCountBackground;
 	InterfaceElement* EnemyUnitCountBackground;
 

@@ -5,3 +5,9 @@ Castle_House,House,Castle_House,10,10,20,,,,1,0
 TerrainNode,TN,Node,20,3,20,,,,1,0
 TerrainNodePlayer,TNP,Client,20,3,20,,,,1,0
 TerrainNodeEnemy,TNE,ExternalClient,20,3,20,,,,1,0
+CrystalTower,CT,CrystalTower,15,15,15,,,,1,0
+RingTower,RT,RingTower,15,15,15,,,,1,0
+Fountain,F,Fountain,10,10,10,,,,1,0
+Building,B,Building,30,20,70,,,,1,0
+Grass,G,Grass,1,0.5,1,,,,1,0
+DeadTree,DT,DeadTree,10,10,10,,,,1,0

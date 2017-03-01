@@ -108,9 +108,10 @@ void BattleScreenInterface::Init()
 	CNOPU = CNOEU = 0;
 	defaultbarSize = Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.2f, 0);
 
-	PlayerFactionNameText = UnitCountInfoLayer->CreateNewInterfaceElement("PlayerUnitCountText", "Transparent", Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.55f, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight*0.88f, 0), defaultbarSize * 0.8f);
-	PlayerFactionNameText->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.55f, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.88f, 0));
-	PlayerFactionNameText->SetTextColor(0);
+	PlayerFactionNameText = UnitCountInfoLayer->CreateNewInterfaceElement("PlayerUnitCountText", "Transparent", Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.54f, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight*0.88f, 0), defaultbarSize * 0.8f);
+	PlayerFactionNameText->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.54f, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.88f, 0));
+	PlayerFactionNameBack = UnitCountInfoLayer->CreateNewInterfaceElement("PlayerUnitCountText", "BlackBack", Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.53f, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight*0.88f, 0), Vector3(defaultbarSize.x * 0.6f, defaultbarSize.y * 0.5f, 0));
+	PlayerFactionNameBack->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.53f, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.88f, 0));
 
 	PlayerUnitCount = UnitCountInfoLayer->CreateNewInterfaceElement("PlayerUnitCount", "GreenBar", Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.5f, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight*0.95f, 0), defaultbarSize);
 	PlayerUnitCount->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.5f, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight*0.95f, 0));
@@ -118,9 +119,10 @@ void BattleScreenInterface::Init()
 	PlayerUnitCountBackground = UnitCountInfoLayer->CreateNewInterfaceElement("PlayerUnitCountMAX", "RedBar", Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.5f, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.95f, 0), defaultbarSize);
 	PlayerUnitCountBackground->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.5f, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.95f, 0));
 
-	EnemyFactionNameText = UnitCountInfoLayer->CreateNewInterfaceElement("EnemyUnitCountText", "Transparent", Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x*1.45f, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.88f, 0), defaultbarSize * 0.8f);
-	EnemyFactionNameText->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 1.45f, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.88f, 0));
-	EnemyFactionNameText->SetTextColor(0);
+	EnemyFactionNameText = UnitCountInfoLayer->CreateNewInterfaceElement("EnemyUnitCountText", "Transparent", Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x*1.47f, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.88f, 0), defaultbarSize * 0.8f);
+	EnemyFactionNameText->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 1.47f, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.88f, 0));
+	EnemyFactionNameBack = UnitCountInfoLayer->CreateNewInterfaceElement("EnemyUnitCountText", "BlackBack", Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x*1.47f, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.88f, 0), Vector3(defaultbarSize.x * 0.6f, defaultbarSize.y * 0.5f, 0));
+	EnemyFactionNameBack->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 1.47f, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.88f, 0));
 
 	EnemyUnitCount = UnitCountInfoLayer->CreateNewInterfaceElement("EnemyUnitCount", "GreenBar", Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 1.5f, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.95f, 0), defaultbarSize);
 	EnemyUnitCount->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 1.5f, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.95f, 0));
@@ -266,8 +268,21 @@ void BattleScreenInterface::Update(const float& dt)
 	TerrainMagicMinusValue->SetText("Magic: x" + to_string_with_precision(currentTerrain->UnitDisadvantage.find(Terrain::T_MAGIC)->second));
 	TerrainRangeMinusValue->SetText("Range: x" + to_string_with_precision(currentTerrain->UnitDisadvantage.find(Terrain::T_RANGE)->second));
 
-	PlayerFactionNameText->SetText("Human Unit Count: " + std::to_string(CNOPU));
-	EnemyFactionNameText->SetText("Demon Unit Count: " + std::to_string(CNOEU));
+	if (GameLogicSystem::Instance().PlayerFaction == GameLogicSystem::F_LIVING)
+	{
+		PlayerFactionNameText->SetText("Human Unit Count: " + std::to_string(CNOPU));
+		PlayerFactionNameText->SetTextColor(Vector3(1, 1, 0));
+		EnemyFactionNameText->SetText("Demon Unit Count: " + std::to_string(CNOEU));
+		EnemyFactionNameText->SetTextColor(Vector3(1, 0, 0));
+	}
+	else
+	{
+		PlayerFactionNameText->SetText("Demon Unit Count: " + std::to_string(CNOPU));
+		PlayerFactionNameText->SetTextColor(Vector3(1, 0, 0));
+		EnemyFactionNameText->SetText("Human Unit Count: " + std::to_string(CNOEU));
+		EnemyFactionNameText->SetTextColor(Vector3(1, 1, 0));
+	}
+
 
 	//if (GameLogicSystem::Instance().PlayerFaction == GameLogicSystem::F_LIVING)
 	//	for (int i = 0; i < GameLogicSystem::Instance().InternalBattleSystem->UnitData.LivingMap.size; ++i)
