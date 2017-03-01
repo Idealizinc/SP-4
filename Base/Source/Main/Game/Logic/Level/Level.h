@@ -2,7 +2,7 @@
 #define LEVEL_H
 
 #include "../../../Engine/Internal/Entity.h"
-#include <map>
+#include <vector>
 
 class Level : public Entity
 {
@@ -14,24 +14,20 @@ public:
 	virtual void Render(){};
 	virtual void Exit(){};
 
-	std::string GetLevelMapName();
-	std::string GetLevelMapMesh();
-	std::string GetLevelHeightMap();
-	std::string GetLevelTexture1();
-	std::string GetLevelTexture2();
+	std::string GetLevelMapName(); 
+	std::string GetLevelMapLayoutName();
+	std::string GetLevelMapMeshName();
 
-	void SetLevelMapName(std::string MapName);
-	void SetLevelMapMesh(std::string MapMesh);
-	void SetLevelHeightMap(std::string HeightMap);
-	void SetLevelTexture1(std::string Texture1);
-	void SetLevelTexture2(std::string Texture2);
+	void SetLevelMapName(const std::string& MapName);
+	void SetLevelMapLayoutName(const std::string& MapName);
+	void SetLevelMapMeshName(const std::string& MapMesh);
+
+	std::vector<unsigned char> TerrainHeightMap;
 
 private:
 	std::string MapName;
-	std::string MapMesh;
-	std::string HeightMap;
-	std::string Texture1;
-	std::string Texture2;
+	std::string MapLayoutName;
+	std::string MapMeshName;
 
 };
 

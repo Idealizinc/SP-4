@@ -9,40 +9,24 @@ std::string Level::GetLevelMapName()
 {
 	return MapName;
 }
-std::string Level::GetLevelMapMesh()
+std::string Level::GetLevelMapLayoutName()
 {
-	return MapMesh;
+	return MapLayoutName;
 }
-std::string Level::GetLevelHeightMap()
+std::string Level::GetLevelMapMeshName()
 {
-	return HeightMap;
-}
-std::string Level::GetLevelTexture1()
-{
-	return Texture1;
-}
-std::string Level::GetLevelTexture2()
-{
-	return Texture2;
+	return MapMeshName;
 }
 
-void Level::SetLevelMapName(std::string MapName)
+void Level::SetLevelMapName(const std::string& MapName)
 {
 	this->MapName = MapName;
 }
-void Level::SetLevelMapMesh(std::string MapMesh)
+void Level::SetLevelMapLayoutName(const std::string& MapName)
 {
-	this->MapMesh = MapMesh;
+	this->MapLayoutName = MapName;
 }
-void Level::SetLevelHeightMap(std::string HeightMap)
+void Level::SetLevelMapMeshName(const std::string& MapMesh)
 {
-	this->HeightMap = HeightMap;
-}
-void Level::SetLevelTexture1(std::string Texture1)
-{
-	this->Texture1 = Texture1;
-}
-void Level::SetLevelTexture2(std::string Texture2)
-{
-	this->Texture2 = Texture2;
+	this->MapMeshName = MapMesh;
 }

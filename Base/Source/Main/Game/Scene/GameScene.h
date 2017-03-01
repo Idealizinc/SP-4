@@ -8,7 +8,8 @@
 #include "../Systems/BillboardManager.h"
 #include "../Objects/GameMap.h"
 #include "../Miscellaneous/CameraAerial.h"
-#include"../UserInterface/GameScreenInterface.h"
+#include "../UserInterface/GameScreenInterface.h"
+#include "../Logic/Level/Level.h"
 
 class GameScene : public SceneEntity
 {
@@ -21,6 +22,7 @@ public:
 	virtual void Update(const float& dt);
     virtual void Render();
     virtual void Exit();
+	void SetUpForLevel(Level*);
 
 private:
     // Shadow GPass
@@ -43,6 +45,7 @@ private:
     GameMap *InteractiveMap;
 	std::vector<GameObject*> EntityList;
 	Vector3 CenterPosition;
+	std::string TerrainMeshName;
 	
 };
 

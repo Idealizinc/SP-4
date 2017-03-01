@@ -26,7 +26,7 @@ public:
 	virtual void Render(void);
 	virtual void Exit(void);
 	
-	
+	void InitiateLevelLoading(const std::string& LevelID);
 
 	void ResetLayer();
 

@@ -11,7 +11,7 @@
 std::string GameScene::id_ = "1_Scene";
 
 GameScene::GameScene()
-	: SceneEntity()
+: SceneEntity()
 {
 	framerates = 0;
 	SetEntityID(id_);
@@ -19,6 +19,8 @@ GameScene::GameScene()
 	Player = nullptr;
 	SceneSystem::Instance().AddScene(*this);
 	Init();
+	GameLogicSystem::Instance().Init();
+	ScenePartition = nullptr;
 }
 
 GameScene::~GameScene()
@@ -28,35 +30,13 @@ GameScene::~GameScene()
 
 void GameScene::QuickInit()
 {
-	RenderSystem *Renderer = dynamic_cast<RenderSystem*>(&SceneSystem::Instance().GetRenderSystem());
-
 	// Set Terrain Size
 	TerrainScale.Set(500.f, 50.f, 500.f);
-	ScenePartition = new ScenePartitionGraph();
-	ScenePartition->AssignGridParameters(0, Vector3(TerrainScale.x, TerrainScale.z), 8);
 
 	CameraAerial* CA = new CameraAerial();
-	
 	camera = CA;
 	CA->AltInit(/*Player Character Position*/Vector3(0, 0, 0), Vector3(0, 100, 0.01f), Vector3(0, 1, 0));
 	CenterPosition.Set(SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth * 0.5f, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.5f, 0);
-
-	// Initiallise Model Specific Meshes Here
-	Mesh* newMesh = MeshBuilder::GenerateTerrain("Town 1", "HeightMapFiles//heightmap_Town1.raw", m_heightMap);
-	newMesh->material.kAmbient.Set(0.2f, 0.2f, 0.2f);
-	newMesh->material.kDiffuse.Set(0.2f, 0.2f, 0.2f);
-	newMesh->material.kSpecular.Set(0.0f, 0.0f, 0.0f);
-	newMesh->textureArray[0] = LoadTGA("Image//Map//RockTex.tga");
-	newMesh->textureArray[1] = LoadTGA("Image//Map//GrassStoneTex.tga");
-	Renderer->MeshList.insert(std::pair<std::string, Mesh*>(newMesh->name, newMesh));
-		
-	GameLogicSystem::Instance().TerrainLoader.LoadTerrainData("CSVFiles/TerrainDataLoader.csv");
-	InteractiveMap = new GameMap();
-	InteractiveMap->ScenePartition = ScenePartition;
-	InteractiveMap->SetEntityID("SceneMap");
-	//InteractiveMap->LoadMap("CSVFiles//GSMap_Roundabout.csv", true, m_heightMap, TerrainScale, EntityList, BManager);
-	InteractiveMap->LoadMap("CSVFiles//Tutorial.csv", true, m_heightMap, TerrainScale, EntityList, BManager);
-	GameLogicSystem::Instance().Init();
 
 	SceneSystem::Instance().cSS_InputManager->cIM_inMouseMode = true;
 }
@@ -83,13 +63,53 @@ void GameScene::Init()
 	QuickInit();
 }
 
+void GameScene::SetUpForLevel(Level* L)
+{
+	GameLogicSystem::Instance().QuickExit();
+	RenderSystem *Renderer = dynamic_cast<RenderSystem*>(&SceneSystem::Instance().GetRenderSystem());
+	// Let us set up some level specific variables!
+	TerrainMeshName = L->GetLevelMapName();
+	// I will need to clean up old lists if they exist
+	if (ScenePartition){
+		ScenePartition->Exit();
+		delete ScenePartition;
+	}
+	if (InteractiveMap)
+		delete InteractiveMap;
+	if (m_heightMap.size())
+		m_heightMap.clear();
+	BManager.Exit();
+	EntityList.clear();
+
+	// Set up HM stats
+	m_heightMap = L->TerrainHeightMap;
+
+	// I will now begin generating the map with the csv file from the terrain
+	ScenePartition = new ScenePartitionGraph();
+	ScenePartition->AssignGridParameters(Vector3(), Vector3(TerrainScale.x, TerrainScale.z), 10);
+
+	InteractiveMap = new GameMap();
+	GameMap *theMap = dynamic_cast<GameMap*>(InteractiveMap);
+	theMap->ScenePartition = ScenePartition;
+	theMap->SetEntityID("Gamefield");
+	theMap->LoadMap(L->GetLevelMapLayoutName(), true, m_heightMap, TerrainScale, EntityList, BManager);
+
+	CameraAerial* CA = (CameraAerial*)camera;
+	CA->CameraMoveTargetPosition.x = ScenePartition->PlayerBase->GetEntity()->GetPosition().x;
+	CA->CameraMoveTargetPosition.z = ScenePartition->PlayerBase->GetEntity()->GetPosition().z;
+
+	GameLogicSystem::Instance().QuickInit();
+}
+
 void GameScene::Update(const float& dt)
 {
+	float Delta = dt;
+	if (SceneSystem::Instance().AnimationActivated && SceneSystem::Instance().AnimationDirectionInwards)
+		Delta = 0;
+
 	RenderSystem *Renderer = dynamic_cast<RenderSystem*>(&SceneSystem::Instance().GetRenderSystem());
 
-	Renderer->Update(dt);
-
-	//GSI->Update(dt);
+	Renderer->Update(Delta);
 
 	float Speed = 80.f;
 	CameraAerial* CA = (CameraAerial*)camera;
@@ -99,22 +119,22 @@ void GameScene::Update(const float& dt)
 		if (SceneSystem::Instance().cSS_InputManager->GetKeyValue(SimpleCommand::m_allTheKeys[SimpleCommand::FORWARD_COMMAND]) ||
 			SceneSystem::Instance().cSS_InputManager->GetMousePosition().y > SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * (1.f - DetectionOffset))
 		{
-			CA->CameraMoveTargetPosition.z -= Speed*dt;
+			CA->CameraMoveTargetPosition.z -= Speed*Delta;
 		}
 		if (SceneSystem::Instance().cSS_InputManager->GetKeyValue(SimpleCommand::m_allTheKeys[SimpleCommand::BACK_COMMAND]) ||
 			SceneSystem::Instance().cSS_InputManager->GetMousePosition().y < SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * DetectionOffset)
 		{
-			CA->CameraMoveTargetPosition.z += Speed*dt;
+			CA->CameraMoveTargetPosition.z += Speed*Delta;
 		}
 		if (SceneSystem::Instance().cSS_InputManager->GetKeyValue(SimpleCommand::m_allTheKeys[SimpleCommand::RIGHT_COMMAND]) ||
 			SceneSystem::Instance().cSS_InputManager->GetMousePosition().x > SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth * (1.f - DetectionOffset))
 		{
-			CA->CameraMoveTargetPosition.x += Speed*dt;
+			CA->CameraMoveTargetPosition.x += Speed*Delta;
 		}
 		if (SceneSystem::Instance().cSS_InputManager->GetKeyValue(SimpleCommand::m_allTheKeys[SimpleCommand::LEFT_COMMAND]) ||
 			SceneSystem::Instance().cSS_InputManager->GetMousePosition().x < SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth * DetectionOffset)
 		{
-			CA->CameraMoveTargetPosition.x -= Speed*dt;
+			CA->CameraMoveTargetPosition.x -= Speed*Delta;
 		}
 		float XOffset = TerrainScale.x * 0.5f;
 		if (CA->CameraMoveTargetPosition.x < -XOffset)
@@ -145,13 +165,13 @@ void GameScene::Update(const float& dt)
 	}
 	else CA->CameraMoveTargetPosition.y = 0;
 
-	CA->Update(dt);
+	CA->Update(Delta);
 	//MusicSystem::Instance().playBackgroundMusic("battle");
-	BManager.UpdateContainer(dt, CA->position);
-	
-	ScenePartition->Update(dt);
-	GameLogicSystem::Instance().Update(dt);
-	
+	BManager.UpdateContainer(Delta, CA->position);
+
+	ScenePartition->Update(Delta);
+	GameLogicSystem::Instance().Update(Delta);
+
 	framerates = 1 / dt;
 }
 
@@ -160,7 +180,7 @@ void GameScene::RenderTerrain()
 	RenderSystem *Renderer = dynamic_cast<RenderSystem*>(&SceneSystem::Instance().GetRenderSystem());
 	modelStack->PushMatrix();
 	modelStack->Scale(TerrainScale.x, TerrainScale.y, TerrainScale.z);
-	Renderer->RenderMesh("Town 1", true);
+	Renderer->RenderMesh(TerrainMeshName, true);
 	modelStack->PopMatrix();
 }
 
@@ -170,6 +190,7 @@ void GameScene::RenderShadowCasters()
 	glCullFace(GL_BACK);
 	//RenderTerrain();
 	RenderSystem *Renderer = dynamic_cast<RenderSystem*>(&SceneSystem::Instance().GetRenderSystem());
+
 	RenderTerrain();
 	ScenePartition->Render();
 
@@ -196,7 +217,7 @@ void GameScene::RenderSkybox()
 	RenderSystem *Renderer = dynamic_cast<RenderSystem*>(&SceneSystem::Instance().GetRenderSystem());
 	//left
 	modelStack->PushMatrix();
-	modelStack->Translate(camera->position.x, camera->position.y, camera->position.z);
+	//modelStack->Translate(camera->position.x, camera->position.y, camera->position.z);
 	modelStack->Rotate(90, 0, 1, 0);
 	modelStack->PushMatrix();
 	modelStack->Rotate(90, 0, 1, 0);
@@ -315,6 +336,7 @@ void GameScene::RenderPassMain()
 		);
 	// Model matrix : an identity matrix (model will be at the origin)
 	modelStack->LoadIdentity();
+	SceneSystem::Instance().RenderTransitionEffects();
 
 	RenderSkybox();
 	RenderShadowCasters();

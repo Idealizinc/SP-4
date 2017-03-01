@@ -16,10 +16,10 @@ BattleSystem::~BattleSystem()
 
 void BattleSystem::Init()
 {
-	UnitData.LoadWeaponData("CSVFiles/WeaponDataLoader.csv");
-	UnitData.LoadRaceData("CSVFiles/RaceDataLoader.csv");
-	UnitData.LoadLivingFactionData("CSVFiles/LivingFactionLoader.csv");
-	UnitData.LoadUndeadFactionData("CSVFiles/UndeadFactionLoader.csv");
+	UnitData.LoadWeaponData("CSVFiles/DataLoaders/WeaponDataLoader.csv");
+	UnitData.LoadRaceData("CSVFiles/DataLoaders/RaceDataLoader.csv");
+	UnitData.LoadLivingFactionData("CSVFiles/DataLoaders/LivingFactionLoader.csv");
+	UnitData.LoadUndeadFactionData("CSVFiles/DataLoaders/UndeadFactionLoader.csv");
 
 
 	SpawnPosition_Enemy = Vector3(-100, 1, 100);

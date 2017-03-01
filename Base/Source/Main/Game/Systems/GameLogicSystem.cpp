@@ -3,6 +3,7 @@
 #include "../../Engine/State/StateList.h"
 #include "../SceneManagement/ScenePartitionGraph.h"
 #include "../../Engine/Objects/GameObject.h"
+#include "../Logic/Level/LevelDataLoader.h"
 
 // Constructor and Destructor
 GameLogicSystem::~GameLogicSystem()
@@ -21,8 +22,17 @@ void GameLogicSystem::Init()
 	// Remember to set current state or nothing will run
 	SetCurrentState(PlayerTurn);
 
-	// Don't forget to Init the second initiallization
-	QuickInit();
+	// Don't forget to Init the second initiallization if required
+	//QuickInit();
+
+	// Misc
+	//Init UI
+	UnitInterface = new UnitCreationInterface();
+	GameInterface = new GameScreenInterface();
+
+	TerrainLoader.LoadTerrainData("CSVFiles/DataLoaders/TerrainDataLoader.csv");
+	LevelDataLoader::Instance().LoadLevelData("CSVFiles/DataLoaders/LevelDataLoader.csv");
+
 }
 
 void GameLogicSystem::QuickInit()
@@ -35,9 +45,6 @@ void GameLogicSystem::QuickInit()
 	// Init Battle System
 	InternalBattleSystem = new BattleSystem();
 	InternalBattleSystem->Init();
-	//Init UI
-	UnitInterface = new UnitCreationInterface();
-	GameInterface = new GameScreenInterface();
 
 	InternalEnemySystem->RemainingGold = UnitInterface->returnUnitSpawnSys()->maxUnitCost * maxStartingUnits;
 	//InternalPlayerSystem->SetCash(/*UnitInterface->returnUnitSpawnSys()->maxUnitCost * maxStartingUnits*/1000);
@@ -118,12 +125,26 @@ void GameLogicSystem::Render()
 	}
 	else
 	{
-		InternalBattleSystem->Render();
+		if (!SceneSystem::Instance().AnimationDirectionInwards)
+			InternalBattleSystem->Render();
 	}
 }
 
 void GameLogicSystem::Exit()
 {
+	if (UnitInterface)
+	{
+		UnitInterface->Exit();
+		delete UnitInterface;
+		UnitInterface = nullptr;
+	}
+	if (GameInterface)
+	{
+		GameInterface->Exit();
+		delete GameInterface;
+		GameInterface = nullptr;
+	}
+
 	QuickExit();
 }
 
@@ -146,18 +167,6 @@ void GameLogicSystem::QuickExit()
 		InternalBattleSystem->Exit();
 		delete InternalBattleSystem;
 		InternalBattleSystem = nullptr;
-	}
-	if (UnitInterface)
-	{
-		UnitInterface->Exit();
-		delete UnitInterface;
-		UnitInterface = nullptr;
-	}
-	if (GameInterface)
-	{
-		GameInterface->Exit();
-		delete GameInterface;
-		GameInterface = nullptr;
 	}
 }
 

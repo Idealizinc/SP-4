@@ -1,5 +1,8 @@
 #include "MainMenuInterface.h"
 #include "../Mains/Application.h"
+#include "../Logic/Level/LevelDataLoader.h"
+#include "../Scene/GameScene.h"
+#include "../../Engine/System/SceneSystem.h"
 
 MainMenuInterface::MainMenuInterface()
 {
@@ -70,7 +73,7 @@ void MainMenuInterface::InitMainLayer()
 void MainMenuInterface::InitFactionLayer()
 {
 	FactionLayer = CreateNewInterfaceLayer(std::to_string(L_FACTION), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * -(2.5f), 0), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 1.2f, 0));
-	Faction1Name = FactionLayer->CreateNewInterfaceElement("Faction1Button", "LivingFactionLogo", 0, Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.8, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.8f, 0));
+	Faction1Name = FactionLayer->CreateNewInterfaceElement("Faction1Button", "LivingFactionLogo", 0.f, Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.8f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.8f, 0));
 	Faction1Name->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * -(0.5f), 0, 0));
 
 	Faction1Button = FactionLayer->CreateNewInterfaceElement("Faction1Name", "BlueButton", 0, Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.4f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y* 0.2f, 0));
@@ -123,15 +126,15 @@ void MainMenuInterface::InitInstructLayer()
 
 	//NextButtonI = InstructionsLayer->CreateNewInterfaceElement("NextButtonIF", "WoodFrameRect", Vector3(SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth * 0.1, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * -(0.3f), 0), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.2f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.1f, 0));
 	//NextButtonI->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth * 0.1, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * -(0.3f), 0));
-	NextButtonI = InstructionsLayer->CreateNewInterfaceElement("NextButtonI", "Background", Vector3(SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth * 0.2, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * -(0.4f), 0), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.2f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.1f, 0));
-	NextButtonI->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth * 0.2, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * -(0.4f), 0));
+	NextButtonI = InstructionsLayer->CreateNewInterfaceElement("NextButtonI", "Background", Vector3(SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth * 0.2f, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * -(0.4f), 0.f), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.2f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.1f, 0));
+	NextButtonI->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth * 0.2f, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * -(0.4f), 0));
 	NextButtonI->SetText("Next");
 	NextButtonI->SetTextColor(Vector3(0.5f, 0.3f, 0.3f));
 
 	//PrevButtonI = InstructionsLayer->CreateNewInterfaceElement("PrevButtonIF", "WoodFrameRect", Vector3(SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth * -(0.1), SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * -(0.3f), 0), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.2f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.1f, 0));
 	//PrevButtonI->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth * -(0.1), SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * -(0.3f), 0));
-	PrevButtonI = InstructionsLayer->CreateNewInterfaceElement("PrevButtonI", "Background", Vector3(SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth * -(0.2), SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * -(0.4f), 0), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.2f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.1f, 0));
-	PrevButtonI->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth * -(0.2), SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * -(0.4f), 0));
+	PrevButtonI = InstructionsLayer->CreateNewInterfaceElement("PrevButtonI", "Background", Vector3(SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth * -0.2f, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * -(0.4f), 0.f), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.2f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.1f, 0));
+	PrevButtonI->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth * -(0.2f), SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * -(0.4f), 0));
 	PrevButtonI->SetText("Prev");
 	PrevButtonI->SetTextColor(Vector3(0.5f, 0.3f, 0.3f));
 
@@ -185,11 +188,8 @@ void MainMenuInterface::Update(const float& dt)
 					setCounter = 0;
 				}
 			}
-
 			if ((it->GetEntityID() == std::to_string(currentLayer) || it->GetEntityID() == std::to_string(nextLayer)))
 				it->Update(dt * 8);
-
-			
 		}
 	}
 
@@ -222,12 +222,11 @@ void MainMenuInterface::Update(const float& dt)
 		{
 			CheckMenuUserInput(MousePos);
 		}
-
-		if (currentLayer == L_FACTION)
+		else if(currentLayer == L_FACTION)
 		{
 			CheckFactionUserInput(MousePos);
 		}
-		if (currentLayer == L_INSTRUCTIONS)
+		else if (currentLayer == L_INSTRUCTIONS)
 		{
 			CheckInstructionsUserInput(MousePos);
 		}
@@ -274,6 +273,7 @@ void MainMenuInterface::CheckMenuUserInput(Vector3 mousePos)
 
 void MainMenuInterface::CheckFactionUserInput(Vector3 mousePos)
 {
+	bool LevelInitiationRequired = false;
 	if (BackButtonF->DetectUserInput(mousePos, FactionLayer->GetPosition()))
 	{
 		//SceneSystem::Instance().SwitchScene("1_Scene");
@@ -282,22 +282,19 @@ void MainMenuInterface::CheckFactionUserInput(Vector3 mousePos)
 	else if (Faction1Button->DetectUserInput(mousePos, FactionLayer->GetPosition()))
 	{
 		GameLogicSystem::Instance().PlayerFaction = GameLogicSystem::Instance().F_LIVING;
-		//GameLogicSystem::Instance().UnitInterface->Init();
-		GameLogicSystem::Instance().UnitInterface->InterfaceReset();
-		GameLogicSystem::Instance().InternalPlayerSystem->SetCash(GameLogicSystem::Instance().UnitInterface->returnUnitSpawnSys()->maxUnitCost * GameLogicSystem::Instance().maxStartingUnits);
-		SceneSystem::Instance().SwitchScene("1_Scene");	
 		nextLayer = L_MAIN;
-		
+		LevelInitiationRequired = true;
 	}
 	else if (Faction2Button->DetectUserInput(mousePos, FactionLayer->GetPosition()))
 	{
 		GameLogicSystem::Instance().PlayerFaction = GameLogicSystem::Instance().F_UNDEAD;
-		//GameLogicSystem::Instance().UnitInterface->Init();
-		GameLogicSystem::Instance().UnitInterface->InterfaceReset();
-		GameLogicSystem::Instance().InternalPlayerSystem->SetCash(GameLogicSystem::Instance().UnitInterface->returnUnitSpawnSys()->maxUnitCost * GameLogicSystem::Instance().maxStartingUnits);
-		SceneSystem::Instance().SwitchScene("1_Scene");
 		nextLayer = L_MAIN;
-		
+		LevelInitiationRequired = true;
+	}
+	if (LevelInitiationRequired)
+	{
+		LevelInitiationRequired = false;
+		InitiateLevelLoading("weed");
 	}
 }
 
@@ -349,3 +346,20 @@ void MainMenuInterface::CheckInstructionsUserInput(Vector3 mousePos)
 	}
 }
 
+void MainMenuInterface::InitiateLevelLoading(const std::string& LevelID)
+{
+	// Switch the scene first! If not we will not be able to call the right function.
+	SceneSystem::Instance().SwitchScene("1_Scene");
+	// Here we shall randomly assign a level to the player for testing purposes
+	auto it = LevelDataLoader::Instance().LevelMap.begin();
+	std::advance(it, Math::RandIntMinMax(0, LevelDataLoader::Instance().LevelMap.size() - 1));
+	std::string random_key = it->first;
+
+	GameScene* GS = dynamic_cast<GameScene*>(&SceneSystem::Instance().GetCurrentScene());
+	GS->SetUpForLevel(LevelDataLoader::Instance().LevelMap.find(random_key)->second);
+
+	//GameLogicSystem::Instance().UnitInterface->Init();
+	GameLogicSystem::Instance().UnitInterface->InterfaceReset();
+	GameLogicSystem::Instance().InternalPlayerSystem->SetCash(GameLogicSystem::Instance().UnitInterface->returnUnitSpawnSys()->maxUnitCost * GameLogicSystem::Instance().maxStartingUnits);
+
+}
