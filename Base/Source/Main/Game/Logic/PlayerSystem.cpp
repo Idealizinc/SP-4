@@ -155,6 +155,10 @@ void PlayerSystem::HandleUserInput()
 				{
 					GameLogicSystem::Instance().GameInterface->MultipleUnitSelect(TN->TerrainTile->PlayerUnitList, false);
 				}
+				else if(TN->TerrainTile->EnemyUnitList.size() != 0 && GameLogicSystem::Instance().GameInterface->MultipleUnitElements.size() == 0)
+				{
+					GameLogicSystem::Instance().GameInterface->MultipleUnitSelectE(TN->TerrainTile->EnemyUnitList);
+				}
 			}
 
 		}

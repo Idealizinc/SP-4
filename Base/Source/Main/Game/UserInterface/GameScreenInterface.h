@@ -31,6 +31,7 @@ public:
 	void toggleSurrender();
 
 	void MultipleUnitSelect(std::vector<UnitPiece*> Selections, bool interactive);
+	void MultipleUnitSelectE(std::vector<UnitPiece*> Selections);
 
 	UnitPiece* UnitSelected;
 	InterfaceLayer* MultipleUnitLayer;

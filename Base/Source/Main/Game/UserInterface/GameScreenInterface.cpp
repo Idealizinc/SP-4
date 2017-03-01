@@ -562,3 +562,90 @@ void GameScreenInterface::MultipleUnitSelect(std::vector<UnitPiece*> Selections,
 		++count;
 	}
 }
+
+void GameScreenInterface::MultipleUnitSelectE(std::vector<UnitPiece*> Selections)
+{
+	MultipleUnitUI = false;
+	Vector3 HalfDimension = SceneSystem::Instance().cSS_InputManager->ScreenCenter;
+	//std::map<std::string, unsigned short> currentUnitMap = UnitSpawner->returnRecordedUnitMap();
+	int IconCount = Selections.size();
+
+	Vector3 lowestPt(HalfDimension.x, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * -(0.2f));
+	Vector3 highestPt(HalfDimension.x, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * (0.7f));
+
+	float lowestPtX = SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth * -(0.18f);
+	float highestPtX = SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth * (0.7f);
+
+	float DisplayWidth = (highestPtX - lowestPtX);
+	float DisplayHeight = (highestPt.y - lowestPt.y);
+
+	float IconSpaceWidth = (DisplayWidth / 15) / 2;
+	float IconSpaceHeight = (DisplayHeight / IconCount) / 2;
+
+	InterfaceElement* tempElement = nullptr;
+		tempElement = MultipleUnitLayer->CreateNewInterfaceElement("MULTitle", "quad", Vector3(lowestPt.x, highestPt.y), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.8f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.15f, 0));
+		tempElement->SetTargetPosition(Vector3(lowestPt.x, highestPt.y * 1.1f));
+		tempElement->SetText("Squads in this Node");
+		tempElement->SetTextColor(0);
+
+		tempElement = MultipleUnitLayer->CreateNewInterfaceElement("MULTitle2", "quad", Vector3(lowestPt.x, highestPt.y), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.8f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.15f, 0));
+		tempElement->SetTargetPosition(Vector3(lowestPt.x, highestPt.y));
+		tempElement->SetText("Click to dismiss");
+		tempElement->SetTextColor(0);
+
+	int count = 1;
+
+	int i = 0;
+
+
+	//std::map<std::string, UnitType*>UnitMap;
+	//if (GameLogicSystem::Instance().PlayerFaction == GameLogicSystem::F_LIVING)
+	//	UnitMap = GameLogicSystem::Instance().InternalBattleSystem->UnitData.LivingMap;
+	//else
+	//	UnitMap = GameLogicSystem::Instance().InternalBattleSystem->UnitData.UndeadMap;
+
+	for (auto it : Selections)
+	{
+
+		/*string UnitDisplay;
+		for (auto it : Selections[i]->InternalBattalionList)
+		{
+		UnitDisplay += (it.first + " x" + std::to_string(it.second) + " ");
+		}
+
+		tempElement->SetText(UnitDisplay);
+		tempElement->SetTextColor(0);*/
+		float count2 = 1.f;
+		for (auto it2 : Selections[i]->InternalBattalionList)
+		{
+			std::string MeshName;
+			/*for (auto it3 : UnitMap)
+			{
+				if (it3.first == it2.first)
+				{
+					MeshName = it3.second->GetMeshName();
+				}
+			}*/
+			InterfaceElement* tempElement2 = nullptr;
+			tempElement2 = MultipleUnitLayer->CreateNewInterfaceElement(it2.first + std::to_string(i) + "Transparent", MeshName, Vector3((lowestPtX + IconSpaceWidth * count2) + HalfDimension.x, highestPt.y - IconSpaceHeight * (count)), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.1f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.1f, 0));
+			tempElement2->SetTargetPosition(Vector3((lowestPtX + IconSpaceWidth * count2) + HalfDimension.x, highestPt.y - IconSpaceHeight * (count)));
+			tempElement2->SetText("?");
+			tempElement2->SetTextColor(0);
+
+			tempElement2 = MultipleUnitLayer->CreateNewInterfaceElement(it2.first + std::to_string(i) + "Amount", "Transparent", Vector3((lowestPtX + IconSpaceWidth * (count2 + 1) + HalfDimension.x), highestPt.y - IconSpaceHeight * (count)), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.1f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.1f, 0));
+			tempElement2->SetTargetPosition(Vector3((lowestPtX + IconSpaceWidth * (count2 + 1) + HalfDimension.x), highestPt.y - IconSpaceHeight * (count)));
+			tempElement2->SetText("x" + std::to_string(it2.second));
+			tempElement2->SetTextColor(0);
+
+			count2 += 2.5;
+
+		}
+
+		tempElement = MultipleUnitLayer->CreateNewInterfaceElement(std::to_string(i), "quad", Vector3(lowestPt.x, highestPt.y - IconSpaceHeight * (count)), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.8f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.15f, 0));
+		tempElement->SetTargetPosition(Vector3(lowestPt.x, highestPt.y - IconSpaceHeight * (count)));
+
+		MultipleUnitElements.insert(std::pair<UnitPiece*, InterfaceElement*>(Selections[i], tempElement));
+		++i;
+		++count;
+	}
+}
