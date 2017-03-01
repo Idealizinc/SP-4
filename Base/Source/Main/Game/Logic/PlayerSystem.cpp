@@ -165,17 +165,7 @@ void PlayerSystem::HandleUserInput()
 			if (MouseDownSelection == MouseUpSelection)
 			{
 				// Clicked the same tile
-				
-					CA->CameraMoveTargetPosition = MouseDownSelection->GetEntity()->GetPosition();
-					
-
-				//if (MouseDownSelection == SceneSystem::Instance().GetCurrentScene().ScenePartition->PlayerBase)
-				//{
-				//	//SelectedUnit = GenerateNewUnit();
-				//	GameLogicSystem::Instance().UnitInterface->OpenInterface();
-				//	GameLogicSystem::Instance().GameInterface->toggleSurrender();
-				//}
-
+				CA->CameraMoveTargetPosition = MouseDownSelection->GetEntity()->GetPosition();
 			}
 			else if (MouseDownSelection != MouseUpSelection)
 			{
