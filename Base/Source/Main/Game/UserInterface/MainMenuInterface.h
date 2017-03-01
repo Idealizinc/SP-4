@@ -35,8 +35,7 @@ private:
 	{
 		L_MAIN = 0,
 		L_FACTION,
-		L_LEVELSELECT1,
-		L_LEVELSELECT2,
+		//L_LEVELSELECT,
 		L_INSTRUCTIONS,
 		L_SETTINGS,
 		L_TOTAL
@@ -44,7 +43,6 @@ private:
 
 	int currentLayer;
 	int nextLayer;
-	//bool PositionsReset;
 	int setCounter;
 	bool initedLayers[L_TOTAL];
 	InterfaceLayer* MainLayer;
@@ -59,21 +57,41 @@ private:
 	InterfaceElement* Faction2Button;
 	InterfaceElement* BackButtonF;
 
-	InterfaceLayer* Faction1LevelSelectLayer;
+	InterfaceLayer* LevelSelectLayer;
+	std::vector<InterfaceElement*> LevelSelectData; // or map?
+	int LevelSelectPage;
+	int lastLSPage;
+	InterfaceElement* NextButtonLS;
+	InterfaceElement* PrevButtonLS;
+	InterfaceElement* PageDisplayLS;
+	InterfaceElement* BackButtonLS;
 
-	InterfaceLayer* Faction2LevelSelectLayer;
 
 	InterfaceLayer* InstructionsLayer;
+	InterfaceElement* InstructionsText;
+	InterfaceElement* InstructionsTextP2;
+	InterfaceElement* InstructionsTextP3;
+	int instructionsPage;
+	const int lastIPage = 3;
+	InterfaceElement* NextButtonI;
+	InterfaceElement* PrevButtonI;
+	InterfaceElement* PageDisplayI;
+	InterfaceElement* BackButtonI;
 
 	InterfaceLayer* SettingsLayer;
 
 
 	void CheckMenuUserInput(Vector3 mousePos);
 	void CheckFactionUserInput(Vector3 mousePos);
+	void CheckInstructionsUserInput(Vector3 mousePos);
 
 	void InitMainLayer();
 
 	void InitFactionLayer();
+	void InitInstructLayer();
+
+	Vector3 LeftSide = Vector3(SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth * -(1.0f), SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 1.0f, 0);
+	Vector3 RightSide = Vector3(SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth * 2.0f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 1.0f, 0);
 
 };
 
