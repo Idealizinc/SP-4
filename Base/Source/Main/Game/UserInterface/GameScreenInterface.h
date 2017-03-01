@@ -30,11 +30,13 @@ public:
 	void ShowCashReduction(int amount);
 	void toggleSurrender();
 
-	void MultipleUnitSelect(std::vector<UnitPiece*> Selections);
+	void MultipleUnitSelect(std::vector<UnitPiece*> Selections, bool interactive);
 
 	UnitPiece* UnitSelected;
 	InterfaceLayer* MultipleUnitLayer;
 	std::map<UnitPiece*, InterfaceElement*> MultipleUnitElements;
+	bool MultipleUnitUI;
+	bool SurrenderOn;
 
 private:
 	void PopUpDelay(const float& dt);
@@ -51,7 +53,11 @@ private:
 	InterfaceElement* CashTotalDisplay;
 	InterfaceElement* CashAddDisplay;
 	InterfaceElement* CashSubstractDisplay;
+
+	InterfaceLayer* MenuLayer;
 	InterfaceElement* SurrenderButton;
+	InterfaceElement* DeployButton;
+	InterfaceElement* MenuButton;
 
 
 	InterfaceLayer* SurrenderLayer;
@@ -67,7 +73,7 @@ private:
 	bool PopUpDone = 0;
 	Vector3 CenterTarget = Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.9f, 0);
 
-	bool SurrenderOn;
+	bool MenuOpen;
 	bool PlayerTurn;
 };
 
