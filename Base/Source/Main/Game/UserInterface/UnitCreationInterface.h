@@ -37,10 +37,12 @@ public:
 	void CheckDeployed();
 
 	void NoMoneyError();
+	void NoSlotError();
 	
 	void InterfaceReset();
 
 	void InterfaceExit();
+	bool warningDisplayed3;
 
 private:
 	void HandleUserInput();
@@ -58,6 +60,7 @@ private:
 	InterfaceLayer* WarningLayer;
 	InterfaceElement* NoUnitPopup;
 	InterfaceElement* NoMoneyPopup;
+	InterfaceElement* NoSlotPopup;
 
 	UnitSpawnSystem* UnitSpawner;
 
@@ -72,7 +75,9 @@ private:
 
 	bool warningDisplayed;
 	bool warningDisplayed2;
+
 	float warningTime;
+	float warningTime2;
 
 	std::map<std::string, InterfaceElement*> IconMap;
 	std::map<std::string, InterfaceElement*> IconCounterMap;

@@ -143,6 +143,19 @@ void PlayerSystem::HandleUserInput()
 				MouseUpSelection = TN;
 		}
 
+		if (SceneSystem::Instance().cSS_InputManager->GetKeyValue(VK_SPACE))
+		{
+			TerrainNode* TN = GameLogicSystem::Instance().GetTerrainNodeForPosition(PerspectiveRaycaster::Instance().CalculateIntersectionPointInPlane(Vector3(0, 5), Vector3(0, 1), PerspectiveRaycaster::Instance().CalculateCursorPositionInWorldSpace(CA, CA->FieldOfView)));
+			if (TN)
+			{
+				if (TN->TerrainTile->PlayerUnitList.size() != 0 && GameLogicSystem::Instance().GameInterface->MultipleUnitElements.size() == 0)
+				{
+					GameLogicSystem::Instance().GameInterface->MultipleUnitSelect(TN->TerrainTile->PlayerUnitList, false);
+				}
+			}
+
+		}
+
 		if (MouseUpSelection != nullptr && MouseDownSelection != nullptr)
 		{
 			// The player has clicked
@@ -151,7 +164,7 @@ void PlayerSystem::HandleUserInput()
 				// Clicked the same tile
 				
 					CA->CameraMoveTargetPosition = MouseDownSelection->GetEntity()->GetPosition();
-
+					
 
 				//if (MouseDownSelection == SceneSystem::Instance().GetCurrentScene().ScenePartition->PlayerBase)
 				//{
@@ -172,7 +185,7 @@ void PlayerSystem::HandleUserInput()
 						{
 							int test = GameLogicSystem::Instance().MaxUnitInNode;
 							int t2 = MouseUpSelection->TerrainTile->PlayerUnitList.size();
-							if (GameLogicSystem::Instance().MaxUnitInNode > MouseUpSelection->TerrainTile->PlayerUnitList.size())
+							if (GameLogicSystem::Instance().MaxUnitInNode > MouseUpSelection->TerrainTile->PlayerUnitList.size() && MouseUpSelection != SceneSystem::Instance().GetCurrentScene().ScenePartition->PlayerBase || MouseUpSelection == SceneSystem::Instance().GetCurrentScene().ScenePartition->PlayerBase && SceneSystem::Instance().GetCurrentScene().ScenePartition->PlayerBase->TerrainTile->PlayerUnitList.size() == 0)
 							{
 								if (MouseDownSelection->TerrainTile->PlayerUnitList.size() == 1)
 								{
@@ -184,11 +197,18 @@ void PlayerSystem::HandleUserInput()
 								}
 								else
 								{
-									GameLogicSystem::Instance().GameInterface->MultipleUnitSelect(MouseDownSelection->TerrainTile->PlayerUnitList);
+									GameLogicSystem::Instance().GameInterface->MultipleUnitSelect(MouseDownSelection->TerrainTile->PlayerUnitList, true);
 									TargetedNode = MouseUpSelection;
 									selectingUnit = true;
 									GameLogicSystem::Instance().GameInterface->toggleSurrender();
 									break;
+								}
+							}
+							else
+							{
+								if (GameLogicSystem::Instance().UnitInterface->warningDisplayed3 == 0)
+								{
+									GameLogicSystem::Instance().UnitInterface->NoSlotError();
 								}
 							}
 						}

@@ -37,8 +37,14 @@ void UnitCreationInterface::Init()
 	NoMoneyPopup->SetText("Not Enough Money");
 	NoMoneyPopup->SetTextColor(0);
 
+	NoSlotPopup = WarningLayer->CreateNewInterfaceElement("NoSlot", "quad1", Vector3(ScreenHalfDimension.x, ScreenHalfDimension.y * 2.5f, 0), Vector3(ScreenHalfDimension.x *0.6f, ScreenHalfDimension.y*0.2f, 1.f));
+	NoSlotPopup->SetTargetPosition(Vector3(ScreenHalfDimension.x, ScreenHalfDimension.y * 1.3f, 0));
+	NoSlotPopup->SetText("No Slot Left");
+	NoSlotPopup->SetTextColor(0);
+
 	NoUnitPopup->SwapOriginalWithTarget();
 	NoMoneyPopup->SwapOriginalWithTarget();
+	NoSlotPopup->SwapOriginalWithTarget();
 
 	UnitDisplayLayer = CreateNewInterfaceLayer("Left", 0, 0);
 	UnitDisplayLayer->SetOriginalPosition(Vector3(ScreenHalfDimension.x * 0.25f, 0, 0));
@@ -66,6 +72,8 @@ void UnitCreationInterface::Init()
 	UIDisplayed = 0;
 	deploy = 0;
 
+	warningTime2 = 0;
+	warningDisplayed3 = 0;
 }
 
 void UnitCreationInterface::InterfaceReset()
@@ -184,6 +192,19 @@ void UnitCreationInterface::Update(const float& dt)
 		{
 			NoMoneyPopup->SwapOriginalWithTarget();
 			warningDisplayed2 = 0;
+		}
+	}
+
+	if (warningDisplayed3 == 1)
+	{
+		if (warningTime2 > 0)
+		{
+			warningTime2 -= dt;
+		}
+		else
+		{
+			NoSlotPopup->SwapOriginalWithTarget();
+			warningDisplayed3 = 0;
 		}
 	}
 
@@ -321,6 +342,11 @@ void UnitCreationInterface::OpenInterface()
 		warningDisplayed2 = false;
 		NoMoneyPopup->SwapOriginalWithTarget();
 	}
+	/*if (warningDisplayed3 == true)
+	{
+		warningDisplayed3 = false;
+		NoMoneyPopup->SwapOriginalWithTarget();
+	}*/
 	if (UIDisplayed == 1)
 	{
 		UIDisplayed = 0;
@@ -346,6 +372,13 @@ void UnitCreationInterface::NoMoneyError()
 	warningDisplayed2 = 1;
 	warningTime = 2;
 	deploy = false;
+}
+
+void UnitCreationInterface::NoSlotError()
+{
+	NoSlotPopup->SwapOriginalWithTarget();
+	warningDisplayed3 = 1;
+	warningTime2 = 2;
 }
 
 UnitSpawnSystem* UnitCreationInterface::returnUnitSpawnSys()
