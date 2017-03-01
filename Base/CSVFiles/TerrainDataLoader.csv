@@ -1,6 +1,6 @@
-TerrainID,TerrainName,TerrainType,HealthAdvantage,MeleeAdvantage,MagicAdvantage,RangeAdvantage,HealthDisadvantage,MeleeDisadvantage,MagicDisadvantage,RangeDisadvantage
-1,Plains,4,1,1,1,1,1,1,1,1
-2,HealthPanel,0,1.5,1,1,1,0.9,1,1,1
-3,MeleePanel,1,1,1.5,1,1,1,0.9,1,1
-4,MagicPanel,2,1,1,1.5,1,1,1,0.9,1
-5,RangePanel,3,1,1,1,1.5,1,1,1,0.9
+TerrainID,TerrainName,TerrainMap,Heightmap,Texture1,Texture2,HealthAdvantage,MeleeAdvantage,MagicAdvantage,RangeAdvantage,HealthDisadvantage,MeleeDisadvantage,MagicDisadvantage,RangeDisadvantage
+1,Base,CSVFiles//BattlefieldLayout1.csv,HeightMapFiles//heightmap_MainMenu.raw,Image//Map//GrassStoneTex.tga,Image//Map//RockTex.tga,1,1,1,1,1,1,1,1
+2,HealthPanel,CSVFiles//BattlefieldLayout1.csv,HeightMapFiles//heightmap_MainMenu.raw,Image//Map//GrassStoneTex.tga,Image//Map//RockTex.tga,1.5,1,1,1,0.9,1,1,1
+3,MeleePanel,CSVFiles//BattlefieldLayout1.csv,HeightMapFiles//heightmap_MainMenu.raw,Image//Map//GrassStoneTex.tga,Image//Map//BrickWall.tga,1,1.5,1,1,1,0.9,1,1
+4,MagicPanel,CSVFiles//BattlefieldLayout1.csv,HeightMapFiles//heightmap_Town1.raw,Image//Map//BrickWall.tga,Image//Map//RockTex.tga,1,1,1.5,1,1,1,0.9,1
+5,RangePanel,CSVFiles//BattlefieldLayout1.csv,HeightMapFiles//heightmap_Town2.raw,Image//Map//TerenceMeme.tga,Image//Map//BrickWall.tga,1,1,1,1.5,1,1,1,0.9

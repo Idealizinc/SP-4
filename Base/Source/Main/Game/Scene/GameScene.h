@@ -1,5 +1,5 @@
-#ifndef _SCENE_TOWN_1_H
-#define _SCENE_TOWN_1_H
+#ifndef _SCENE_GAME_H
+#define _SCENE_GAME_H
 
 #include "../../Engine/Objects/SceneEntity.h"
 #include "../../Engine/System/SceneSystem.h"
@@ -10,12 +10,12 @@
 #include "../Miscellaneous/CameraAerial.h"
 #include"../UserInterface/GameScreenInterface.h"
 
-class SceneTown1 : public SceneEntity
+class GameScene : public SceneEntity
 {
 public:
     static std::string id_;
-    SceneTown1();
-    virtual ~SceneTown1();
+    GameScene();
+    virtual ~GameScene();
 
     virtual void Init();
 	virtual void Update(const float& dt);
@@ -46,4 +46,4 @@ private:
 	
 };
 
-#endif // _SCENE_TOWN_1_H
+#endif // _SCENE_GAME_H

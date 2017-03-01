@@ -44,12 +44,12 @@ public:
 	// Data Store
 	UnitDataLoader UnitData;
 	const float UnitSize = 10.f;
-
-private:
-	// Internals
 	// Miscellaneous
 	Vector3 SpawnPosition_Player;
 	Vector3 SpawnPosition_Enemy;
+
+private:
+	// Internals
 	
 	// Containers
 	std::vector<Projectile*> InternalProjectileList;

@@ -23,6 +23,7 @@ public:
 	virtual void Update(const float& dt);
 	virtual void Render();
 	virtual void Exit();
+	void ReloadMap(Terrain*);
 
 private:
 	// Shadow GPass
@@ -45,13 +46,7 @@ private:
 	GameMap *InteractiveMap;
 	std::vector<GameObject*> EntityList;
 	Vector3 CenterPosition;
-
-	//Changes
-	void RenderObjects(BaseObject *obj);
-	void UpdateCharacterLogic(double dt);
-	void UpdateInternals(double dt);
-	bool CheckCollision(BaseObject* o1, BaseObject* o2, std::string type = "Circle");
-
+	std::string TerrainMeshName;
 protected:
 	int NumCharacters;
 };

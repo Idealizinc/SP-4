@@ -2,6 +2,7 @@
 #include <sstream>
 #include <iomanip>
 #include "../Systems/GameLogicSystem.h"
+#include "../Miscellaneous/CameraAerial.h"
 #include "../Logic/Characters/BaseClasses/BattleScreenCharacter.h"
 
 template <typename T>
@@ -229,13 +230,15 @@ void BattleScreenInterface::Update(const float& dt)
 		UnitDataInfoFrame->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 1.5f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y, 0));
 
 		GetMaxData = false;
+
+		CameraAerial* CA = (CameraAerial*)SceneSystem::Instance().GetCurrentScene().camera;
+		CA->CameraMoveTargetPosition = GameLogicSystem::Instance().InternalBattleSystem->SpawnPosition_Player;
 	}
 
 	if (StartBattle)
 	{
 		CNOPU = GameLogicSystem::Instance().InternalBattleSystem->GetPlayerCharacterList().size();
 		CNOEU = GameLogicSystem::Instance().InternalBattleSystem->GetEnemyCharacterList().size();
-
 
 		PlayerRateofChange = defaultbarSize.x - PlayerUnitCount->GetDimensions().x;
 		currentPlayerBarPos = PlayerUnitCountBackground->GetPosition() - Vector3(PlayerRateofChange * 0.5f, 0, 0);

@@ -49,8 +49,8 @@ void MainMenuScene::QuickInit()
 	newMesh->material.kAmbient.Set(0.2f, 0.2f, 0.2f);
 	newMesh->material.kDiffuse.Set(0.2f, 0.2f, 0.2f);
 	newMesh->material.kSpecular.Set(0.0f, 0.0f, 0.0f);
-	newMesh->textureArray[0] = LoadTGA("Image//RockTex.tga");
-	newMesh->textureArray[1] = LoadTGA("Image//GrassStoneTex.tga");
+	newMesh->textureArray[0] = LoadTGA("Image//Map//RockTex.tga");
+	newMesh->textureArray[1] = LoadTGA("Image//Map//GrassStoneTex.tga");
 	Renderer->MeshList.insert(std::pair<std::string, Mesh*>(newMesh->name, newMesh));
 
 	InteractiveMap = new GameMap();
@@ -124,9 +124,19 @@ void MainMenuScene::Update(const float& dt)
 		ScenePartition->ShowPartitions = true;
 	}
 
+	if (SceneSystem::Instance().cSS_InputManager->GetMouseInput(InputManager::KEY_LMB) == InputManager::MOUSE_HOLD)
+	{
+		float Interval = SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 1.f;
+		Vector3 Dimensions = Vector3(Interval, Interval, Interval);
+		Vector3 Velocity = Vector3(Math::RandFloatMinMax(-Interval * 0.5f, Interval * 0.5f), Math::RandFloatMinMax(-Interval * 0.5f, Interval * 0.5f), 1.f);
+		ParticleManager.AddScreenSpaceParticle("weed2", SceneSystem::Instance().cSS_InputManager->GetMousePosition(), Dimensions, Velocity, camera->position, 1.f);
+		//ParticleManager.AddWorldSpaceParticle("weed", Vector3(0, 5, 0), Vector3(10, 10, 10), Velocity * 0.1f, camera->position, 1.f);
+	}
+
 	CA->Update(dt);
 	//MusicSystem::Instance().playBackgroundMusic("battle");
 	BManager.UpdateContainer(dt, CA->position);
+	ParticleManager.UpdateContainer(dt, CA->position);
 
 	ScenePartition->Update(dt);
 
@@ -134,8 +144,6 @@ void MainMenuScene::Update(const float& dt)
 
 	framerates = 1 / dt;
 }
-
-
 
 void MainMenuScene::RenderTerrain()
 {
@@ -150,25 +158,12 @@ void MainMenuScene::RenderShadowCasters()
 {
 	glEnable(GL_CULL_FACE);
 	glCullFace(GL_BACK);
-	//RenderTerrain();
 	RenderSystem *Renderer = dynamic_cast<RenderSystem*>(&SceneSystem::Instance().GetRenderSystem());
-
+	RenderTerrain();
 	ScenePartition->Render();
+	BManager.Render();
+	ParticleManager.Render();
 
-
-	for (std::vector<Particle*>::iterator it = BManager.BillboardContainer.begin(); it != BManager.BillboardContainer.end(); ++it)
-	{
-		if ((*it)->Active)
-		{
-			float TimeRatio = 1;
-			modelStack->PushMatrix();
-			modelStack->Translate((*it)->GetPosition().x, (*it)->GetPosition().y, (*it)->GetPosition().z);
-			modelStack->Rotate(Math::RadianToDegree(atan2(camera->position.x - (*it)->GetPosition().x, camera->position.z - (*it)->GetPosition().z)), 0, 1, 0);
-			modelStack->Scale(TimeRatio * (*it)->GetDimensions().x, TimeRatio *(*it)->GetDimensions().y, TimeRatio *(*it)->GetDimensions().z);
-			Renderer->RenderMesh((*it)->GetMeshName(), false);
-			modelStack->PopMatrix();
-		}
-	}
 }
 
 void MainMenuScene::RenderSkybox()
@@ -297,11 +292,12 @@ void MainMenuScene::RenderPassMain()
 
 	Renderer->RenderMesh("reference", false);
 
-	MenuInterface->Render();
-
-	RenderTerrain();
+	
+	//RenderTerrain();
 	RenderSkybox();
 	RenderShadowCasters();
+
+	MenuInterface->Render();
 
 	Renderer->SetHUD(true);
 	std::stringstream ss;

@@ -58,11 +58,14 @@ void PlayerSystem::Update(const float& dt)
 			SelectedUnit = nullptr;
 			if (TargetedNode != nullptr)
 			{
-				if (TargetedNode->TerrainTile->PlayerUnitList.size() > 0 && TargetedNode->TerrainTile->EnemyUnitList.size() > 0)
+				if (!GameLogicSystem::Instance().DetectWinner())
 				{
-					SceneSystem::Instance().SwitchScene("BattleScene");
-					GameLogicSystem::Instance().SetCurrentState(GameLogicSystem::Instance().BattlePhase);
-					GameLogicSystem::Instance().InternalBattleSystem->SetUpUnits(TargetedNode->TerrainTile);
+					if (TargetedNode->TerrainTile->PlayerUnitList.size() > 0 && TargetedNode->TerrainTile->EnemyUnitList.size() > 0)
+					{
+						SceneSystem::Instance().SwitchScene("BattleScene");
+						GameLogicSystem::Instance().SetCurrentState(GameLogicSystem::Instance().BattlePhase);
+						GameLogicSystem::Instance().InternalBattleSystem->SetUpUnits(TargetedNode->TerrainTile);
+					}
 				}
 				TargetedNode = nullptr;
 			}
@@ -152,6 +155,10 @@ void PlayerSystem::HandleUserInput()
 				{
 					GameLogicSystem::Instance().GameInterface->MultipleUnitSelect(TN->TerrainTile->PlayerUnitList, false);
 				}
+				else if(TN->TerrainTile->EnemyUnitList.size() != 0 && GameLogicSystem::Instance().GameInterface->MultipleUnitElements.size() == 0)
+				{
+					GameLogicSystem::Instance().GameInterface->MultipleUnitSelectE(TN->TerrainTile->EnemyUnitList);
+				}
 			}
 
 		}
@@ -185,7 +192,7 @@ void PlayerSystem::HandleUserInput()
 						{
 							int test = GameLogicSystem::Instance().MaxUnitInNode;
 							int t2 = MouseUpSelection->TerrainTile->PlayerUnitList.size();
-							if (GameLogicSystem::Instance().MaxUnitInNode > MouseUpSelection->TerrainTile->PlayerUnitList.size() && MouseUpSelection != SceneSystem::Instance().GetCurrentScene().ScenePartition->PlayerBase || MouseUpSelection == SceneSystem::Instance().GetCurrentScene().ScenePartition->PlayerBase && SceneSystem::Instance().GetCurrentScene().ScenePartition->PlayerBase->TerrainTile->PlayerUnitList.size() == 0)
+							if (GameLogicSystem::Instance().MaxUnitInNode > MouseUpSelection->TerrainTile->PlayerUnitList.size() && MouseUpSelection != SceneSystem::Instance().GetCurrentScene().ScenePartition->PlayerBase || MouseUpSelection == SceneSystem::Instance().GetCurrentScene().ScenePartition->PlayerBase && SceneSystem::Instance().GetCurrentScene().ScenePartition->PlayerBase->TerrainTile->PlayerUnitList.size() == (unsigned)0)
 							{
 								if (MouseDownSelection->TerrainTile->PlayerUnitList.size() == 1)
 								{

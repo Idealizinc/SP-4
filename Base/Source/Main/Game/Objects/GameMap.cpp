@@ -109,12 +109,12 @@ bool GameMap::LoadFile(const std::string &mapName, const bool& IsGameScreenMap, 
 						TempNodeList.push_back(TN);
 						if (Icon == "TNP")
 						{
-							TN->TerrainTile = new Terrain(*GameLogicSystem::Instance().TerrainLoader.TerrainMap.find("Plains")->second);
+							TN->TerrainTile = new Terrain(*GameLogicSystem::Instance().TerrainLoader.TerrainMap.find("Base")->second);
 							Player = TN;
 						}
 						else if (Icon == "TNE")
 						{
-							TN->TerrainTile = new Terrain(*GameLogicSystem::Instance().TerrainLoader.TerrainMap.find("Plains")->second);
+							TN->TerrainTile = new Terrain(*GameLogicSystem::Instance().TerrainLoader.TerrainMap.find("Base")->second);
 							Enemy = TN;
 						}
 						else
@@ -354,12 +354,12 @@ bool GameMap::loadThoseLegends(const std::string &fileName)
 							bb->Reset();
 							bb->SetParameters(go->GetMeshName(), 1, go->GetPosition(), go->GetDimensions(), 0, 0, Vector3(0, 1, 0));
 							bb->SetEntityID(go->GetMeshName());
-							bb->SetMeshBasedOnID();
+							bb->SetMesh(go->GetMeshName());
 							delete go;
 							theObject = bb;
 						}
                         else {
-                                go->SetBounds();
+                            go->SetBounds();
                         }
 					}
 				}

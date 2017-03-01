@@ -3,6 +3,7 @@
 #include "../Logic/Characters/BaseClasses/BattleScreenCharacter.h"
 #include "GameLogicSystem.h"
 #include "LoadHmap.h"
+#include "../Scene/BattleScene.h"
 
 BattleSystem::BattleSystem()
 {
@@ -51,6 +52,7 @@ void BattleSystem::Update(const float& dt)
 				CurrentBattleTile->EnemyUnitList.clear();
 				ClearCharacterCounters();
 				BSI->ResetAll();
+				GameLogicSystem::Instance().DetectWinner();
 			}
 		}
 		else if (InternalEnemyCharacterList.size() > 0 && InternalPlayerCharacterList.size() <= 0)
@@ -66,6 +68,7 @@ void BattleSystem::Update(const float& dt)
 				CurrentBattleTile->PlayerUnitList.clear();
 				ClearCharacterCounters();
 				BSI->ResetAll();
+				GameLogicSystem::Instance().DetectWinner();
 			}
 		}
 	}
@@ -111,6 +114,8 @@ void BattleSystem::SetUpUnits(Terrain* BattlefieldTile)
 {
 	ClearCharacterCounters();
 	BSI->SetTerrain(BattlefieldTile);
+	BattleScene* BS = dynamic_cast<BattleScene*>(&SceneSystem::Instance().GetCurrentScene());
+	BS->ReloadMap(BattlefieldTile);
 	CurrentBattleTile = BattlefieldTile;
 	// For every of the Units within the tile, I am  going to put the entirety of the battalions into my counters
 	// Set up the Player
@@ -217,7 +222,7 @@ bool CheckCollision(BaseObject *o1, BaseObject *o2, std::string type)
 {
 	if (type == "Circle")
 	{
-		float CombinedRadiusSquared = (o1->GetDimensions().x + o2->GetDimensions().x) * (o1->GetDimensions().x + o2->GetDimensions().x)* 0.35f;
+		float CombinedRadiusSquared = (o1->GetDimensions().x + o2->GetDimensions().x) * (o1->GetDimensions().x + o2->GetDimensions().x)* 0.5f;
 		float DistSquared = (o1->GetPosition() - o2->GetPosition()).LengthSquared();
 		if (DistSquared < CombinedRadiusSquared)
 		{
