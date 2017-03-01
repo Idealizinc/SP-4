@@ -105,7 +105,7 @@ void CharacterStateManager::Scout(const float& dt)
 			Vector3 DirectionToTargetEnemy = (Character->TargetEnemy->GetPosition() - Character->GetPosition());
 			DirectionToTargetEnemy.y = 0;
 			float D = DirectionToTargetEnemy.LengthSquared();
-			if (DirectionToTargetEnemy.LengthSquared() < Character->DetectionRadius * Character->DetectionRadius * 3.f)
+			if (DirectionToTargetEnemy.LengthSquared() < Character->DetectionRadius * Character->DetectionRadius * 2.f)
 			{
 				SetCurrentState("Attack");
 				Character->InternalTimerVector[0] = 0;
@@ -246,7 +246,7 @@ BaseObject* CharacterStateManager::FindTargetNode()
 	if (Character->TargetEnemy != nullptr)
 	{
 		Vector3 DirectionToTarget = (Character->TargetEnemy->GetPosition() - Character->GetPosition());
-		float SelectionDistance = Character->DetectionRadius *  Character->DetectionRadius * 0.75f;
+		float SelectionDistance = Character->DetectionRadius * 2.f;
 		std::vector<GameObject*> NodeList = SceneSystem::Instance().GetCurrentScene().ScenePartition->WaypointList;
 		for (std::vector<GameObject*>::iterator it = NodeList.begin(); it != NodeList.end(); ++it)
 		{

@@ -14,16 +14,15 @@ void Terrain::Exit()
 	//for (auto it : EnemyUnitList)
 	//	delete it;
 	EnemyUnitList.clear();
+	TerrainHeightMap.clear();
+	UnitAdvantage.clear();
+	UnitDisadvantage.clear();
 }
 
 // Getters
 std::string Terrain::GetTerrainName()
 {
 	return TerrainName;
-}
-int Terrain::GetTerrainType()
-{
-	return TerrainType;
 }
 float Terrain::GetUnitAdvantage(int stat)
 {
@@ -38,10 +37,6 @@ float Terrain::GetUnitDisadvantage(int stat)
 void Terrain::SetTerrainName(std::string TerrainName)
 {
 	this->TerrainName = TerrainName;
-}
-void Terrain::SetTerrainType(int TerrainType)
-{
-	this->TerrainType = TerrainType;
 }
 void Terrain::SetUnitAdvantage(int stat, float value)
 {

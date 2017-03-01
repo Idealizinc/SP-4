@@ -53,7 +53,7 @@ public:
 				{
 					DirVec = Vector3(Math::RandFloatMinMax(-10.f, 10.f), 0, Math::RandFloatMinMax(-10.f, 10.f)) + Character->TargetEnemy->GetPosition() - Character->GetPosition();
 					DirVec.Normalize();
-					Character->SetVelocity(DirVec * 0.5f * (float)Character->WalkSpeed);
+					Character->SetVelocity(DirVec * 0.25f * (float)Character->WalkSpeed);
 				}
 				// Shoot at enemy
 				if (RWeapon->CanAttack())

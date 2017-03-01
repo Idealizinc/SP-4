@@ -39,10 +39,10 @@ void EnemySystem::Update(const float& dt)
 		if (InternalEnemyContainer.size() <= 0)
 			CurrentTurnState = S_SPAWN;
 		else{
-			if (Math::RandIntMinMax(1, 10) > 2)
-				CurrentTurnState = S_MOVE;
-			else 
+			if (Math::RandIntMinMax(1, 10) < 3 && SceneSystem::Instance().GetCurrentScene().ScenePartition->EnemyBase->TerrainTile->EnemyUnitList.size() <= 0)
 				CurrentTurnState = S_SPAWN;
+			else 
+				CurrentTurnState = S_MOVE;
 		}
 		break;
 	case (S_SPAWN) : // I Spawn a Unit

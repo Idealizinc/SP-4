@@ -28,14 +28,14 @@ public:
 		if (this->Type == WeaponType::T_MAGIC_PROJECTILE)
 		{
 			// Bullet Fire
-			Vector3 Inaccuracy = BulletSpread * Vector3(Math::RandFloatMinMax(-DirVec.LengthSquared(), DirVec.LengthSquared()), Math::RandFloatMinMax(DirVec.LengthSquared() * 0.5f, DirVec.LengthSquared()), Math::RandFloatMinMax(-DirVec.LengthSquared(), DirVec.LengthSquared())) - CE->GetPosition();
+			Vector3 Inaccuracy = BulletSpread * Vector3(Math::RandFloatMinMax(-DirVec.LengthSquared(), DirVec.LengthSquared()), Math::RandFloatMinMax(DirVec.LengthSquared() * 0.25f, DirVec.LengthSquared() * 0.75f), Math::RandFloatMinMax(-DirVec.LengthSquared(), DirVec.LengthSquared())) - CE->GetPosition();
 			Vector3 AltDirVec = CE->TargetEnemy->GetPosition() + Inaccuracy;
 			Projectile* Bullet = new Projectile("", Damage, 10);
 			Bullet->OwnerID = CE->GetEntityID();
 			Bullet->OwnerFaction = BSC->CharacterFaction;
 			Bullet->GravityAffected = false;
 			Vector3 Velocity = AltDirVec.Normalized() * (float)CE->WalkSpeed * 3.f;
-			Bullet->SetParameters("Explosion", 1, CE->GetPosition() + Vector3(0, CE->GetDimensions().y) + Velocity * 0.01f, Vector3(CE->GetDimensions().x * 0.5f, CE->GetDimensions().x * 0.5f, CE->GetDimensions().x * 0.5f), Velocity, 0, Vector3(0, 1, 0));
+			Bullet->SetParameters("Explosion", 1, CE->GetPosition() + Vector3(0, CE->GetDimensions().y * 0.5f) + Velocity * 0.01f, Vector3(CE->GetDimensions().x * 0.5f, CE->GetDimensions().x * 0.5f, CE->GetDimensions().x * 0.5f), Velocity, 0, Vector3(0, 1, 0));
 			GameLogicSystem::Instance().InternalBattleSystem->AddNewProjectile(Bullet);
 		}
 		else if (this->Type == WeaponType::T_MAGIC_AOE)

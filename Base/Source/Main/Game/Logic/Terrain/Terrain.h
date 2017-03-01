@@ -27,7 +27,6 @@ public:
 		T_MELEE,
 		T_MAGIC,
 		T_RANGE,
-		T_NORMAL,
 		T_MAX,
 	};
 
@@ -40,13 +39,11 @@ public:
 	
 	// Getters
 	std::string GetTerrainName();
-	int GetTerrainType();
 	float GetUnitAdvantage(int stat);
 	float GetUnitDisadvantage(int stat);
 
 	// Setters
 	void SetTerrainName(std::string TerrainName);
-	void SetTerrainType(int TerrainType);
 	void SetUnitAdvantage(int stat, float value);
 	void SetUnitDisadvantage(int stat, float value);
 
@@ -55,11 +52,12 @@ public:
 
 	std::map<int, float> UnitAdvantage;
 	std::map<int, float> UnitDisadvantage;
+	std::string CSVMapName;
+	Mesh* TerrainMesh;
+	std::vector<unsigned char> TerrainHeightMap;
 
 private:
-	std::string EntityID;
 	std::string TerrainName;
-	int TerrainType;
 
 };
 

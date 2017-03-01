@@ -1,4 +1,4 @@
-#include "SceneTown1.h"
+#include "GameScene.h"
 #include <sstream>
 #include <iomanip>
 
@@ -8,9 +8,9 @@
 #include "../SceneManagement/ScenePartitionGraph.h"
 #include "../Systems/GameLogicSystem.h"
 
-std::string SceneTown1::id_ = "1_Scene";
+std::string GameScene::id_ = "1_Scene";
 
-SceneTown1::SceneTown1()
+GameScene::GameScene()
 	: SceneEntity()
 {
 	framerates = 0;
@@ -21,12 +21,12 @@ SceneTown1::SceneTown1()
 	Init();
 }
 
-SceneTown1::~SceneTown1()
+GameScene::~GameScene()
 {
 
 }
 
-void SceneTown1::QuickInit()
+void GameScene::QuickInit()
 {
 	RenderSystem *Renderer = dynamic_cast<RenderSystem*>(&SceneSystem::Instance().GetRenderSystem());
 
@@ -46,22 +46,22 @@ void SceneTown1::QuickInit()
 	newMesh->material.kAmbient.Set(0.2f, 0.2f, 0.2f);
 	newMesh->material.kDiffuse.Set(0.2f, 0.2f, 0.2f);
 	newMesh->material.kSpecular.Set(0.0f, 0.0f, 0.0f);
-	newMesh->textureArray[0] = LoadTGA("Image//RockTex.tga");
-	newMesh->textureArray[1] = LoadTGA("Image//GrassStoneTex.tga");
+	newMesh->textureArray[0] = LoadTGA("Image//Map//RockTex.tga");
+	newMesh->textureArray[1] = LoadTGA("Image//Map//GrassStoneTex.tga");
 	Renderer->MeshList.insert(std::pair<std::string, Mesh*>(newMesh->name, newMesh));
 		
 	GameLogicSystem::Instance().TerrainLoader.LoadTerrainData("CSVFiles/TerrainDataLoader.csv");
 	InteractiveMap = new GameMap();
 	InteractiveMap->ScenePartition = ScenePartition;
 	InteractiveMap->SetEntityID("SceneMap");
-	InteractiveMap->LoadMap("CSVFiles//GSMap_Roundabout.csv", true, m_heightMap, TerrainScale, EntityList, BManager);
-	//InteractiveMap->LoadMap("CSVFiles//Tutorial.csv", true, m_heightMap, TerrainScale, EntityList, BManager);
+	//InteractiveMap->LoadMap("CSVFiles//GSMap_Roundabout.csv", true, m_heightMap, TerrainScale, EntityList, BManager);
+	InteractiveMap->LoadMap("CSVFiles//Tutorial.csv", true, m_heightMap, TerrainScale, EntityList, BManager);
 	GameLogicSystem::Instance().Init();
 
 	SceneSystem::Instance().cSS_InputManager->cIM_inMouseMode = true;
 }
 
-void SceneTown1::QuickExit()
+void GameScene::QuickExit()
 {
 	if (ScenePartition)
 	{
@@ -76,20 +76,14 @@ void SceneTown1::QuickExit()
 		delete Player;
 	if (camera)
 		delete camera;
-	/*if (GSI)
-	{
-		GSI->Exit();
-		delete GSI;
-		GSI = nullptr;
-	}*/
 }
 
-void SceneTown1::Init()
+void GameScene::Init()
 {
 	QuickInit();
 }
 
-void SceneTown1::Update(const float& dt)
+void GameScene::Update(const float& dt)
 {
 	RenderSystem *Renderer = dynamic_cast<RenderSystem*>(&SceneSystem::Instance().GetRenderSystem());
 
@@ -161,7 +155,7 @@ void SceneTown1::Update(const float& dt)
 	framerates = 1 / dt;
 }
 
-void SceneTown1::RenderTerrain()
+void GameScene::RenderTerrain()
 {
 	RenderSystem *Renderer = dynamic_cast<RenderSystem*>(&SceneSystem::Instance().GetRenderSystem());
 	modelStack->PushMatrix();
@@ -170,7 +164,7 @@ void SceneTown1::RenderTerrain()
 	modelStack->PopMatrix();
 }
 
-void SceneTown1::RenderShadowCasters()
+void GameScene::RenderShadowCasters()
 {
 	glEnable(GL_CULL_FACE);
 	glCullFace(GL_BACK);
@@ -196,7 +190,7 @@ void SceneTown1::RenderShadowCasters()
 	}
 }
 
-void SceneTown1::RenderSkybox()
+void GameScene::RenderSkybox()
 {
 	float Offset = SkyboxSize *0.001f * 2.f;
 	RenderSystem *Renderer = dynamic_cast<RenderSystem*>(&SceneSystem::Instance().GetRenderSystem());
@@ -248,7 +242,7 @@ void SceneTown1::RenderSkybox()
 	modelStack->PopMatrix();
 }
 
-void SceneTown1::RenderPassGPass()
+void GameScene::RenderPassGPass()
 {
 	RenderSystem *Renderer = dynamic_cast<RenderSystem*>(&SceneSystem::Instance().GetRenderSystem());
 	Renderer->m_renderPass = RenderSystem::RENDER_PASS::RENDER_PASS_PRE;
@@ -265,9 +259,6 @@ void SceneTown1::RenderPassGPass()
 	}
 	else
 	{
-		//CameraAerial* CA = (CameraAerial*)SceneSystem::Instance().GetCurrentScene().camera;
-		//Renderer->m_lightDepthProj.SetToPerspective(CA->FieldOfView, SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth / SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight, 0.1f, 2000.0f);
-
 		Renderer->m_lightDepthProj.SetToPerspective(90, 1.f, 0.1, 20);
 	}
 	Renderer->m_lightDepthView.SetToLookAt(Renderer->lights[0].position.x, Renderer->lights[0].position.y, Renderer->lights[0].position.z, 0, 0, 0, 0, 1, 0);
@@ -275,7 +266,7 @@ void SceneTown1::RenderPassGPass()
 	RenderShadowCasters();
 }
 
-void SceneTown1::RenderPassMain()
+void GameScene::RenderPassMain()
 {
 	RenderSystem *Renderer = dynamic_cast<RenderSystem*>(&SceneSystem::Instance().GetRenderSystem());
 	Renderer->m_renderPass = RenderSystem::RENDER_PASS::RENDER_PASS_MAIN;
@@ -325,32 +316,18 @@ void SceneTown1::RenderPassMain()
 	// Model matrix : an identity matrix (model will be at the origin)
 	modelStack->LoadIdentity();
 
-	//Renderer->RenderMesh("reference", false);
-
-	modelStack->PushMatrix();
 	RenderSkybox();
 	RenderShadowCasters();
-	modelStack->PopMatrix();
-
-	//for (auto it : ObjectManager::Instance().GetParticleList())
-	//	it->Render();
-	
-	//GSI->Render();
 
 	Renderer->SetHUD(true);
 	std::stringstream ss;
 	ss.str("");
 	ss << "FPS: " << framerates;
 	Renderer->RenderTextOnScreen(ss.str(), Color(), SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth* 0.02f, SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth* 0.01f, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.1f);
-	ss.str(""); 
-	for (auto it : GameLogicSystem::Instance().UnitInterface->returnUnitSpawnSys()->returnRecordedUnitMap())
-		ss << it.first << ": " << it.second << " | ";
-	Renderer->RenderTextOnScreen(ss.str(), Color(), SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth* 0.015f, SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth* 0.01f, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.05f);
-
 	Renderer->SetHUD(false);
 }
 
-void SceneTown1::Render()
+void GameScene::Render()
 {
 	//*********************************
 	//		PRE RENDER PASS
@@ -362,7 +339,7 @@ void SceneTown1::Render()
 	RenderPassMain();
 }
 
-void SceneTown1::Exit()
+void GameScene::Exit()
 {
 	QuickExit();
 }

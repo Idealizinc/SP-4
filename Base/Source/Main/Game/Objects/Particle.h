@@ -22,20 +22,21 @@ public:
 
 	Vector3 PlayerPosition;
 
-	virtual void Update(double dt);
+	virtual void Update(const float& dt);
+	virtual void Render();
 
 	void Reset();
 	bool CheckLife();
-	
-	void SetMeshBasedOnID();
-
-private:
-	Vector3 DefaultDimensions;
-	float LifeTime = 0;
-	float CurrentTime = 0;
-	Mesh* StoredMesh;
 
 	bool operator<(Particle& rhs);
+	void SetLifeTime(const float& LifeTime);
+
+	Vector3 DefaultDimensions;
+	bool InWorldSpace = true;
+
+private:
+	float LifeTime = 0;
+	float CurrentTime = 0;
 
 };
 

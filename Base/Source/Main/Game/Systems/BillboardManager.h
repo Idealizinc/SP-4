@@ -31,6 +31,10 @@ public:
 
 	void AddBillboard(const std::string& MeshName, const Vector3& Position, const Vector3& Dimensions, const Vector3& Velocity = 0, const Vector3& PlayerPosition = 0);
 
+	void AddScreenSpaceParticle(const std::string& MeshName, const Vector3& Position, const Vector3& Dimensions, const Vector3& Velocity = 0, const Vector3& PlayerPosition = 0, const float& LifeTime = 1.f);
+	
+	void AddWorldSpaceParticle(const std::string& MeshName, const Vector3& Position, const Vector3& Dimensions, const Vector3& Velocity = 0, const Vector3& PlayerPosition = 0, const float& LifeTime = 1.f);
+
 	virtual void Init();
 	virtual void Update(const float& dt);
 	virtual void Render();
