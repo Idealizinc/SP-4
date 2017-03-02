@@ -33,6 +33,7 @@ private:
 	InterfaceElement* StartWordPopup;
 
 	InterfaceLayer* TerrainInfoLayer;
+	InterfaceElement* TerrainName;
 	InterfaceElement* TerrainInfoFrame;
 	InterfaceElement* TerrainAdvantage;
 	InterfaceElement* TerrainHealthBoostValue;
@@ -44,6 +45,7 @@ private:
 	InterfaceElement* TerrainMeleeMinusValue;
 	InterfaceElement* TerrainMagicMinusValue;
 	InterfaceElement* TerrainRangeMinusValue;
+	InterfaceElement* TerrainAdvantageBoost;
 	InterfaceElement* TerrainFrameButton;
 
 	InterfaceLayer* UnitDataLayer;

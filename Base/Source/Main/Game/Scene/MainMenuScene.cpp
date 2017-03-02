@@ -57,7 +57,7 @@ void MainMenuScene::QuickInit()
 	GameMap *theMap = dynamic_cast<GameMap*>(InteractiveMap);
 	theMap->ScenePartition = ScenePartition;
 	theMap->SetEntityID("MainMenu");
-	theMap->LoadMap("CSVFiles//BattlefieldLayout1.csv", false, m_heightMap, TerrainScale, EntityList, BManager);
+	theMap->LoadMap("CSVFiles//BattlefieldLayouts//BattlefieldLayout1.csv", false, m_heightMap, TerrainScale, EntityList, BManager);
 
 	SceneSystem::Instance().cSS_InputManager->cIM_inMouseMode = true;
 }

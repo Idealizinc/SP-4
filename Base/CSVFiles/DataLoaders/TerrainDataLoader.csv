@@ -1,3 +1,7 @@
 TerrainID,TerrainName,TerrainMap,Heightmap,Texture1,Texture2,HealthAdvantage,MeleeAdvantage,MagicAdvantage,RangeAdvantage,HealthDisadvantage,MeleeDisadvantage,MagicDisadvantage,RangeDisadvantage
-1,Base,CSVFiles//BattlefieldLayout1.csv,HeightMapFiles//heightmap_MainMenu.raw,Image//Map//GrassStoneTex.tga,Image//Map//RockTex.tga,1,1,1,1,1,1,1,1
-2,MeleePanel,CSVFiles//BattlefieldLayout2.csv,HeightMapFiles//heightmap_test.raw,Image//Map//GrassStoneTex.tga,Image//Map//RockTex.tga,1,2,1,1,1,1,1,0.5
+1,Base,CSVFiles/BattlefieldLayouts/BattlefieldLayout1.csv,HeightMapFiles//heightmap_MainMenu.raw,Image//Map//GrassStoneTex.tga,Image//Map//RockTex.tga,1,1,1,1,1,1,1,1
+2,Snow With Grass,CSVFiles/BattlefieldLayouts/BattlefieldLayout3.csv,HeightMapFiles//heightmap_Field1.raw,Image//Map//Snow.tga,Image//Map//SnowWithGrass.tga,1,1.5,1,1,0.5,1,1,1
+3,Swamp With Grass,CSVFiles/BattlefieldLayouts/BattlefieldLayout2.csv,HeightMapFiles//heightmap_Field2.raw,Image//Map//GrassStoneTex.tga,Image//Map//Swamp.tga,1,1,1,2,1,0.5,1,1
+4,Snow Field,CSVFiles/BattlefieldLayouts/BattlefieldLayout4.csv,HeightMapFiles//heightmap_Field3.raw,Image//Map//Snow.tga,,1,1.5,1.5,1,1,1,1,0.5
+5,Desert Field,CSVFiles/BattlefieldLayouts/BattlefieldLayout5.csv,HeightMapFiles//heightmap_Field4.raw,Image//Map//DesertGround.tga,,1,1,2,1,0.5,1,1,1
+6,Swamp Field,CSVFiles/BattlefieldLayouts/BattlefieldLayout6.csv,HeightMapFiles//heightmap_Field5.raw,Image//Map//Swamp.tga,,1,1,1.5,1.5,1,0.5,1,1
