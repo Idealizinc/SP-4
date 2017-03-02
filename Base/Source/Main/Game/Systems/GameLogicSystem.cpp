@@ -30,6 +30,12 @@ void GameLogicSystem::Init()
 	TerrainLoader.LoadTerrainData(LuaInterface::Instance().GetStringValue("CSVFilePath_TerrainDataLoader").c_str());
 	LevelDataLoader::Instance().LoadLevelData(LuaInterface::Instance().GetStringValue("CSVFilePath_LevelDataLoader").c_str());
 
+	// I'd like to initiallize some settings from my lua file
+	LuaInterface::Instance().AddLuaState("DataStore.lua");
+	VolumeMultiplier = LuaInterface::Instance().GetFloatValue("Setting_Volume") * 0.01f;
+	PieceAnimationSpeed = LuaInterface::Instance().GetFloatValue("Setting_AnimationSpeed")* 0.01f;
+	ParticleMultiplier = LuaInterface::Instance().GetFloatValue("Setting_ParticleMultiplier")* 0.01f;
+	std::cout << VolumeMultiplier << " " << PieceAnimationSpeed << " " << ParticleMultiplier;
 }
 
 void GameLogicSystem::QuickInit()
@@ -146,6 +152,11 @@ void GameLogicSystem::Render()
 void GameLogicSystem::Exit()
 {
 	QuickExit();
+	// I'd like to save some settings to my lua file
+	LuaInterface::Instance().AddLuaState("DataStoreUtility.lua");
+	LuaInterface::Instance().SaveIntegerValue("Setting_Volume", VolumeMultiplier * 100, true);
+	LuaInterface::Instance().SaveIntegerValue("Setting_AnimationSpeed", PieceAnimationSpeed * 100, false);
+	LuaInterface::Instance().SaveIntegerValue("Setting_ParticleMultiplier", ParticleMultiplier * 100, false);
 }
 
 void GameLogicSystem::QuickExit()

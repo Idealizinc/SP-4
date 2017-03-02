@@ -155,7 +155,9 @@ void EndOfGameScene::RenderPassMain()
 	// Model matrix : an identity matrix (model will be at the origin)
 	modelStack->LoadIdentity();
 	SceneSystem::Instance().RenderTransitionEffects();
-	SceneSystem::Instance().RenderMouseCursor(Vector3(SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.05f, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.05f), "weed");
+	if (SceneSystem::Instance().cSS_InputManager->GetMouseInput(InputManager::KEY_LMB) == InputManager::MOUSE_RELEASE)
+		SceneSystem::Instance().RenderMouseCursor(Vector3(SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.05f, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.05f), "Pointer");
+	else SceneSystem::Instance().RenderMouseCursor(Vector3(SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.05f, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.05f), "PointerDown");
 
 	Renderer->RenderMesh("reference", false);
 	Renderer->SetHUD(true);

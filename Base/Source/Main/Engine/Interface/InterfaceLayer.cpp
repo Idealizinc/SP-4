@@ -73,6 +73,7 @@ InterfaceElement* InterfaceLayer::CreateNewInterfaceElement(const std::string& E
 	InterfaceElement* NewE = new InterfaceElement();
 	NewE->SetEntityID(ElementID);
 	NewE->SetOriginalPosition(OriginalPosition);
+	NewE->SetTargetPosition(OriginalPosition);
 	NewE->SetMesh(MeshID);
 	NewE->SetDimensions(Dimensions);
 	InternalElementContainer.push_back(NewE);

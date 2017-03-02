@@ -40,6 +40,8 @@ public:
 	bool SurrenderOn;
 	bool MenuOpen;
 	bool SurrenderCheck;
+	InterfaceLayer* MenuLayer;
+	InterfaceElement* MenuButton;
 
 private:
 	void PopUpDelay(const float& dt);
@@ -59,11 +61,9 @@ private:
 	InterfaceElement* GoldImage;
 	InterfaceElement* CashBG;
 
-	InterfaceLayer* MenuLayer;
 	InterfaceElement* SurrenderButton;
 	InterfaceElement* DeployButton;
 	InterfaceElement* SkipButton;
-	InterfaceElement* MenuButton;
 	InterfaceElement* MenuFrame;
 
 	InterfaceLayer* SurrenderLayer;

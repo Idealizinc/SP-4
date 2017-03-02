@@ -25,6 +25,13 @@ public:
 	bool PlayerWon;
 	bool EnemyWon;
 	bool Finished;
+
+	InterfaceLayer* TerrainInfoLayer;
+	InterfaceElement* TerrainFrameButton;
+
+	InterfaceLayer* UnitDataLayer;
+	InterfaceElement* UnitDataFrameButton;
+
 private:
 	void HandleUserInput();
 	void PopUpDelay(const float& dt);
@@ -35,7 +42,6 @@ private:
 	InterfaceElement* BattleWordPopup;
 	InterfaceElement* StartWordPopup;
 
-	InterfaceLayer* TerrainInfoLayer;
 	InterfaceElement* TerrainName;
 	InterfaceElement* TerrainInfoFrame;
 	InterfaceElement* TerrainAdvantage;
@@ -49,15 +55,12 @@ private:
 	InterfaceElement* TerrainMagicMinusValue;
 	InterfaceElement* TerrainRangeMinusValue;
 	InterfaceElement* TerrainAdvantageBoost;
-	InterfaceElement* TerrainFrameButton;
 
-	InterfaceLayer* UnitDataLayer;
 	InterfaceElement* UnitDataInfoFrame;
 	InterfaceElement* UnitDataInfoText;
 	InterfaceElement* UnitDataIcon;
 	InterfaceElement* UnitWeaponDataName;
 	InterfaceElement* UnitWeaponDataNumber;
-	InterfaceElement* UnitDataFrameButton;
 
 	InterfaceLayer* UnitCountInfoLayer;
 	InterfaceElement* PlayerUnitCount;

@@ -69,7 +69,24 @@ void BattleScene::Update(const float& dt)
 	float Speed = 50.f;
 	CameraAerial* CA = (CameraAerial*)camera;
 	float DetectionOffset = 0.2f;
-	if (!GameLogicSystem::Instance().UnitInterface->UIDisplayed)
+	bool CameraLocked = false;
+
+	if (GameLogicSystem::Instance().InternalBattleSystem->BSI->StartBattle)
+	{
+		if (SceneSystem::Instance().cSS_InputManager->GetMouseInput(InputManager::KEY_LMB) == InputManager::MOUSE_RELEASE)
+		{
+			if (GameLogicSystem::Instance().InternalBattleSystem->BSI->TerrainFrameButton->DetectUserInput(SceneSystem::Instance().cSS_InputManager->GetMousePosition(), GameLogicSystem::Instance().InternalBattleSystem->BSI->TerrainInfoLayer->GetPosition()) || GameLogicSystem::Instance().InternalBattleSystem->BSI->UnitDataFrameButton->DetectUserInput(SceneSystem::Instance().cSS_InputManager->GetMousePosition(), GameLogicSystem::Instance().InternalBattleSystem->BSI->UnitDataLayer->GetPosition()))
+			{
+				CameraLocked = true;
+			}
+		}
+	}
+	if (GameLogicSystem::Instance().UnitInterface->UIDisplayed)
+	{
+		CameraLocked = true;
+	}
+
+	if (!CameraLocked)
 	{
 		if (SceneSystem::Instance().cSS_InputManager->GetKeyValue(SimpleCommand::m_allTheKeys[SimpleCommand::FORWARD_COMMAND]) ||
 			SceneSystem::Instance().cSS_InputManager->GetMousePosition().y > SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * (1.f - DetectionOffset))
@@ -319,7 +336,9 @@ void BattleScene::RenderPassMain()
 	// Model matrix : an identity matrix (model will be at the origin)
 	modelStack->LoadIdentity();
 	SceneSystem::Instance().RenderTransitionEffects(); 
-	SceneSystem::Instance().RenderMouseCursor(Vector3(SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.05f, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.05f), "weed2");
+	if (SceneSystem::Instance().cSS_InputManager->GetMouseInput(InputManager::KEY_LMB) == InputManager::MOUSE_RELEASE)
+		SceneSystem::Instance().RenderMouseCursor(Vector3(SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.05f, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.05f), "Pointer");
+	else SceneSystem::Instance().RenderMouseCursor(Vector3(SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.05f, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.05f), "PointerDown");
 
 	Renderer->RenderMesh("reference", false);
 

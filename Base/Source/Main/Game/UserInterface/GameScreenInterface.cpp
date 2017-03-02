@@ -26,9 +26,9 @@ void GameScreenInterface::Init()
 	EnemyTurnPopup = TurnPopup->CreateNewInterfaceElement("EnemyPopUp", "RedBar", Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 2.5f, 0), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.5f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.2f, 0));
 	EnemyTurnPopup->SetTargetPosition(EnemyTurnPopup->GetOriginalPosition());
 	EnemyTurnPopup->SetText("Enemy Turn");
-	EnemyTurnPopup->SetTextColor(0);\
+	EnemyTurnPopup->SetTextColor(0); \
 
-	MenuLayer = CreateNewInterfaceLayer("MenuLayer", Vector3(SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth * 0.8f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y, 0), Vector3(Vector3(SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth * 1.03f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y, 0)));
+		MenuLayer = CreateNewInterfaceLayer("MenuLayer", Vector3(SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth * 0.8f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y, 0), Vector3(Vector3(SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth * 1.03f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y, 0)));
 	//MenuLayer->SwapOriginalWithTarget();
 
 	SurrenderButton = MenuLayer->CreateNewInterfaceElement("WhiteFlag", "SurrenderButton", Vector3(SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth * 0.07f, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.13f, 0.0f), Vector3(SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth * 0.15f, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.09f, 0));
@@ -40,15 +40,15 @@ void GameScreenInterface::Init()
 	SkipButton = MenuLayer->CreateNewInterfaceElement("SkipButton", "SkipButton", Vector3(SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth * 0.07f, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * -(0.13f), 0.0f), Vector3(SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth * 0.15f, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.09f, 0));
 	SkipButton->SetTargetPosition(SkipButton->GetOriginalPosition());
 
-	MenuButton = MenuLayer->CreateNewInterfaceElement("MenuUI", "quad", Vector3(SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth * -(0.04f),SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.01f, 0), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.08f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.3f, 0));
+	MenuButton = MenuLayer->CreateNewInterfaceElement("MenuUI", "Transparent", Vector3(SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth * -(0.04f), SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.01f, 0), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.08f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.3f, 0));
 	MenuButton->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth * -(0.04f), SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.01f, 0));
 
 	MenuFrame = MenuLayer->CreateNewInterfaceElement("MenuFrame", "InfoFrame2", Vector3(SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth * 0.07f, 0, 0), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.5f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.9f, 0));
 	MenuFrame->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth * 0.07f, 0, 0));
 
 	//Ingame Frame
-	IngameLayer = CreateNewInterfaceLayer("IngameLayer", 0 ,0);
-	
+	IngameLayer = CreateNewInterfaceLayer("IngameLayer", 0, 0);
+
 	GameFrame = IngameLayer->CreateNewInterfaceElement("GameFrame", "Transparent", Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y, 0), Vector3(SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight, 0));
 	GameFrame->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y, 0));
 
@@ -61,7 +61,7 @@ void GameScreenInterface::Init()
 
 	CashTotalDisplay = CashDisplayLayer->CreateNewInterfaceElement("CashTotal", "Transparent", Vector3(SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth * 0.02f), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.3f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.2f, 0));
 	CashTotalDisplay->SetTargetPosition(CashTotalDisplay->GetOriginalPosition());
-	CashTotalDisplay->SetTextColor(Vector3(0,0,0));
+	CashTotalDisplay->SetTextColor(Vector3(0, 0, 0));
 
 	CashBG = CashDisplayLayer->CreateNewInterfaceElement("CashTotal", "Background", 0, Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.3f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.2f, 0));
 
@@ -73,7 +73,7 @@ void GameScreenInterface::Init()
 	CashSubstractDisplay->SetTextColor(0);
 
 
-	MultipleUnitLayer = CreateNewInterfaceLayer("multipleLayer", 0,0);
+	MultipleUnitLayer = CreateNewInterfaceLayer("multipleLayer", 0, 0);
 
 	PlayerTurn = true;
 	SurrenderOn = false;
@@ -87,7 +87,7 @@ void GameScreenInterface::InitSurrender()
 {
 	SurrenderLayer = CreateNewInterfaceLayer("SurrenderLayer", Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * -(1), 0), 0);
 	SurrenderLayer->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y, 0));
-	
+
 	SurrenderBackground = SurrenderLayer->CreateNewInterfaceElement("SurrenderBackground", "BlueBar", 0, Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.5f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.1f, 0));
 	SurrenderBackground->SetTargetPosition(0);
 	SurrenderBackground->SetText("Do you want to surrender?");
@@ -207,7 +207,7 @@ void GameScreenInterface::Update(const float& dt)
 				}
 			}
 		}
-		if (SurrenderButton->DetectUserInput(MousePos, MenuLayer->GetPosition()) && MenuLayer->Active == 1)
+		else if (SurrenderButton->DetectUserInput(MousePos, MenuLayer->GetPosition()) && MenuLayer->Active == 1)
 		{
 			SurrenderLayer->SwapOriginalWithTarget();
 			MenuLayer->SwapOriginalWithTarget();
@@ -220,7 +220,7 @@ void GameScreenInterface::Update(const float& dt)
 				SurrenderOn = 1;
 			}
 		}
-		if (SurrenderNoButton->DetectUserInput(MousePos, SurrenderLayer->GetPosition()) && SurrenderLayer->Active == 1)
+		else if (SurrenderNoButton->DetectUserInput(MousePos, SurrenderLayer->GetPosition()) && SurrenderLayer->Active == 1)
 		{
 			SurrenderLayer->SwapOriginalWithTarget();
 			if (SurrenderOn == 1)
@@ -233,52 +233,51 @@ void GameScreenInterface::Update(const float& dt)
 			}
 			MenuOpen = false;
 		}
-			if (SurrenderYesButton->DetectUserInput(MousePos, SurrenderLayer->GetPosition()) && SurrenderLayer->Active == 1)
+		else if(SurrenderYesButton->DetectUserInput(MousePos, SurrenderLayer->GetPosition()) && SurrenderLayer->Active == 1)
+		{
+
+			GameLogicSystem::Instance().UnitInterface->InterfaceExit();
+			//SceneSystem::Instance().SwitchScene("MainMenuScene");
+			SurrenderLayer->SwapOriginalWithTarget();
+			SurrenderOn = 0;
+			if (GameLogicSystem::Instance().InternalPlayerSystem->InternalUnitContainer.size() > 0)
+			for (auto it : GameLogicSystem::Instance().InternalPlayerSystem->InternalUnitContainer)
 			{
-
-				GameLogicSystem::Instance().UnitInterface->InterfaceExit();
-				//SceneSystem::Instance().SwitchScene("MainMenuScene");
-				SurrenderLayer->SwapOriginalWithTarget();
-				SurrenderOn = 0;
-				if (GameLogicSystem::Instance().InternalPlayerSystem->InternalUnitContainer.size() > 0)
-					for (auto it : GameLogicSystem::Instance().InternalPlayerSystem->InternalUnitContainer)
+				for (std::vector<UnitPiece*>::iterator it2 = it->TargetNode->TerrainTile->PlayerUnitList.begin(); it2 != it->TargetNode->TerrainTile->PlayerUnitList.end();)
+				{
+					if (it == *it2)
 					{
-						for (std::vector<UnitPiece*>::iterator it2 = it->TargetNode->TerrainTile->PlayerUnitList.begin(); it2 != it->TargetNode->TerrainTile->PlayerUnitList.end();)
-						{
-							if (it == *it2)
-							{
-								it->TargetNode->TerrainTile->PlayerUnitList.erase(it2);
-								break;
-							}
-							++it2;
-						}
-						it->Exit();
-						delete it;
+						it->TargetNode->TerrainTile->PlayerUnitList.erase(it2);
+						break;
 					}
-				GameLogicSystem::Instance().InternalPlayerSystem->InternalUnitContainer.clear();
-
-				if (GameLogicSystem::Instance().InternalEnemySystem->InternalEnemyContainer.size() > 0)
-					for (auto it : GameLogicSystem::Instance().InternalEnemySystem->InternalEnemyContainer)
-					{
-						for (std::vector<UnitPiece*>::iterator it2 = it->TargetNode->TerrainTile->EnemyUnitList.begin(); it2 != it->TargetNode->TerrainTile->EnemyUnitList.end();)
-						{
-							if (it == *it2)
-							{
-								it->TargetNode->TerrainTile->EnemyUnitList.erase(it2);
-								break;
-							}
-							++it2;
-						}
-						it->Exit();
-						delete it;
-					}
-				GameLogicSystem::Instance().InternalEnemySystem->InternalEnemyContainer.clear();
-				//toggleSurrender();
-				MenuOpen = false;
-				GameLogicSystem::Instance().DetectSurrender();
+					++it2;
+				}
+				it->Exit();
+				delete it;
 			}
+			GameLogicSystem::Instance().InternalPlayerSystem->InternalUnitContainer.clear();
 
-		if (MenuButton->DetectUserInput(MousePos, MenuLayer->GetPosition())&& MenuLayer->Active == 1)
+			if (GameLogicSystem::Instance().InternalEnemySystem->InternalEnemyContainer.size() > 0)
+			for (auto it : GameLogicSystem::Instance().InternalEnemySystem->InternalEnemyContainer)
+			{
+				for (std::vector<UnitPiece*>::iterator it2 = it->TargetNode->TerrainTile->EnemyUnitList.begin(); it2 != it->TargetNode->TerrainTile->EnemyUnitList.end();)
+				{
+					if (it == *it2)
+					{
+						it->TargetNode->TerrainTile->EnemyUnitList.erase(it2);
+						break;
+					}
+					++it2;
+				}
+				it->Exit();
+				delete it;
+			}
+			GameLogicSystem::Instance().InternalEnemySystem->InternalEnemyContainer.clear();
+			//toggleSurrender();
+			MenuOpen = false;
+			GameLogicSystem::Instance().DetectSurrender();
+		}
+		else if(MenuButton->DetectUserInput(MousePos, MenuLayer->GetPosition()) && MenuLayer->Active == 1)
 		{
 			MenuLayer->SwapOriginalWithTarget();
 			if (MenuOpen == 1)
@@ -290,43 +289,30 @@ void GameScreenInterface::Update(const float& dt)
 				MenuOpen = 1;
 			}
 		}
-			if (MultipleUnitElements.size() > 0)
+		else if(SkipButton->DetectUserInput(MousePos, MenuLayer->GetPosition()) && MenuLayer->Active == 1)
+		{
+			GameLogicSystem::Instance().InternalPlayerSystem->SkipTurn();
+			toggleSurrender();
+		}
+
+		if (MultipleUnitElements.size() > 0)
+		{
+			for (auto it : MultipleUnitElements)
 			{
-				for (auto it : MultipleUnitElements)
+				if (MultipleUnitUI == 1)
 				{
-					if (MultipleUnitUI == 1)
+					if (it.second->DetectUserInput(MousePos, MultipleUnitLayer->GetPosition()))
 					{
-						if (it.second->DetectUserInput(MousePos, MultipleUnitLayer->GetPosition()))
-						{
-							UnitSelected = it.first;
-							MultipleUnitElements.clear();
-							if (MultipleUnitLayer)
-							{
-								for (std::vector<InterfaceLayer*>::iterator it = InternalLayerContainer.begin(); it != InternalLayerContainer.end(); ++it)
-									if ((*it)->GetEntityID() == MultipleUnitLayer->GetEntityID())
-									{
-										InternalLayerContainer.erase(it);
-										break;
-									}
-								MultipleUnitLayer->Exit();
-								delete MultipleUnitLayer;
-								MultipleUnitLayer = nullptr;
-							}
-							MultipleUnitLayer = CreateNewInterfaceLayer("multipleLayer", 0, 0);
-							break;
-						}
-					}
-					else
-					{
+						UnitSelected = it.first;
 						MultipleUnitElements.clear();
 						if (MultipleUnitLayer)
 						{
 							for (std::vector<InterfaceLayer*>::iterator it = InternalLayerContainer.begin(); it != InternalLayerContainer.end(); ++it)
-								if ((*it)->GetEntityID() == MultipleUnitLayer->GetEntityID())
-								{
-									InternalLayerContainer.erase(it);
-									break;
-								}
+							if ((*it)->GetEntityID() == MultipleUnitLayer->GetEntityID())
+							{
+								InternalLayerContainer.erase(it);
+								break;
+							}
 							MultipleUnitLayer->Exit();
 							delete MultipleUnitLayer;
 							MultipleUnitLayer = nullptr;
@@ -335,12 +321,26 @@ void GameScreenInterface::Update(const float& dt)
 						break;
 					}
 				}
+				else
+				{
+					MultipleUnitElements.clear();
+					if (MultipleUnitLayer)
+					{
+						for (std::vector<InterfaceLayer*>::iterator it = InternalLayerContainer.begin(); it != InternalLayerContainer.end(); ++it)
+						if ((*it)->GetEntityID() == MultipleUnitLayer->GetEntityID())
+						{
+							InternalLayerContainer.erase(it);
+							break;
+						}
+						MultipleUnitLayer->Exit();
+						delete MultipleUnitLayer;
+						MultipleUnitLayer = nullptr;
+					}
+					MultipleUnitLayer = CreateNewInterfaceLayer("multipleLayer", 0, 0);
+					break;
+				}
 			}
-			if (SkipButton->DetectUserInput(MousePos, MenuLayer->GetPosition()) && MenuLayer->Active == 1)
-			{
-				GameLogicSystem::Instance().InternalPlayerSystem->SkipTurn();
-				toggleSurrender();
-			}
+		}
 	}
 }
 
@@ -494,30 +494,30 @@ void GameScreenInterface::MultipleUnitSelect(std::vector<UnitPiece*> Selections,
 
 	/*for (auto it2 : Selections)
 	{
-		auto it = currentUnitMap.find(it2.first);
-		auto it3 = IconCounterMap.find(it2.first);
-		if (it == currentUnitMap.end())
-		{
-			it2.second->SetTargetPosition(it2.second->GetOriginalPosition());
-			it3->second->SetTargetPosition(it3->second->GetOriginalPosition());
-		}
-		else
-		{
-			it2.second->SetTargetPosition(Vector3(lowestPt.x + IconSpaceWidth * (count), highestPt.y));
-			it3->second->SetTargetPosition(Vector3(lowestPt.x + IconSpaceWidth * (count), highestPt.y - it2.second->GetDimensions().y * 0.75f));
-			it3->second->SetText("x" + std::to_string(it->second));
-			it3->second->SetTextColor(0);
-			++count;
-		}
+	auto it = currentUnitMap.find(it2.first);
+	auto it3 = IconCounterMap.find(it2.first);
+	if (it == currentUnitMap.end())
+	{
+	it2.second->SetTargetPosition(it2.second->GetOriginalPosition());
+	it3->second->SetTargetPosition(it3->second->GetOriginalPosition());
+	}
+	else
+	{
+	it2.second->SetTargetPosition(Vector3(lowestPt.x + IconSpaceWidth * (count), highestPt.y));
+	it3->second->SetTargetPosition(Vector3(lowestPt.x + IconSpaceWidth * (count), highestPt.y - it2.second->GetDimensions().y * 0.75f));
+	it3->second->SetText("x" + std::to_string(it->second));
+	it3->second->SetTextColor(0);
+	++count;
+	}
 	}*/
 	int i = 0;
 	/*int j = 0;
 	float boxSize = 0;
 	for (auto it : Selections)
 	{
-		if (boxSize == NULL || boxSize < Selections[j]->InternalBattalionList.size())
-			boxSize = 0.25f * Selections[j]->InternalBattalionList.size();
-		++j;
+	if (boxSize == NULL || boxSize < Selections[j]->InternalBattalionList.size())
+	boxSize = 0.25f * Selections[j]->InternalBattalionList.size();
+	++j;
 	}*/
 
 	std::map<std::string, UnitType*>UnitMap;
@@ -525,14 +525,14 @@ void GameScreenInterface::MultipleUnitSelect(std::vector<UnitPiece*> Selections,
 		UnitMap = GameLogicSystem::Instance().InternalBattleSystem->UnitData.LivingMap;
 	else
 		UnitMap = GameLogicSystem::Instance().InternalBattleSystem->UnitData.UndeadMap;
-	
+
 	for (auto it : Selections)
 	{
-		
+
 		/*string UnitDisplay;
 		for (auto it : Selections[i]->InternalBattalionList)
 		{
-			UnitDisplay += (it.first + " x" + std::to_string(it.second) + " ");
+		UnitDisplay += (it.first + " x" + std::to_string(it.second) + " ");
 		}
 
 		tempElement->SetText(UnitDisplay);
@@ -550,17 +550,17 @@ void GameScreenInterface::MultipleUnitSelect(std::vector<UnitPiece*> Selections,
 			}
 			InterfaceElement* tempElement2 = nullptr;
 			tempElement2 = MultipleUnitLayer->CreateNewInterfaceElement(it2.first + std::to_string(i) + "Image", MeshName, Vector3((lowestPtX + IconSpaceWidth * count2) + HalfDimension.x, highestPt.y - IconSpaceHeight * (count)), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.1f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.1f, 0));
-			tempElement2->SetTargetPosition(Vector3((lowestPtX + IconSpaceWidth * count2)+ HalfDimension.x, highestPt.y - IconSpaceHeight * (count)));
+			tempElement2->SetTargetPosition(Vector3((lowestPtX + IconSpaceWidth * count2) + HalfDimension.x, highestPt.y - IconSpaceHeight * (count)));
 
 			tempElement2 = MultipleUnitLayer->CreateNewInterfaceElement(it2.first + std::to_string(i) + "Amount", "Transparent", Vector3((lowestPtX + IconSpaceWidth * (count2 + 1) + HalfDimension.x), highestPt.y - IconSpaceHeight * (count)), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.1f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.1f, 0));
-			tempElement2->SetTargetPosition(Vector3((lowestPtX + IconSpaceWidth * (count2 + 1)+HalfDimension.x), highestPt.y - IconSpaceHeight * (count)));
+			tempElement2->SetTargetPosition(Vector3((lowestPtX + IconSpaceWidth * (count2 + 1) + HalfDimension.x), highestPt.y - IconSpaceHeight * (count)));
 			tempElement2->SetText("x" + std::to_string(it2.second));
-			tempElement2->SetTextColor(0); 
+			tempElement2->SetTextColor(0);
 
 			count2 += 2.5;
 
 		}
-		
+
 		tempElement = MultipleUnitLayer->CreateNewInterfaceElement(std::to_string(i), "LoadTexture", Vector3(lowestPt.x, highestPt.y - IconSpaceHeight * (count)), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.8f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.15f, 0));
 		tempElement->SetTargetPosition(Vector3(lowestPt.x, highestPt.y - IconSpaceHeight * (count)));
 
@@ -590,15 +590,15 @@ void GameScreenInterface::MultipleUnitSelectE(std::vector<UnitPiece*> Selections
 	float IconSpaceHeight = (DisplayHeight / IconCount) / 2;
 
 	InterfaceElement* tempElement = nullptr;
-		tempElement = MultipleUnitLayer->CreateNewInterfaceElement("MULTitle", "LoadTexture", Vector3(lowestPt.x, highestPt.y), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.8f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.15f, 0));
-		tempElement->SetTargetPosition(Vector3(lowestPt.x, highestPt.y * 1.1f));
-		tempElement->SetText("Squads in this Node");
-		tempElement->SetTextColor(0);
+	tempElement = MultipleUnitLayer->CreateNewInterfaceElement("MULTitle", "LoadTexture", Vector3(lowestPt.x, highestPt.y), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.8f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.15f, 0));
+	tempElement->SetTargetPosition(Vector3(lowestPt.x, highestPt.y * 1.1f));
+	tempElement->SetText("Squads in this Node");
+	tempElement->SetTextColor(0);
 
-		tempElement = MultipleUnitLayer->CreateNewInterfaceElement("MULTitle2", "LoadTexture", Vector3(lowestPt.x, highestPt.y), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.8f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.15f, 0));
-		tempElement->SetTargetPosition(Vector3(lowestPt.x, highestPt.y));
-		tempElement->SetText("Click to dismiss");
-		tempElement->SetTextColor(0);
+	tempElement = MultipleUnitLayer->CreateNewInterfaceElement("MULTitle2", "LoadTexture", Vector3(lowestPt.x, highestPt.y), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.8f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.15f, 0));
+	tempElement->SetTargetPosition(Vector3(lowestPt.x, highestPt.y));
+	tempElement->SetText("Click to dismiss");
+	tempElement->SetTextColor(0);
 
 	int count = 1;
 
@@ -628,10 +628,10 @@ void GameScreenInterface::MultipleUnitSelectE(std::vector<UnitPiece*> Selections
 			std::string MeshName;
 			/*for (auto it3 : UnitMap)
 			{
-				if (it3.first == it2.first)
-				{
-					MeshName = it3.second->GetMeshName();
-				}
+			if (it3.first == it2.first)
+			{
+			MeshName = it3.second->GetMeshName();
+			}
 			}*/
 			InterfaceElement* tempElement2 = nullptr;
 			tempElement2 = MultipleUnitLayer->CreateNewInterfaceElement(it2.first + std::to_string(i) + "Transparent", MeshName, Vector3((lowestPtX + IconSpaceWidth * count2) + HalfDimension.x, highestPt.y - IconSpaceHeight * (count)), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.1f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.1f, 0));
