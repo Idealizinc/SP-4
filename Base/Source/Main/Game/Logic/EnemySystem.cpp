@@ -1,6 +1,7 @@
 #include "EnemySystem.h"
 #include "../Miscellaneous/RouteGeneration.h"
 #include "../Systems/GameLogicSystem.h"
+#include "../../Engine/System/MusicSystem.h"
 
 EnemySystem::~EnemySystem(void)
 {
@@ -96,6 +97,7 @@ void EnemySystem::Update(const float& dt)
 						Vector3 Velocity = ParticleSpeed * Vector3(Math::RandFloatMinMax(-Interval, Interval) * 0.5f, 0.25f * Interval, Math::RandFloatMinMax(-Interval, Interval)* 0.5f);
 						GameLogicSystem::Instance().ParticleSystem.AddWorldSpaceParticle("Smoke", SelectedUnit->GetPosition() + Vector3(0, SelectedUnit->GetDimensions().y * 0.5f), 0.5f *Dimensions, Velocity, SceneSystem::Instance().GetCurrentScene().camera->position, ParticleLifeTime);
 					}
+					MusicSystem::Instance().PlaySong("impact");
 				}
 			}
 		}

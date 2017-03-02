@@ -1,6 +1,7 @@
 #include "PlayerSystem.h"
 #include "../Systems/GameLogicSystem.h"
 #include "../../Engine/System/PerspectiveRaycaster.h"
+#include "../../Engine/System/MusicSystem.h"
 
 PlayerSystem::~PlayerSystem(void)
 {
@@ -75,6 +76,7 @@ void PlayerSystem::Update(const float& dt)
 						Vector3 Velocity = ParticleSpeed * Vector3(Math::RandFloatMinMax(-Interval, Interval) * 0.5f, 0.25f * Interval, Math::RandFloatMinMax(-Interval, Interval)* 0.5f);
 						GameLogicSystem::Instance().ParticleSystem.AddWorldSpaceParticle("Smoke", SelectedUnit->GetPosition() + Vector3(0, SelectedUnit->GetDimensions().y * 0.5f), 0.5f *Dimensions, Velocity, SceneSystem::Instance().GetCurrentScene().camera->position, ParticleLifeTime);
 					}
+					MusicSystem::Instance().PlaySong("impact");
 				}
 			}
 		}
@@ -170,7 +172,7 @@ void PlayerSystem::HandleUserInput(const float& dt)
 		{
 			UnitSwapWaitTimer = 0.f;
 			++UnitIndex;
-			if (UnitIndex > InternalUnitContainer.size() - 1)
+			if ((unsigned int)UnitIndex > InternalUnitContainer.size() - 1)
 				UnitIndex = 0;
 			CA->CameraMoveTargetPosition = InternalUnitContainer[UnitIndex]->GetPosition();
 		}

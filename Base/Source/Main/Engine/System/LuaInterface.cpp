@@ -61,22 +61,22 @@ std::string LuaInterface::GetStringValue(const std::string& VariableName)
 bool LuaInterface::GetBoolValue(const std::string& VariableName)
 {
 	lua_getglobal(LuaState, VariableName.c_str());
-	return lua_toboolean(LuaState, -1);
+	return (bool)lua_toboolean(LuaState, -1);
 }
 
 Vector3 LuaInterface::GetVector3Value(const std::string& VariableName)
 {
 	lua_getglobal(LuaState, VariableName.c_str());
 	lua_rawgeti(LuaState, -1, 1);
-	int x = lua_tonumber(LuaState, -1);
+	int x = (int)lua_tonumber(LuaState, -1);
 	lua_pop(LuaState, 1);
 	lua_rawgeti(LuaState, -1, 2);
-	int y = lua_tonumber(LuaState, -1);
+	int y = (int)lua_tonumber(LuaState, -1);
 	lua_pop(LuaState, 1);
 	lua_rawgeti(LuaState, -1, 3);
-	int z = lua_tonumber(LuaState, -1);
+	int z = (int)lua_tonumber(LuaState, -1);
 	lua_pop(LuaState, 1);
-	return Vector3(x, y, z);
+	return Vector3((float)x, (float)y, (float)z);
 }
 
 float LuaInterface::GetVector3DistanceSquared(Vector3 Direction)

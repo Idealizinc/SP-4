@@ -3,6 +3,7 @@
 
 #include "../Weapon.h"
 #include "../../UnitData/WeaponType.h"
+#include "../../../../Engine/System/MusicSystem.h"
 
 class MagicWeapon : public Weapon
 {
@@ -37,6 +38,8 @@ public:
 			Vector3 Velocity = AltDirVec.Normalized() * (float)CE->WalkSpeed * 3.f;
 			Bullet->SetParameters("Explosion", 1, CE->GetPosition() + Vector3(0, CE->GetDimensions().y * 0.5f) + Velocity * 0.01f, Vector3(CE->GetDimensions().x * 0.5f, CE->GetDimensions().x * 0.5f, CE->GetDimensions().x * 0.5f), Velocity, 0, Vector3(0, 1, 0));
 			GameLogicSystem::Instance().InternalBattleSystem->AddNewProjectile(Bullet);
+
+			MusicSystem::Instance().PlaySong("fireball");
 		}
 		else if (this->Type == WeaponType::T_MAGIC_AOE)
 		{
@@ -50,6 +53,7 @@ public:
 			Bullet->SetLifeTime(1.f);
 			Bullet->SetParameters("Explosion", 1, CE->TargetEnemy->GetPosition(), Vector3(CE->GetDimensions().x * 2.f, CE->GetDimensions().x * 2.f, CE->GetDimensions().x * 2.f), Velocity, 0, Vector3(0, 1, 0));
 			GameLogicSystem::Instance().InternalBattleSystem->AddNewProjectile(Bullet);
+			MusicSystem::Instance().PlaySong("explosion");
 		}
 
 		//// Magic Particle

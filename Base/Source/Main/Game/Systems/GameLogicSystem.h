@@ -94,7 +94,6 @@ public:
 	void DetectSurrender();
 	const int MaxUnitInNode = 5;
 
-	float VolumeMultiplier = 1.f;
 	float PieceAnimationSpeed = 3.f;
 	float ParticleMultiplier = 1.f;
 

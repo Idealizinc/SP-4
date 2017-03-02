@@ -178,13 +178,18 @@ void GameScene::Update(const float& dt)
 	{
 		cameraZoomOut = !cameraZoomOut;
 	}
+
+	if (SceneSystem::Instance().cSS_InputManager->GetMouseInput(InputManager::KEY_LMB) == InputManager::MOUSE_DOWN)
+	{
+		MusicSystem::Instance().PlaySong("click");
+	}
 	
 	if (cameraZoomOut)
 		CA->CameraMoveTargetPosition.y = 100.f;
 	else CA->CameraMoveTargetPosition.y = 0;
 
 	CA->Update(Delta);
-	//MusicSystem::Instance().playBackgroundMusic("battle");
+	MusicSystem::Instance().playBackgroundMusic("gamemusic");
 	BManager.UpdateContainer(Delta, CA->position);
 
 	ScenePartition->Update(Delta);

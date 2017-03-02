@@ -11,6 +11,7 @@ Purpose       : Defines a MeleeWeapon
 #define _MELEE_WEAPON_H
 
 #include "../Weapon.h"
+#include "../../../../Engine/System/MusicSystem.h"
 
 class MeleeWeapon : public Weapon
 {
@@ -46,6 +47,8 @@ public:
 				Vector3 Dimensions = Vector3(Interval, Interval, Interval);
 				Vector3 Velocity = ParticleSpeed * Vector3(Math::RandFloatMinMax(-Interval, Interval), Interval * Math::RandFloatMinMax(1.f, 1.5f), Math::RandFloatMinMax(-Interval, Interval));
 				GameLogicSystem::Instance().InternalBattleSystem->ParticleSystem.AddWorldSpaceParticle("Blood", CE->TargetEnemy->GetPosition(), Dimensions, Velocity, SceneSystem::Instance().GetCurrentScene().camera->position, ParticleLifeTime);
+				MusicSystem::Instance().PlaySong("clash");
+
 			}
 			Attackability = false;
 		}

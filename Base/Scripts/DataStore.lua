@@ -1,4 +1,3 @@
-Setting_Volume = 100
 Setting_AnimationSpeed = 500
 Setting_ParticleMultiplier = 100
-Setting_UnlockedLevel = 2
+Setting_UnlockedLevel = 1

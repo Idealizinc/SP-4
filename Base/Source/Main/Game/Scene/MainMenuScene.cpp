@@ -6,6 +6,7 @@
 #include "../Mains/Application.h"
 #include "../SceneManagement/ScenePartitionGraph.h"
 #include "../Logic/Level/LevelDataLoader.h"
+#include"../../Engine/System/LuaInterface.h"
 
 std::string MainMenuScene::id_ = "MainMenuScene";
 
@@ -18,9 +19,9 @@ MainMenuScene::MainMenuScene()
 	Player = nullptr;
 	SceneSystem::Instance().AddScene(*this);
 	Init();
-
-
-	LevelDataLoader::Instance().LoadLevelData("CSVFiles/DataLoaders/LevelDataLoader.csv");
+	LuaInterface::Instance().AddLuaState("CSVInitiallizer.lua");
+	LevelDataLoader::Instance().LoadLevelData(LuaInterface::Instance().GetStringValue("CSVFilePath_LevelDataLoader").c_str());
+	//LevelDataLoader::Instance().LoadLevelData("CSVFiles/DataLoaders/LevelDataLoader.csv");
 	MenuInterface = new MainMenuInterface();
 }
 
@@ -104,33 +105,6 @@ void MainMenuScene::Update(const float& dt)
 	float Speed = 50.f;
 	CameraAerial* CA = (CameraAerial*)camera;
 
-	if (SceneSystem::Instance().cSS_InputManager->GetKeyValue(SimpleCommand::m_allTheKeys[SimpleCommand::FORWARD_COMMAND]))
-	{
-		CA->CameraMoveTargetPosition.z -= Speed*Delta;
-	}
-	if (SceneSystem::Instance().cSS_InputManager->GetKeyValue(SimpleCommand::m_allTheKeys[SimpleCommand::BACK_COMMAND]))
-	{
-		CA->CameraMoveTargetPosition.z += Speed*Delta;
-	}
-	if (SceneSystem::Instance().cSS_InputManager->GetKeyValue(SimpleCommand::m_allTheKeys[SimpleCommand::RIGHT_COMMAND]))
-	{
-		CA->CameraMoveTargetPosition.x += Speed*Delta;
-	}
-	if (SceneSystem::Instance().cSS_InputManager->GetKeyValue(SimpleCommand::m_allTheKeys[SimpleCommand::LEFT_COMMAND]))
-	{
-		CA->CameraMoveTargetPosition.x -= Speed*Delta;
-	}
-
-	if (Application::IsKeyPressed(VK_OEM_MINUS))
-	{
-		ScenePartition->ShowPartitions = false;
-	}
-
-	if (Application::IsKeyPressed(VK_OEM_PLUS))
-	{
-		ScenePartition->ShowPartitions = true;
-	}
-
 	if (SceneSystem::Instance().cSS_InputManager->GetMouseInput(InputManager::KEY_LMB) == InputManager::MOUSE_HOLD)
 	{
 		float Interval = SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.075f;
@@ -138,9 +112,14 @@ void MainMenuScene::Update(const float& dt)
 		Vector3 Velocity = Vector3(Math::RandFloatMinMax(-Interval * 0.5f, Interval * 0.5f), Math::RandFloatMinMax(-Interval * 0.5f, Interval * 0.5f), 1.f) * 10.f;
 		ParticleManager.AddScreenSpaceParticle("Light", SceneSystem::Instance().cSS_InputManager->GetMousePosition(), Dimensions, Velocity, camera->position, 0.5f);
 	}
+	if (SceneSystem::Instance().cSS_InputManager->GetMouseInput(InputManager::KEY_LMB) == InputManager::MOUSE_DOWN)
+	{
+		MusicSystem::Instance().PlaySong("click");
+	}
 
 	CA->Update(Delta);
-	//MusicSystem::Instance().playBackgroundMusic("battle");
+	MusicSystem::Instance().playBackgroundMusic("mainmenumusic");
+
 	BManager.UpdateContainer(Delta, CA->position);
 	ParticleManager.UpdateContainer(Delta, CA->position);
 

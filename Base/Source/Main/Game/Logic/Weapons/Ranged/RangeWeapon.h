@@ -11,6 +11,7 @@ Purpose       : Defines a RangeWeapon
 #define _RANGE_WEAPON_H
 
 #include "../Weapon.h"
+#include "../../../../Engine/System/MusicSystem.h"
 
 class RangeWeapon : public Weapon
 {
@@ -53,7 +54,9 @@ public:
 			//float ParticleSpeed = Math::RandFloatMinMax(2.f, 3.f);
 			//float ParticleLifeTime = Math::RandFloatMinMax(0.25f, 0.5f);
 			//ObjectManager::Instance().AddNewParticle(new Particle("Smoke", 1, Bullet->GetPosition() + Bullet->GetVelocity() * 0.015f, CE->GetDimensions() * Math::RandFloatMinMax(0.3f, 0.5f), Vector3(Math::RandFloatMinMax(-ParticleSpeed, ParticleSpeed), Math::RandFloatMinMax(-ParticleSpeed, ParticleSpeed), Math::RandFloatMinMax(0, ParticleSpeed)), Vector3(0, 0, 100), ParticleLifeTime));
-			
+
+			MusicSystem::Instance().PlaySong("arrow");
+
 		}
 		Attackability = false;
 		Timer = 0.f;

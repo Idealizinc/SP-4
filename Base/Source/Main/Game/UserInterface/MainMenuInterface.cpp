@@ -45,6 +45,8 @@ void MainMenuInterface::InitMainLayer()
 {
 	MainLayer = CreateNewInterfaceLayer(std::to_string(L_MAIN), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * -(2.5f), 0), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 1.2f, 0));
 
+	MainLayer->CreateNewInterfaceElement("Logo", "OnslaughtLogo", Vector3(0, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.2f), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 1.2f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.8f, 0));
+
 	StartButton = MainLayer->CreateNewInterfaceElement("StartButtonF", "WoodFrameRect", 0, Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.4f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.15f, 0));
 	StartButton->SetTargetPosition(0);
 	StartButton = MainLayer->CreateNewInterfaceElement("StartButton", "Background", 0, Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.4f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.15f, 0));
@@ -242,14 +244,14 @@ void MainMenuInterface::InitSettingsLayer()
 	float VolumeY = SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.025f;
 
 	TitleVolume = SettingsLayer->CreateNewInterfaceElement("VolumeT", "Transparent", Vector3(SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth * -0.15f, VolumeY), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.3f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.2f, 0));
-	TitleVolume->SetText("Volume");
+	TitleVolume->SetText("Progress");
 	TitleVolume->SetTextColor(WoodTextColor);
 
-	ButtonVolume = SettingsLayer->CreateNewInterfaceElement("VolumeB", "BlueBar", Vector3(SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth * 0.15f, VolumeY, 0), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.3f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.2f, 0));
-	ButtonVolume->SetText("Clicker");
+	ButtonVolume = SettingsLayer->CreateNewInterfaceElement("VolumeB", "RedBar", Vector3(SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth * 0.15f, VolumeY, 0), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.3f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.2f, 0));
+	ButtonVolume->SetText("Reset");
 	ButtonVolume->SetTextColor(WoodTextColor);
 
-	SettingsLayer->CreateNewInterfaceElement("Line", "BlueBar", Vector3(0, VolumeY), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.3f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.01f, 0));
+	SettingsLayer->CreateNewInterfaceElement("Line", "RedBar", Vector3(0, VolumeY), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.3f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.01f, 0));
 
 	// Graphics stuff
 	float GraphicsY = SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * -0.1f;
@@ -279,11 +281,7 @@ void MainMenuInterface::InitSettingsLayer()
 	SettingsBackground = SettingsLayer->CreateNewInterfaceElement("SettingsBackground", "Background", Vector3(0, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * -0.1f, 0), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 1.2f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 1.0f, 0));
 
 	
-	if (GameLogicSystem::Instance().VolumeMultiplier <= 0.6f)
-		ButtonVolume->SetText("Low");
-	else if (GameLogicSystem::Instance().VolumeMultiplier <= 1.1f)
-		ButtonVolume->SetText("Medium");
-	else ButtonVolume->SetText("High");
+	
 	
 	if (GameLogicSystem::Instance().ParticleMultiplier <= 1.1f)
 		ButtonGraphics->SetText("Low");
@@ -497,21 +495,7 @@ void MainMenuInterface::CheckSettingsUserInput(Vector3 mousePos)
 	}
 	else if (ButtonVolume->DetectUserInput(mousePos, SettingsLayer->GetPosition()))
 	{
-		if (GameLogicSystem::Instance().VolumeMultiplier <= 0.6f)
-		{
-			GameLogicSystem::Instance().VolumeMultiplier = 1.f;
-			ButtonVolume->SetText("Medium");
-		}
-		else if (GameLogicSystem::Instance().VolumeMultiplier <= 1.1f)
-		{
-			GameLogicSystem::Instance().VolumeMultiplier = 1.5f;
-			ButtonVolume->SetText("High");
-		}
-		else
-		{
-			GameLogicSystem::Instance().VolumeMultiplier = 0.5f;
-			ButtonVolume->SetText("Low");
-		}
+		GameLogicSystem::Instance().MaxLevelUnlocked = 1;
 	}
 	else if (ButtonGraphics->DetectUserInput(mousePos, SettingsLayer->GetPosition()))
 	{

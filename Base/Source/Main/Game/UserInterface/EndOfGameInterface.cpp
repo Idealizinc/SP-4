@@ -52,6 +52,7 @@ void EndOfGameInterface::Update(const float& dt)
 		if (GameLogicSystem::Instance().PlayerWon)
 		{
 			EndScreenWinOrLose->SetText("Victorious!");
+			EndScreenReturnButton->SetMesh("WoodButton");
 			EndScreenReturnButton->SetText("Main Menu");
 			EndScreenReturnButton->SetTextColor(Vector3(1, 1, 0));
 			EndScreenFrame->SetMesh("WoodFrameRect");
@@ -93,6 +94,7 @@ void EndOfGameInterface::Update(const float& dt)
 		else
 		{
 			EndScreenWinOrLose->SetText("Defeated!");
+			EndScreenReturnButton->SetMesh("WoodButton");
 			EndScreenReturnButton->SetText("Main Menu");
 			EndScreenReturnButton->SetTextColor(Vector3(1, 1, 0));
 			EndScreenFrame->SetMesh("WoodFrameRect");

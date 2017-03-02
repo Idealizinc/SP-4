@@ -131,8 +131,13 @@ void BattleScene::Update(const float& dt)
 		ScenePartition->ShowPartitions = true;
 	}
 
+	if (SceneSystem::Instance().cSS_InputManager->GetMouseInput(InputManager::KEY_LMB) == InputManager::MOUSE_DOWN)
+	{
+		MusicSystem::Instance().PlaySong("click");
+	}
+
 	CA->Update(Delta);
-	//MusicSystem::Instance().playBackgroundMusic("battle");
+	MusicSystem::Instance().playBackgroundMusic("battlemusic");
 	BManager.UpdateContainer(Delta, CA->position);
 
 	ScenePartition->Update(Delta);
