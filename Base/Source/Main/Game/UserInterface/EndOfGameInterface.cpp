@@ -21,16 +21,16 @@ void EndOfGameInterface::Init()
 	EndScreenWinOrLose->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 1.5f, 0));
 	//EndScreenWinOrLose->SetText("Victorious!");
 
-	EndScreenReturnButton = EndScreenLayer->CreateNewInterfaceElement("ReturnButton", "WoodButton", Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.5f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.3f, 0), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.6f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.3f, 0));
+	EndScreenReturnButton = EndScreenLayer->CreateNewInterfaceElement("ReturnButton", "Transparent", Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.5f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.3f, 0), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.6f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.3f, 0));
 	EndScreenReturnButton->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.5f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.3f, 0));
 	//EndScreenReturnButton->SetText("Main Menu");
 	//EndScreenReturnButton->SetTextColor(Vector3(1, 1, 0));
 
-	EndScreenFrame = EndScreenLayer->CreateNewInterfaceElement("EndGameFrame", "WoodFrameRect", Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y, 0), Vector3(SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth * 1.05f, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 1.05f, 0));
+	EndScreenFrame = EndScreenLayer->CreateNewInterfaceElement("EndGameFrame", "Transparent", Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y, 0), Vector3(SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth * 1.05f, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 1.05f, 0));
 	EndScreenFrame->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y, 0));
 
 
-	EndScreenBackground = EndScreenLayer->CreateNewInterfaceElement("EndGameBackground", "LivingFaction", Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y, 0), Vector3(SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight, 0));
+	EndScreenBackground = EndScreenLayer->CreateNewInterfaceElement("EndGameBackground", "Transparent", Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y, 0), Vector3(SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight, 0));
 	EndScreenBackground->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y, 0));
 
 	ResetAll();
@@ -106,9 +106,6 @@ void EndOfGameInterface::HandleUserInput()
 	{
 		if (EndScreenReturnButton->DetectUserInput(MousePos, EndScreenLayer->GetPosition()))
 		{
-			GameLogicSystem::Instance().PlayerWon = false;
-			GameLogicSystem::Instance().GameOver = false;
-
 			GameLogicSystem::Instance().UnitInterface->InterfaceExit();
 			SceneSystem::Instance().SwitchScene("MainMenuScene");
 			if (GameLogicSystem::Instance().InternalPlayerSystem->InternalUnitContainer.size() > 0)
