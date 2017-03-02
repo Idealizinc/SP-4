@@ -128,6 +128,29 @@ bool GameMap::LoadFile(const std::string &mapName, const bool& IsGameScreenMap, 
 						}
 					}
 				}
+				else if (!IsGameScreenMap && (Icon == "BPS" || Icon == "BES"))
+				{
+					TerrainNode* TN = new TerrainNode();
+					GameObject *TNBO = dynamic_cast<GameObject*>(itLegend->second);
+					if (TNBO)
+					{
+						GameObject *aCopyOfIt = new GameObject(*TNBO);
+						aCopyOfIt->SetPosition(Vector3((float)num_Column, 0, (float)theLineCounter));
+						aCopyOfIt->Static = true;
+						it->second.push_back(" ");
+						TN->SetEntity(aCopyOfIt);
+						TN->SetGridIndex(aCopyOfIt->GetPosition());
+						TempNodeList.push_back(TN);
+						if (Icon == "BPS")
+						{
+							Player = TN;
+						}
+						else if (Icon == "BES")
+						{
+							Enemy = TN;
+						}
+					}
+				}
 				else
 				{
 					GameObject *the3Dobject = dynamic_cast<GameObject*>(itLegend->second);
@@ -186,6 +209,10 @@ bool GameMap::LoadFile(const std::string &mapName, const bool& IsGameScreenMap, 
 	{
 		ScenePartition->PlayerBase = Player;
 		ScenePartition->EnemyBase = Enemy;
+	}
+	else {
+		ScenePartition->PlayerSpawn = Player;
+		ScenePartition->EnemySpawn = Enemy;
 	}
 
 	for (std::vector<GameObject*>::iterator it = theRenderingStuff.begin(), end = theRenderingStuff.end(); it != end; ++it)

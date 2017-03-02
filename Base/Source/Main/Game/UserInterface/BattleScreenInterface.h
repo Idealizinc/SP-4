@@ -24,6 +24,7 @@ public:
 
 	bool PlayerWon;
 	bool EnemyWon;
+	bool Finished;
 private:
 	void HandleUserInput();
 	void PopUpDelay(const float& dt);
@@ -100,7 +101,6 @@ private:
 	bool ShowTerrainInfo;
 	bool Initiation;
 	bool Followup;
-	bool Finished;
 	bool GetMaxData;
 
 	Vector3 defaultbarSize;

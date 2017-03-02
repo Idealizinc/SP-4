@@ -46,8 +46,6 @@ public:
 	UnitDataLoader UnitData;
 	const float UnitSize = 10.f;
 	// Miscellaneous
-	Vector3 SpawnPosition_Player;
-	Vector3 SpawnPosition_Enemy;
 	BillboardManager ParticleSystem;
 
 private:

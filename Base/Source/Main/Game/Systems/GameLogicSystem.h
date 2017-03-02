@@ -94,7 +94,7 @@ public:
 	bool DetectWinner();
 	void DetectSurrender();
 	const int MaxUnitInNode = 5;
-	float ParticleMultiplier = 5.f;
+	float ParticleMultiplier = 1.f;
 
 protected:
 
