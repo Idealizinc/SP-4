@@ -39,6 +39,7 @@ public:
 	bool MultipleUnitUI;
 	bool SurrenderOn;
 	bool MenuOpen;
+	bool SurrenderCheck;
 
 private:
 	void PopUpDelay(const float& dt);

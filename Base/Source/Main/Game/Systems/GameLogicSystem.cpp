@@ -70,6 +70,12 @@ void GameLogicSystem::Update(const float& dt)
 	else SceneSystem::Instance().SwitchScene("EndOfGameScene");
 }
 
+void GameLogicSystem::DetectSurrender()
+{
+	PlayerWon = false;
+	GameOver = true;
+}
+
 bool GameLogicSystem::DetectWinner()
 {
 	// Checking the enemy

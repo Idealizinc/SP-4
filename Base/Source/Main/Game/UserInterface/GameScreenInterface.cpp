@@ -101,7 +101,7 @@ void GameScreenInterface::InitSurrender()
 
 	SurrenderLayer->SwapOriginalWithTarget();
 	SurrenderLayer->Active = false;
-	
+	SurrenderCheck = false;
 }
 
 void GameScreenInterface::toggleSurrender()
@@ -119,13 +119,13 @@ void GameScreenInterface::toggleSurrender()
 			MenuLayer->SwapOriginalWithTarget();
 		}
 		SurrenderLayer->Visible = 0;
-SurrenderLayer->Active = 0;
-/*SurrenderButton->Visible = 0;
-SurrenderButton->Active = 0;
-DeployButton->Visible = 0;
-DeployButton->Active = 0;*/
-MenuLayer->Visible = 0;
-MenuLayer->Active = 0;
+	SurrenderLayer->Active = 0;
+	/*SurrenderButton->Visible = 0;
+	SurrenderButton->Active = 0;
+	DeployButton->Visible = 0;
+	DeployButton->Active = 0;*/
+	MenuLayer->Visible = 0;
+	MenuLayer->Active = 0;
 	}
 	else
 	{
@@ -235,7 +235,7 @@ void GameScreenInterface::Update(const float& dt)
 			{
 
 				GameLogicSystem::Instance().UnitInterface->InterfaceExit();
-				SceneSystem::Instance().SwitchScene("MainMenuScene");
+				//SceneSystem::Instance().SwitchScene("MainMenuScene");
 				SurrenderLayer->SwapOriginalWithTarget();
 				SurrenderOn = 0;
 				if (GameLogicSystem::Instance().InternalPlayerSystem->InternalUnitContainer.size() > 0)
@@ -273,6 +273,7 @@ void GameScreenInterface::Update(const float& dt)
 				GameLogicSystem::Instance().InternalEnemySystem->InternalEnemyContainer.clear();
 				//toggleSurrender();
 				MenuOpen = false;
+				GameLogicSystem::Instance().DetectSurrender();
 			}
 
 		if (MenuButton->DetectUserInput(MousePos, MenuLayer->GetPosition())&& MenuLayer->Active == 1)
