@@ -150,7 +150,7 @@ void Application::Init()
 	glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
 
 	RenderSystem* Renderer = new RenderSystem();
-	SceneSystem::Instance().GenerateTransitionLayer(15, 1.f, "weed");
+	SceneSystem::Instance().GenerateTransitionLayer(15, 1.f, "LoadTexture");
 
 #ifdef _DEBUG
     assert(LoadKeybinds());
@@ -162,9 +162,9 @@ void Application::Init()
 	//Scene_MainMenu *MM = new Scene_MainMenu();	
 	
 	SceneEntity* Scenes;
+	Scenes = new MainMenuScene();
 	Scenes = new GameScene();
 	Scenes = new BattleScene();
-	Scenes = new MainMenuScene();
 	Scenes = new EndOfGameScene();
 	SceneSystem::Instance().SwitchScene("MainMenuScene");
 	SceneSystem::Instance().RenderTransitionEffects();
@@ -187,7 +187,7 @@ void Application::Run()
 			Update();
 			if (!SceneSystem::Instance().AnimationDirectionInwards)
 				SceneSystem::Instance().GetCurrentScene().Render();
-			else if (SceneSystem::Instance().PreviousScene)
+			else if (SceneSystem::Instance().PreviousScene != nullptr)
 				SceneSystem::Instance().GetPreviousScene().Render();
         }
 		//Swap buffers

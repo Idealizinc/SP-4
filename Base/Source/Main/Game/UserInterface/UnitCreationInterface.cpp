@@ -42,7 +42,7 @@ void UnitCreationInterface::Init()
 
 	NoSlotPopup = WarningLayer->CreateNewInterfaceElement("NoSlot", "RedBar", Vector3(ScreenHalfDimension.x, ScreenHalfDimension.y * 2.5f, 0), Vector3(ScreenHalfDimension.x * 1.5f, ScreenHalfDimension.y*0.2f, 1.f));
 	NoSlotPopup->SetTargetPosition(Vector3(ScreenHalfDimension.x, ScreenHalfDimension.y, 0));
-	NoSlotPopup->SetText("Full tile, you cannot move here!");
+	NoSlotPopup->SetText("The Tile is full...");
 	//NoSlotPopup->SetTextColor(0);
 
 	NoUnitPopup->SwapOriginalWithTarget();
@@ -120,7 +120,7 @@ void UnitCreationInterface::InterfaceReset()
 	TotalCost->SetTargetPosition(UnitBoxPosition - Vector3(0, UnitBoxDimensions.y * 0.5f));
 	TotalCost->SetTextColor(0);
 
-	DisplayQuad = UnitSelectLayer->CreateNewInterfaceElement("Display", "quad", UnitBoxDimensions, UnitBoxDimensions);
+	DisplayQuad = UnitSelectLayer->CreateNewInterfaceElement("Display", "LoadTexture", UnitBoxDimensions, UnitBoxDimensions);
 	DisplayQuad->SetTargetPosition(UnitBoxPosition);
 
 	DeployButton = UnitSelectLayer->CreateNewInterfaceElement("Deploy", "GreenBar", Vector3(-ScreenHalfDimension.x  * 0.9f, ScreenHalfDimension.y * 0.5f, 0), Vector3(ScreenHalfDimension.x *0.6f, ScreenHalfDimension.y*0.2f, 1.f));
