@@ -11,5 +11,5 @@ Fountain,F,Fountain,10,10,10,,,,1,0
 Building,B,Building,15,12,25,,,,1,0
 Grass,G,Grass,1,0.5,1,,,,1,0
 DeadTree,DT,DeadTree,10,10,10,,,,1,0
-BattlefieldPlayerSpawn,BPS,cube,1,1,1,,,,1,0
-BattlefieldEnemySpawn,BES,cube,1,1,1,,,,1,0
+BattlefieldPlayerSpawn,BPS,cube,0.1,0.1,0.1,,,,1,0
+BattlefieldEnemySpawn,BES,cube,0.1,0.1,0.1,,,,1,0

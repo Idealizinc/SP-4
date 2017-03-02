@@ -125,8 +125,11 @@ void GameLogicSystem::Render()
 		if (InternalPlayerSystem)
 		{
 			InternalPlayerSystem->Render();
-			UnitInterface->Render();
-			GameInterface->Render();
+			if (!SceneSystem::Instance().AnimationDirectionInwards)
+			{
+				UnitInterface->Render();
+				GameInterface->Render();
+			}
 		}
 		if (InternalEnemySystem)
 		{

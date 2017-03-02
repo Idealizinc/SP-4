@@ -40,8 +40,8 @@ void GameScreenInterface::Init()
 	SkipButton = MenuLayer->CreateNewInterfaceElement("SkipButton", "SkipButton", Vector3(SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth * 0.07f, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * -(0.13f), 0.0f), Vector3(SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth * 0.15f, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.09f, 0));
 	SkipButton->SetTargetPosition(SkipButton->GetOriginalPosition());
 
-	MenuButton = MenuLayer->CreateNewInterfaceElement("MenuUI", "Transparent", Vector3(SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth * -(0.05f),SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.01f, 0), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.07f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.3f, 0));
-	MenuButton->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth * -(0.05f), SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.01f, 0));
+	MenuButton = MenuLayer->CreateNewInterfaceElement("MenuUI", "quad", Vector3(SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth * -(0.04f),SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.01f, 0), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.08f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.3f, 0));
+	MenuButton->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth * -(0.04f), SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.01f, 0));
 
 	MenuFrame = MenuLayer->CreateNewInterfaceElement("MenuFrame", "InfoFrame2", Vector3(SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth * 0.07f, 0, 0), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.5f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.9f, 0));
 	MenuFrame->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth * 0.07f, 0, 0));
@@ -207,7 +207,7 @@ void GameScreenInterface::Update(const float& dt)
 				}
 			}
 		}
-		if (SurrenderButton->DetectUserInput(MousePos, MenuLayer->GetPosition()))
+		if (SurrenderButton->DetectUserInput(MousePos, MenuLayer->GetPosition()) && MenuLayer->Active == 1)
 		{
 			SurrenderLayer->SwapOriginalWithTarget();
 			MenuLayer->SwapOriginalWithTarget();
@@ -336,7 +336,7 @@ void GameScreenInterface::Update(const float& dt)
 					}
 				}
 			}
-			if (SkipButton->DetectUserInput(MousePos, MenuLayer->GetPosition()))
+			if (SkipButton->DetectUserInput(MousePos, MenuLayer->GetPosition()) && MenuLayer->Active == 1)
 			{
 				GameLogicSystem::Instance().InternalPlayerSystem->SkipTurn();
 				toggleSurrender();
