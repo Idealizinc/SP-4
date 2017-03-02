@@ -30,7 +30,7 @@ void BattleSystem::Init()
 
 void BattleSystem::Update(const float& dt)
 {
-	ParticleSystem.UpdateContainer(dt, SceneSystem::Instance().GetCurrentScene().camera->position);
+	ParticleSystem.UpdateContainer(dt, SceneSystem::Instance().GetCurrentScene().camera->position); 
 	BSI->Update(dt);
 
 	if (BSI->StartBattle)
@@ -38,29 +38,21 @@ void BattleSystem::Update(const float& dt)
 		// I will need to update all my characters, projectiles and other miscellaneous game objects
 		UpdateCharacterLogic(InternalEnemyCharacterList, dt);
 		UpdateCharacterLogic(InternalPlayerCharacterList, dt);
-
 		UpdateProjectileLogic(dt);
 		if (InternalEnemyCharacterList.size() <= 0 && InternalPlayerCharacterList.size() > 0)
 		{
 			BSI->ShowResult = true;
 			// Player won
-			if (BSI->ShowResult && BSI->EndResult)
+			if (BSI->EndResult)
 			{
-				GameLogicSystem::Instance().SetCurrentState(GameLogicSystem::Instance().PlayerTurn);
-				SceneSystem::Instance().SwitchScene("1_Scene");
-				for (auto it : CurrentBattleTile->EnemyUnitList)
-					it->Active = false;
-				CurrentBattleTile->EnemyUnitList.clear();
-				ClearCharacterCounters();
-				BSI->ResetAll();
-				GameLogicSystem::Instance().DetectWinner();
+				
 			}
 		}
 		else if (InternalEnemyCharacterList.size() > 0 && InternalPlayerCharacterList.size() <= 0)
 		{
 			BSI->ShowResult = true;
 			// Enemy won
-			if (BSI->ShowResult && BSI->EndResult)
+			if (BSI->EndResult)
 			{
 				GameLogicSystem::Instance().SetCurrentState(GameLogicSystem::Instance().EnemyTurn);
 				SceneSystem::Instance().SwitchScene("1_Scene");
@@ -71,6 +63,19 @@ void BattleSystem::Update(const float& dt)
 				BSI->ResetAll();
 				GameLogicSystem::Instance().DetectWinner();
 			}
+		}
+
+		if (BSI->ShowResult && BSI->EndResult)
+		{
+			//GameLogicSystem::Instance().SetCurrentState(GameLogicSystem::Instance().PlayerTurn);
+			//SceneSystem::Instance().SwitchScene("1_Scene");
+			//if (BSI->Playerw)
+			//for (auto it : CurrentBattleTile->EnemyUnitList)
+			//	it->Active = false;
+			//CurrentBattleTile->EnemyUnitList.clear();
+			//ClearCharacterCounters();
+			//BSI->ResetAll();
+			//GameLogicSystem::Instance().DetectWinner();
 		}
 	}
 }
