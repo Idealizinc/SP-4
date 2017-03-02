@@ -344,7 +344,7 @@ void BattleSystem::SpawnPlayerCharacters(std::map<std::string, unsigned short> P
 			for (unsigned int i = 0; i < PCL.second; ++i)
 			{
 				BattleScreenCharacter* NewChar =  new BattleScreenCharacter();
-				NewChar->InitiallizeCharacter(UT, UnitData.RaceMap.find("Human")->second, Tile, true);
+				NewChar->InitiallizeCharacter(UT, UnitData.RaceMap.find("Human")->second, Tile, Tile->PlayerHasAdvantage);
 				NewChar->IsPlayerCharacter = true;
 				NewChar->SetPosition(SpawnPosition_Player);
 				NewChar->CharacterFaction = GameLogicSystem::Instance().PlayerFaction;
@@ -369,7 +369,7 @@ void BattleSystem::SpawnEnemyCharacters(std::map<std::string, unsigned short> En
 			for (unsigned int i = 0; i < ECL.second; ++i)
 			{
 				BattleScreenCharacter* NewChar = new BattleScreenCharacter();
-				NewChar->InitiallizeCharacter(UT, UnitData.RaceMap.find("Human")->second, Tile, true);
+				NewChar->InitiallizeCharacter(UT, UnitData.RaceMap.find("Human")->second, Tile, !Tile->PlayerHasAdvantage);
 				NewChar->IsPlayerCharacter = false;
 				NewChar->SetPosition(SpawnPosition_Enemy);
 				if (GameLogicSystem::Instance().PlayerFaction == GameLogicSystem::F_LIVING)

@@ -165,12 +165,12 @@ void SceneSystem::ClearMemoryUsage()
 void SceneSystem::GenerateTransitionLayer(const int& Divisions, const float& RandomizerScale, const std::string& MeshName)
 {
 	Vector3 PieceDimensions = Vector3(cSS_InputManager->cIM_ScreenWidth / Divisions, cSS_InputManager->cIM_ScreenHeight / Divisions, 1);
-	PieceDimensions *= 1.2f;
+	PieceDimensions *= 1.5f;
 	for (unsigned short x = 1; x <= Divisions; ++x)
 	{
 		for (unsigned short y = 1; y <= Divisions; ++y)
 		{
-			Vector3 Position = Vector3((x - 1) * PieceDimensions.x, (y - 1) * PieceDimensions.y);
+			Vector3 Position = Vector3((x - 1) * PieceDimensions.x * 0.95f, (y - 1) * PieceDimensions.y* 0.95f);
 			InterfaceElement* Temp = TransitionLayer->CreateNewInterfaceElement("TransitionPiece", MeshName, Position, PieceDimensions);
 			Temp->SetTargetPosition(Position);
 		}
