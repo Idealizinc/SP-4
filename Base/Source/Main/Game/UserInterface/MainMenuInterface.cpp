@@ -167,12 +167,12 @@ void MainMenuInterface::InitLevelSelectLayer()
 
 		if (i == 0)
 		{
-			tempElement = LevelSelectLayer->CreateNewInterfaceElement(ID, "Background", 0, Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 1.2f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 1.0f, 0));
+			tempElement = LevelSelectLayer->CreateNewInterfaceElement(ID, "Preview" + std::to_string(i +1), 0, Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 1.2f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 1.0f, 0));
 			tempElement->SetTargetPosition(0);
 		}
 		else
 		{
-			tempElement = LevelSelectLayer->CreateNewInterfaceElement(ID, "Background", RightSide, Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 1.2f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 1.0f, 0));
+			tempElement = LevelSelectLayer->CreateNewInterfaceElement(ID, "Preview" + std::to_string(i + 1), RightSide, Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 1.2f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 1.0f, 0));
 			tempElement->SetTargetPosition(RightSide);
 		}
 
@@ -375,7 +375,7 @@ void MainMenuInterface::CheckLevelUserInput(Vector3 mousePos)
 	{
 		LevelInitiationRequired = false;
 		InitiateLevelLoading(LevelSelectData[LevelSelectPage - 1]->GetEntityID());
-		if (GameLogicSystem::Instance().MaxLevelUnlocked == LevelSelectPage)
+		if (GameLogicSystem::Instance().MaxLevelUnlocked == LevelSelectPage && GameLogicSystem::Instance().MaxLevelUnlocked != 6)
 		{
 			GameLogicSystem::Instance().currHighestLevel = true;
 		}
