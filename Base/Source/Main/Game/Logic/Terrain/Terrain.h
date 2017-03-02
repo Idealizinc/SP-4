@@ -53,7 +53,7 @@ public:
 	std::map<int, float> UnitAdvantage;
 	std::map<int, float> UnitDisadvantage;
 	std::string CSVMapName;
-	Mesh* TerrainMesh;
+	std::string TerrainMeshName;
 	std::vector<unsigned char> TerrainHeightMap;
 
 private:

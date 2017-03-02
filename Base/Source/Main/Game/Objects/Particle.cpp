@@ -34,7 +34,7 @@ void Particle::Update(const float& dt)
 			if (LifeTime != -1)
 				SetDimensions(DefaultDimensions * ((LifeTime - CurrentTime + 0.01f) / LifeTime));
 			Vector3 StoredVelocity = GetVelocity();
-			//Velocity += m_gravity * dt; // For Gravity
+			Velocity += Vector3(0,-9.8f) * dt; // For Gravity
 			if (!Static)
 				SetPosition(GetPosition() + (StoredVelocity + GetVelocity()) * 0.5f * (float)dt);
 			SetRotationAngle(Math::RadianToDegree(atan2(PlayerPosition.x - GetPosition().x, PlayerPosition.z - GetPosition().z)));

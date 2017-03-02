@@ -18,12 +18,12 @@ void GameScreenInterface::Init()
 	CashDisplayTimer = 0.f;
 	CashEditAmt = 0;
 	TurnPopup = CreateNewInterfaceLayer("TurnLayer", 0, 0);
-	PlayerTurnPopup = TurnPopup->CreateNewInterfaceElement("PlayerPopUp", "quad2", Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 2.5f, 0), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.5f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.2f, 0));
+	PlayerTurnPopup = TurnPopup->CreateNewInterfaceElement("PlayerPopUp", "GreenBar", Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 2.5f, 0), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.5f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.2f, 0));
 	PlayerTurnPopup->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.9f, 0));
 	PlayerTurnPopup->SetText("Player Turn");
 	PlayerTurnPopup->SetTextColor(0);
 
-	EnemyTurnPopup = TurnPopup->CreateNewInterfaceElement("EnemyPopUp", "quad1", Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 2.5f, 0), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.5f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.2f, 0));
+	EnemyTurnPopup = TurnPopup->CreateNewInterfaceElement("EnemyPopUp", "RedBar", Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 2.5f, 0), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.5f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.2f, 0));
 	EnemyTurnPopup->SetTargetPosition(EnemyTurnPopup->GetOriginalPosition());
 	EnemyTurnPopup->SetText("Enemy Turn");
 	EnemyTurnPopup->SetTextColor(0);\
@@ -64,7 +64,7 @@ void GameScreenInterface::Init()
 	CashSubstractFrame = CashDisplayLayer->CreateNewInterfaceElement("CashReduceFrame", "Transparent", Vector3(SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth * 0.0f, -(SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.09f)), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.15f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.15f, 0));
 	CashSubstractFrame->SetTargetPosition(0);
 
-	CashSubstractDisplay = CashDisplayLayer->CreateNewInterfaceElement("CashReduce", "quad1", Vector3(SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth * 0.0f, -(SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.09f)), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.15f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.15f, 0));
+	CashSubstractDisplay = CashDisplayLayer->CreateNewInterfaceElement("CashReduce", "RedBar", Vector3(SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth * 0.0f, -(SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.09f)), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.15f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.15f, 0));
 	CashSubstractDisplay->SetTargetPosition(0);
 	CashSubstractDisplay->SetTextColor(0);
 

@@ -29,7 +29,7 @@ void BattleScene::QuickInit()
 {
 	// Set Terrain Size
 	TerrainScale.Set(400.f, 50.f, 400.f);
-	
+
 	CameraAerial* CA = new CameraAerial();
 	camera = CA;
 	CA->AltInit(/*Player Character Position*/Vector3(0, 0, 0), Vector3(0, 100, 50), Vector3(0, 1, 0));
@@ -58,34 +58,38 @@ void BattleScene::Init()
 
 void BattleScene::Update(const float& dt)
 {
+	float Delta = dt;
+	if (SceneSystem::Instance().AnimationActivated && SceneSystem::Instance().AnimationDirectionInwards)
+		Delta = 0;
+
 	RenderSystem *Renderer = dynamic_cast<RenderSystem*>(&SceneSystem::Instance().GetRenderSystem());
 
-	Renderer->Update(dt);
+	Renderer->Update(Delta);
 
 	float Speed = 50.f;
 	CameraAerial* CA = (CameraAerial*)camera;
-	float DetectionOffset = 0.1f;
+	float DetectionOffset = 0.2f;
 	if (!GameLogicSystem::Instance().UnitInterface->UIDisplayed)
 	{
 		if (SceneSystem::Instance().cSS_InputManager->GetKeyValue(SimpleCommand::m_allTheKeys[SimpleCommand::FORWARD_COMMAND]) ||
 			SceneSystem::Instance().cSS_InputManager->GetMousePosition().y > SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * (1.f - DetectionOffset))
 		{
-			CA->CameraMoveTargetPosition.z -= Speed*dt;
+			CA->CameraMoveTargetPosition.z -= Speed*Delta;
 		}
 		if (SceneSystem::Instance().cSS_InputManager->GetKeyValue(SimpleCommand::m_allTheKeys[SimpleCommand::BACK_COMMAND]) ||
 			SceneSystem::Instance().cSS_InputManager->GetMousePosition().y < SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * DetectionOffset)
 		{
-			CA->CameraMoveTargetPosition.z += Speed*dt;
+			CA->CameraMoveTargetPosition.z += Speed*Delta;
 		}
 		if (SceneSystem::Instance().cSS_InputManager->GetKeyValue(SimpleCommand::m_allTheKeys[SimpleCommand::RIGHT_COMMAND]) ||
 			SceneSystem::Instance().cSS_InputManager->GetMousePosition().x > SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth * (1.f - DetectionOffset))
 		{
-			CA->CameraMoveTargetPosition.x += Speed*dt;
+			CA->CameraMoveTargetPosition.x += Speed*Delta;
 		}
 		if (SceneSystem::Instance().cSS_InputManager->GetKeyValue(SimpleCommand::m_allTheKeys[SimpleCommand::LEFT_COMMAND]) ||
 			SceneSystem::Instance().cSS_InputManager->GetMousePosition().x < SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth * DetectionOffset)
 		{
-			CA->CameraMoveTargetPosition.x -= Speed*dt;
+			CA->CameraMoveTargetPosition.x -= Speed*Delta;
 		}
 		float XOffset = TerrainScale.x * 0.5f;
 		if (CA->CameraMoveTargetPosition.x < -XOffset)
@@ -110,13 +114,13 @@ void BattleScene::Update(const float& dt)
 		ScenePartition->ShowPartitions = true;
 	}
 
-	CA->Update(dt);
+	CA->Update(Delta);
 	//MusicSystem::Instance().playBackgroundMusic("battle");
-	BManager.UpdateContainer(dt, CA->position);
+	BManager.UpdateContainer(Delta, CA->position);
 
-	ScenePartition->Update(dt);
+	ScenePartition->Update(Delta);
 
-	GameLogicSystem::Instance().Update(dt);
+	GameLogicSystem::Instance().Update(Delta);
 
 	framerates = 1 / dt;
 }
@@ -126,7 +130,7 @@ void BattleScene::ReloadMap(Terrain* Terrain)
 	RenderSystem *Renderer = dynamic_cast<RenderSystem*>(&SceneSystem::Instance().GetRenderSystem());
 
 	// Find the Terrain Specific Mesh Here
-	TerrainMeshName = Terrain->TerrainMesh->name;
+	TerrainMeshName = Terrain->TerrainMeshName;
 	// The mesh should not be null as it should be generated when the Terrain is created.
 
 	// I will need to clean up old lists if they exist
@@ -314,57 +318,13 @@ void BattleScene::RenderPassMain()
 		);
 	// Model matrix : an identity matrix (model will be at the origin)
 	modelStack->LoadIdentity();
+	SceneSystem::Instance().RenderTransitionEffects(); 
+	SceneSystem::Instance().RenderMouseCursor(Vector3(SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.05f, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.05f), "weed");
 
 	Renderer->RenderMesh("reference", false);
 
 	RenderSkybox();
 	RenderShadowCasters();
-
-	//Changes
-	//Projectile
-	//for (std::vector<Projectile*>::iterator it = ObjectManager::Instance().GetProjectileList().begin(); it != ObjectManager::Instance().GetProjectileList().end(); ++it)
-	//{
-	//	BaseObject *obj = (BaseObject*)*it;
-	//	if (obj->Active && obj->Visible)
-	//		RenderObjects(obj);
-	//}
-	////Characters
-	//for (std::vector<CharacterEntity*>::iterator it = ObjectManager::Instance().GetCharacterList().begin(); it != ObjectManager::Instance().GetCharacterList().end(); ++it)
-	//{
-	//	CharacterEntity *obj = (CharacterEntity*)*it;
-	//	if (obj->Active && obj->Visible)
-	//	{
-	//		float TextScale = 2.5f;
-	//		float TextOffset = 0.5f + 0.5f * TextScale;
-
-	//		RenderObjects(obj);
-
-	//		//HealthBar
-	//		//Vector3 BarDimensionDefault = Vector3(obj->GetDimensions().x * 2.f, obj->GetDimensions().y * 0.4f, 1);
-	//		//float HPBarDimensionX = ((float)obj->HealthPoints / (float)obj->MaxHealthPoints) * BarDimensionDefault.x + Math::EPSILON;
-	//		//float HPBarPosX = obj->GetPosition().x - (BarDimensionDefault.x - HPBarDimensionX) * 0.5f;
-	//		//float HPBarPosY;
-	//		//
-	//		//modelStack->PushMatrix();
-	//		//modelStack->Translate(HPBarPosX, HPBarPosY, 1);
-	//		//modelStack->Scale(HPBarDimensionX, BarDimensionDefault.y, BarDimensionDefault.z);
-	//		//if (obj->HealthPoints > obj->MaxHealthPoints * 0.25f)
-	//		//	Renderer->RenderMesh("GreenBar", false);
-	//		//else Renderer->RenderMesh("RedBar", false);
-	//		//modelStack->PopMatrix();
-
-	//		//modelStack->PushMatrix();
-	//		//modelStack->Top(obj->GetPosition().x, HPBarPosY + obj->GetDimensions().y, 1);
-	//		//float Ratio = (obj->MessageAnimationTimer / obj->MessageAnimationMaxTime);
-	//		//float Size = TextScale * 2.f;
-	//		//float Scale = Math::Clamp(Size*Ratio, Math::EPSILON, Size);
-	//		//modelStack->Scale(Scale, Scale, 1);
-	//		//if (obj->FoundMessage)
-	//		//	Renderer->RenderMesh("ShowMessage", false);
-	//		//modelStack->PopMatrix();
-	//	}
-	//}
-	//End of changes
 
 	Renderer->SetHUD(true);
 	std::stringstream ss;

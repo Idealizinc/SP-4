@@ -43,7 +43,7 @@ public:
 	void SetMousePosition(Vector3);
 	void SetMouseToScreenCenter();
 	void UpdateMouse();
-
+	void CenterCursor();
 	void SetScreenSize(float, float);
 
 	float cIM_ScreenWidth, cIM_ScreenHeight;

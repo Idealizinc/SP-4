@@ -56,11 +56,15 @@ void EndOfGameScene::Init()
 
 void EndOfGameScene::Update(const float& dt)
 {
+	float Delta = dt;
+	if (SceneSystem::Instance().AnimationActivated && SceneSystem::Instance().AnimationDirectionInwards)
+		Delta = 0;
+
 	RenderSystem *Renderer = dynamic_cast<RenderSystem*>(&SceneSystem::Instance().GetRenderSystem());
 
-	Renderer->Update(dt);
+	Renderer->Update(Delta);
 
-	EOGI->Update(dt);
+	EOGI->Update(Delta);
 
 	CameraAerial* CA = (CameraAerial*)camera;
 
@@ -74,7 +78,7 @@ void EndOfGameScene::Update(const float& dt)
 		ScenePartition->ShowPartitions = true;
 	}
 
-	CA->Update(dt);
+	CA->Update(Delta);
 	//MusicSystem::Instance().playBackgroundMusic("battle");
 
 	framerates = 1 / dt;
@@ -150,6 +154,8 @@ void EndOfGameScene::RenderPassMain()
 		);
 	// Model matrix : an identity matrix (model will be at the origin)
 	modelStack->LoadIdentity();
+	SceneSystem::Instance().RenderTransitionEffects();
+	SceneSystem::Instance().RenderMouseCursor(Vector3(SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.05f, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.05f), "weed");
 
 	Renderer->RenderMesh("reference", false);
 	Renderer->SetHUD(true);

@@ -110,9 +110,9 @@ bool TerrainDataLoader::LoadTerrainData(const char* file_path)
 						if (Tex2Path != "")
 							newMesh->textureArray[1] = LoadTGA(Tex2Path.c_str());
 						Renderer->MeshList.insert(std::pair<std::string, Mesh*>(Temp->GetTerrainName(), newMesh));
-						Temp->TerrainMesh = newMesh;
+						Temp->TerrainMeshName = newMesh->name;
 					}
-					else Temp->TerrainMesh = it->second;
+					else Temp->TerrainMeshName = it->second->name;
 				}
 
 				it = std::find(CSV_Keys.begin(), CSV_Keys.end(), "HEALTHADVANTAGE");

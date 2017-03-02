@@ -16,10 +16,10 @@ BattleSystem::~BattleSystem()
 
 void BattleSystem::Init()
 {
-	UnitData.LoadWeaponData("CSVFiles/WeaponDataLoader.csv");
-	UnitData.LoadRaceData("CSVFiles/RaceDataLoader.csv");
-	UnitData.LoadLivingFactionData("CSVFiles/LivingFactionLoader.csv");
-	UnitData.LoadUndeadFactionData("CSVFiles/UndeadFactionLoader.csv");
+	UnitData.LoadWeaponData("CSVFiles/DataLoaders/WeaponDataLoader.csv");
+	UnitData.LoadRaceData("CSVFiles/DataLoaders/RaceDataLoader.csv");
+	UnitData.LoadLivingFactionData("CSVFiles/DataLoaders/LivingFactionLoader.csv");
+	UnitData.LoadUndeadFactionData("CSVFiles/DataLoaders/UndeadFactionLoader.csv");
 
 
 	SpawnPosition_Enemy = Vector3(-100, 1, 100);
@@ -30,6 +30,7 @@ void BattleSystem::Init()
 
 void BattleSystem::Update(const float& dt)
 {
+	ParticleSystem.UpdateContainer(dt, SceneSystem::Instance().GetCurrentScene().camera->position);
 	BSI->Update(dt);
 
 	if (BSI->StartBattle)
@@ -76,6 +77,7 @@ void BattleSystem::Update(const float& dt)
 
 void BattleSystem::Render()
 {
+	ParticleSystem.Render();
 	BSI->Render();
 	for (auto it : InternalPlayerCharacterList)
 		it->Render();
@@ -291,20 +293,36 @@ void BattleSystem::UpdateProjectileLogic(const float& dt)
 								CharacterEntity* CE = it2;
 								//Gets Hit
 								CE->HealthPoints -= (it)->GetDamageDealt();
-
-								//int NumParticles = Math::RandIntMinMax(2, 4);
-								//for (int i = 0; i < NumParticles; ++i)
-								//{
-								//	float ParticleSpeed = Math::RandFloatMinMax(3.f, 6.f);
-								//	float ParticleLifeTime = Math::RandFloatMinMax(0.75f, 1.5f);
-								//
-								//	//ObjectManager::Instance().AddNewParticle(new Particle(obj2->GetEntityID(), 1, CE->GetPosition() * Math::RandFloatMinMax(0.3f, 0.75f), Vector3(Math::RandFloatMinMax(-ParticleSpeed, ParticleSpeed), Math::RandFloatMinMax(-ParticleSpeed, ParticleSpeed), Math::RandFloatMinMax(0, ParticleSpeed)), camera.position, ParticleLifeTime));
-								//}
+								int NumParticles = Math::RandIntMinMax(2, 4);
+								for (int i = 0; i < NumParticles; ++i)
+								{
+									float ParticleSpeed = Math::RandFloatMinMax(1.f, 2.f);
+									float ParticleLifeTime = Math::RandFloatMinMax(1.f, 1.5f);
+									float Interval = CE->GetDimensions().x * 0.5f;
+									Vector3 Dimensions = Vector3(Interval, Interval, Interval);
+									Vector3 Velocity = ParticleSpeed * Vector3(Math::RandFloatMinMax(-Interval, Interval), Interval * Math::RandFloatMinMax(1.f, 2.f), Math::RandFloatMinMax(-Interval, Interval));
+									GameLogicSystem::Instance().InternalBattleSystem->ParticleSystem.AddWorldSpaceParticle("Blood", CE->GetPosition(), Dimensions, Velocity, SceneSystem::Instance().GetCurrentScene().camera->position, ParticleLifeTime);
+								}
 							}
 						}
 					}
 					if (it->Active)
+					{
 						it->Update(dt);
+						if (!it->GravityAffected && Math::RandIntMinMax(0, 10) > 8)
+						{
+							int NumParticles = 1;
+							for (int i = 0; i < NumParticles; ++i)
+							{
+								float ParticleSpeed = Math::RandFloatMinMax(1.f, 2.f);
+								float ParticleLifeTime = Math::RandFloatMinMax(0.5f, 1.f);
+								float Interval = it->GetDimensions().x * 0.75f;
+								Vector3 Dimensions = Vector3(Interval, Interval, Interval);
+								Vector3 Velocity = ParticleSpeed * Vector3(Math::RandFloatMinMax(-Interval, Interval), Interval * Math::RandFloatMinMax(1.f, 2.f), Math::RandFloatMinMax(-Interval, Interval));
+								GameLogicSystem::Instance().InternalBattleSystem->ParticleSystem.AddWorldSpaceParticle(it->GetMeshName(), it->GetPosition(), Dimensions, Velocity, SceneSystem::Instance().GetCurrentScene().camera->position, ParticleLifeTime);
+							}
+						}
+					}
 				}
 			}
 		}

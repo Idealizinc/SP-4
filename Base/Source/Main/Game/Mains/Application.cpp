@@ -147,9 +147,10 @@ void Application::Init()
 	m_dAccumulatedTime_ThreadTwo = 0.0;
 
 	// Hide mouse
-	//glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
+	glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
 
 	RenderSystem* Renderer = new RenderSystem();
+	SceneSystem::Instance().GenerateTransitionLayer(15, 1.f, "weed");
 
 #ifdef _DEBUG
     assert(LoadKeybinds());
@@ -166,7 +167,8 @@ void Application::Init()
 	Scenes = new MainMenuScene();
 	Scenes = new EndOfGameScene();
 	SceneSystem::Instance().SwitchScene("MainMenuScene");
-
+	SceneSystem::Instance().RenderTransitionEffects();
+	glfwSwapBuffers(m_window);
 
     MusicSystem::Instance().Init();
 }
@@ -183,7 +185,10 @@ void Application::Run()
         //if (hwnd == GetActiveWindow())
 		{
 			Update();
-			SceneSystem::Instance().GetCurrentScene().Render();
+			if (!SceneSystem::Instance().AnimationDirectionInwards)
+				SceneSystem::Instance().GetCurrentScene().Render();
+			else if (SceneSystem::Instance().PreviousScene)
+				SceneSystem::Instance().GetPreviousScene().Render();
         }
 		//Swap buffers
 		glfwSwapBuffers(m_window);
@@ -207,6 +212,7 @@ void Application::Update()
 
 	if ((WindowActiveHandle == GetActiveWindow()) && m_dAccumulatedTime_ThreadOne > 1 / frameTime)
 	{
+		SceneSystem::Instance().Update((float)m_dElaspedTime);
 		SceneSystem::Instance().cSS_InputManager->UpdateMouse();
 		SceneSystem::Instance().cSS_InputManager->HandleUserInput();
 		m_dAccumulatedTime_ThreadOne = 0.0;
