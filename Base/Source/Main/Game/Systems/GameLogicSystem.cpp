@@ -25,11 +25,6 @@ void GameLogicSystem::Init()
 	// Don't forget to Init the second initiallization if required
 	//QuickInit();
 
-	// Misc
-	//Init UI
-	UnitInterface = new UnitCreationInterface();
-	GameInterface = new GameScreenInterface();
-
 	TerrainLoader.LoadTerrainData("CSVFiles/DataLoaders/TerrainDataLoader.csv");
 	LevelDataLoader::Instance().LoadLevelData("CSVFiles/DataLoaders/LevelDataLoader.csv");
 
@@ -45,6 +40,11 @@ void GameLogicSystem::QuickInit()
 	// Init Battle System
 	InternalBattleSystem = new BattleSystem();
 	InternalBattleSystem->Init();
+
+	// Misc
+	//Init UI
+	UnitInterface = new UnitCreationInterface();
+	GameInterface = new GameScreenInterface();
 
 	InternalEnemySystem->RemainingGold = UnitInterface->returnUnitSpawnSys()->maxUnitCost * maxStartingUnits;
 	//InternalPlayerSystem->SetCash(/*UnitInterface->returnUnitSpawnSys()->maxUnitCost * maxStartingUnits*/1000);
@@ -132,19 +132,6 @@ void GameLogicSystem::Render()
 
 void GameLogicSystem::Exit()
 {
-	if (UnitInterface)
-	{
-		UnitInterface->Exit();
-		delete UnitInterface;
-		UnitInterface = nullptr;
-	}
-	if (GameInterface)
-	{
-		GameInterface->Exit();
-		delete GameInterface;
-		GameInterface = nullptr;
-	}
-
 	QuickExit();
 }
 
@@ -168,6 +155,19 @@ void GameLogicSystem::QuickExit()
 		delete InternalBattleSystem;
 		InternalBattleSystem = nullptr;
 	}
+	if (UnitInterface)
+	{
+		UnitInterface->Exit();
+		delete UnitInterface;
+		UnitInterface = nullptr;
+	}
+	if (GameInterface)
+	{
+		GameInterface->Exit();
+		delete GameInterface;
+		GameInterface = nullptr;
+	}
+
 }
 
 TerrainNode* GameLogicSystem::GetTerrainNodeForPosition(const Vector3& Position)
