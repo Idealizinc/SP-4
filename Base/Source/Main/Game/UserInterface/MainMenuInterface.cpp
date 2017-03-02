@@ -36,6 +36,7 @@ void MainMenuInterface::Init()
 			initedLayers[i] = false;
 		}
 	}
+	currLevel = 1;
 }
 
 void MainMenuInterface::InitMainLayer()
@@ -324,7 +325,7 @@ void MainMenuInterface::CheckLevelUserInput(Vector3 mousePos)
 			NextButtonLS->Visible = 1;
 		}
 	}
-	else if (PlayButton->DetectUserInput(mousePos, LevelSelectLayer->GetPosition()))
+	else if (PlayButton->DetectUserInput(mousePos, LevelSelectLayer->GetPosition()) && LevelSelectPage <= currLevel)
 	{
 		nextLayer = L_MAIN;
 
