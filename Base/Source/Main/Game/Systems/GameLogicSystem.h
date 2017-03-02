@@ -98,6 +98,9 @@ public:
 	float PieceAnimationSpeed = 3.f;
 	float ParticleMultiplier = 1.f;
 
+	int MaxLevelUnlocked;
+	bool currHighestLevel;
+
 protected:
 
 };

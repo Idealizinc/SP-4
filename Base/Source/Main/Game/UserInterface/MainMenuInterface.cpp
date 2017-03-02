@@ -39,7 +39,6 @@ void MainMenuInterface::Init()
 			initedLayers[i] = false;
 		}
 	}
-	currLevel = 1;
 }
 
 void MainMenuInterface::InitMainLayer()
@@ -204,6 +203,13 @@ void MainMenuInterface::InitLevelSelectLayer()
 	PlayButton->SetText("Start Level");
 	PlayButton->SetTextColor(WoodTextColor);
 
+	LockedButton = LevelSelectLayer->CreateNewInterfaceElement("LockButton", "Lock", Vector3(0, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * -(0.475f), 0), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.15f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.2f, 0));
+	LockedButton->SetTargetPosition(Vector3(0, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * -(0.45f), 0));
+	LockedButton->SetText("Level Locked");
+	LockedButton->SetTextColor(Vector3(1, 1, 1));
+	LockedButton = LevelSelectLayer->CreateNewInterfaceElement("LockButton", "RedBar", Vector3(0, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * -(0.475f), 0), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.6f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.2f, 0));
+	LockedButton->SetTargetPosition(Vector3(0, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * -(0.45f), 0));
+
 	LevelTitle = LevelSelectLayer->CreateNewInterfaceElement("LevelTitleF", "WoodFrameRect", Vector3(0, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.3f, 0), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.6f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.2f, 0));
 	LevelTitle->SetTargetPosition(Vector3(0, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.325f, 0));
 	LevelTitle = LevelSelectLayer->CreateNewInterfaceElement("LevelTitle", "Background", Vector3(0, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.3f, 0), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.6f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.2f, 0));
@@ -340,6 +346,7 @@ void MainMenuInterface::CheckLevelUserInput(Vector3 mousePos)
 			PrevButtonLS->Active = 0;
 			PrevButtonLS->Visible = 0;
 		}
+		PlayButton->Visible = true;
 
 	}
 	else if (NextButtonLS->DetectUserInput(mousePos, LevelSelectLayer->GetPosition()))
@@ -355,6 +362,10 @@ void MainMenuInterface::CheckLevelUserInput(Vector3 mousePos)
 			PrevButtonLS->Active = 1;
 			PrevButtonLS->Visible = 1;
 		}
+		if (LevelSelectPage > GameLogicSystem::Instance().MaxLevelUnlocked)
+		{
+			PlayButton->Visible = false;
+		}
 	}
 	else if (PrevButtonLS->DetectUserInput(mousePos, LevelSelectLayer->GetPosition()))
 	{
@@ -369,8 +380,12 @@ void MainMenuInterface::CheckLevelUserInput(Vector3 mousePos)
 			NextButtonLS->Active = 1;
 			NextButtonLS->Visible = 1;
 		}
+		if (LevelSelectPage <= GameLogicSystem::Instance().MaxLevelUnlocked)
+		{
+			PlayButton->Visible = true;
+		}
 	}
-	else if (PlayButton->DetectUserInput(mousePos, LevelSelectLayer->GetPosition()) && LevelSelectPage <= currLevel)
+	else if (PlayButton->DetectUserInput(mousePos, LevelSelectLayer->GetPosition()) && LevelSelectPage <= GameLogicSystem::Instance().MaxLevelUnlocked)
 	{
 		nextLayer = L_MAIN;
 
@@ -390,6 +405,10 @@ void MainMenuInterface::CheckLevelUserInput(Vector3 mousePos)
 	{
 		LevelInitiationRequired = false;
 		InitiateLevelLoading(LevelSelectData[LevelSelectPage - 1]->GetEntityID());
+		if (GameLogicSystem::Instance().MaxLevelUnlocked == LevelSelectPage)
+		{
+			GameLogicSystem::Instance().currHighestLevel = true;
+		}
 		LevelSelectPage = 1;
 	}
 }

@@ -35,7 +35,13 @@ void GameLogicSystem::Init()
 	VolumeMultiplier = LuaInterface::Instance().GetFloatValue("Setting_Volume") * 0.01f;
 	PieceAnimationSpeed = LuaInterface::Instance().GetFloatValue("Setting_AnimationSpeed")* 0.01f;
 	ParticleMultiplier = LuaInterface::Instance().GetFloatValue("Setting_ParticleMultiplier")* 0.01f;
-	std::cout << VolumeMultiplier << " " << PieceAnimationSpeed << " " << ParticleMultiplier;
+	//std::cout << VolumeMultiplier << " " << PieceAnimationSpeed << " " << ParticleMultiplier;
+	MaxLevelUnlocked = LuaInterface::Instance().GetIntegerValue("Setting_UnlockedLevel");
+	if (MaxLevelUnlocked < 1)
+	{
+		MaxLevelUnlocked = 1;
+	}
+	currHighestLevel = false;
 }
 
 void GameLogicSystem::QuickInit()
@@ -157,6 +163,7 @@ void GameLogicSystem::Exit()
 	LuaInterface::Instance().SaveIntegerValue("Setting_Volume", VolumeMultiplier * 100, true);
 	LuaInterface::Instance().SaveIntegerValue("Setting_AnimationSpeed", PieceAnimationSpeed * 100, false);
 	LuaInterface::Instance().SaveIntegerValue("Setting_ParticleMultiplier", ParticleMultiplier * 100, false);
+	LuaInterface::Instance().SaveIntegerValue("Setting_UnlockedLevel", MaxLevelUnlocked, false);
 }
 
 void GameLogicSystem::QuickExit()

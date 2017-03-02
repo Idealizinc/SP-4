@@ -110,7 +110,8 @@ private:
 	Vector3 RightSide = Vector3(SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth * 2.0f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 1.0f, 0);
 
 	std::string SelectedLevelName;
-	int currLevel;
+
+
 };
 
 #endif
