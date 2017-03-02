@@ -34,7 +34,7 @@ void MainMenuScene::QuickInit()
 	RenderSystem *Renderer = dynamic_cast<RenderSystem*>(&SceneSystem::Instance().GetRenderSystem());
 
 	// Set Terrain Size
-	TerrainScale.Set(400.f, 25.f, 400.f);
+	TerrainScale.Set(400.f, 50.f, 400.f);
 	ScenePartition = new ScenePartitionGraph();
 	ScenePartition->AssignGridParameters(Vector3(), Vector3(TerrainScale.x, TerrainScale.z), 4);
 
@@ -44,11 +44,11 @@ void MainMenuScene::QuickInit()
 
 	CameraAerial* CA = new CameraAerial();
 	camera = CA;
-	CA->AltInit(/*Player Character Position*/Vector3(0, 0, 0), Vector3(0, 100, 1), Vector3(0, 1, 0));
+	CA->AltInit(/*Player Character Position*/Vector3(0, 0, 0), Vector3(0, 40, -150), Vector3(0, 1, 0));
 	CenterPosition.Set(SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth * 0.5f, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.5f, 0);
 
 	// Initiallise Model Specific Meshes Here
-	Mesh* newMesh = MeshBuilder::GenerateTerrain("MainMenu", "HeightMapFiles//heightmap_Town1.raw", m_heightMap);
+	Mesh* newMesh = MeshBuilder::GenerateTerrain("MainMenu", "HeightMapFiles//heightmap_test.raw", m_heightMap);
 	newMesh->material.kAmbient.Set(0.2f, 0.2f, 0.2f);
 	newMesh->material.kDiffuse.Set(0.2f, 0.2f, 0.2f);
 	newMesh->material.kSpecular.Set(0.0f, 0.0f, 0.0f);
@@ -60,7 +60,7 @@ void MainMenuScene::QuickInit()
 	GameMap *theMap = dynamic_cast<GameMap*>(InteractiveMap);
 	theMap->ScenePartition = ScenePartition;
 	theMap->SetEntityID("MainMenu");
-	theMap->LoadMap("CSVFiles//BattlefieldLayouts//BattlefieldLayout1.csv", false, m_heightMap, TerrainScale, EntityList, BManager);
+	theMap->LoadMap("CSVFiles//GameMapLayouts//GameMapLevel1.csv", false, m_heightMap, TerrainScale, EntityList, BManager);
 
 	SceneSystem::Instance().cSS_InputManager->cIM_inMouseMode = true;
 }
@@ -133,11 +133,10 @@ void MainMenuScene::Update(const float& dt)
 
 	if (SceneSystem::Instance().cSS_InputManager->GetMouseInput(InputManager::KEY_LMB) == InputManager::MOUSE_HOLD)
 	{
-		float Interval = SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 1.f;
+		float Interval = SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.075f;
 		Vector3 Dimensions = Vector3(Interval, Interval, Interval);
-		Vector3 Velocity = Vector3(Math::RandFloatMinMax(-Interval * 0.5f, Interval * 0.5f), Math::RandFloatMinMax(-Interval * 0.5f, Interval * 0.5f), 1.f);
-		ParticleManager.AddScreenSpaceParticle("weed2", SceneSystem::Instance().cSS_InputManager->GetMousePosition(), Dimensions, Velocity, camera->position, 1.f);
-		//ParticleManager.AddWorldSpaceParticle("weed", Vector3(0, 5, 0), Vector3(10, 10, 10), Velocity * 0.1f, camera->position, 1.f);
+		Vector3 Velocity = Vector3(Math::RandFloatMinMax(-Interval * 0.5f, Interval * 0.5f), Math::RandFloatMinMax(-Interval * 0.5f, Interval * 0.5f), 1.f) * 10.f;
+		ParticleManager.AddScreenSpaceParticle("Light", SceneSystem::Instance().cSS_InputManager->GetMousePosition(), Dimensions, Velocity, camera->position, 0.5f);
 	}
 
 	CA->Update(Delta);
@@ -297,7 +296,10 @@ void MainMenuScene::RenderPassMain()
 	// Model matrix : an identity matrix (model will be at the origin)
 	modelStack->LoadIdentity();
 	SceneSystem::Instance().RenderTransitionEffects();
-	SceneSystem::Instance().RenderMouseCursor(Vector3(SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.05f, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.05f), "weed");
+
+	if (SceneSystem::Instance().cSS_InputManager->GetMouseInput(InputManager::KEY_LMB) == InputManager::MOUSE_RELEASE)
+		SceneSystem::Instance().RenderMouseCursor(Vector3(SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.05f, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.05f), "Pointer");
+	else SceneSystem::Instance().RenderMouseCursor(Vector3(SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.05f, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.05f), "PointerDown");
 
 	Renderer->RenderMesh("reference", false);
 

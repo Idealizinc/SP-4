@@ -19,7 +19,6 @@ GameScene::GameScene()
 	Player = nullptr;
 	SceneSystem::Instance().AddScene(*this);
 	Init();
-	GameLogicSystem::Instance().Init();
 	ScenePartition = nullptr;
 }
 
@@ -116,7 +115,21 @@ void GameScene::Update(const float& dt)
 	float Speed = 80.f;
 	CameraAerial* CA = (CameraAerial*)camera;
 	float DetectionOffset = 0.1f;
-	if (!GameLogicSystem::Instance().UnitInterface->UIDisplayed && !GameLogicSystem::Instance().GameInterface->MenuOpen)
+	bool CameraLocked = false;
+
+	if (SceneSystem::Instance().cSS_InputManager->GetMouseInput(InputManager::KEY_LMB) == InputManager::MOUSE_RELEASE)
+	{
+		if (GameLogicSystem::Instance().GameInterface->MenuButton->DetectUserInput(SceneSystem::Instance().cSS_InputManager->GetMousePosition(), GameLogicSystem::Instance().GameInterface->MenuLayer->GetPosition()))
+		{
+			CameraLocked = true;
+		}
+	}
+	if (GameLogicSystem::Instance().UnitInterface->UIDisplayed || GameLogicSystem::Instance().GameInterface->MenuOpen)
+	{
+		CameraLocked = true;
+	}
+
+	if (!CameraLocked)
 	{
 		if (SceneSystem::Instance().cSS_InputManager->GetKeyValue(SimpleCommand::m_allTheKeys[SimpleCommand::FORWARD_COMMAND]) ||
 			SceneSystem::Instance().cSS_InputManager->GetMousePosition().y > SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * (1.f - DetectionOffset))
@@ -342,7 +355,10 @@ void GameScene::RenderPassMain()
 	// Model matrix : an identity matrix (model will be at the origin)
 	modelStack->LoadIdentity();
 	SceneSystem::Instance().RenderTransitionEffects();
-	SceneSystem::Instance().RenderMouseCursor(Vector3(SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.05f, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.05f), "weed2");
+	if (SceneSystem::Instance().cSS_InputManager->GetMouseInput(InputManager::KEY_LMB) == InputManager::MOUSE_RELEASE)
+		SceneSystem::Instance().RenderMouseCursor(Vector3(SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.05f, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.05f), "Pointer");
+	else SceneSystem::Instance().RenderMouseCursor(Vector3(SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.05f, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.05f), "PointerDown");
+	
 	RenderSkybox();
 	RenderShadowCasters();
 

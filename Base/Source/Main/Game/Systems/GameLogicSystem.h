@@ -85,7 +85,6 @@ public:
 	PlayerSystem* InternalPlayerSystem;
 	EnemySystem* InternalEnemySystem;
 	BattleSystem* InternalBattleSystem;
-	float PieceAnimationSpeed = 5.f;
 	float PieceMinimumDistance = 0.01f;
 	UnitCreationInterface* UnitInterface;
 	GameScreenInterface* GameInterface;
@@ -94,6 +93,9 @@ public:
 	bool DetectWinner();
 	void DetectSurrender();
 	const int MaxUnitInNode = 5;
+
+	float VolumeMultiplier = 1.f;
+	float PieceAnimationSpeed = 3.f;
 	float ParticleMultiplier = 1.f;
 
 protected:

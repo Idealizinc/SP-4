@@ -76,7 +76,12 @@ private:
 	InterfaceElement* SettingsTitle;
 	InterfaceElement* SettingsBackground;
 	InterfaceElement* BackButtonS;
-
+	InterfaceElement* TitleVolume;
+	InterfaceElement* ButtonVolume;
+	InterfaceElement* TitleGraphics;
+	InterfaceElement* ButtonGraphics;
+	InterfaceElement* TitleSpeed;
+	InterfaceElement* ButtonSpeed;
 
 	InterfaceLayer* InstructionsLayer;
 	InterfaceElement* InstructionsText;
@@ -88,7 +93,6 @@ private:
 	InterfaceElement* PrevButtonI;
 	InterfaceElement* PageDisplayI;
 	InterfaceElement* BackButtonI;
-
 
 	void CheckMenuUserInput(Vector3 mousePos);
 	void CheckFactionUserInput(Vector3 mousePos);

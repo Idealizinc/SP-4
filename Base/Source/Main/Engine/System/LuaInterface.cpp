@@ -127,7 +127,7 @@ float LuaInterface::GetVector3Dot(Vector3 A, Vector3 B)
 void LuaInterface::SaveIntegerValue(const char* VariableName, const int Value, const bool Overwrite)
 {
 	// Function Name within the file
-	AddLuaState("PlayerInitiallizer.lua");
+	AddLuaState("DataStoreUtility.lua");
 	lua_getglobal(LuaState, "SaveToLuaFile");
 	char Output[80];
 	sprintf(Output, "%s = %d\n", VariableName, Value);

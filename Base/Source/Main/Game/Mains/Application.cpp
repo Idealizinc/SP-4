@@ -167,9 +167,8 @@ void Application::Init()
     LoadKeybinds();
 #endif
 
+	GameLogicSystem::Instance().Init();
 	// Initiallize used scenes
-	//Scene_MainMenu *MM = new Scene_MainMenu();	
-	
 	SceneEntity* Scenes;
 	Scenes = new MainMenuScene();
 	Scenes = new GameScene();
