@@ -273,52 +273,22 @@ void MainMenuInterface::InitSettingsLayer()
 
 	
 	if (GameLogicSystem::Instance().VolumeMultiplier <= 0.6f)
-	{
-		GameLogicSystem::Instance().VolumeMultiplier = 1.f;
-		ButtonVolume->SetText("Medium");
-	}
-	else if (GameLogicSystem::Instance().VolumeMultiplier <= 1.1f)
-	{
-		GameLogicSystem::Instance().VolumeMultiplier = 1.5f;
-		ButtonVolume->SetText("High");
-	}
-	else
-	{
-		GameLogicSystem::Instance().VolumeMultiplier = 0.5f;
 		ButtonVolume->SetText("Low");
-	}
+	else if (GameLogicSystem::Instance().VolumeMultiplier <= 1.1f)
+		ButtonVolume->SetText("Medium");
+	else ButtonVolume->SetText("High");
 	
 	if (GameLogicSystem::Instance().ParticleMultiplier <= 1.1f)
-	{
-		GameLogicSystem::Instance().ParticleMultiplier = 3.f;
-		ButtonGraphics->SetText("Medium");
-	}
-	else if (GameLogicSystem::Instance().ParticleMultiplier <= 3.1f)
-	{
-		GameLogicSystem::Instance().ParticleMultiplier = 5.f;
-		ButtonGraphics->SetText("High");
-	}
-	else
-	{
-		GameLogicSystem::Instance().ParticleMultiplier = 1.f;
 		ButtonGraphics->SetText("Low");
-	}
-	
+	else if (GameLogicSystem::Instance().ParticleMultiplier <= 3.1f)
+		ButtonGraphics->SetText("Medium");
+	else ButtonGraphics->SetText("High");
+
 	if (GameLogicSystem::Instance().PieceAnimationSpeed <= 1.1f)
-	{
-		GameLogicSystem::Instance().PieceAnimationSpeed = 3.f;
-		ButtonSpeed->SetText("Medium");
-	}
-	else if (GameLogicSystem::Instance().PieceAnimationSpeed <= 3.1f)
-	{
-		GameLogicSystem::Instance().PieceAnimationSpeed = 5.f;
-		ButtonSpeed->SetText("High");
-	}
-	else
-	{
-		GameLogicSystem::Instance().PieceAnimationSpeed = 1.f;
 		ButtonSpeed->SetText("Low");
-	}
+	else if (GameLogicSystem::Instance().PieceAnimationSpeed <= 3.1f)
+		ButtonSpeed->SetText("Medium");
+	else ButtonSpeed->SetText("High");
 }
 
 void MainMenuInterface::CheckLevelUserInput(Vector3 mousePos)

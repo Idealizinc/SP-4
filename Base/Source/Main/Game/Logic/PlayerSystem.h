@@ -55,12 +55,16 @@ private:
 	// Functions
 	UnitPiece* GenerateNewUnit(const std::map<std::string, unsigned short>& Battalion);
 	UnitPiece* AdvanceSingleUnit(UnitPiece* Selection, TerrainNode* Target);
-	void HandleUserInput();
+	void HandleUserInput(const float& dt);
 	
+	int UnitIndex = 0;
+	float UnitSwapWaitTimer = 0.f;
+	float UnitWaitTime = 0.25f;
 
 	int Cash;
 	bool AnimationEnded, AnimateUpwards;
 	float WaitTimer = 0;
+	float InfoWaitTimer = 0;
 
 protected:
 
