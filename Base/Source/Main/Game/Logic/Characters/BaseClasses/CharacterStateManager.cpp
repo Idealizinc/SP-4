@@ -246,7 +246,7 @@ BaseObject* CharacterStateManager::FindTargetNode()
 	if (Character->TargetEnemy != nullptr)
 	{
 		Vector3 DirectionToTarget = (Character->TargetEnemy->GetPosition() - Character->GetPosition());
-		float SelectionDistance = Character->DetectionRadius * 2.f;
+		float SelectionDistance = Character->DetectionRadius * Character->DetectionRadius * 0.5;
 		std::vector<GameObject*> NodeList = SceneSystem::Instance().GetCurrentScene().ScenePartition->WaypointList;
 		for (std::vector<GameObject*>::iterator it = NodeList.begin(); it != NodeList.end(); ++it)
 		{

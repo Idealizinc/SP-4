@@ -70,7 +70,7 @@ void MainMenuInterface::InitMainLayer()
 void MainMenuInterface::InitFactionLayer()
 {
 	FactionLayer = CreateNewInterfaceLayer(std::to_string(L_FACTION), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * -(2.5f), 0), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 1.2f, 0));
-	Faction1Name = FactionLayer->CreateNewInterfaceElement("Faction1Button", "LivingFactionLogo", 0, Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.8, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.8f, 0));
+	Faction1Name = FactionLayer->CreateNewInterfaceElement("Faction1Button", "LivingFactionLogo", 0, Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.8f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.8f, 0));
 	Faction1Name->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * -(0.5f), 0, 0));
 
 	Faction1Button = FactionLayer->CreateNewInterfaceElement("Faction1Name", "BlueButton", 0, Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.4f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y* 0.2f, 0));
@@ -123,15 +123,15 @@ void MainMenuInterface::InitInstructLayer()
 
 	//NextButtonI = InstructionsLayer->CreateNewInterfaceElement("NextButtonIF", "WoodFrameRect", Vector3(SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth * 0.1, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * -(0.3f), 0), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.2f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.1f, 0));
 	//NextButtonI->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth * 0.1, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * -(0.3f), 0));
-	NextButtonI = InstructionsLayer->CreateNewInterfaceElement("NextButtonI", "Background", Vector3(SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth * 0.2, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * -(0.4f), 0), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.2f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.1f, 0));
-	NextButtonI->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth * 0.2, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * -(0.4f), 0));
+	NextButtonI = InstructionsLayer->CreateNewInterfaceElement("NextButtonI", "Background", Vector3(SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth * 0.2f, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * -(0.4f), 0), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.2f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.1f, 0));
+	NextButtonI->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth * 0.2f, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * -(0.4f), 0));
 	NextButtonI->SetText("Next");
 	NextButtonI->SetTextColor(Vector3(0.5f, 0.3f, 0.3f));
 
 	//PrevButtonI = InstructionsLayer->CreateNewInterfaceElement("PrevButtonIF", "WoodFrameRect", Vector3(SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth * -(0.1), SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * -(0.3f), 0), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.2f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.1f, 0));
 	//PrevButtonI->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth * -(0.1), SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * -(0.3f), 0));
-	PrevButtonI = InstructionsLayer->CreateNewInterfaceElement("PrevButtonI", "Background", Vector3(SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth * -(0.2), SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * -(0.4f), 0), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.2f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.1f, 0));
-	PrevButtonI->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth * -(0.2), SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * -(0.4f), 0));
+	PrevButtonI = InstructionsLayer->CreateNewInterfaceElement("PrevButtonI", "Background", Vector3(SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth * -(0.2f), SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * -(0.4f), 0), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.2f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.1f, 0));
+	PrevButtonI->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth * -(0.2f), SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * -(0.4f), 0));
 	PrevButtonI->SetText("Prev");
 	PrevButtonI->SetTextColor(Vector3(0.5f, 0.3f, 0.3f));
 

@@ -25,6 +25,7 @@ public:
 private:
 	void HandleUserInput();
 	void PopUpDelay(const float& dt);
+	void RecreateDataLayer();
 
 	InterfaceLayer* TurnPopup;
 	InterfaceElement* BattleScreenFrame;
@@ -50,6 +51,7 @@ private:
 	InterfaceElement* UnitDataInfoText;
 	InterfaceElement* UnitDataIcon;
 	InterfaceElement* UnitWeaponDataName;
+	InterfaceElement* UnitWeaponDataNumber;
 	InterfaceElement* UnitDataFrameButton;
 
 	InterfaceLayer* UnitCountInfoLayer;
@@ -96,6 +98,8 @@ private:
 	bool Followup;
 	bool Finished;
 	bool GetMaxData;
+	bool PlayerWon;
+	bool EnemyWon;
 
 	Vector3 defaultbarSize;
 	std::map<std::string, std::map<std::string, int>> UnitMap;

@@ -20,6 +20,7 @@ BattleScreenInterface::BattleScreenInterface()
 
 BattleScreenInterface::~BattleScreenInterface()
 {
+
 	Exit();
 }
 
@@ -93,15 +94,7 @@ void BattleScreenInterface::Init()
 	TerrainInfoFrame->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.5f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y, 0));
 
 	//Show player unit data info interface
-	UnitDataLayer = CreateNewInterfaceLayer("RightLayer", 0, 0);
 
-	UnitDataFrameButton = UnitDataLayer->CreateNewInterfaceElement("UnitDtatFrameButton", "Transparent", Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x* 1.02f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 1.025f, 0), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.075f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.3f, 0));
-	UnitDataFrameButton->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 1.02f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 1.025f, 0));
-
-	UnitDataInfoText = UnitDataLayer->CreateNewInterfaceElement("UnitDtatInfoText", "Transparent", Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x* 1.53f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 1.4f, 0), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.25f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.15f, 0));
-	UnitDataInfoText->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 1.53f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 1.4f, 0));
-	UnitDataInfoText->SetText("Unit     Weapon Using    Rarity");
-	UnitDataInfoText->SetTextColor(0);
 
 	//Show Player unit data interface
 	UnitCountInfoLayer = CreateNewInterfaceLayer("UnitCountLayer", 0, 0);
@@ -166,68 +159,8 @@ void BattleScreenInterface::Update(const float& dt)
 		CNOMEU = GameLogicSystem::Instance().InternalBattleSystem->GetEnemyCharacterList().size();
 		currentPlayerBarPos = PlayerUnitCountBackground->GetPosition();
 		currentEnemyBarPos = EnemyUnitCountBackground->GetPosition();
-		int Counter = 0; 
-		float offSet = SceneSystem::Instance().cSS_InputManager->ScreenCenter.x* 0.08f; 
-		Vector3 OriginPos = Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x* 1.18f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 1.25f, 0);
-		Vector3 IconDimensions = Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.1f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.1f, 0);
-		Vector3 WeaponBarDimensions = Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.1f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.1f, 0);
-
-		for (auto it : GameLogicSystem::Instance().InternalBattleSystem->GetPlayerCharacterList())
-		{
-			BattleScreenCharacter * BSC = (BattleScreenCharacter *)it;
-			UnitDataIcon = nullptr;
-
-			auto it2 = UnitMap.find(it->GetEntityID());
-			if (it2 == UnitMap.end())
-			{
-				std::map<std::string, int> Temp;
-				Temp.insert(std::pair<std::string, int>(BSC->InternalWeapon->GetEntityID(), 1));
-				UnitMap.insert(std::pair<std::string, std::map<std::string, int>>(it->GetEntityID(), Temp));
-				it2 = UnitMap.find(it->GetEntityID());
-			}
-			else
-			{
-				auto it3 = it2->second.find(BSC->InternalWeapon->GetEntityID());
-				if (it3 == it2->second.end())
-				{
-					it2->second.insert(std::pair<std::string, int>(BSC->InternalWeapon->GetEntityID(), 1));
-				}
-				else
-				{
-					it3->second++;
-				}
-			}
-
-			Vector3 CurrentUIPos = OriginPos + Vector3(0, -offSet * Counter);
-
-			//Icon
-			UnitDataIcon = UnitDataLayer->CreateNewInterfaceElement("Icon" + it->GetEntityID(), it->GetMeshName(), CurrentUIPos, IconDimensions);
-			UnitDataIcon->SetTargetPosition(CurrentUIPos);
-			// Weapon Bar[s]
-
-			for (auto it3 : it2->second)
-			{
-				// iterate the map of equip wepaon for this monster //it3.first = name
-				if (it3.first != BSC->InternalWeapon->GetEntityID())
-					continue;
-				
-				// decide how to offset the bars
-				float barOffset = SceneSystem::Instance().cSS_InputManager->ScreenCenter.x* 0.05f;
-				Vector3 barOriginPos = Vector3(UnitDataIcon->GetPosition().x  * 1.27f, UnitDataIcon->GetPosition().y, 0);
-				Vector3 textDimensions = Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.15f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.1f, 0);
-
-				// create the bars with the info
-				UnitWeaponDataName = UnitDataLayer->CreateNewInterfaceElement("Icon" + it->GetEntityID(), "Transparent", barOriginPos, textDimensions);
-				UnitWeaponDataName->SetTargetPosition(barOriginPos);
-				UnitWeaponDataName->SetText(it3.first);
-			}
-
-			Counter++;
-
-			//UnitWeaponDataName = UnitDataLayer->CreateNewInterfaceElement("Name" + BSC->InternalWeapon->GetEntityID(), "Transparent", Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x* 1.53f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 1.4f, 0), Vector3(50, 50, 0));
-		}
-		UnitDataInfoFrame = UnitDataLayer->CreateNewInterfaceElement("UnitDataInfoBackground", "InfoFrame2", Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 1.5f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y, 0), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y, 0));
-		UnitDataInfoFrame->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 1.5f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y, 0));
+		
+		RecreateDataLayer();
 
 		GetMaxData = false;
 
@@ -244,11 +177,9 @@ void BattleScreenInterface::Update(const float& dt)
 		currentPlayerBarPos = PlayerUnitCountBackground->GetPosition() - Vector3(PlayerRateofChange * 0.5f, 0, 0);
 		PlayerUnitCount->SetTargetPosition(currentPlayerBarPos);
 
-
 		EnemyRateofChange = defaultbarSize.x - EnemyUnitCount->GetDimensions().x;
 		currentEnemyBarPos = EnemyUnitCountBackground->GetPosition() + Vector3(EnemyRateofChange * 0.5f, 0, 0);
 		EnemyUnitCount->SetTargetPosition(currentEnemyBarPos);
-
 
 		PlayerUnitCount->SetDimensions(Vector3(defaultbarSize.x * ((float)CNOPU / (float)CNOMPU), PlayerUnitCount->GetDimensions().y, 0));
 		EnemyUnitCount->SetDimensions(Vector3(defaultbarSize.x * ((float)CNOEU / (float)CNOMEU), EnemyUnitCount->GetDimensions().y, 0));
@@ -286,22 +217,6 @@ void BattleScreenInterface::Update(const float& dt)
 		EnemyFactionNameText->SetTextColor(Vector3(1, 1, 0));
 	}
 
-
-	//if (GameLogicSystem::Instance().PlayerFaction == GameLogicSystem::F_LIVING)
-	//	for (int i = 0; i < GameLogicSystem::Instance().InternalBattleSystem->UnitData.LivingMap.size; ++i)
-	//	{
-	//		
-	//		//UnitMap[i]->first = GameLogicSystem::Instance().InternalBattleSystem->UnitData.LivingMap[i].first;
-	//		//UnitMap.insert(std::pair<std::string, >(GameLogicSystem::Instance().InternalBattleSystem->UnitData.LivingMap[i].first, std::pair<std::string, int>(GameLogicSystem::Instance().InternalBattleSystem->UnitData.LivingMap[i].second))
-	//	}
-	//	//UnitMap.insert(std::pair<GameLogicSystem::Instance().InternalBattleSystem->UnitData.LivingMap;
-	//else
-	//	for (int i = 0; i < GameLogicSystem::Instance().InternalBattleSystem->UnitData.UndeadMap.size; ++i)
-	//	{
-	//		UnitMap[i]->first = GameLogicSystem::Instance().InternalBattleSystem->UnitData.UndeadMap[i].first;
-	//	}
-
-
 	if (ShowResult)
 	{
 		ResultInfoLayer->SetTargetPosition(Vector3(0, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 1.3f, 0));
@@ -309,15 +224,27 @@ void BattleScreenInterface::Update(const float& dt)
 		UnitDataLayer->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.925f, 0, 0));
 		if (CNOPU != 0)
 		{
+			PlayerWon = true;
 			ResultInfo->SetText("Player Won");
 		}
 		else if (CNOEU != 0)
 		{
+			EnemyWon = true;
 			ResultInfo->SetText("Enemy Won");
 		}
+		/*UnitMap.clear();
+		if (UnitDataLayer)
+		{
+			for (std::vector<InterfaceLayer*>::iterator it = InternalLayerContainer.begin(); it != InternalLayerContainer.end(); ++it)
+				if ((*it)->GetEntityID() == UnitDataIcon->GetEntityID())
+				{
+					InternalLayerContainer.erase(it);
+					break;
+				}
+			UnitDataIcon->Exit();
+		}*/
 	}
 	HandleUserInput();
-
 }
 
 void BattleScreenInterface::Render()
@@ -338,6 +265,21 @@ void BattleScreenInterface::HandleUserInput()
 		if (CloseResultButton->DetectUserInput(MousePos, ResultInfoLayer->GetPosition()))
 		{
 			EndResult = true;
+			UnitMap.clear();
+			if (UnitDataLayer)
+			{
+				for (std::vector<InterfaceLayer*>::iterator it = InternalLayerContainer.begin(); it != InternalLayerContainer.end(); ++it)
+					if ((*it)->GetEntityID() == UnitDataLayer->GetEntityID())
+					{
+						InternalLayerContainer.erase(it);
+						break;
+					}
+				UnitDataLayer->Exit();
+				delete UnitDataLayer;
+				UnitDataLayer = nullptr;
+				UnitDataFrameButton = nullptr;
+			}
+
 		}
 
 		if (TerrainFrameButton->DetectUserInput(MousePos, TerrainInfoLayer->GetPosition()))
@@ -347,7 +289,8 @@ void BattleScreenInterface::HandleUserInput()
 			else
 				TerrainInfoLayer->SwapOriginalWithTarget();
 		}
-		else if (UnitDataFrameButton->DetectUserInput(MousePos, UnitDataLayer->GetPosition()))
+		else if (UnitDataFrameButton)
+		if (UnitDataFrameButton->DetectUserInput(MousePos, UnitDataLayer->GetPosition()))
 		{
 			if ((UnitDataLayer->GetPosition() - UnitDataLayer->GetTargetPosition()).LengthSquared() < 1)
 				UnitDataLayer->SwapOriginalWithTarget();
@@ -421,6 +364,85 @@ void BattleScreenInterface::PopUpDelay(const float& dt)
 	}
 }
 
+void BattleScreenInterface::RecreateDataLayer()
+{
+	UnitDataLayer = CreateNewInterfaceLayer("RightLayer", 0, 0);
+
+	UnitDataFrameButton = UnitDataLayer->CreateNewInterfaceElement("UnitDtatFrameButton", "Transparent", Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x* 1.02f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 1.025f, 0), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.075f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.3f, 0));
+	UnitDataFrameButton->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 1.02f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 1.025f, 0));
+
+	UnitDataInfoText = UnitDataLayer->CreateNewInterfaceElement("UnitDtatInfoText", "Transparent", Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x* 1.53f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 1.4f, 0), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.25f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.15f, 0));
+	UnitDataInfoText->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 1.53f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 1.4f, 0));
+	UnitDataInfoText->SetText("Unit    Weapon Using   Rarity");
+	UnitDataInfoText->SetTextColor(0);
+
+	int Counter = 0;
+	float offSet = SceneSystem::Instance().cSS_InputManager->ScreenCenter.x* 0.08f;
+	Vector3 OriginPos = Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x* 1.18f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 1.25f, 0);
+	Vector3 IconDimensions = Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.1f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.1f, 0);
+	Vector3 WeaponBarDimensions = Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.1f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.1f, 0);
+
+	for (auto it : GameLogicSystem::Instance().InternalBattleSystem->GetPlayerCharacterList())
+	{
+		BattleScreenCharacter * BSC = (BattleScreenCharacter *)it;
+		UnitDataIcon = nullptr;
+
+		auto it2 = UnitMap.find(it->GetMeshName());
+		if (it2 == UnitMap.end())
+		{
+			std::map<std::string, int> Temp;
+			Temp.insert(std::pair<std::string, int>(BSC->InternalWeapon->GetEntityID(), 1));
+			UnitMap.insert(std::pair<std::string, std::map<std::string, int>>(it->GetMeshName(), Temp));
+			it2 = UnitMap.find(it->GetMeshName());
+		}
+		else
+		{
+			auto it3 = it2->second.find(BSC->InternalWeapon->GetEntityID());
+			if (it3 == it2->second.end())
+			{
+				it2->second.insert(std::pair<std::string, int>(BSC->InternalWeapon->GetEntityID(), 1));
+			}
+			else
+			{
+				it3->second++;
+			}
+		}
+		//UnitWeaponDataName = UnitDataLayer->CreateNewInterfaceElement("Name" + BSC->InternalWeapon->GetEntityID(), "Transparent", Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x* 1.53f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 1.4f, 0), Vector3(50, 50, 0));
+	}
+
+
+
+	for (auto it : UnitMap)
+	{
+		// decide how to offset the bars
+		float barOffset = SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.1f;
+		Vector3 barOriginPos = Vector3(/*UnitDataIcon->GetPosition().x*/OriginPos.x  * 1.27f, OriginPos.y, 0);
+		Vector3 textDimensions = Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.15f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.1f, 0);
+
+		for (auto it2 : it.second)
+		{
+			Vector3 CurrentUIPos = OriginPos + Vector3(0, -offSet * Counter);
+			// create the bars with the info
+			UnitDataIcon = UnitDataLayer->CreateNewInterfaceElement("Icon" + it.first, it.first, CurrentUIPos, IconDimensions);
+			UnitDataIcon->SetTargetPosition(CurrentUIPos);
+
+			UnitWeaponDataName = UnitDataLayer->CreateNewInterfaceElement("Icon" + it.first, "Transparent", CurrentUIPos + Vector3(barOffset * 3, 0, 0), textDimensions);
+			UnitWeaponDataName->SetTargetPosition(CurrentUIPos + Vector3(barOffset * 3, 0, 0));
+			UnitWeaponDataName->SetText(it2.first);
+
+			UnitWeaponDataNumber = UnitDataLayer->CreateNewInterfaceElement("Icon" + it.first, "Transparent", CurrentUIPos + Vector3(barOffset * 5, 0, 0), textDimensions);
+			UnitWeaponDataNumber->SetTargetPosition(CurrentUIPos + Vector3(barOffset * 5, 0, 0));
+			UnitWeaponDataNumber->SetText(std::to_string(it2.second));
+
+			++Counter;
+		}
+
+	}
+
+	UnitDataInfoFrame = UnitDataLayer->CreateNewInterfaceElement("UnitDataInfoBackground", "InfoFrame2", Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 1.5f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y, 0), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y, 0));
+	UnitDataInfoFrame->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 1.5f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y, 0));
+}
+
 void BattleScreenInterface::ResetAll()
 {
 	ResetAllToOriginal();
@@ -437,10 +459,12 @@ void BattleScreenInterface::ResetAll()
 	GetMaxData = true;
 	ShowResult = false;
 	EndResult = false;
+	PlayerWon = false;
+	EnemyWon = false;
 	TerrainInfoLayer->SetTargetPosition(Vector3(0));
 	TerrainInfoLayer->SetPosition(TerrainInfoLayer->GetTargetPosition());
-	UnitDataLayer->SetTargetPosition(Vector3(0));
-	UnitDataLayer->SetPosition(UnitDataLayer->GetTargetPosition());
+	//UnitDataLayer->SetTargetPosition(Vector3(0));
+	//UnitDataLayer->SetPosition(UnitDataLayer->GetTargetPosition());
 	ResultInfoLayer->SetTargetPosition(Vector3(0, 0, 0));
 	PlayerUnitCount->SetTargetPosition(PlayerUnitCountBackground->GetTargetPosition());
 	EnemyUnitCount->SetTargetPosition(EnemyUnitCountBackground->GetTargetPosition());

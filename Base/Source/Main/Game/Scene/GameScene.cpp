@@ -31,14 +31,14 @@ void GameScene::QuickInit()
 	RenderSystem *Renderer = dynamic_cast<RenderSystem*>(&SceneSystem::Instance().GetRenderSystem());
 
 	// Set Terrain Size
-	TerrainScale.Set(500.f, 50.f, 500.f);
+	TerrainScale.Set(500.f, 20.f, 500.f);
 	ScenePartition = new ScenePartitionGraph();
 	ScenePartition->AssignGridParameters(0, Vector3(TerrainScale.x, TerrainScale.z), 8);
 
 	CameraAerial* CA = new CameraAerial();
 	
 	camera = CA;
-	CA->AltInit(/*Player Character Position*/Vector3(0, 0, 0), Vector3(0, 100, 0.01f), Vector3(0, 1, 0));
+	CA->AltInit(/*Player Character Position*/Vector3(0, 0, 0), Vector3(0, 150, 0.01f), Vector3(0, 1, 0));
 	CenterPosition.Set(SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth * 0.5f, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.5f, 0);
 
 	// Initiallise Model Specific Meshes Here
@@ -55,7 +55,7 @@ void GameScene::QuickInit()
 	InteractiveMap->ScenePartition = ScenePartition;
 	InteractiveMap->SetEntityID("SceneMap");
 	//InteractiveMap->LoadMap("CSVFiles//Town1Layout.csv", true, m_heightMap, TerrainScale, EntityList, BManager);
-	InteractiveMap->LoadMap("CSVFiles//LevelDesign2.csv", true, m_heightMap, TerrainScale, EntityList, BManager);
+	InteractiveMap->LoadMap("CSVFiles//LevelDesign3.csv", true, m_heightMap, TerrainScale, EntityList, BManager);
 	GameLogicSystem::Instance().Init();
 
 	SceneSystem::Instance().cSS_InputManager->cIM_inMouseMode = true;
