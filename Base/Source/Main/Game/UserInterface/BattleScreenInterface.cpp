@@ -164,7 +164,7 @@ void BattleScreenInterface::Update(const float& dt)
 		GetMaxData = false;
 
 		CameraAerial* CA = (CameraAerial*)SceneSystem::Instance().GetCurrentScene().camera;
-		CA->CameraMoveTargetPosition = GameLogicSystem::Instance().InternalBattleSystem->SpawnPosition_Player;
+		CA->CameraMoveTargetPosition = SceneSystem::Instance().GetCurrentScene().ScenePartition->PlayerSpawn->GetEntity()->GetPosition();
 	}
 
 	if (StartBattle)
