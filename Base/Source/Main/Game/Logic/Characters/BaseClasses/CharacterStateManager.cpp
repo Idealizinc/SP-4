@@ -124,6 +124,17 @@ void CharacterStateManager::Scout(const float& dt)
 			// Move the character accordingly towards his target node
 			if (Character->InternalTimerVector[0] > Character->WaitTime)
 			{
+				int NumParticles = Math::RandIntMinMax(1, 2);
+				for (int i = 0; i < NumParticles; ++i)
+				{
+					float ParticleSpeed = Math::RandFloatMinMax(1.f, 2.f);
+					float ParticleLifeTime = Math::RandFloatMinMax(1.f, 1.5f);
+					float Interval = Character->GetDimensions().x * 0.5f;
+					Vector3 Dimensions = Vector3(Interval, Interval, Interval);
+					Vector3 Velocity = ParticleSpeed * Vector3(Math::RandFloatMinMax(-Interval, Interval), Interval * Math::RandFloatMinMax(1.f, 1.5f), Math::RandFloatMinMax(-Interval, Interval));
+					GameLogicSystem::Instance().InternalBattleSystem->ParticleSystem.AddWorldSpaceParticle("Smoke", Character->GetPosition() - Vector3(0, Character->GetDimensions().y * 0.25f), Dimensions, Velocity, SceneSystem::Instance().GetCurrentScene().camera->position, ParticleLifeTime);
+				}
+
 				Character->WaitTime = Math::RandFloatMinMax(0.25f, 0.5f);
 				Character->InternalTimerVector[0] = 0;
 				if (TargetNode)
@@ -175,16 +186,6 @@ void CharacterStateManager::Attack(const float& dt)
 		float Distance = (DirVec).LengthSquared();
 		if (Distance < Character->DetectionRadius * Character->DetectionRadius)
 		{
-			// Rush the target
-			//if (!DirVec.IsZero())
-			//	DirVec.Normalize() *= Character->WalkSpeed;
-			//DirVec.y = 0;
-			//Character->SetVelocity(DirVec * Character->WalkSpeed);
-			//Character->WaitTime = Math::RandFloatMinMax(1.f, 3.f);
-			//if (Distance <= Character->GetDimensions().x * Character->GetDimensions().x)
-			//{
-			//	
-			//}
 		}
 		else
 		{
@@ -201,7 +202,7 @@ void CharacterStateManager::Dead(const float& dt)
 	Character->InternalTimerVector[0] += dt;
 	//Character->Static = true;
 	Character->HealthPoints = Math::Clamp(Character->HealthPoints, 0, Character->MaxHealthPoints);
-	if (Character->InternalTimerVector[0] > 2.f)
+	if (Character->InternalTimerVector[0] > 1.f)
 	{
 		Character->Active = false;
 	}
@@ -246,7 +247,7 @@ BaseObject* CharacterStateManager::FindTargetNode()
 	if (Character->TargetEnemy != nullptr)
 	{
 		Vector3 DirectionToTarget = (Character->TargetEnemy->GetPosition() - Character->GetPosition());
-		float SelectionDistance = Character->DetectionRadius * 2.f;
+		float SelectionDistance = Character->DetectionRadius *Character->DetectionRadius * 0.5f;
 		std::vector<GameObject*> NodeList = SceneSystem::Instance().GetCurrentScene().ScenePartition->WaypointList;
 		for (std::vector<GameObject*>::iterator it = NodeList.begin(); it != NodeList.end(); ++it)
 		{

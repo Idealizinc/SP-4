@@ -169,17 +169,7 @@ void PlayerSystem::HandleUserInput()
 			if (MouseDownSelection == MouseUpSelection)
 			{
 				// Clicked the same tile
-				
-					CA->CameraMoveTargetPosition = MouseDownSelection->GetEntity()->GetPosition();
-					
-
-				//if (MouseDownSelection == SceneSystem::Instance().GetCurrentScene().ScenePartition->PlayerBase)
-				//{
-				//	//SelectedUnit = GenerateNewUnit();
-				//	GameLogicSystem::Instance().UnitInterface->OpenInterface();
-				//	GameLogicSystem::Instance().GameInterface->toggleSurrender();
-				//}
-
+				CA->CameraMoveTargetPosition = MouseDownSelection->GetEntity()->GetPosition();
 			}
 			else if (MouseDownSelection != MouseUpSelection)
 			{
@@ -192,7 +182,7 @@ void PlayerSystem::HandleUserInput()
 						{
 							int test = GameLogicSystem::Instance().MaxUnitInNode;
 							int t2 = MouseUpSelection->TerrainTile->PlayerUnitList.size();
-							if (GameLogicSystem::Instance().MaxUnitInNode > MouseUpSelection->TerrainTile->PlayerUnitList.size() && MouseUpSelection != SceneSystem::Instance().GetCurrentScene().ScenePartition->PlayerBase || MouseUpSelection == SceneSystem::Instance().GetCurrentScene().ScenePartition->PlayerBase && SceneSystem::Instance().GetCurrentScene().ScenePartition->PlayerBase->TerrainTile->PlayerUnitList.size() == (unsigned)0)
+							if ((unsigned)GameLogicSystem::Instance().MaxUnitInNode > MouseUpSelection->TerrainTile->PlayerUnitList.size() && MouseUpSelection != SceneSystem::Instance().GetCurrentScene().ScenePartition->PlayerBase || MouseUpSelection == SceneSystem::Instance().GetCurrentScene().ScenePartition->PlayerBase && !SceneSystem::Instance().GetCurrentScene().ScenePartition->PlayerBase->TerrainTile->PlayerUnitList.size())
 							{
 								if (MouseDownSelection->TerrainTile->PlayerUnitList.size() == 1)
 								{

@@ -90,28 +90,32 @@ void MainMenuScene::Init()
 
 void MainMenuScene::Update(const float& dt)
 {
+	float Delta = dt;
+	if (SceneSystem::Instance().AnimationActivated && SceneSystem::Instance().AnimationDirectionInwards)
+		Delta = 0;
+
 	RenderSystem *Renderer = dynamic_cast<RenderSystem*>(&SceneSystem::Instance().GetRenderSystem());
 
-	Renderer->Update(dt);
+	Renderer->Update(Delta);
 
 	float Speed = 50.f;
 	CameraAerial* CA = (CameraAerial*)camera;
 
 	if (SceneSystem::Instance().cSS_InputManager->GetKeyValue(SimpleCommand::m_allTheKeys[SimpleCommand::FORWARD_COMMAND]))
 	{
-		CA->CameraMoveTargetPosition.z -= Speed*dt;
+		CA->CameraMoveTargetPosition.z -= Speed*Delta;
 	}
 	if (SceneSystem::Instance().cSS_InputManager->GetKeyValue(SimpleCommand::m_allTheKeys[SimpleCommand::BACK_COMMAND]))
 	{
-		CA->CameraMoveTargetPosition.z += Speed*dt;
+		CA->CameraMoveTargetPosition.z += Speed*Delta;
 	}
 	if (SceneSystem::Instance().cSS_InputManager->GetKeyValue(SimpleCommand::m_allTheKeys[SimpleCommand::RIGHT_COMMAND]))
 	{
-		CA->CameraMoveTargetPosition.x += Speed*dt;
+		CA->CameraMoveTargetPosition.x += Speed*Delta;
 	}
 	if (SceneSystem::Instance().cSS_InputManager->GetKeyValue(SimpleCommand::m_allTheKeys[SimpleCommand::LEFT_COMMAND]))
 	{
-		CA->CameraMoveTargetPosition.x -= Speed*dt;
+		CA->CameraMoveTargetPosition.x -= Speed*Delta;
 	}
 
 	if (Application::IsKeyPressed(VK_OEM_MINUS))
@@ -133,14 +137,14 @@ void MainMenuScene::Update(const float& dt)
 		//ParticleManager.AddWorldSpaceParticle("weed", Vector3(0, 5, 0), Vector3(10, 10, 10), Velocity * 0.1f, camera->position, 1.f);
 	}
 
-	CA->Update(dt);
+	CA->Update(Delta);
 	//MusicSystem::Instance().playBackgroundMusic("battle");
-	BManager.UpdateContainer(dt, CA->position);
-	ParticleManager.UpdateContainer(dt, CA->position);
+	BManager.UpdateContainer(Delta, CA->position);
+	ParticleManager.UpdateContainer(Delta, CA->position);
 
-	ScenePartition->Update(dt);
+	ScenePartition->Update(Delta);
 
-	MenuInterface->Update(dt);
+	MenuInterface->Update(Delta);
 
 	framerates = 1 / dt;
 }
@@ -289,6 +293,8 @@ void MainMenuScene::RenderPassMain()
 		);
 	// Model matrix : an identity matrix (model will be at the origin)
 	modelStack->LoadIdentity();
+	SceneSystem::Instance().RenderTransitionEffects();
+	SceneSystem::Instance().RenderMouseCursor(Vector3(SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.05f, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.05f), "weed");
 
 	Renderer->RenderMesh("reference", false);
 

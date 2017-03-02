@@ -4,8 +4,9 @@
 #include <map>
 #include <string>
 #include "Level.h"
+#include "../../../Engine/Internal/SingletonTemplate.h"
 
-class LevelDataLoader
+class LevelDataLoader : public SingletonTemplate<LevelDataLoader>
 {
 public:
 	LevelDataLoader();
