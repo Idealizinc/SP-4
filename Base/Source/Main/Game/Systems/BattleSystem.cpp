@@ -23,10 +23,6 @@ void BattleSystem::Init()
 	UnitData.LoadRaceData(LuaInterface::Instance().GetStringValue("CSVFilePath_RaceDataLoader").c_str());
 	UnitData.LoadLivingFactionData(LuaInterface::Instance().GetStringValue("CSVFilePath_LivingDataLoader").c_str());
 	UnitData.LoadUndeadFactionData(LuaInterface::Instance().GetStringValue("CSVFilePath_UndeadDataLoader").c_str());
-
-
-	SpawnPosition_Enemy = Vector3(-100, 1, 100);
-	SpawnPosition_Player = Vector3(100, 1, -100);
 	CurrentBattleTile = nullptr;
 	BSI = new BattleScreenInterface();
 }
@@ -74,12 +70,15 @@ void BattleSystem::Render()
 {
 	ParticleSystem.Render();
 	BSI->Render();
-	for (auto it : InternalPlayerCharacterList)
-		it->Render();
-	for (auto it : InternalEnemyCharacterList)
-		it->Render();
-	for (auto it : InternalProjectileList)
-		it->Render();
+	if (BSI->Finished)
+	{
+		for (auto it : InternalPlayerCharacterList)
+			it->Render();
+		for (auto it : InternalEnemyCharacterList)
+			it->Render();
+		for (auto it : InternalProjectileList)
+			it->Render();
+	}
 }
 
 void BattleSystem::Exit()
@@ -341,7 +340,7 @@ void BattleSystem::SpawnPlayerCharacters(std::map<std::string, unsigned short> P
 				BattleScreenCharacter* NewChar =  new BattleScreenCharacter();
 				NewChar->InitiallizeCharacter(UT, UnitData.RaceMap.find("Human")->second, Tile, Tile->PlayerHasAdvantage);
 				NewChar->IsPlayerCharacter = true;
-				NewChar->SetPosition(SpawnPosition_Player);
+				NewChar->SetPosition(SceneSystem::Instance().GetCurrentScene().ScenePartition->PlayerSpawn->GetEntity()->GetPosition());
 				NewChar->CharacterFaction = GameLogicSystem::Instance().PlayerFaction;
 				InternalPlayerCharacterList.push_back(NewChar);
 			}
@@ -366,7 +365,7 @@ void BattleSystem::SpawnEnemyCharacters(std::map<std::string, unsigned short> En
 				BattleScreenCharacter* NewChar = new BattleScreenCharacter();
 				NewChar->InitiallizeCharacter(UT, UnitData.RaceMap.find("Human")->second, Tile, !Tile->PlayerHasAdvantage);
 				NewChar->IsPlayerCharacter = false;
-				NewChar->SetPosition(SpawnPosition_Enemy);
+				NewChar->SetPosition(SceneSystem::Instance().GetCurrentScene().ScenePartition->EnemySpawn->GetEntity()->GetPosition());
 				if (GameLogicSystem::Instance().PlayerFaction == GameLogicSystem::F_LIVING)
 					NewChar->CharacterFaction = GameLogicSystem::F_UNDEAD;
 				else NewChar->CharacterFaction = GameLogicSystem::F_LIVING;
