@@ -88,19 +88,19 @@ void GameScreenInterface::InitSurrender()
 	SurrenderLayer = CreateNewInterfaceLayer("SurrenderLayer", Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * -(1), 0), 0);
 	SurrenderLayer->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y, 0));
 	
-	SurrenderBackground = SurrenderLayer->CreateNewInterfaceElement("SurrenderBackground", "LoadTexture", 0, Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.5f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.2f, 0));
+	SurrenderBackground = SurrenderLayer->CreateNewInterfaceElement("SurrenderBackground", "BlueBar", 0, Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.5f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.1f, 0));
 	SurrenderBackground->SetTargetPosition(0);
-	SurrenderBackground->SetText("Are You Sure?");
+	SurrenderBackground->SetText("Do you want to surrender?");
 	SurrenderBackground->SetTextColor(0);
 
-	SurrenderYesButton = SurrenderLayer->CreateNewInterfaceElement("SurrenderYes", "LoadTexture", Vector3(SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth * -(0.05f), SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * -(0.1f), 0), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.15f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.1f, 0));
+	SurrenderYesButton = SurrenderLayer->CreateNewInterfaceElement("SurrenderYes", "GreenBar", Vector3(SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth * -(0.05f), SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * -(0.1f), 0), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.15f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.08f, 0));
 	SurrenderYesButton->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth * -(0.05f), SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * -(0.1f), 0));
-	SurrenderYesButton->SetText("Yeh");
+	SurrenderYesButton->SetText("Yes");
 	SurrenderYesButton->SetTextColor(0);
 
-	SurrenderNoButton = SurrenderLayer->CreateNewInterfaceElement("SurrenderNo", "LoadTexture", Vector3(SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth * (0.05f), SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * -(0.1f), 0), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.15f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.1f, 0));
+	SurrenderNoButton = SurrenderLayer->CreateNewInterfaceElement("SurrenderNo", "RedBar", Vector3(SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth * (0.05f), SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * -(0.1f), 0), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.15f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.08f, 0));
 	SurrenderNoButton->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth * (0.05f), SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * -(0.1f), 0));
-	SurrenderNoButton->SetText("Nah");
+	SurrenderNoButton->SetText("No");
 	SurrenderNoButton->SetTextColor(0);
 
 	SurrenderLayer->SwapOriginalWithTarget();
