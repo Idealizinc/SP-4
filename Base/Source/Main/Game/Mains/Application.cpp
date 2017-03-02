@@ -10,6 +10,7 @@
 #include "../../Engine/System/MusicSystem.h"
 #include "../../Engine/State/StateList.h"
 #include "../Systems/GameLogicSystem.h"
+#include "../../Engine/System/LuaInterface.h"
 
 // Scenes
 #include "../Scene/GameScene.h"
@@ -86,6 +87,8 @@ void Application::Init()
 {
 	// Initialize the default values of the Scene_System
 	SceneSystem::Instance().Init();
+	// Use the LuaInterface
+	LuaInterface::Instance().Init();
 
 	//Set the error callback
 	glfwSetErrorCallback(error_callback);
@@ -102,8 +105,13 @@ void Application::Init()
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);					//Request a specific OpenGL version
 	//glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);			//To make MacOS happy; should not be needed
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);	//We don't want the old OpenGL 
+
+	LuaInterface::Instance().FindLuaState("WindowInitiallizer.lua");
+
 	//Borderless
-	glfwWindowHint(GLFW_DECORATED, GL_FALSE);
+	if (LuaInterface::Instance().GetBoolValue("BorderlessWindowEnabled"))
+		glfwWindowHint(GLFW_DECORATED, GL_FALSE);
+
 
 	const GLFWvidmode * mode = glfwGetVideoMode(glfwGetPrimaryMonitor());	//Obtain Width and Height values from the monitor;
 	cA_WindowWidth = 800;
@@ -111,7 +119,7 @@ void Application::Init()
 	cA_WindowWidth = mode->width;
 	cA_WindowHeight = mode->height;
 	SceneSystem::Instance().cSS_InputManager->SetScreenSize((float)cA_WindowWidth, (float)cA_WindowHeight);
-	m_window = glfwCreateWindow(cA_WindowWidth, cA_WindowHeight, "SP4 Framework", NULL, NULL); // Create a window with attained values.
+	m_window = glfwCreateWindow(cA_WindowWidth, cA_WindowHeight, LuaInterface::Instance().GetStringValue("WindowTitle").c_str(), NULL, NULL); // Create a window with attained values.
 
 	// Active Window Detection
 	WindowActiveHandle = GetActiveWindow();
@@ -147,7 +155,8 @@ void Application::Init()
 	m_dAccumulatedTime_ThreadTwo = 0.0;
 
 	// Hide mouse
-	glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
+	if (LuaInterface::Instance().GetBoolValue("HideCursor"))
+		glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
 
 	RenderSystem* Renderer = new RenderSystem();
 	SceneSystem::Instance().GenerateTransitionLayer(15, 1.f, "LoadTexture2");
@@ -203,6 +212,7 @@ void Application::Run()
 	SceneSystem::Instance().ClearMemoryUsage();
 	MusicSystem::Instance().ClearMemoryUsage();
 	MusicSystem::Instance().Exit();
+	LuaInterface::Instance().Drop();
 }
 
 void Application::Update()
@@ -237,7 +247,9 @@ void Application::Exit()
 
 bool Application::LoadKeybinds()
 {
-    std::ifstream file("CSVFiles//GlobalDriven.csv");
+	LuaInterface::Instance().AddLuaState("CSVInitiallizer.lua");
+
+	std::ifstream file(LuaInterface::Instance().GetStringValue("CSVFilePath_InputBindings"));
 #ifdef _DEBUG
     assert(file.is_open());
 #endif

@@ -3,12 +3,14 @@
 #include "SceneSystem.h"
 #include <sstream>
 #include <set>
+#include "../../Engine/System/LuaInterface.h"
 
 void MusicSystem::Init()
 {
     SoundEngine = createIrrKlangDevice();
     BackgroundMusic = nullptr;
-	LoadSoundList("CSVFiles/MusicDriven.csv");
+	LuaInterface::Instance().AddLuaState("CSVInitiallizer.lua");
+	LoadSoundList(LuaInterface::Instance().GetStringValue("CSVFilePath_SoundList"));
     SoundEngine->setListenerPosition(vec3df(0, 0, 0), vec3df(0, 0, 0));
     SoundEngine->update();
     m_accumulatedTime = TimeUpdate = 0;
