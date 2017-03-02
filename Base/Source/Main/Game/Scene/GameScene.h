@@ -46,6 +46,8 @@ private:
 	std::vector<GameObject*> EntityList;
 	Vector3 CenterPosition;
 	std::string TerrainMeshName;
+
+	bool cameraZoomOut = false;
 	
 };
 

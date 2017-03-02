@@ -3,7 +3,7 @@ Copyright (c) Clinton Teo Jun Quan 2016
 
 Creator(s)    : Clinton Teo Jun Quan
 Creation Date : 20 February 2016 13:13 PM
-File Name     : MainMenu.h
+File Name     : MainMenuInterface.h
 Purpose       : InterfaceSystem class that handles UI for MainMenu
 */
 
@@ -35,7 +35,7 @@ private:
 	{
 		L_MAIN = 0,
 		L_FACTION,
-		//L_LEVELSELECT,
+		L_LEVELSELECT,
 		L_INSTRUCTIONS,
 		L_SETTINGS,
 		L_TOTAL
@@ -68,6 +68,8 @@ private:
 	InterfaceElement* PrevButtonLS;
 	InterfaceElement* PageDisplayLS;
 	InterfaceElement* BackButtonLS;
+	InterfaceElement* PlayButton;
+	InterfaceElement* LevelTitle;
 
 
 	InterfaceLayer* InstructionsLayer;
@@ -87,15 +89,17 @@ private:
 	void CheckMenuUserInput(Vector3 mousePos);
 	void CheckFactionUserInput(Vector3 mousePos);
 	void CheckInstructionsUserInput(Vector3 mousePos);
+	void CheckLevelUserInput(Vector3 mousePos);
 	
 	void InitMainLayer();
 	void InitFactionLayer();
 	void InitInstructLayer();
-	void InitMapSelectLayer();
+	void InitLevelSelectLayer();
 
 	Vector3 LeftSide = Vector3(SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth * -(1.0f), SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 1.0f, 0);
 	Vector3 RightSide = Vector3(SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth * 2.0f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 1.0f, 0);
 
+	std::string SelectedLevelName;
 };
 
 #endif

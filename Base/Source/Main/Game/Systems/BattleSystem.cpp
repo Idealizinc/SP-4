@@ -312,7 +312,7 @@ void BattleSystem::UpdateProjectileLogic(const float& dt)
 					if (it->Active)
 					{
 						it->Update(dt);
-						if (!it->GravityAffected && Math::RandIntMinMax(0, 10) > 8)
+						if (!it->GravityAffected && (int)(Math::RandFloatMinMax(0, 10) * GameLogicSystem::Instance().ParticleMultiplier) > 8)
 						{
 							int NumParticles = 1;
 							for (int i = 0; i < NumParticles; ++i)

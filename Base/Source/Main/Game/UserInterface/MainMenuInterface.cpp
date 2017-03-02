@@ -22,6 +22,7 @@ void MainMenuInterface::Init()
 	InitMainLayer();
 	InitFactionLayer();
 	InitInstructLayer();
+	InitLevelSelectLayer();
 	instructionsPage = 1;
 	for (int i = 0; i < L_TOTAL; ++i)
 	{
@@ -79,7 +80,7 @@ void MainMenuInterface::InitFactionLayer()
 
 	Faction1Button = FactionLayer->CreateNewInterfaceElement("Faction1Name", "BlueButton", 0, Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.4f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y* 0.2f, 0));
 	Faction1Button->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * -(0.5f), SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * -(0.5f), 0));
-	Faction1Button->SetText("Humans");
+	Faction1Button->SetText("Living");
 	Faction1Button->SetTextColor(Vector3(0, 0.2f, 0.9f));
 
 	Faction2Name = FactionLayer ->CreateNewInterfaceElement("Faction2Button", "UndeadFactionLogo", 0, Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.y* 0.8f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.8f, 0));
@@ -87,7 +88,7 @@ void MainMenuInterface::InitFactionLayer()
 
 	Faction2Button = FactionLayer->CreateNewInterfaceElement("Faction2Name", "WoodButton", 0, Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.4f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.2f, 0));
 	Faction2Button->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * (0.5f), SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * -(0.5f), 0));
-	Faction2Button->SetText("Demons");
+	Faction2Button->SetText("Undead");
 	Faction2Button->SetTextColor(Vector3(0.9f, 0.7f, 0));
 
 	BackButtonF = FactionLayer->CreateNewInterfaceElement("BackButtonFF", "WoodFrameRect", Vector3(0, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * -(0.5f), 0), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.4f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.15f, 0));
@@ -160,6 +161,169 @@ void MainMenuInterface::InitInstructLayer()
 	}
 }
 
+void MainMenuInterface::InitLevelSelectLayer()
+{
+	LevelSelectLayer = CreateNewInterfaceLayer(std::to_string(L_LEVELSELECT), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * -(2.5f), 0), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 1.2f, 0));
+
+	///*InstructionsText = InstructionsLayer->CreateNewInterfaceElement("Instructions", "WoodFrameRect", 0, Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 1.0f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 1.0f, 0));
+	//InstructionsText->SetTargetPosition(0);*/
+	//InstructionsText = LevelSelectLayer->CreateNewInterfaceElement("Instructions", "InstructionsBoard", 0, Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 1.2f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 1.2f, 0));
+	//InstructionsText->SetTargetPosition(0);
+
+	///*InstructionsTextP2 = InstructionsLayer->CreateNewInterfaceElement("Instructions", "WoodFrameRect", RightSide, Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 1.0f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 1.0f, 0));
+	//InstructionsTextP2->SetTargetPosition(RightSide);*/
+	//InstructionsTextP2 = LevelSelectLayer->CreateNewInterfaceElement("Instructions", "InstructionsBoard", 0, Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 1.2f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 1.2f, 0));
+	//InstructionsTextP2->SetTargetPosition(RightSide);
+
+	///*InstructionsTextP3 = InstructionsLayer->CreateNewInterfaceElement("Instructions", "WoodFrameRect", RightSide, Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 1.0f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 1.0f, 0));
+	//InstructionsTextP3->SetTargetPosition(RightSide);*/
+	//InstructionsTextP3 = LevelSelectLayer->CreateNewInterfaceElement("Instructions", "InstructionsBoardWeed", RightSide, Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 1.2f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 1.2f, 0));
+	//InstructionsTextP3->SetTargetPosition(RightSide);
+
+	//NextButtonI = InstructionsLayer->CreateNewInterfaceElement("NextButtonIF", "WoodFrameRect", Vector3(SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth * 0.1, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * -(0.3f), 0), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.2f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.1f, 0));
+	//NextButtonI->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth * 0.1, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * -(0.3f), 0));
+
+	lastLSPage = LevelDataLoader::Instance().LevelMap.size();
+
+	for (int i = 0; i < lastLSPage; ++i)
+	{
+		InterfaceElement* tempElement = nullptr;
+
+		if (i == 0)
+		{
+			tempElement = LevelSelectLayer->CreateNewInterfaceElement("Level" + std::to_string(i + 1), "Background", 0, Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 1.2f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 1.0f, 0));
+			tempElement->SetTargetPosition(0);
+		}
+		else
+		{
+			tempElement = LevelSelectLayer->CreateNewInterfaceElement("Level" + std::to_string(i + 1), "Background", RightSide, Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 1.2f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 1.0f, 0));
+			tempElement->SetTargetPosition(RightSide);
+		}
+
+		/*tempElement->SetText("Level" + std::to_string(i + 1));
+		tempElement->SetTextColor(0);*/
+
+		LevelSelectData.push_back(tempElement);
+	}
+
+	NextButtonLS = LevelSelectLayer->CreateNewInterfaceElement("NextButtonLS", "Background", Vector3(SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth * 0.2f, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * -(0.4f), 0.f), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.2f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.1f, 0));
+	NextButtonLS->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth * 0.2f, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * -(0.4f), 0));
+	NextButtonLS->SetText("Next");
+	NextButtonLS->SetTextColor(Vector3(0.5f, 0.3f, 0.3f));
+
+	//PrevButtonI = InstructionsLayer->CreateNewInterfaceElement("PrevButtonIF", "WoodFrameRect", Vector3(SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth * -(0.1), SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * -(0.3f), 0), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.2f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.1f, 0));
+	//PrevButtonI->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth * -(0.1), SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * -(0.3f), 0));
+
+	PrevButtonLS =LevelSelectLayer->CreateNewInterfaceElement("PrevButtonLS", "Background", Vector3(SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth * -0.2f, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * -(0.4f), 0.f), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.2f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.1f, 0));
+	PrevButtonLS->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth * -(0.2f), SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * -(0.4f), 0));
+	PrevButtonLS->SetText("Prev");
+	PrevButtonLS->SetTextColor(Vector3(0.5f, 0.3f, 0.3f));
+
+	PageDisplayLS = LevelSelectLayer->CreateNewInterfaceElement("PrevButtonLS", "Background", Vector3(0, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * -(0.4f), 0), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.2f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.1f, 0));
+	PageDisplayLS->SetTargetPosition(Vector3(0, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * -(0.4f), 0));
+
+	PageDisplayLS->SetTextColor(Vector3(0.5f, 0.3f, 0.3f));
+
+	BackButtonLS = LevelSelectLayer->CreateNewInterfaceElement("BackButtonLSF", "WoodFrameRect", Vector3(0, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * -(0.5f), 0), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.4f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.15f, 0));
+	BackButtonLS->SetTargetPosition(Vector3(0, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * -(0.5f), 0));
+	BackButtonLS = LevelSelectLayer->CreateNewInterfaceElement("BackButtonLS", "Background", Vector3(0, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * -(0.5f), 0), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.4f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.15f, 0));
+	BackButtonLS->SetTargetPosition(Vector3(0, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * -(0.5f), 0));
+	BackButtonLS->SetText("Back");
+	BackButtonLS->SetTextColor(Vector3(0.5f, 0.3f, 0.3f));
+
+	PlayButton = LevelSelectLayer->CreateNewInterfaceElement("PlayButtonF", "WoodFrameRect", Vector3(0, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * -(0.5f), 0), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.6f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.2f, 0));
+	PlayButton->SetTargetPosition(Vector3(0, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * -(0.3f), 0));
+	PlayButton = LevelSelectLayer->CreateNewInterfaceElement("PlayButton", "Background", Vector3(0, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * -(0.5f), 0), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.6f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.2f, 0));
+	PlayButton->SetTargetPosition(Vector3(0, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * -(0.3f), 0));
+	PlayButton->SetText("BATTLE");
+	PlayButton->SetTextColor(Vector3(0.5f, 0.3f, 0.3f));
+
+	LevelTitle = LevelSelectLayer->CreateNewInterfaceElement("LevelTitleF", "WoodFrameRect", Vector3(0, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.3f, 0), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.6f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.2f, 0));
+	LevelTitle->SetTargetPosition(Vector3(0, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.35f, 0));
+	LevelTitle = LevelSelectLayer->CreateNewInterfaceElement("LevelTitle", "Background", Vector3(0, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.3f, 0), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.6f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.2f, 0));
+	LevelTitle->SetTargetPosition(Vector3(0, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.35f, 0));
+
+	LevelTitle->SetTextColor(Vector3(0.5f, 0.3f, 0.3f));
+
+	if (PrevButtonLS->Active == 1)
+	{
+		PrevButtonLS->Active = 0;
+		PrevButtonLS->Visible = 0;
+	}
+	LevelSelectPage = 1;
+}
+
+void MainMenuInterface::CheckLevelUserInput(Vector3 mousePos)
+{
+	bool LevelInitiationRequired = false;
+
+	if (BackButtonLS->DetectUserInput(mousePos, LevelSelectLayer->GetPosition()))
+	{
+		nextLayer = L_MAIN;
+		LevelSelectPage = 1;
+		if (NextButtonLS->Active == 0)
+		{
+			NextButtonLS->Active = 1;
+			NextButtonLS->Visible = 1;
+		}
+		if (PrevButtonLS->Active == 1)
+		{
+			PrevButtonLS->Active = 0;
+			PrevButtonLS->Visible = 0;
+		}
+
+	}
+	else if (NextButtonLS->DetectUserInput(mousePos, LevelSelectLayer->GetPosition()))
+	{
+		++LevelSelectPage;
+		if (LevelSelectPage == lastLSPage)
+		{
+			NextButtonLS->Active = 0;
+			NextButtonLS->Visible = 0;
+		}
+		if (LevelSelectPage == 2)
+		{
+			PrevButtonLS->Active = 1;
+			PrevButtonLS->Visible = 1;
+		}
+	}
+	else if (PrevButtonLS->DetectUserInput(mousePos, LevelSelectLayer->GetPosition()))
+	{
+		--LevelSelectPage;
+		if (LevelSelectPage == 1)
+		{
+			PrevButtonLS->Active = 0;
+			PrevButtonLS->Visible = 0;
+		}
+		if (LevelSelectPage == lastLSPage - 1)
+		{
+			NextButtonLS->Active = 1;
+			NextButtonLS->Visible = 1;
+		}
+	}
+	else if (PlayButton->DetectUserInput(mousePos, LevelSelectLayer->GetPosition()))
+	{
+		nextLayer = L_MAIN;
+
+		if (NextButtonLS->Active == 0)
+		{
+			NextButtonLS->Active = 1;
+			NextButtonLS->Visible = 1;
+		}
+		if (PrevButtonLS->Active == 1)
+		{
+			PrevButtonLS->Active = 0;
+			PrevButtonLS->Visible = 0;
+		}
+		LevelInitiationRequired = true;
+	}
+	if (LevelInitiationRequired)
+	{
+		LevelInitiationRequired = false;
+		InitiateLevelLoading(LevelSelectData[LevelSelectPage - 1]->GetEntityID());
+		LevelSelectPage = 1;
+	}
+}
 
 void MainMenuInterface::Update(const float& dt)
 {
@@ -197,6 +361,7 @@ void MainMenuInterface::Update(const float& dt)
 	}
 
 		PageDisplayI->SetText("Page " + std::to_string(instructionsPage) + " of " + std::to_string(lastIPage));
+		PageDisplayLS->SetText("Page " + std::to_string(LevelSelectPage) + " of " + std::to_string(lastLSPage));
 
 	if (instructionsPage == 1)
 	{
@@ -217,6 +382,27 @@ void MainMenuInterface::Update(const float& dt)
 		InstructionsTextP3->SetTargetPosition(0);
 	}
 
+	if (currentLayer == L_LEVELSELECT)
+	{
+		for (unsigned int i = 0; i < LevelSelectData.size(); ++i)
+		{
+			if (i + 1 < (unsigned)LevelSelectPage)
+			{
+				LevelSelectData[i]->SetTargetPosition(LeftSide);
+			}
+			else if (i + 1 > (unsigned)LevelSelectPage)
+			{
+				LevelSelectData[i]->SetTargetPosition(RightSide);
+			}
+			else
+			{
+				LevelSelectData[i]->SetTargetPosition(0);
+				LevelTitle->SetText(LevelSelectData[i]->GetEntityID());
+			}
+			
+		}
+	}
+
 
 	if (SceneSystem::Instance().cSS_InputManager->GetMouseInput(InputManager::KEY_LMB) == InputManager::MOUSE_DOWN)
 	{
@@ -232,6 +418,10 @@ void MainMenuInterface::Update(const float& dt)
 		else if (currentLayer == L_INSTRUCTIONS)
 		{
 			CheckInstructionsUserInput(MousePos);
+		}
+		else if (currentLayer == L_LEVELSELECT)
+		{
+			CheckLevelUserInput(MousePos);
 		}
 	}
 }
@@ -276,7 +466,7 @@ void MainMenuInterface::CheckMenuUserInput(Vector3 mousePos)
 
 void MainMenuInterface::CheckFactionUserInput(Vector3 mousePos)
 {
-	bool LevelInitiationRequired = false;
+
 	if (BackButtonF->DetectUserInput(mousePos, FactionLayer->GetPosition()))
 	{
 		//SceneSystem::Instance().SwitchScene("1_Scene");
@@ -285,20 +475,14 @@ void MainMenuInterface::CheckFactionUserInput(Vector3 mousePos)
 	else if (Faction1Button->DetectUserInput(mousePos, FactionLayer->GetPosition()))
 	{
 		GameLogicSystem::Instance().PlayerFaction = GameLogicSystem::Instance().F_LIVING;
-		nextLayer = L_MAIN;
-		LevelInitiationRequired = true;
+		nextLayer = L_LEVELSELECT;
 	}
 	else if (Faction2Button->DetectUserInput(mousePos, FactionLayer->GetPosition()))
 	{
 		GameLogicSystem::Instance().PlayerFaction = GameLogicSystem::Instance().F_UNDEAD;
-		nextLayer = L_MAIN;
-		LevelInitiationRequired = true;
+		nextLayer = L_LEVELSELECT;
 	}
-	if (LevelInitiationRequired)
-	{
-		LevelInitiationRequired = false;
-		InitiateLevelLoading("weed");
-	}
+	
 }
 
 void MainMenuInterface::CheckInstructionsUserInput(Vector3 mousePos)
@@ -327,7 +511,7 @@ void MainMenuInterface::CheckInstructionsUserInput(Vector3 mousePos)
 			NextButtonI->Active = 0;
 			NextButtonI->Visible = 0;
 		}
-		else if (instructionsPage == 2)
+		if (instructionsPage == 2)
 		{
 			PrevButtonI->Active = 1;
 			PrevButtonI->Visible = 1;
@@ -341,7 +525,7 @@ void MainMenuInterface::CheckInstructionsUserInput(Vector3 mousePos)
 			PrevButtonI->Active = 0;
 			PrevButtonI->Visible = 0;
 		}
-		else if (instructionsPage == 2)
+		if (instructionsPage == 2)
 		{
 			NextButtonI->Active = 1;
 			NextButtonI->Visible = 1;
@@ -353,13 +537,13 @@ void MainMenuInterface::InitiateLevelLoading(const std::string& LevelID)
 {
 	// Switch the scene first! If not we will not be able to call the right function.
 	SceneSystem::Instance().SwitchScene("1_Scene");
-	// Here we shall randomly assign a level to the player for testing purposes
-	auto it = LevelDataLoader::Instance().LevelMap.begin();
-	std::advance(it, Math::RandIntMinMax(0, LevelDataLoader::Instance().LevelMap.size() - 1));
-	std::string random_key = it->first;
+	//// Here we shall randomly assign a level to the player for testing purposes
+	//auto it = LevelDataLoader::Instance().LevelMap.begin();
+	//std::advance(it, Math::RandIntMinMax(0, LevelDataLoader::Instance().LevelMap.size() - 1));
+	//std::string random_key = it->first;
 
 	GameScene* GS = dynamic_cast<GameScene*>(&SceneSystem::Instance().GetCurrentScene());
-	GS->SetUpForLevel(LevelDataLoader::Instance().LevelMap.find(random_key)->second);
+	GS->SetUpForLevel(LevelDataLoader::Instance().LevelMap.find(LevelID)->second);
 
 	//GameLogicSystem::Instance().UnitInterface->Init();
 	GameLogicSystem::Instance().UnitInterface->InterfaceReset();

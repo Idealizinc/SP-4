@@ -1,3 +1,12 @@
+/*
+Copyright (c) Clinton Teo Jun Quan 2016
+
+Creator(s)    : Clinton Teo Jun Quan
+Creation Date : 20 February 2016 13:13 PM
+File Name     : Level.h
+Purpose       : Level Class
+*/
+
 #ifndef LEVEL_H
 #define LEVEL_H
 

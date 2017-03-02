@@ -39,6 +39,7 @@ void GameScene::QuickInit()
 	CenterPosition.Set(SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth * 0.5f, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.5f, 0);
 
 	SceneSystem::Instance().cSS_InputManager->cIM_inMouseMode = true;
+	cameraZoomOut = false;
 }
 
 void GameScene::QuickExit()
@@ -65,6 +66,7 @@ void GameScene::Init()
 
 void GameScene::SetUpForLevel(Level* L)
 {
+	cameraZoomOut = false;
 	GameLogicSystem::Instance().QuickExit();
 	RenderSystem *Renderer = dynamic_cast<RenderSystem*>(&SceneSystem::Instance().GetRenderSystem());
 	// Let us set up some level specific variables!
@@ -159,10 +161,13 @@ void GameScene::Update(const float& dt)
 		ScenePartition->ShowPartitions = true;
 	}
 
-	if (SceneSystem::Instance().cSS_InputManager->GetMouseInput(InputManager::KEY_RMB) == InputManager::MOUSE_HOLD)
+	if (SceneSystem::Instance().cSS_InputManager->GetMouseInput(InputManager::KEY_RMB) == InputManager::MOUSE_DOWN)
 	{
-		CA->CameraMoveTargetPosition.y = 100.f;
+		cameraZoomOut = !cameraZoomOut;
 	}
+	
+	if (cameraZoomOut)
+		CA->CameraMoveTargetPosition.y = 100.f;
 	else CA->CameraMoveTargetPosition.y = 0;
 
 	CA->Update(Delta);

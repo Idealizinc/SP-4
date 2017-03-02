@@ -111,6 +111,12 @@ bool GameLogicSystem::DetectWinner()
 	return false;
 }
 
+void GameLogicSystem::DetectSurrender()
+{
+	PlayerWon = false;
+	GameOver = true;
+}
+
 void GameLogicSystem::Render()
 {
 	if (GetCurrentState()->GetStateName() != BattlePhase)

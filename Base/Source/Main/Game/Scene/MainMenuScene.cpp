@@ -5,6 +5,7 @@
 #include "../../Engine/System/MusicSystem.h"
 #include "../Mains/Application.h"
 #include "../SceneManagement/ScenePartitionGraph.h"
+#include "../Logic/Level/LevelDataLoader.h"
 
 std::string MainMenuScene::id_ = "MainMenuScene";
 
@@ -18,6 +19,8 @@ MainMenuScene::MainMenuScene()
 	SceneSystem::Instance().AddScene(*this);
 	Init();
 
+
+	LevelDataLoader::Instance().LoadLevelData("CSVFiles/DataLoaders/LevelDataLoader.csv");
 	MenuInterface = new MainMenuInterface();
 }
 
@@ -57,7 +60,7 @@ void MainMenuScene::QuickInit()
 	GameMap *theMap = dynamic_cast<GameMap*>(InteractiveMap);
 	theMap->ScenePartition = ScenePartition;
 	theMap->SetEntityID("MainMenu");
-	theMap->LoadMap("CSVFiles//BattlefieldLayout1.csv", false, m_heightMap, TerrainScale, EntityList, BManager);
+	theMap->LoadMap("CSVFiles//BattlefieldLayouts//BattlefieldLayout1.csv", false, m_heightMap, TerrainScale, EntityList, BManager);
 
 	SceneSystem::Instance().cSS_InputManager->cIM_inMouseMode = true;
 }

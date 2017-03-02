@@ -23,6 +23,7 @@ void LevelDataLoader::ClearLevelData()
 {
 	for (auto it : LevelMap)
 		delete it.second;
+
 	LevelMap.clear();
 }
 
@@ -64,15 +65,15 @@ bool LevelDataLoader::LoadLevelData(const char* file_path)
 				getline(iss, CurrentFragmentedSubString, ',');
 				CSV_Values.push_back(CurrentFragmentedSubString);
 			}
-
+			Level* Temp = new Level();
+			
 			std::vector<std::string>::iterator it;
 			it = std::find(CSV_Keys.begin(), CSV_Keys.end(), "LEVELID");
 			size_t pos = it - CSV_Keys.begin();
+			Temp->SetEntityID(CSV_Values[pos]);
+
 			if (LevelMap.find(CSV_Values[pos]) == LevelMap.end())
 			{
-				Level* Temp = new Level();
-				Temp->SetEntityID(CSV_Values[pos]);
-
 				it = std::find(CSV_Keys.begin(), CSV_Keys.end(), "LEVELNAME");
 				pos = it - CSV_Keys.begin();
 				Temp->SetLevelMapName(CSV_Values[pos]);
@@ -102,7 +103,7 @@ bool LevelDataLoader::LoadLevelData(const char* file_path)
 					{
 						// Initiallise Model Specific Meshes Here
 						Mesh* newMesh = MeshBuilder::GenerateTerrain(Temp->GetLevelMapName(), Temp->GetLevelMapMeshName(), Temp->TerrainHeightMap);
-						newMesh->material.kAmbient.Set(0.2f, 0.2f, 0.2f);
+						newMesh->material.kAmbient.Set(0.4f, 0.4f, 0.4f);
 						newMesh->material.kDiffuse.Set(0.2f, 0.2f, 0.2f);
 						newMesh->material.kSpecular.Set(0.0f, 0.0f, 0.0f);
 						if (Tex1Path != "")

@@ -33,10 +33,10 @@ void LuaInterface::Run()
 void LuaInterface::Drop()
 {
 	LuaState = nullptr;
-	//for (auto it : LuaStateContainer)
-	//{
-	//	lua_close(it.second);
-	//}
+	for (auto it : LuaStateContainer)
+	{
+		lua_close(it.second);
+	}
 	LuaStateContainer.clear();
 }
 

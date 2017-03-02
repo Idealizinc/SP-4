@@ -21,8 +21,10 @@ TerrainDataLoader::~TerrainDataLoader()
 
 void TerrainDataLoader::ClearTerrainData()
 {
-	for (auto it : TerrainMap)
-		delete it.second;
+	for (std::map<std::string, Terrain*>::iterator mapIt = TerrainMap.begin(), mapEnd = TerrainMap.end(); mapIt != mapEnd; ++mapIt)
+	{
+		delete mapIt->second;
+	}
 	TerrainMap.clear();
 }
 
@@ -59,6 +61,7 @@ bool TerrainDataLoader::LoadTerrainData(const char* file_path)
 		}
 		else //any other line
 		{
+			Terrain* Temp = new Terrain();
 			for (unsigned int i = 0; i < CSV_Keys.size(); ++i)
 			{
 				getline(iss, CurrentFragmentedSubString, ',');
@@ -68,11 +71,10 @@ bool TerrainDataLoader::LoadTerrainData(const char* file_path)
 			std::vector<std::string>::iterator it;
 			it = std::find(CSV_Keys.begin(), CSV_Keys.end(), "TERRAINID");
 			size_t pos = it - CSV_Keys.begin();
+			Temp->SetEntityID(CSV_Values[pos]);
+
 			if (TerrainMap.find(CSV_Values[pos]) == TerrainMap.end())
 			{
-				Terrain* Temp = new Terrain();
-				Temp->SetEntityID(CSV_Values[pos]);
-
 				it = std::find(CSV_Keys.begin(), CSV_Keys.end(), "TERRAINNAME");
 				pos = it - CSV_Keys.begin();
 				Temp->SetTerrainName(CSV_Values[pos]);

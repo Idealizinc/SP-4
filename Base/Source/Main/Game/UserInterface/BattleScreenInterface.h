@@ -3,7 +3,7 @@
 
 #include "../../Engine/Interface/InterfaceSystem.h"
 #include "../../Engine/System/SceneSystem.h"
-#include "../../Game/Logic/Terrain/TerrainDataLoader.h"
+//#include "../../Game/Logic/Terrain/TerrainDataLoader.h"
 
 class BattleScreenInterface : public InterfaceSystem
 {
@@ -22,6 +22,8 @@ public:
 	bool ShowResult;
 	bool EndResult;
 
+	bool PlayerWon;
+	bool EnemyWon;
 private:
 	void HandleUserInput();
 	void PopUpDelay(const float& dt);
@@ -33,6 +35,7 @@ private:
 	InterfaceElement* StartWordPopup;
 
 	InterfaceLayer* TerrainInfoLayer;
+	InterfaceElement* TerrainName;
 	InterfaceElement* TerrainInfoFrame;
 	InterfaceElement* TerrainAdvantage;
 	InterfaceElement* TerrainHealthBoostValue;
@@ -44,6 +47,7 @@ private:
 	InterfaceElement* TerrainMeleeMinusValue;
 	InterfaceElement* TerrainMagicMinusValue;
 	InterfaceElement* TerrainRangeMinusValue;
+	InterfaceElement* TerrainAdvantageBoost;
 	InterfaceElement* TerrainFrameButton;
 
 	InterfaceLayer* UnitDataLayer;
@@ -98,8 +102,6 @@ private:
 	bool Followup;
 	bool Finished;
 	bool GetMaxData;
-	bool PlayerWon;
-	bool EnemyWon;
 
 	Vector3 defaultbarSize;
 	std::map<std::string, std::map<std::string, int>> UnitMap;

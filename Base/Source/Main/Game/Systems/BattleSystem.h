@@ -52,7 +52,6 @@ public:
 
 private:
 	// Internals
-
 	// Containers
 	std::vector<Projectile*> InternalProjectileList;
 	std::vector<CharacterEntity*> InternalPlayerCharacterList;
