@@ -71,6 +71,11 @@ private:
 	InterfaceElement* PlayButton;
 	InterfaceElement* LevelTitle;
 
+	InterfaceLayer* SettingsLayer;
+	InterfaceElement* SettingsTitle;
+	InterfaceElement* SettingsBackground;
+	InterfaceElement* BackButtonS;
+
 
 	InterfaceLayer* InstructionsLayer;
 	InterfaceElement* InstructionsText;
@@ -83,18 +88,18 @@ private:
 	InterfaceElement* PageDisplayI;
 	InterfaceElement* BackButtonI;
 
-	InterfaceLayer* SettingsLayer;
-
 
 	void CheckMenuUserInput(Vector3 mousePos);
 	void CheckFactionUserInput(Vector3 mousePos);
 	void CheckInstructionsUserInput(Vector3 mousePos);
 	void CheckLevelUserInput(Vector3 mousePos);
+	void CheckSettingsUserInput(Vector3 mousePos);
 	
 	void InitMainLayer();
 	void InitFactionLayer();
 	void InitInstructLayer();
 	void InitLevelSelectLayer();
+	void InitSettingsLayer();
 
 	Vector3 LeftSide = Vector3(SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth * -(1.0f), SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 1.0f, 0);
 	Vector3 RightSide = Vector3(SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth * 2.0f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 1.0f, 0);

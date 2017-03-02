@@ -159,7 +159,7 @@ void Application::Init()
 		glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
 
 	RenderSystem* Renderer = new RenderSystem();
-	SceneSystem::Instance().GenerateTransitionLayer(15, 1.f, "LoadTexture2");
+	SceneSystem::Instance().GenerateTransitionLayer(15, 1.f, "LoadTexture");
 
 #ifdef _DEBUG
     assert(LoadKeybinds());

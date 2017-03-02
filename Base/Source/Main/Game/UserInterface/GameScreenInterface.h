@@ -56,6 +56,8 @@ private:
 	InterfaceElement* CashAddDisplay;
 	InterfaceElement* CashSubstractDisplay;
 	InterfaceElement* CashSubstractFrame;
+	InterfaceElement* GoldImage;
+	InterfaceElement* CashBG;
 
 	InterfaceLayer* MenuLayer;
 	InterfaceElement* SurrenderButton;

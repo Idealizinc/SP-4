@@ -23,6 +23,7 @@ void MainMenuInterface::Init()
 	InitFactionLayer();
 	InitInstructLayer();
 	InitLevelSelectLayer();
+	InitSettingsLayer();
 	instructionsPage = 1;
 	for (int i = 0; i < L_TOTAL; ++i)
 	{
@@ -253,6 +254,28 @@ void MainMenuInterface::InitLevelSelectLayer()
 	LevelSelectPage = 1;
 }
 
+void MainMenuInterface::InitSettingsLayer()
+{
+	SettingsLayer = CreateNewInterfaceLayer(std::to_string(L_SETTINGS), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * -(2.5f), 0), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 1.2f, 0));
+
+	SettingsBackground = SettingsLayer->CreateNewInterfaceElement("SettingsBackground", "Background", 0, Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 1.2f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 1.0f, 0));
+	SettingsBackground->SetTargetPosition(0);
+
+	SettingsTitle = SettingsLayer->CreateNewInterfaceElement("SettingsTitleF", "WoodFrameRect", Vector3(0, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.3f, 0), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.6f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.2f, 0));
+	SettingsTitle->SetTargetPosition(Vector3(0, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.35f, 0));
+	SettingsTitle = SettingsLayer->CreateNewInterfaceElement("SettingsTitle", "Background", Vector3(0, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.3f, 0), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.6f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.2f, 0));
+	SettingsTitle->SetTargetPosition(Vector3(0, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.35f, 0));
+	SettingsTitle->SetText("Settings");
+	SettingsTitle->SetTextColor(Vector3(0.5f, 0.3f, 0.3f));
+
+	BackButtonS = SettingsLayer->CreateNewInterfaceElement("BackButtonSF", "WoodFrameRect", Vector3(0, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * -(0.5f), 0), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.4f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.15f, 0));
+	BackButtonS->SetTargetPosition(Vector3(0, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * -(0.5f), 0));
+	BackButtonS = SettingsLayer->CreateNewInterfaceElement("BackButtonS", "Background", Vector3(0, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * -(0.5f), 0), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.4f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.15f, 0));
+	BackButtonS->SetTargetPosition(Vector3(0, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * -(0.5f), 0));
+	BackButtonS->SetText("Back");
+	BackButtonS->SetTextColor(Vector3(0.5f, 0.3f, 0.3f));
+}
+
 void MainMenuInterface::CheckLevelUserInput(Vector3 mousePos)
 {
 	bool LevelInitiationRequired = false;
@@ -423,6 +446,19 @@ void MainMenuInterface::Update(const float& dt)
 		{
 			CheckLevelUserInput(MousePos);
 		}
+		else if (currentLayer == L_SETTINGS)
+		{
+			CheckSettingsUserInput(MousePos);
+		}
+	}
+}
+
+void MainMenuInterface::CheckSettingsUserInput(Vector3 mousePos)
+{
+	if (BackButtonS->DetectUserInput(mousePos, SettingsLayer->GetPosition()))
+	{
+		//SceneSystem::Instance().SwitchScene("1_Scene");
+		nextLayer = L_MAIN;
 	}
 }
 
@@ -456,6 +492,11 @@ void MainMenuInterface::CheckMenuUserInput(Vector3 mousePos)
 	if (InstructionsButton->DetectUserInput(mousePos, MainLayer->GetPosition()))
 	{
 		nextLayer = L_INSTRUCTIONS;
+	}
+
+	if (SettingsButton->DetectUserInput(mousePos, MainLayer->GetPosition()))
+	{
+		nextLayer = L_SETTINGS;
 	}
 
 	if (ExitButton->DetectUserInput(mousePos, MainLayer->GetPosition()))
