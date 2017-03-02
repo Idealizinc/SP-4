@@ -83,8 +83,8 @@ void BattleScreenInterface::Init()
 	TerrainRangeMinusValue->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.76f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y  * 0.9f, 0));
 	TerrainRangeMinusValue->SetTextColor(Vector3(1, 1, 1));
 
-	TerrainAdvantageBoost = TerrainInfoLayer->CreateNewInterfaceElement("TerrainAdvantageBoost", "Transparent", Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x* 0.5f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.5f, 0), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.3f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.2f, 0));
-	TerrainAdvantageBoost->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.5f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.5f, 0));
+	TerrainAdvantageBoost = TerrainInfoLayer->CreateNewInterfaceElement("TerrainAdvantageBoost", "Transparent", Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x* 0.5f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.6f, 0), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.3f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.2f, 0));
+	TerrainAdvantageBoost->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.5f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.6f, 0));
 
 	TerrainFrameButton = TerrainInfoLayer->CreateNewInterfaceElement("TerrainFrameButton", "Transparent", Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.98f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 1.025f, 0), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.075f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.3f, 0));
 	TerrainFrameButton->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.98f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y* 1.025f, 0));
@@ -129,7 +129,7 @@ void BattleScreenInterface::Init()
 	ResultInfoLayer = CreateNewInterfaceLayer("ResultInfoLayer", 0, 0);
 
 	ResultInfoFrame = ResultInfoLayer->CreateNewInterfaceElement("ResultInfoFrame", "WoodFrameRect", Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * -1.75f, 0), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.54f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.44f, 0));
-	CloseResultButton = ResultInfoLayer->CreateNewInterfaceElement("CloseInfo", "WoodButton", Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * -1.8f, 0), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.15f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.1f, 0));
+	CloseResultButton = ResultInfoLayer->CreateNewInterfaceElement("CloseInfo", "WoodButton", Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * -1.8f, 0), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.17f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.1f, 0));
 	ResultInfo = ResultInfoLayer->CreateNewInterfaceElement("ResultInfo", "Transparent", Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * -1.65f, 0), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.3f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.2f, 0));
 	ResultInfoBackElement = ResultInfoLayer->CreateNewInterfaceElement("ResultInfoBackground", "Background", Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * -1.75f, 0), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.5f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.4f, 0));
 
@@ -192,7 +192,16 @@ void BattleScreenInterface::Update(const float& dt)
 	PopUpDelay(dt);
 	TerrainName->SetText(currentTerrain->GetTerrainName());
 
-	TerrainAdvantageBoost->SetText("I have advantage.");
+	if (GameLogicSystem::Instance().InternalBattleSystem->CurrentBattleTile->PlayerHasAdvantage)
+	{
+		TerrainAdvantageBoost->SetText("I have advantage.");
+		TerrainAdvantageBoost->SetTextColor(Vector3(0, 1, 0));
+	}
+	else
+	{
+		TerrainAdvantageBoost->SetText("I have no advantage.");
+		TerrainAdvantageBoost->SetTextColor(Vector3(1, 0, 0));
+	}
 
 	TerrainAdvantage->SetText("Advantage");
 	if ((int)(currentTerrain->UnitAdvantage.find(Terrain::T_HEALTH)->second * 100 - 100) > 0)
@@ -262,16 +271,16 @@ void BattleScreenInterface::Update(const float& dt)
 
 	if (GameLogicSystem::Instance().PlayerFaction == GameLogicSystem::F_LIVING)
 	{
-		PlayerFactionNameText->SetText("Living Unit Count:" + std::to_string(CNOPU));
+		PlayerFactionNameText->SetText("Player Unit Count:" + std::to_string(CNOPU));
 		PlayerFactionNameText->SetTextColor(Vector3(1, 1, 0));
-		EnemyFactionNameText->SetText("Undead Unit Count:" + std::to_string(CNOEU));
+		EnemyFactionNameText->SetText("Enemy Unit Count:" + std::to_string(CNOEU));
 		EnemyFactionNameText->SetTextColor(Vector3(1, 0, 0));
 	}
 	else
 	{
-		PlayerFactionNameText->SetText("Undead Unit Count:" + std::to_string(CNOPU));
+		PlayerFactionNameText->SetText("Player Unit Count:" + std::to_string(CNOPU));
 		PlayerFactionNameText->SetTextColor(Vector3(1, 0, 0));
-		EnemyFactionNameText->SetText("Living Unit Count:" + std::to_string(CNOEU));
+		EnemyFactionNameText->SetText("Enemy Unit Count:" + std::to_string(CNOEU));
 		EnemyFactionNameText->SetTextColor(Vector3(1, 1, 0));
 	}
 

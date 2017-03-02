@@ -185,7 +185,7 @@ void Application::Run()
         //if (hwnd == GetActiveWindow())
 		{
 			Update();
-			if (!SceneSystem::Instance().AnimationDirectionInwards)
+			if (!SceneSystem::Instance().AnimationDirectionInwards && SceneSystem::Instance().GetCurrentScene().ScenePartition)
 				SceneSystem::Instance().GetCurrentScene().Render();
 			else if (SceneSystem::Instance().PreviousScene != nullptr)
 				SceneSystem::Instance().GetPreviousScene().Render();
