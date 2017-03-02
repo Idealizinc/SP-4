@@ -45,6 +45,8 @@ void MainMenuInterface::InitMainLayer()
 {
 	MainLayer = CreateNewInterfaceLayer(std::to_string(L_MAIN), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * -(2.5f), 0), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 1.2f, 0));
 
+	MainLayer->CreateNewInterfaceElement("Logo", "OnslaughtLogo", Vector3(0, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.2f), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 1.2f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.8f, 0));
+
 	StartButton = MainLayer->CreateNewInterfaceElement("StartButtonF", "WoodFrameRect", 0, Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.4f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.15f, 0));
 	StartButton->SetTargetPosition(0);
 	StartButton = MainLayer->CreateNewInterfaceElement("StartButton", "Background", 0, Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.4f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.15f, 0));

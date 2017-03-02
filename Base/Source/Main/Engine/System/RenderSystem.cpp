@@ -121,6 +121,15 @@ void RenderSystem::Init()
 	// Use our shader
 	glUseProgram(m_programID);
 
+	Color FogColor;
+	FogColor.Set(0.65f, 0.7f, 0.75f);
+	glUniform3fv(m_parameters[U_FOG_COLOR], 1, &FogColor.r);
+	glUniform1f(m_parameters[U_FOG_START], 100);
+	glUniform1f(m_parameters[U_FOG_END], 500);
+	glUniform1f(m_parameters[U_FOG_DENSITY], 0.05f);
+	glUniform1f(m_parameters[U_FOG_TYPE], 1);
+	glUniform1f(m_parameters[U_FOG_ENABLED], 1);
+
 	m_lightDepthFBO.Init(10096, 10096);
 	glUniform1i(m_parameters[U_SHADOW_SAMPLING_AMOUNT], 12);
 
