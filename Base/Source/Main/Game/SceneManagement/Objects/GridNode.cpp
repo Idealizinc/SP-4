@@ -98,7 +98,6 @@ void GridNode::Update(const float& dt)
 
 void GridNode::Render()
 {
-	ScenePartitionGraph* SPG = SceneSystem::Instance().GetCurrentScene().ScenePartition;
 	//if (Object != nullptr)
 	//if (SceneSystem::Instance().GetCurrentScene().ScenePartition->ShowPartitions && Object->Visible)
 	//		Object->Render();

@@ -59,6 +59,8 @@ private:
 	
 
 	int Cash;
+	bool AnimationEnded, AnimateUpwards;
+	float WaitTimer = 0;
 
 protected:
 

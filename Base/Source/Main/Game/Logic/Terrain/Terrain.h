@@ -56,6 +56,7 @@ public:
 	std::string TerrainMeshName;
 	std::vector<unsigned char> TerrainHeightMap;
 
+	bool PlayerHasAdvantage = false;
 private:
 	std::string TerrainName;
 

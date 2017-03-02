@@ -55,6 +55,9 @@ private:
 	EnemyPiece* RandomizePieceSelection();
 	std::map<std::string, unsigned short> GenerateBattalion();
 
+	bool AnimationEnded, AnimateUpwards;
+	float WaitTimer = 0;
+
 protected:
 
 };
