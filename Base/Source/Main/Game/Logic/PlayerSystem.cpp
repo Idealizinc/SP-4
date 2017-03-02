@@ -254,3 +254,9 @@ void PlayerSystem::SetCash(int amt)
 {
 	Cash = amt;
 }
+
+void PlayerSystem::SkipTurn()
+{
+	GameLogicSystem::Instance().SetCurrentState(GameLogicSystem::Instance().EnemyTurn);
+	CurrentTurnState = S_TURNSTART;
+}

@@ -98,9 +98,10 @@ void GridNode::Update(const float& dt)
 
 void GridNode::Render()
 {
-	if (Object != nullptr)
-	if (SceneSystem::Instance().GetCurrentScene().ScenePartition->ShowPartitions && Object->Visible)
-			Object->Render();
+	ScenePartitionGraph* SPG = SceneSystem::Instance().GetCurrentScene().ScenePartition;
+	//if (Object != nullptr)
+	//if (SceneSystem::Instance().GetCurrentScene().ScenePartition->ShowPartitions && Object->Visible)
+	//		Object->Render();
 	// Render Child Nodes
 	for (std::vector<Node*>::iterator it = ChildNodeList.begin(), end = ChildNodeList.end(); it != end; ++it)
 	{

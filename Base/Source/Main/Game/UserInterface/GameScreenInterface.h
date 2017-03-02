@@ -60,6 +60,7 @@ private:
 	InterfaceLayer* MenuLayer;
 	InterfaceElement* SurrenderButton;
 	InterfaceElement* DeployButton;
+	InterfaceElement* SkipButton;
 	InterfaceElement* MenuButton;
 	InterfaceElement* MenuFrame;
 

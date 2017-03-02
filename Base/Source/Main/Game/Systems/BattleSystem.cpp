@@ -39,43 +39,30 @@ void BattleSystem::Update(const float& dt)
 		UpdateCharacterLogic(InternalEnemyCharacterList, dt);
 		UpdateCharacterLogic(InternalPlayerCharacterList, dt);
 		UpdateProjectileLogic(dt);
-		if (InternalEnemyCharacterList.size() <= 0 && InternalPlayerCharacterList.size() > 0)
+		if (InternalEnemyCharacterList.size() <= 0 && InternalPlayerCharacterList.size() > 0 || InternalEnemyCharacterList.size() > 0 && InternalPlayerCharacterList.size() <= 0)
 		{
 			BSI->ShowResult = true;
-			// Player won
-			if (BSI->EndResult)
-			{
-				
-			}
-		}
-		else if (InternalEnemyCharacterList.size() > 0 && InternalPlayerCharacterList.size() <= 0)
-		{
-			BSI->ShowResult = true;
-			// Enemy won
-			if (BSI->EndResult)
-			{
-				GameLogicSystem::Instance().SetCurrentState(GameLogicSystem::Instance().EnemyTurn);
-				SceneSystem::Instance().SwitchScene("1_Scene");
-				for (auto it : CurrentBattleTile->PlayerUnitList)
-					it->Active = false;
-				CurrentBattleTile->PlayerUnitList.clear();
-				ClearCharacterCounters();
-				BSI->ResetAll();
-				GameLogicSystem::Instance().DetectWinner();
-			}
 		}
 
 		if (BSI->ShowResult && BSI->EndResult)
 		{
-			//GameLogicSystem::Instance().SetCurrentState(GameLogicSystem::Instance().PlayerTurn);
-			//SceneSystem::Instance().SwitchScene("1_Scene");
-			//if (BSI->Playerw)
-			//for (auto it : CurrentBattleTile->EnemyUnitList)
-			//	it->Active = false;
-			//CurrentBattleTile->EnemyUnitList.clear();
-			//ClearCharacterCounters();
-			//BSI->ResetAll();
-			//GameLogicSystem::Instance().DetectWinner();
+			GameLogicSystem::Instance().SetCurrentState(GameLogicSystem::Instance().PlayerTurn);
+			SceneSystem::Instance().SwitchScene("1_Scene");
+			if (BSI->PlayerWon)
+			{
+				for (auto it : CurrentBattleTile->EnemyUnitList)
+					it->Active = false;
+				CurrentBattleTile->EnemyUnitList.clear();
+			}
+			else if (BSI->EnemyWon)
+			{
+				for (auto it : CurrentBattleTile->PlayerUnitList)
+					it->Active = false;
+				CurrentBattleTile->PlayerUnitList.clear();
+			}
+			ClearCharacterCounters();
+			BSI->ResetAll();
+			GameLogicSystem::Instance().DetectWinner();
 		}
 	}
 }
