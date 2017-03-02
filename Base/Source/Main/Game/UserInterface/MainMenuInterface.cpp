@@ -384,13 +384,13 @@ void MainMenuInterface::Update(const float& dt)
 
 	if (currentLayer == L_LEVELSELECT)
 	{
-		for (int i = 0; i < LevelSelectData.size(); ++i)
+		for (unsigned int i = 0; i < LevelSelectData.size(); ++i)
 		{
-			if (i + 1 < LevelSelectPage)
+			if (i + 1 < (unsigned)LevelSelectPage)
 			{
 				LevelSelectData[i]->SetTargetPosition(LeftSide);
 			}
-			else if (i + 1 > LevelSelectPage)
+			else if (i + 1 > (unsigned)LevelSelectPage)
 			{
 				LevelSelectData[i]->SetTargetPosition(RightSide);
 			}

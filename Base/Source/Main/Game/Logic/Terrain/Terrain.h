@@ -30,6 +30,7 @@ public:
 		T_MAX,
 	};
 
+	Terrain() {};
 	virtual ~Terrain();
 
 	virtual void Init(){};

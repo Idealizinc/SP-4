@@ -3,7 +3,7 @@
 
 #include "../../Engine/Interface/InterfaceSystem.h"
 #include "../../Engine/System/SceneSystem.h"
-#include "../../Game/Logic/Terrain/TerrainDataLoader.h"
+//#include "../../Game/Logic/Terrain/TerrainDataLoader.h"
 
 class BattleScreenInterface : public InterfaceSystem
 {

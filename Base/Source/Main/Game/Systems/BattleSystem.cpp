@@ -4,6 +4,7 @@
 #include "GameLogicSystem.h"
 #include "LoadHmap.h"
 #include "../Scene/BattleScene.h"
+#include "../../Engine/System/LuaInterface.h"
 
 BattleSystem::BattleSystem()
 {
@@ -16,10 +17,12 @@ BattleSystem::~BattleSystem()
 
 void BattleSystem::Init()
 {
-	UnitData.LoadWeaponData("CSVFiles/DataLoaders/WeaponDataLoader.csv");
-	UnitData.LoadRaceData("CSVFiles/DataLoaders/RaceDataLoader.csv");
-	UnitData.LoadLivingFactionData("CSVFiles/DataLoaders/LivingFactionLoader.csv");
-	UnitData.LoadUndeadFactionData("CSVFiles/DataLoaders/UndeadFactionLoader.csv");
+	LuaInterface::Instance().AddLuaState("CSVInitiallizer.lua");
+
+	UnitData.LoadWeaponData(LuaInterface::Instance().GetStringValue("CSVFilePath_WeaponDataLoader").c_str());
+	UnitData.LoadRaceData(LuaInterface::Instance().GetStringValue("CSVFilePath_RaceDataLoader").c_str());
+	UnitData.LoadLivingFactionData(LuaInterface::Instance().GetStringValue("CSVFilePath_LivingDataLoader").c_str());
+	UnitData.LoadUndeadFactionData(LuaInterface::Instance().GetStringValue("CSVFilePath_UndeadDataLoader").c_str());
 
 
 	SpawnPosition_Enemy = Vector3(-100, 1, 100);
@@ -301,7 +304,7 @@ void BattleSystem::UpdateProjectileLogic(const float& dt)
 					if (it->Active)
 					{
 						it->Update(dt);
-						if (!it->GravityAffected && Math::RandIntMinMax(0, 10) > 8)
+						if (!it->GravityAffected && (int)(Math::RandFloatMinMax(0, 10) * GameLogicSystem::Instance().ParticleMultiplier) > 8)
 						{
 							int NumParticles = 1;
 							for (int i = 0; i < NumParticles; ++i)

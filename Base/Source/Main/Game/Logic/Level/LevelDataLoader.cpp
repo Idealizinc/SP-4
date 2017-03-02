@@ -65,15 +65,15 @@ bool LevelDataLoader::LoadLevelData(const char* file_path)
 				getline(iss, CurrentFragmentedSubString, ',');
 				CSV_Values.push_back(CurrentFragmentedSubString);
 			}
-
+			Level* Temp = new Level();
+			
 			std::vector<std::string>::iterator it;
 			it = std::find(CSV_Keys.begin(), CSV_Keys.end(), "LEVELID");
 			size_t pos = it - CSV_Keys.begin();
+			Temp->SetEntityID(CSV_Values[pos]);
+
 			if (LevelMap.find(CSV_Values[pos]) == LevelMap.end())
 			{
-				Level* Temp = new Level();
-				Temp->SetEntityID(CSV_Values[pos]);
-
 				it = std::find(CSV_Keys.begin(), CSV_Keys.end(), "LEVELNAME");
 				pos = it - CSV_Keys.begin();
 				Temp->SetLevelMapName(CSV_Values[pos]);
