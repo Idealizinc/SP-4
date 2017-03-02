@@ -33,6 +33,7 @@ void EndOfGameInterface::Init()
 	EndScreenBackground = EndScreenLayer->CreateNewInterfaceElement("EndGameBackground", "Transparent", Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y, 0), Vector3(SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight, 0));
 	EndScreenBackground->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y, 0));
 
+
 	ResetAll();
 }
 
@@ -55,6 +56,12 @@ void EndOfGameInterface::Update(const float& dt)
 			EndScreenReturnButton->SetTextColor(Vector3(1, 1, 0));
 			EndScreenFrame->SetMesh("WoodFrameRect");
 			EndScreenBackground->SetMesh("LivingFaction");
+
+			if (GameLogicSystem::Instance().currHighestLevel == true)
+			{
+				++GameLogicSystem::Instance().MaxLevelUnlocked;
+				GameLogicSystem::Instance().currHighestLevel = false;
+			}
 		}
 		else
 		{
@@ -76,6 +83,12 @@ void EndOfGameInterface::Update(const float& dt)
 			EndScreenReturnButton->SetTextColor(Vector3(0, 0, 1));
 			EndScreenFrame->SetMesh("BlueFrameRect");
 			EndScreenBackground->SetMesh("UndeadFaction");
+
+			if (GameLogicSystem::Instance().currHighestLevel == true)
+			{
+				++GameLogicSystem::Instance().MaxLevelUnlocked;
+				GameLogicSystem::Instance().currHighestLevel = false;
+			}
 		}
 		else
 		{
@@ -106,6 +119,7 @@ void EndOfGameInterface::HandleUserInput()
 	{
 		if (EndScreenReturnButton->DetectUserInput(MousePos, EndScreenLayer->GetPosition()))
 		{
+			GameLogicSystem::Instance().currHighestLevel = false;
 			GameLogicSystem::Instance().UnitInterface->InterfaceExit();
 			SceneSystem::Instance().SwitchScene("MainMenuScene");
 			if (GameLogicSystem::Instance().InternalPlayerSystem->InternalUnitContainer.size() > 0)

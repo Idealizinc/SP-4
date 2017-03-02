@@ -66,6 +66,7 @@ private:
 	float WaitTimer = 0;
 	float InfoWaitTimer = 0;
 
+
 protected:
 
 };
