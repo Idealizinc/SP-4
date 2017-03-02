@@ -103,7 +103,7 @@ bool LevelDataLoader::LoadLevelData(const char* file_path)
 					{
 						// Initiallise Model Specific Meshes Here
 						Mesh* newMesh = MeshBuilder::GenerateTerrain(Temp->GetLevelMapName(), Temp->GetLevelMapMeshName(), Temp->TerrainHeightMap);
-						newMesh->material.kAmbient.Set(0.2f, 0.2f, 0.2f);
+						newMesh->material.kAmbient.Set(0.4f, 0.4f, 0.4f);
 						newMesh->material.kDiffuse.Set(0.2f, 0.2f, 0.2f);
 						newMesh->material.kSpecular.Set(0.0f, 0.0f, 0.0f);
 						if (Tex1Path != "")

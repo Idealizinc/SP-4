@@ -1,3 +1,7 @@
 LevelID,LevelName,LevelMap,Heightmap,Texture1,Texture2
-1,Level1,CSVFiles/GameMapLayouts/Level1.csv,HeightMapFiles//heightmap_Town1.raw,Image//Map//GrassStoneTex.tga,Image//Map//RockTex.tga
-2,Level2,CSVFiles/GameMapLayouts/Level2.csv,HeightMapFiles//heightmap_Town1.raw,Image//Map//GrassStoneTex.tga,Image//Map//BrickWall.tga
+1,Level1,CSVFiles/GameMapLayouts/TestMap.csv,HeightMapFiles//heightmap_Town2.raw,Image//Map//GrassStoneTex.tga,Image//Map//RockTex.tga
+2,Level2,CSVFiles/GameMapLayouts/TestMap.csv,HeightMapFiles//heightmap_Town2.raw,Image//Map//GrassStoneTex.tga,Image//Map//BrickWall.tga
+3,Level3,CSVFiles/GameMapLayouts/TestMap.csv,HeightMapFiles//heightmap_Town2.raw,Image//Map//DesertGround.tga,
+4,Level4,CSVFiles/GameMapLayouts/TestMap.csv,HeightMapFiles//heightmap_Town2.raw,Image//Map//Snow.tga,
+5,Level5,CSVFiles/GameMapLayouts/TestMap.csv,HeightMapFiles//heightmap_Town2.raw,Image//Map//Swamp.tga,Image//Map//GrassStoneTex.tga
+6,Level6,CSVFiles/GameMapLayouts/TestMap.csv,HeightMapFiles//heightmap_Town2.raw,Image//Map//SnowWithGrass.tga,Image//Map//Snow.tga
