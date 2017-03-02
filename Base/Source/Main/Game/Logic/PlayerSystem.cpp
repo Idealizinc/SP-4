@@ -65,7 +65,7 @@ void PlayerSystem::Update(const float& dt)
 					CA->CameraMoveTargetPosition = SelectedUnit->GetPosition();
 					AnimationEnded = true;
 
-					int ParticleCount = Math::RandIntMinMax(10, 20);
+					int ParticleCount = (int)Math::RandFloatMinMax(10.f, 20.f * GameLogicSystem::Instance().ParticleMultiplier);
 					for (unsigned int i = 0; i < (unsigned)ParticleCount; ++i)
 					{
 						float ParticleSpeed = Math::RandFloatMinMax(1.f, 2.f);
@@ -185,7 +185,7 @@ void PlayerSystem::HandleUserInput()
 				{
 					if (MouseDownSelection->TerrainTile->PlayerUnitList.size() < (unsigned)GameLogicSystem::Instance().MaxUnitInNode)
 					{
-						if (Math::RandIntMinMax(0, 1))
+						if (Math::RandIntMinMax(0, 1 + (int)(10 * GameLogicSystem::Instance().ParticleMultiplier) / 10))
 						{
 							float ParticleSpeed = Math::RandFloatMinMax(1.f, 2.f);
 							float ParticleLifeTime = Math::RandFloatMinMax(1.f, 1.5f);

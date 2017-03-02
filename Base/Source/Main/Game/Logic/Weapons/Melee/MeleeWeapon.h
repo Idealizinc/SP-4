@@ -37,7 +37,7 @@ public:
 		if (CE->TargetEnemy)
 		{
 			CE->TargetEnemy->HealthPoints -= Damage;
-			int NumParticles = Math::RandIntMinMax(2, 4);
+			int NumParticles = (int)Math::RandFloatMinMax(2, 4 * GameLogicSystem::Instance().ParticleMultiplier);
 			for (int i = 0; i < NumParticles; ++i)
 			{
 				float ParticleSpeed = Math::RandFloatMinMax(1.f, 2.f);

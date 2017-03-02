@@ -7,6 +7,7 @@
 #include "../Systems/GameLogicSystem.h"
 #include "LoadHmap.h"
 #include "../../Engine/Objects/GameObject.h"
+#include "../../Engine/System/LuaInterface.h"
 
 #include <fstream>
 #include <sstream>
@@ -24,7 +25,8 @@ GameMap::GameMap(void)
 
 	if (bunchOfLegends.empty())
 	{
-		loadThoseLegends("CSVFiles//MapLegend.csv");
+		LuaInterface::Instance().AddLuaState("CSVInitiallizer.lua");
+		loadThoseLegends(LuaInterface::Instance().GetStringValue("CSVFilePath_MapLegend"));
 	}
 }
 

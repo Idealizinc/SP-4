@@ -2,7 +2,10 @@
 
 Level::~Level()
 {
-
+	MapName.clear();
+	MapLayoutName.clear();
+	MapMeshName.clear();
+	TerrainHeightMap.clear();
 }
 
 std::string Level::GetLevelMapName()

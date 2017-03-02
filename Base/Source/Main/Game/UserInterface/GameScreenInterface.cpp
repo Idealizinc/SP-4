@@ -34,14 +34,11 @@ void GameScreenInterface::Init()
 	SurrenderButton = MenuLayer->CreateNewInterfaceElement("WhiteFlag", "SurrenderButton", Vector3(SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth * 0.07f, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.13f, 0.0f), Vector3(SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth * 0.15f, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.09f, 0));
 	SurrenderButton->SetTargetPosition(SurrenderButton->GetOriginalPosition());
 
-
 	DeployButton = MenuLayer->CreateNewInterfaceElement("DeployUI", "DeployButton", Vector3(SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth * 0.07f, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.0f, 0), Vector3(SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth * 0.20f, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.13f, 0));
 	DeployButton->SetTargetPosition(DeployButton->GetOriginalPosition());
 
-
 	SkipButton = MenuLayer->CreateNewInterfaceElement("SkipButton", "SkipButton", Vector3(SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth * 0.07f, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * -(0.13f), 0.0f), Vector3(SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth * 0.15f, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.09f, 0));
 	SkipButton->SetTargetPosition(SkipButton->GetOriginalPosition());
-
 
 	MenuButton = MenuLayer->CreateNewInterfaceElement("MenuUI", "Transparent", Vector3(SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth * -(0.05f),SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.01f, 0), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.07f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.3f, 0));
 	MenuButton->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth * -(0.05f), SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.01f, 0));

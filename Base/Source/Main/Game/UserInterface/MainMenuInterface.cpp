@@ -81,7 +81,7 @@ void MainMenuInterface::InitFactionLayer()
 
 	Faction1Button = FactionLayer->CreateNewInterfaceElement("Faction1Name", "BlueButton", 0, Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.4f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y* 0.2f, 0));
 	Faction1Button->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * -(0.5f), SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * -(0.5f), 0));
-	Faction1Button->SetText("Humans");
+	Faction1Button->SetText("Living");
 	Faction1Button->SetTextColor(Vector3(0, 0.2f, 0.9f));
 
 	Faction2Name = FactionLayer ->CreateNewInterfaceElement("Faction2Button", "UndeadFactionLogo", 0, Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.y* 0.8f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.8f, 0));
@@ -89,7 +89,7 @@ void MainMenuInterface::InitFactionLayer()
 
 	Faction2Button = FactionLayer->CreateNewInterfaceElement("Faction2Name", "WoodButton", 0, Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.4f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.2f, 0));
 	Faction2Button->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * (0.5f), SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * -(0.5f), 0));
-	Faction2Button->SetText("Demons");
+	Faction2Button->SetText("Undead");
 	Faction2Button->SetTextColor(Vector3(0.9f, 0.7f, 0));
 
 	BackButtonF = FactionLayer->CreateNewInterfaceElement("BackButtonFF", "WoodFrameRect", Vector3(0, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * -(0.5f), 0), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.4f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.15f, 0));
@@ -407,13 +407,13 @@ void MainMenuInterface::Update(const float& dt)
 
 	if (currentLayer == L_LEVELSELECT)
 	{
-		for (int i = 0; i < LevelSelectData.size(); ++i)
+		for (unsigned int i = 0; i < LevelSelectData.size(); ++i)
 		{
-			if (i + 1 < LevelSelectPage)
+			if (i + 1 < (unsigned)LevelSelectPage)
 			{
 				LevelSelectData[i]->SetTargetPosition(LeftSide);
 			}
-			else if (i + 1 > LevelSelectPage)
+			else if (i + 1 > (unsigned)LevelSelectPage)
 			{
 				LevelSelectData[i]->SetTargetPosition(RightSide);
 			}

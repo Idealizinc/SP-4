@@ -3,6 +3,8 @@
 #include "../../Engine/State/StateList.h"
 #include "../SceneManagement/ScenePartitionGraph.h"
 #include "../../Engine/Objects/GameObject.h"
+#include "../Logic/Level/LevelDataLoader.h"
+#include "../../Engine/System/LuaInterface.h"
 
 // Constructor and Destructor
 GameLogicSystem::~GameLogicSystem()
@@ -24,7 +26,9 @@ void GameLogicSystem::Init()
 	// Don't forget to Init the second initiallization if required
 	//QuickInit();
 
-	TerrainLoader.LoadTerrainData("CSVFiles/DataLoaders/TerrainDataLoader.csv");
+	LuaInterface::Instance().AddLuaState("CSVInitiallizer.lua");
+	TerrainLoader.LoadTerrainData(LuaInterface::Instance().GetStringValue("CSVFilePath_TerrainDataLoader").c_str());
+	LevelDataLoader::Instance().LoadLevelData(LuaInterface::Instance().GetStringValue("CSVFilePath_LevelDataLoader").c_str());
 
 }
 
@@ -76,12 +80,6 @@ void GameLogicSystem::Update(const float& dt)
 	else SceneSystem::Instance().SwitchScene("EndOfGameScene");
 }
 
-void GameLogicSystem::DetectSurrender()
-{
-	PlayerWon = false;
-	GameOver = true;
-}
-
 bool GameLogicSystem::DetectWinner()
 {
 	// Checking the enemy
@@ -111,6 +109,12 @@ bool GameLogicSystem::DetectWinner()
 		}
 	}
 	return false;
+}
+
+void GameLogicSystem::DetectSurrender()
+{
+	PlayerWon = false;
+	GameOver = true;
 }
 
 void GameLogicSystem::Render()

@@ -6,6 +6,7 @@
 #include <sstream>
 #include "SceneSystem.h"
 #include "../../Game/Mains/Application.h"
+#include "../../Engine/System/LuaInterface.h"
 
 RenderSystem::RenderSystem()
 	: SceneEntity()
@@ -153,12 +154,17 @@ void RenderSystem::Init()
 	Mesh* newMesh = MeshBuilder::GenerateAxes("reference", 1000.f, 1000.f, 1000.f);
 	MeshList.insert(std::pair<std::string, Mesh*>(newMesh->name, newMesh));
 
+	std::string MeshDrivenLocation, SpriteDrivenLocation;
+	LuaInterface::Instance().AddLuaState("CSVInitiallizer.lua");
+	MeshDrivenLocation = LuaInterface::Instance().GetStringValue("CSVFilePath_MeshList");
+	SpriteDrivenLocation = LuaInterface::Instance().GetStringValue("CSVFilePath_SpriteList");
+
 #ifdef _DEBUG
-	assert(LoadCSVMeshes("CSVFiles/MeshDriven.csv"));
-	assert(LoadCSVSpriteMeshes("CSVFiles/SpriteDriven.csv"));
+	assert(LoadCSVMeshes(MeshDrivenLocation));
+	assert(LoadCSVSpriteMeshes(SpriteDrivenLocation));
 #else
-	LoadCSVMeshes("CSVFiles/MeshDriven.csv");
-	LoadCSVSpriteMeshes("CSVFiles/SpriteDriven.csv");
+	LoadCSVMeshes(MeshDrivenLocation);
+	LoadCSVSpriteMeshes(SpriteDrivenLocation);
 #endif
 	ExportedFont = MeshList.find("text")->second;
 }
