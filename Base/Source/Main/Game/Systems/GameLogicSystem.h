@@ -22,6 +22,7 @@ Purpose       : Defines the GameLogicSystem that handles the both the player and
 
 #include "../UserInterface/UnitCreationInterface.h"
 #include "../UserInterface/GameScreenInterface.h"
+#include "../Systems/BillboardManager.h"
 
 
 
@@ -74,15 +75,17 @@ public:
 	const std::string BattlePhase = "Battle Phase";
 	TerrainDataLoader TerrainLoader;
 
+	BillboardManager ParticleSystem;
 	Faction PlayerFaction;
 	bool PlayerWon = false;
 	bool GameOver = false;
+
 
 //private:
 	PlayerSystem* InternalPlayerSystem;
 	EnemySystem* InternalEnemySystem;
 	BattleSystem* InternalBattleSystem;
-	float PieceAnimationSpeed = 3.f;
+	float PieceAnimationSpeed = 5.f;
 	float PieceMinimumDistance = 0.01f;
 	UnitCreationInterface* UnitInterface;
 	GameScreenInterface* GameInterface;

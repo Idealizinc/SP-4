@@ -63,31 +63,67 @@ void EnemySystem::Update(const float& dt)
 		else CurrentTurnState = S_SPAWN;
 		break;
 	case (S_TURNEND) : // I end my turn
-		Vector3 Direction = SelectedUnit->TargetPosition - SelectedUnit->GetPosition();
-		if (Direction.LengthSquared() > GameLogicSystem::Instance().PieceMinimumDistance)
+		if (!AnimationEnded)
 		{
-			SelectedUnit->SetPosition(SelectedUnit->GetPosition() + Direction * GameLogicSystem::Instance().PieceAnimationSpeed * dt);
 			CameraAerial* CA = (CameraAerial*)SceneSystem::Instance().GetCurrentScene().camera;
-			CA->CameraMoveTargetPosition = SelectedUnit->GetPosition();
-		}
-		else {
-			// The animation is over, my turn is up
-			GameLogicSystem::Instance().SetCurrentState(GameLogicSystem::Instance().PlayerTurn);
-			// Reseting for next turn
-			CurrentTurnState = S_TURNSTART;
-			SelectedUnit = nullptr;
-			if (TargetedNode != nullptr)
+			if (AnimateUpwards)
 			{
-				if (!GameLogicSystem::Instance().DetectWinner())
+				CA->CameraMoveTargetPosition = SelectedUnit->GetPosition();
+				Vector3 AltDirection = SelectedUnit->TargetPosition + Vector3(0, SelectedUnit->GetDimensions().y * 8.f) - SelectedUnit->GetPosition();
+				SelectedUnit->SetPosition(SelectedUnit->GetPosition() + AltDirection * 2.f * GameLogicSystem::Instance().PieceAnimationSpeed * dt);
+				if (AltDirection.LengthSquared() <= GameLogicSystem::Instance().PieceMinimumDistance)
 				{
-					if (TargetedNode->TerrainTile->PlayerUnitList.size() > 0 && TargetedNode->TerrainTile->EnemyUnitList.size() > 0)
+					CA->CameraMoveTargetPosition = SelectedUnit->GetPosition();
+					AnimateUpwards = false;
+				}
+			}
+			else
+			{
+				Vector3 Direction = SelectedUnit->TargetPosition - SelectedUnit->GetPosition();
+				SelectedUnit->SetPosition(SelectedUnit->GetPosition() + Direction * 4.f * GameLogicSystem::Instance().PieceAnimationSpeed * dt);
+				if (Direction.LengthSquared() <= GameLogicSystem::Instance().PieceMinimumDistance)
+				{
+					CA->CameraMoveTargetPosition = SelectedUnit->GetPosition();
+					AnimationEnded = true;
+
+					int ParticleCount = Math::RandIntMinMax(10, 20);
+					for (unsigned int i = 0; i < (unsigned)ParticleCount; ++i)
 					{
-						SceneSystem::Instance().SwitchScene("BattleScene");
-						GameLogicSystem::Instance().SetCurrentState(GameLogicSystem::Instance().BattlePhase);
-						GameLogicSystem::Instance().InternalBattleSystem->SetUpUnits(TargetedNode->TerrainTile);
+						float ParticleSpeed = Math::RandFloatMinMax(1.f, 2.f);
+						float ParticleLifeTime = Math::RandFloatMinMax(1.f, 1.5f);
+						float Interval = SelectedUnit->GetDimensions().x * 5.f;
+						Vector3 Dimensions = Vector3(Interval, Interval, Interval) * 2.f;
+						Vector3 Velocity = ParticleSpeed * Vector3(Math::RandFloatMinMax(-Interval, Interval) * 0.5f, 0.25f * Interval, Math::RandFloatMinMax(-Interval, Interval)* 0.5f);
+						GameLogicSystem::Instance().ParticleSystem.AddWorldSpaceParticle("Smoke", SelectedUnit->GetPosition() + Vector3(0, SelectedUnit->GetDimensions().y * 0.5f), 0.5f *Dimensions, Velocity, SceneSystem::Instance().GetCurrentScene().camera->position, ParticleLifeTime);
 					}
 				}
-				TargetedNode = nullptr;
+			}
+		}
+		else {
+			if (WaitTimer < 1.f)
+				WaitTimer += dt;
+			else
+			{
+				WaitTimer = 0.f;
+				// The animation is over, my turn is up
+				GameLogicSystem::Instance().SetCurrentState(GameLogicSystem::Instance().PlayerTurn);
+				// Reseting for next turn
+				CurrentTurnState = S_TURNSTART;
+				SelectedUnit = nullptr;
+				if (TargetedNode != nullptr)
+				{
+					if (!GameLogicSystem::Instance().DetectWinner())
+					{
+						if (TargetedNode->TerrainTile->PlayerUnitList.size() > 0 && TargetedNode->TerrainTile->EnemyUnitList.size() > 0)
+						{
+							SceneSystem::Instance().SwitchScene("BattleScene");
+							GameLogicSystem::Instance().SetCurrentState(GameLogicSystem::Instance().BattlePhase);
+							GameLogicSystem::Instance().InternalBattleSystem->SetUpUnits(TargetedNode->TerrainTile);
+						}
+						else TargetedNode->TerrainTile->PlayerHasAdvantage = false;
+					}
+					TargetedNode = nullptr;
+				}
 			}
 		}
 		break;
@@ -113,6 +149,8 @@ void EnemySystem::Render(void)
 
 EnemyPiece* EnemySystem::GenerateNewEnemy(std::map<std::string, unsigned short>& Battalion)
 {
+	AnimateUpwards = true;
+	AnimationEnded = false;
 	// Create a new unit and assign him to the start
 	EnemyPiece* EP = new EnemyPiece();
 	EP->InternalDefinedPath = InternalPathContainer[Math::RandIntMinMax(0, InternalPathContainer.size() - 1)];
@@ -128,6 +166,8 @@ EnemyPiece* EnemySystem::GenerateNewEnemy(std::map<std::string, unsigned short>&
 
 EnemyPiece* EnemySystem::AdvanceSingleUnit()
 {
+	AnimateUpwards = true;
+	AnimationEnded = false;
 	// Select a piece that can move
 	EnemyPiece* EP = RandomizePieceSelection();
 	while (EP->InternalDefinedPath.size() <= 1)

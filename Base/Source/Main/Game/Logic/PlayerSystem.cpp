@@ -28,7 +28,7 @@ void PlayerSystem::Exit(void)
 void PlayerSystem::Update(const float& dt)
 {
 	CameraAerial* CA = (CameraAerial*)SceneSystem::Instance().GetCurrentScene().camera;
-	
+
 	switch (CurrentTurnState)
 	{
 	case (S_TURNSTART) : // It's my turn, do something
@@ -44,30 +44,65 @@ void PlayerSystem::Update(const float& dt)
 			CurrentTurnState = S_TURNEND;
 		break;
 	case (S_TURNEND) : // I end my turn
-		Vector3 Direction = SelectedUnit->TargetPosition - SelectedUnit->GetPosition();
-		if (Direction.LengthSquared() > GameLogicSystem::Instance().PieceMinimumDistance)
+		if (!AnimationEnded)
 		{
-			SelectedUnit->SetPosition(SelectedUnit->GetPosition() + Direction * GameLogicSystem::Instance().PieceAnimationSpeed * dt);
 			CA->CameraMoveTargetPosition = SelectedUnit->GetPosition();
-		}
-		else {
-			// The animation is over, my turn is up
-			GameLogicSystem::Instance().SetCurrentState(GameLogicSystem::Instance().EnemyTurn);
-			// Reseting for next turn
-			CurrentTurnState = S_TURNSTART;
-			SelectedUnit = nullptr;
-			if (TargetedNode != nullptr)
+			if (AnimateUpwards)
 			{
-				if (!GameLogicSystem::Instance().DetectWinner())
+				Vector3 AltDirection = SelectedUnit->TargetPosition + Vector3(0, SelectedUnit->GetDimensions().y * 8.f) - SelectedUnit->GetPosition();
+				SelectedUnit->SetPosition(SelectedUnit->GetPosition() + AltDirection * 2.f * GameLogicSystem::Instance().PieceAnimationSpeed * dt);
+				if (AltDirection.LengthSquared() <= GameLogicSystem::Instance().PieceMinimumDistance)
 				{
-					if (TargetedNode->TerrainTile->PlayerUnitList.size() > 0 && TargetedNode->TerrainTile->EnemyUnitList.size() > 0)
+					AnimateUpwards = false;
+				}
+			}
+			else
+			{
+				Vector3 Direction = SelectedUnit->TargetPosition - SelectedUnit->GetPosition();
+				SelectedUnit->SetPosition(SelectedUnit->GetPosition() + Direction * 4.f * GameLogicSystem::Instance().PieceAnimationSpeed * dt);
+				if (Direction.LengthSquared() <= GameLogicSystem::Instance().PieceMinimumDistance)
+				{
+					CA->CameraMoveTargetPosition = SelectedUnit->GetPosition();
+					AnimationEnded = true;
+
+					int ParticleCount = Math::RandIntMinMax(10, 20);
+					for (unsigned int i = 0; i < (unsigned)ParticleCount; ++i)
 					{
-						SceneSystem::Instance().SwitchScene("BattleScene");
-						GameLogicSystem::Instance().SetCurrentState(GameLogicSystem::Instance().BattlePhase);
-						GameLogicSystem::Instance().InternalBattleSystem->SetUpUnits(TargetedNode->TerrainTile);
+						float ParticleSpeed = Math::RandFloatMinMax(1.f, 2.f);
+						float ParticleLifeTime = Math::RandFloatMinMax(1.f, 1.5f);
+						float Interval = SelectedUnit->GetDimensions().x * 5.f;
+						Vector3 Dimensions = Vector3(Interval, Interval, Interval) * 2.f;
+						Vector3 Velocity = ParticleSpeed * Vector3(Math::RandFloatMinMax(-Interval, Interval) * 0.5f, 0.25f * Interval, Math::RandFloatMinMax(-Interval, Interval)* 0.5f);
+						GameLogicSystem::Instance().ParticleSystem.AddWorldSpaceParticle("Smoke", SelectedUnit->GetPosition() + Vector3(0, SelectedUnit->GetDimensions().y * 0.5f), 0.5f *Dimensions, Velocity, SceneSystem::Instance().GetCurrentScene().camera->position, ParticleLifeTime);
 					}
 				}
-				TargetedNode = nullptr;
+			}
+		}
+		else {
+			if (WaitTimer < 1.f)
+				WaitTimer += dt;
+			else
+			{
+				WaitTimer = 0.f;
+				// The animation is over, my turn is up
+				GameLogicSystem::Instance().SetCurrentState(GameLogicSystem::Instance().EnemyTurn);
+				// Reseting for next turn
+				CurrentTurnState = S_TURNSTART;
+				SelectedUnit = nullptr;
+				if (TargetedNode != nullptr)
+				{
+					if (!GameLogicSystem::Instance().DetectWinner())
+					{
+						if (TargetedNode->TerrainTile->PlayerUnitList.size() > 0 && TargetedNode->TerrainTile->EnemyUnitList.size() > 0)
+						{
+							SceneSystem::Instance().SwitchScene("BattleScene");
+							GameLogicSystem::Instance().SetCurrentState(GameLogicSystem::Instance().BattlePhase);
+							GameLogicSystem::Instance().InternalBattleSystem->SetUpUnits(TargetedNode->TerrainTile);
+						}
+						else TargetedNode->TerrainTile->PlayerHasAdvantage = true;
+					}
+					TargetedNode = nullptr;
+				}
 			}
 		}
 		break;
@@ -127,6 +162,8 @@ UnitPiece* PlayerSystem::AdvanceSingleUnit(UnitPiece* Selection, TerrainNode* Ta
 
 void PlayerSystem::HandleUserInput()
 {
+	AnimateUpwards = true;
+	AnimationEnded = false;
 	if (selectingUnit == 0 && GameLogicSystem::Instance().GameInterface->SurrenderOn == false && GameLogicSystem::Instance().UnitInterface->UIDisplayed == 0)
 	{
 		CameraAerial* CA = (CameraAerial*)SceneSystem::Instance().GetCurrentScene().camera;
@@ -137,6 +174,37 @@ void PlayerSystem::HandleUserInput()
 			{
 				MouseDownSelection = TN;
 				MouseUpSelection = nullptr;
+			}
+		}
+		else if (SceneSystem::Instance().cSS_InputManager->GetMouseInput(InputManager::KEY_LMB) == InputManager::MOUSE_HOLD)
+		{
+			if (MouseDownSelection)
+			if (MouseDownSelection->TerrainTile->PlayerUnitList.size())
+			{
+				for (auto it : MouseDownSelection->LinkedTerrainNodes)
+				{
+					if (MouseDownSelection->TerrainTile->PlayerUnitList.size() < (unsigned)GameLogicSystem::Instance().MaxUnitInNode)
+					{
+						if (Math::RandIntMinMax(0, 1))
+						{
+							float ParticleSpeed = Math::RandFloatMinMax(1.f, 2.f);
+							float ParticleLifeTime = Math::RandFloatMinMax(1.f, 1.5f);
+							float Interval = it->GetEntity()->GetDimensions().x * 1.f;
+							Vector3 Dimensions = Vector3(Interval, Interval, Interval);
+							Vector3 Velocity;
+							if (Math::RandIntMinMax(0, 1))
+							{
+								Velocity = ParticleSpeed * Vector3(Math::RandFloatMinMax(-Interval, Interval) * 0.5f, Interval * 0.5f, Math::RandFloatMinMax(-Interval, Interval)* 0.5f);
+								GameLogicSystem::Instance().ParticleSystem.AddWorldSpaceParticle("Light", it->GetEntity()->GetPosition(), 0.5f *Dimensions, Velocity, SceneSystem::Instance().GetCurrentScene().camera->position, ParticleLifeTime);
+							}
+							else{
+								Velocity = 0.5f * ParticleSpeed * Interval * (it->GetEntity()->GetPosition() - MouseDownSelection->GetEntity()->GetPosition()).Normalize();
+								GameLogicSystem::Instance().ParticleSystem.AddWorldSpaceParticle("Light", MouseDownSelection->GetEntity()->GetPosition() + Vector3(0, Dimensions.y), 0.5f * Dimensions, Velocity, SceneSystem::Instance().GetCurrentScene().camera->position, 2.f * ParticleLifeTime);
+
+							}
+						}
+					}
+				}
 			}
 		}
 		else if (SceneSystem::Instance().cSS_InputManager->GetMouseInput(InputManager::KEY_LMB) == InputManager::MOUSE_UP)
@@ -155,7 +223,7 @@ void PlayerSystem::HandleUserInput()
 				{
 					GameLogicSystem::Instance().GameInterface->MultipleUnitSelect(TN->TerrainTile->PlayerUnitList, false);
 				}
-				else if(TN->TerrainTile->EnemyUnitList.size() != 0 && GameLogicSystem::Instance().GameInterface->MultipleUnitElements.size() == 0)
+				else if (TN->TerrainTile->EnemyUnitList.size() != 0 && GameLogicSystem::Instance().GameInterface->MultipleUnitElements.size() == 0)
 				{
 					GameLogicSystem::Instance().GameInterface->MultipleUnitSelectE(TN->TerrainTile->EnemyUnitList);
 				}
@@ -176,44 +244,44 @@ void PlayerSystem::HandleUserInput()
 				// Clicked different tiles
 				// Check if they are linked
 				if (MouseDownSelection->TerrainTile->PlayerUnitList.size() > 0 && GameLogicSystem::Instance().UnitInterface->UIDisplayed == 0)
-					for (auto it : MouseDownSelection->LinkedTerrainNodes)
+				for (auto it : MouseDownSelection->LinkedTerrainNodes)
+				{
+					if (it == MouseUpSelection)
 					{
-						if (it == MouseUpSelection)
+						int test = GameLogicSystem::Instance().MaxUnitInNode;
+						int t2 = MouseUpSelection->TerrainTile->PlayerUnitList.size();
+						if ((unsigned)GameLogicSystem::Instance().MaxUnitInNode > MouseUpSelection->TerrainTile->PlayerUnitList.size() && MouseUpSelection != SceneSystem::Instance().GetCurrentScene().ScenePartition->PlayerBase || MouseUpSelection == SceneSystem::Instance().GetCurrentScene().ScenePartition->PlayerBase && !SceneSystem::Instance().GetCurrentScene().ScenePartition->PlayerBase->TerrainTile->PlayerUnitList.size())
 						{
-							int test = GameLogicSystem::Instance().MaxUnitInNode;
-							int t2 = MouseUpSelection->TerrainTile->PlayerUnitList.size();
-							if ((unsigned)GameLogicSystem::Instance().MaxUnitInNode > MouseUpSelection->TerrainTile->PlayerUnitList.size() && MouseUpSelection != SceneSystem::Instance().GetCurrentScene().ScenePartition->PlayerBase || MouseUpSelection == SceneSystem::Instance().GetCurrentScene().ScenePartition->PlayerBase && !SceneSystem::Instance().GetCurrentScene().ScenePartition->PlayerBase->TerrainTile->PlayerUnitList.size())
+							if (MouseDownSelection->TerrainTile->PlayerUnitList.size() == 1)
 							{
-								if (MouseDownSelection->TerrainTile->PlayerUnitList.size() == 1)
-								{
-									SelectedUnit = AdvanceSingleUnit(MouseDownSelection->TerrainTile->PlayerUnitList.front(), MouseUpSelection);
-									TargetedNode = MouseUpSelection;
-									CA->CameraMoveTargetPosition = MouseUpSelection->GetEntity()->GetPosition();
-									GameLogicSystem::Instance().GameInterface->toggleSurrender();
-									break;
-								}
-								else
-								{
-									GameLogicSystem::Instance().GameInterface->MultipleUnitSelect(MouseDownSelection->TerrainTile->PlayerUnitList, true);
-									TargetedNode = MouseUpSelection;
-									selectingUnit = true;
-									GameLogicSystem::Instance().GameInterface->toggleSurrender();
-									break;
-								}
+								SelectedUnit = AdvanceSingleUnit(MouseDownSelection->TerrainTile->PlayerUnitList.front(), MouseUpSelection);
+								TargetedNode = MouseUpSelection;
+								CA->CameraMoveTargetPosition = MouseUpSelection->GetEntity()->GetPosition();
+								GameLogicSystem::Instance().GameInterface->toggleSurrender();
+								break;
 							}
 							else
 							{
-								if (GameLogicSystem::Instance().UnitInterface->warningDisplayed3 == 0)
-								{
-									GameLogicSystem::Instance().UnitInterface->NoSlotError();
-								}
+								GameLogicSystem::Instance().GameInterface->MultipleUnitSelect(MouseDownSelection->TerrainTile->PlayerUnitList, true);
+								TargetedNode = MouseUpSelection;
+								selectingUnit = true;
+								GameLogicSystem::Instance().GameInterface->toggleSurrender();
+								break;
+							}
+						}
+						else
+						{
+							if (GameLogicSystem::Instance().UnitInterface->warningDisplayed3 == 0)
+							{
+								GameLogicSystem::Instance().UnitInterface->NoSlotError();
 							}
 						}
 					}
+				}
 			}
 			MouseDownSelection = MouseUpSelection = nullptr;
 		}
-		
+
 	}
 	else if (GameLogicSystem::Instance().UnitInterface->UIDisplayed == 1)
 	{

@@ -54,6 +54,7 @@ void GameLogicSystem::QuickInit()
 
 void GameLogicSystem::Update(const float& dt)
 {
+	ParticleSystem.UpdateContainer(dt, SceneSystem::Instance().GetCurrentScene().camera->position);
 	if (!GameOver)
 	{
 		State* CurrentState = GetCurrentState();
@@ -112,6 +113,7 @@ void GameLogicSystem::Render()
 {
 	if (GetCurrentState()->GetStateName() != BattlePhase)
 	{
+		ParticleSystem.Render();
 		if (InternalPlayerSystem)
 		{
 			InternalPlayerSystem->Render();
