@@ -33,17 +33,17 @@ void GameScreenInterface::Init()
 	MenuFrame = MenuLayer->CreateNewInterfaceElement("MenuFrame", "Transparent", Vector3(SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth * 0.03f, 0, 0), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.5f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.4f, 0));
 	MenuFrame->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth * 0.03f, 0, 0));
 
-	SurrenderButton = MenuLayer->CreateNewInterfaceElement("WhiteFlag", "quad", Vector3(SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth * 0.05f, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * -(0.05f), 0), Vector3(SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth * 0.1f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.16f, 0));
+	SurrenderButton = MenuLayer->CreateNewInterfaceElement("WhiteFlag", "LoadTexture", Vector3(SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth * 0.05f, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * -(0.05f), 0), Vector3(SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth * 0.1f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.16f, 0));
 	SurrenderButton->SetTargetPosition(SurrenderButton->GetOriginalPosition());
 	SurrenderButton->SetText("Surrender");
 	SurrenderButton->SetTextColor(0);
 
-	DeployButton = MenuLayer->CreateNewInterfaceElement("DeployUI", "quad", Vector3(SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth * 0.05f, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.05f, 0), Vector3(SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth * 0.1f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.16f, 0));
+	DeployButton = MenuLayer->CreateNewInterfaceElement("DeployUI", "LoadTexture", Vector3(SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth * 0.05f, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.05f, 0), Vector3(SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth * 0.1f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.16f, 0));
 	DeployButton->SetTargetPosition(DeployButton->GetOriginalPosition());
 	DeployButton->SetText("Deploy");
 	DeployButton->SetTextColor(0);
 
-	MenuButton = MenuLayer->CreateNewInterfaceElement("MenuUI", "quad", Vector3(SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth * -(0.04f),0, 0), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.1f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.16f, 0));
+	MenuButton = MenuLayer->CreateNewInterfaceElement("MenuUI", "LoadTexture", Vector3(SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth * -(0.04f),0, 0), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.1f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.16f, 0));
 	MenuButton->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth * -(0.04f),0, 0));
 	MenuButton->SetText("Menu");
 	MenuButton->SetTextColor(0);
@@ -58,7 +58,7 @@ void GameScreenInterface::Init()
 	CashDisplayLayer = CreateNewInterfaceLayer("CashLayer", Vector3(SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth * 0.08f, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.94f, 0), 0);
 	CashDisplayLayer->SetTargetPosition(CashDisplayLayer->GetOriginalPosition());
 
-	CashTotalDisplay = CashDisplayLayer->CreateNewInterfaceElement("CashTotal", "quad", 0, Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.3f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.2f, 0));
+	CashTotalDisplay = CashDisplayLayer->CreateNewInterfaceElement("CashTotal", "LoadTexture", 0, Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.3f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.2f, 0));
 	CashTotalDisplay->SetTextColor(0);
 
 	CashSubstractFrame = CashDisplayLayer->CreateNewInterfaceElement("CashReduceFrame", "Transparent", Vector3(SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth * 0.0f, -(SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.09f)), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.15f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.15f, 0));
@@ -84,17 +84,17 @@ void GameScreenInterface::InitSurrender()
 	SurrenderLayer = CreateNewInterfaceLayer("SurrenderLayer", Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * -(1), 0), 0);
 	SurrenderLayer->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y, 0));
 	
-	SurrenderBackground = SurrenderLayer->CreateNewInterfaceElement("SurrenderBackground", "quad", 0, Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.5f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.2f, 0));
+	SurrenderBackground = SurrenderLayer->CreateNewInterfaceElement("SurrenderBackground", "LoadTexture", 0, Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.5f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.2f, 0));
 	SurrenderBackground->SetTargetPosition(0);
 	SurrenderBackground->SetText("Are You Sure?");
 	SurrenderBackground->SetTextColor(0);
 
-	SurrenderYesButton = SurrenderLayer->CreateNewInterfaceElement("SurrenderYes", "quad", Vector3(SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth * -(0.05f), SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * -(0.1f), 0), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.15f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.1f, 0));
+	SurrenderYesButton = SurrenderLayer->CreateNewInterfaceElement("SurrenderYes", "LoadTexture", Vector3(SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth * -(0.05f), SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * -(0.1f), 0), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.15f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.1f, 0));
 	SurrenderYesButton->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth * -(0.05f), SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * -(0.1f), 0));
 	SurrenderYesButton->SetText("Yeh");
 	SurrenderYesButton->SetTextColor(0);
 
-	SurrenderNoButton = SurrenderLayer->CreateNewInterfaceElement("SurrenderNo", "quad", Vector3(SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth * (0.05f), SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * -(0.1f), 0), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.15f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.1f, 0));
+	SurrenderNoButton = SurrenderLayer->CreateNewInterfaceElement("SurrenderNo", "LoadTexture", Vector3(SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth * (0.05f), SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * -(0.1f), 0), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.15f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.1f, 0));
 	SurrenderNoButton->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth * (0.05f), SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * -(0.1f), 0));
 	SurrenderNoButton->SetText("Nah");
 	SurrenderNoButton->SetTextColor(0);
@@ -460,24 +460,24 @@ void GameScreenInterface::MultipleUnitSelect(std::vector<UnitPiece*> Selections,
 	InterfaceElement* tempElement = nullptr;
 	if (interactive == 1)
 	{
-		tempElement = MultipleUnitLayer->CreateNewInterfaceElement("MULTitleUI", "quad", Vector3(lowestPt.x, highestPt.y * 1.1f), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.8f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.15f, 0));
+		tempElement = MultipleUnitLayer->CreateNewInterfaceElement("MULTitleUI", "LoadTexture", Vector3(lowestPt.x, highestPt.y * 1.1f), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.8f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.15f, 0));
 		tempElement->SetTargetPosition(Vector3(lowestPt.x, highestPt.y * 1.1f));
 		tempElement->SetText("Pick Squad To Move");
 		tempElement->SetTextColor(0);
 
-		tempElement = MultipleUnitLayer->CreateNewInterfaceElement("MULTitleUI2", "quad", Vector3(lowestPt.x, highestPt.y * 1.1f), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.8f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.15f, 0));
+		tempElement = MultipleUnitLayer->CreateNewInterfaceElement("MULTitleUI2", "LoadTexture", Vector3(lowestPt.x, highestPt.y * 1.1f), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.8f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.15f, 0));
 		tempElement->SetTargetPosition(Vector3(lowestPt.x, highestPt.y));
 		tempElement->SetText("Click on desired squad");
 		tempElement->SetTextColor(0);
 	}
 	else
 	{
-		tempElement = MultipleUnitLayer->CreateNewInterfaceElement("MULTitle", "quad", Vector3(lowestPt.x, highestPt.y), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.8f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.15f, 0));
+		tempElement = MultipleUnitLayer->CreateNewInterfaceElement("MULTitle", "LoadTexture", Vector3(lowestPt.x, highestPt.y), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.8f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.15f, 0));
 		tempElement->SetTargetPosition(Vector3(lowestPt.x, highestPt.y * 1.1f));
 		tempElement->SetText("Squads in this Node");
 		tempElement->SetTextColor(0);
 
-		tempElement = MultipleUnitLayer->CreateNewInterfaceElement("MULTitle2", "quad", Vector3(lowestPt.x, highestPt.y), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.8f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.15f, 0));
+		tempElement = MultipleUnitLayer->CreateNewInterfaceElement("MULTitle2", "LoadTexture", Vector3(lowestPt.x, highestPt.y), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.8f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.15f, 0));
 		tempElement->SetTargetPosition(Vector3(lowestPt.x, highestPt.y));
 		tempElement->SetText("Click to dismiss");
 		tempElement->SetTextColor(0);
@@ -555,7 +555,7 @@ void GameScreenInterface::MultipleUnitSelect(std::vector<UnitPiece*> Selections,
 
 		}
 		
-		tempElement = MultipleUnitLayer->CreateNewInterfaceElement(std::to_string(i), "quad", Vector3(lowestPt.x, highestPt.y - IconSpaceHeight * (count)), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.8f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.15f, 0));
+		tempElement = MultipleUnitLayer->CreateNewInterfaceElement(std::to_string(i), "LoadTexture", Vector3(lowestPt.x, highestPt.y - IconSpaceHeight * (count)), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.8f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.15f, 0));
 		tempElement->SetTargetPosition(Vector3(lowestPt.x, highestPt.y - IconSpaceHeight * (count)));
 
 		MultipleUnitElements.insert(std::pair<UnitPiece*, InterfaceElement*>(Selections[i], tempElement));
@@ -584,12 +584,12 @@ void GameScreenInterface::MultipleUnitSelectE(std::vector<UnitPiece*> Selections
 	float IconSpaceHeight = (DisplayHeight / IconCount) / 2;
 
 	InterfaceElement* tempElement = nullptr;
-		tempElement = MultipleUnitLayer->CreateNewInterfaceElement("MULTitle", "quad", Vector3(lowestPt.x, highestPt.y), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.8f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.15f, 0));
+		tempElement = MultipleUnitLayer->CreateNewInterfaceElement("MULTitle", "LoadTexture", Vector3(lowestPt.x, highestPt.y), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.8f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.15f, 0));
 		tempElement->SetTargetPosition(Vector3(lowestPt.x, highestPt.y * 1.1f));
 		tempElement->SetText("Squads in this Node");
 		tempElement->SetTextColor(0);
 
-		tempElement = MultipleUnitLayer->CreateNewInterfaceElement("MULTitle2", "quad", Vector3(lowestPt.x, highestPt.y), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.8f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.15f, 0));
+		tempElement = MultipleUnitLayer->CreateNewInterfaceElement("MULTitle2", "LoadTexture", Vector3(lowestPt.x, highestPt.y), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.8f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.15f, 0));
 		tempElement->SetTargetPosition(Vector3(lowestPt.x, highestPt.y));
 		tempElement->SetText("Click to dismiss");
 		tempElement->SetTextColor(0);
@@ -642,7 +642,7 @@ void GameScreenInterface::MultipleUnitSelectE(std::vector<UnitPiece*> Selections
 
 		}
 
-		tempElement = MultipleUnitLayer->CreateNewInterfaceElement(std::to_string(i), "quad", Vector3(lowestPt.x, highestPt.y - IconSpaceHeight * (count)), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.8f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.15f, 0));
+		tempElement = MultipleUnitLayer->CreateNewInterfaceElement(std::to_string(i), "LoadTexture", Vector3(lowestPt.x, highestPt.y - IconSpaceHeight * (count)), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.8f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.15f, 0));
 		tempElement->SetTargetPosition(Vector3(lowestPt.x, highestPt.y - IconSpaceHeight * (count)));
 
 		MultipleUnitElements.insert(std::pair<UnitPiece*, InterfaceElement*>(Selections[i], tempElement));
