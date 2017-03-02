@@ -4,7 +4,7 @@
 /*
 Copyright (c) Lim Rui An, Ryan 2017
 
-Creator(s)    : Lim Rui An, Ryan
+Creator(s)    : Lim Rui An, Ryan, Clinton Teo Jun Quan (for codes that affect UI in HandleUserInput())
 Creation Date : 19 February 2017 16:21 PM
 File Name     : PlayerSystem.h
 Purpose       : Defines the PlayerSystem that handles the player's input
@@ -35,6 +35,7 @@ public:
 	void SetCash(int amt);
 
 	bool selectingUnit;
+	void SkipTurn();
 
 private:
 	enum TurnState
@@ -42,6 +43,7 @@ private:
 		S_TURNSTART = 0,
 		S_ACTION,
 		S_TURNEND,
+		S_TURNSKIP,
 	};
 	// Internals
 	TurnState CurrentTurnState;
@@ -54,6 +56,7 @@ private:
 	UnitPiece* GenerateNewUnit(const std::map<std::string, unsigned short>& Battalion);
 	UnitPiece* AdvanceSingleUnit(UnitPiece* Selection, TerrainNode* Target);
 	void HandleUserInput();
+	
 
 	int Cash;
 	bool AnimationEnded, AnimateUpwards;

@@ -21,7 +21,7 @@ TerrainDataLoader::~TerrainDataLoader()
 
 void TerrainDataLoader::ClearTerrainData()
 {
-	for (auto it : TerrainMap)
+	for (auto it : TerrainMap) 
 		delete it.second;
 	TerrainMap.clear();
 }

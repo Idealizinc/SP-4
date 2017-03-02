@@ -39,6 +39,7 @@ public:
 	bool MultipleUnitUI;
 	bool SurrenderOn;
 	bool MenuOpen;
+	bool SurrenderCheck;
 
 private:
 	void PopUpDelay(const float& dt);
@@ -59,6 +60,7 @@ private:
 	InterfaceLayer* MenuLayer;
 	InterfaceElement* SurrenderButton;
 	InterfaceElement* DeployButton;
+	InterfaceElement* SkipButton;
 	InterfaceElement* MenuButton;
 	InterfaceElement* MenuFrame;
 

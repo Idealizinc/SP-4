@@ -92,6 +92,7 @@ public:
 
 	const int maxStartingUnits = 10;
 	bool DetectWinner();
+	void DetectSurrender();
 	const int MaxUnitInNode = 5;
 
 protected:

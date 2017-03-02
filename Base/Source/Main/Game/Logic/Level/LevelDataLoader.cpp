@@ -23,6 +23,7 @@ void LevelDataLoader::ClearLevelData()
 {
 	for (auto it : LevelMap)
 		delete it.second;
+
 	LevelMap.clear();
 }
 

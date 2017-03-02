@@ -5,6 +5,7 @@
 #include "../../Engine/System/MusicSystem.h"
 #include "../Mains/Application.h"
 #include "../SceneManagement/ScenePartitionGraph.h"
+#include "../Logic/Level/LevelDataLoader.h"
 
 std::string MainMenuScene::id_ = "MainMenuScene";
 
@@ -18,6 +19,8 @@ MainMenuScene::MainMenuScene()
 	SceneSystem::Instance().AddScene(*this);
 	Init();
 
+
+	LevelDataLoader::Instance().LoadLevelData("CSVFiles/DataLoaders/LevelDataLoader.csv");
 	MenuInterface = new MainMenuInterface();
 }
 

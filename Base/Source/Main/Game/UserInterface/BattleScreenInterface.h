@@ -22,6 +22,8 @@ public:
 	bool ShowResult;
 	bool EndResult;
 
+	bool PlayerWon;
+	bool EnemyWon;
 private:
 	void HandleUserInput();
 	void PopUpDelay(const float& dt);
@@ -100,8 +102,6 @@ private:
 	bool Followup;
 	bool Finished;
 	bool GetMaxData;
-	bool PlayerWon;
-	bool EnemyWon;
 
 	Vector3 defaultbarSize;
 	std::map<std::string, std::map<std::string, int>> UnitMap;

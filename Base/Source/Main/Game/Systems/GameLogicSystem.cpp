@@ -3,7 +3,6 @@
 #include "../../Engine/State/StateList.h"
 #include "../SceneManagement/ScenePartitionGraph.h"
 #include "../../Engine/Objects/GameObject.h"
-#include "../Logic/Level/LevelDataLoader.h"
 
 // Constructor and Destructor
 GameLogicSystem::~GameLogicSystem()
@@ -26,7 +25,6 @@ void GameLogicSystem::Init()
 	//QuickInit();
 
 	TerrainLoader.LoadTerrainData("CSVFiles/DataLoaders/TerrainDataLoader.csv");
-	LevelDataLoader::Instance().LoadLevelData("CSVFiles/DataLoaders/LevelDataLoader.csv");
 
 }
 
@@ -76,6 +74,12 @@ void GameLogicSystem::Update(const float& dt)
 		GameInterface->Update(dt);
 	}
 	else SceneSystem::Instance().SwitchScene("EndOfGameScene");
+}
+
+void GameLogicSystem::DetectSurrender()
+{
+	PlayerWon = false;
+	GameOver = true;
 }
 
 bool GameLogicSystem::DetectWinner()
