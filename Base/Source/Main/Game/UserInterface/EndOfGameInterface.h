@@ -22,7 +22,6 @@ private:
 
 	InterfaceLayer* EndScreenLayer;
 	InterfaceElement* EndScreenWinOrLose;
-	InterfaceElement* EndScreenNextButton;
 	InterfaceElement* EndScreenReturnButton;
 	InterfaceElement* EndScreenBackground;
 	InterfaceElement* EndScreenFrame;

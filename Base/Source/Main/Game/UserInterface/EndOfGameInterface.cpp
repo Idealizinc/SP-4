@@ -21,11 +21,6 @@ void EndOfGameInterface::Init()
 	EndScreenWinOrLose->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 1.5f, 0));
 	//EndScreenWinOrLose->SetText("Victorious!");
 
-	EndScreenNextButton = EndScreenLayer->CreateNewInterfaceElement("CloseButton", "WoodButton", Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 1.5f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.3f, 0), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x* 0.6f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.3f, 0));
-	EndScreenNextButton->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 1.5f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.3f, 0));
-	//EndScreenNextButton->SetText("Next Game");
-	//EndScreenNextButton->SetTextColor(Vector3(1, 1, 0));
-
 	EndScreenReturnButton = EndScreenLayer->CreateNewInterfaceElement("ReturnButton", "WoodButton", Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.5f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.3f, 0), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.6f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.3f, 0));
 	EndScreenReturnButton->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.5f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.3f, 0));
 	//EndScreenReturnButton->SetText("Main Menu");
@@ -56,8 +51,6 @@ void EndOfGameInterface::Update(const float& dt)
 		if (GameLogicSystem::Instance().PlayerWon)
 		{
 			EndScreenWinOrLose->SetText("Victorious!");
-			EndScreenNextButton->SetText("Next Game");
-			EndScreenNextButton->SetTextColor(Vector3(1, 1, 0));
 			EndScreenReturnButton->SetText("Main Menu");
 			EndScreenReturnButton->SetTextColor(Vector3(1, 1, 0));
 			EndScreenFrame->SetMesh("WoodFrameRect");
@@ -66,9 +59,6 @@ void EndOfGameInterface::Update(const float& dt)
 		else
 		{
 			EndScreenWinOrLose->SetText("Defeated!");
-			EndScreenNextButton->SetMesh("BlueButton");
-			EndScreenNextButton->SetText("Try Again");
-			EndScreenNextButton->SetTextColor(Vector3(0, 0, 1));
 			EndScreenReturnButton->SetMesh("BlueButton");
 			EndScreenReturnButton->SetText("Main Menu");
 			EndScreenReturnButton->SetTextColor(Vector3(0,0, 1));
@@ -81,9 +71,6 @@ void EndOfGameInterface::Update(const float& dt)
 		if (GameLogicSystem::Instance().PlayerWon)
 		{
 			EndScreenWinOrLose->SetText("Victorious!");
-			EndScreenNextButton->SetMesh("BlueButton");
-			EndScreenNextButton->SetText("Next Game");
-			EndScreenNextButton->SetTextColor(Vector3(0, 0, 1));
 			EndScreenReturnButton->SetMesh("BlueButton");
 			EndScreenReturnButton->SetText("Main Menu");
 			EndScreenReturnButton->SetTextColor(Vector3(0, 0, 1));
@@ -93,8 +80,6 @@ void EndOfGameInterface::Update(const float& dt)
 		else
 		{
 			EndScreenWinOrLose->SetText("Defeated!");
-			EndScreenNextButton->SetText("Try Again");
-			EndScreenNextButton->SetTextColor(Vector3(1, 1, 0));
 			EndScreenReturnButton->SetText("Main Menu");
 			EndScreenReturnButton->SetTextColor(Vector3(1, 1, 0));
 			EndScreenFrame->SetMesh("WoodFrameRect");
@@ -119,12 +104,7 @@ void EndOfGameInterface::HandleUserInput()
 
 	if (SceneSystem::Instance().cSS_InputManager->GetMouseInput(InputManager::KEY_LMB) == InputManager::MOUSE_DOWN)
 	{
-		if (EndScreenNextButton->DetectUserInput(MousePos, EndScreenLayer->GetPosition()))
-		{
-
-		}
-
-		else if (EndScreenReturnButton->DetectUserInput(MousePos, EndScreenLayer->GetPosition()))
+		if (EndScreenReturnButton->DetectUserInput(MousePos, EndScreenLayer->GetPosition()))
 		{
 			GameLogicSystem::Instance().PlayerWon = false;
 			GameLogicSystem::Instance().GameOver = false;
