@@ -44,8 +44,12 @@ void MusicEntity2D::Init(const std::string &Name, const std::string &FileName, c
 
 void MusicEntity2D::Play()
 {
-	if (HistoryOfPlayTimes.size() < MaxPlayCount || IsLooping)
+	// Check if it's supposed to loop or is over it's loop
+	if (HistoryOfPlayTimes.size() > MaxPlayCount && !IsLooping)
 	{
+		
+	}
+	else {
 		ISound *thEffect = MusicSystem::Instance().SoundEngine->play2D(SoundSource, IsLooping, false, true);
 		HistoryOfPlayTimes.push_back(thEffect);
 		StoppedPlaying = false;
