@@ -145,12 +145,15 @@ void BattleScreenCharacter::HandlePartitionCollision()
 				GameObject* SO = dynamic_cast<GameObject*>((*it)->GetEntity());
 				if (SO != nullptr)
 				{
-					Boundary* SelfBounds = GetBoundary();
-					SO->SetBounds();
-					if (SO->GetBoundary()->CheckCollision(GetPosition())) // Offset based on overlapping distance
-					if (SO->Static)
-						SetPosition((GetPosition() - (SO->GetBoundary()->GetOverlappingDistance() * SO->GetBoundary()->GetOverlappingAxis())));
-					else SO->SetPosition((GetPosition() + (SO->GetBoundary()->GetOverlappingDistance() * SO->GetBoundary()->GetOverlappingAxis())));
+					if (SO->Active)
+					{
+						Boundary* SelfBounds = GetBoundary();
+						SO->SetBounds();
+						if (SO->GetBoundary()->CheckCollision(GetPosition())) // Offset based on overlapping distance
+						if (SO->Static)
+							SetPosition((GetPosition() - (SO->GetBoundary()->GetOverlappingDistance() * SO->GetBoundary()->GetOverlappingAxis())));
+						else SO->SetPosition((GetPosition() + (SO->GetBoundary()->GetOverlappingDistance() * SO->GetBoundary()->GetOverlappingAxis())));
+					}
 				}
 			}
 		}

@@ -17,7 +17,7 @@ void EndOfGameInterface::Init()
 
 	EndScreenLayer = CreateNewInterfaceLayer("EndLayer", 0, 0);
 
-	EndScreenWinOrLose = EndScreenLayer->CreateNewInterfaceElement("EndScreenWinOrLose", "transparent", Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.3f, 0), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x , SceneSystem::Instance().cSS_InputManager->ScreenCenter.y , 0));
+	EndScreenWinOrLose = EndScreenLayer->CreateNewInterfaceElement("EndScreenWinOrLose", "transparent", Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.3f, 0), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x , SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.8f, 0));
 	EndScreenWinOrLose->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 1.5f, 0));
 	//EndScreenWinOrLose->SetText("Victorious!");
 

@@ -176,9 +176,9 @@ void PlayerSystem::HandleUserInput(const float& dt)
 				UnitIndex = 0;
 			CA->CameraMoveTargetPosition = InternalUnitContainer[UnitIndex]->GetPosition();
 		}
-		else if (UnitSwapWaitTimer > 0.1f && SceneSystem::Instance().cSS_InputManager->GetKeyValue('E'))
+		else if (UnitSwapWaitTimer > UnitWaitTime && SceneSystem::Instance().cSS_InputManager->GetKeyValue('E'))
 		{
-			UnitSwapWaitTimer = UnitWaitTime;
+			UnitSwapWaitTimer = 0.f;
 			--UnitIndex;
 			if (UnitIndex < 0)
 				UnitIndex = InternalUnitContainer.size() - 1;

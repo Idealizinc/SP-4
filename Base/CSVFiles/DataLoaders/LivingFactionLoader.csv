@@ -1,6 +1,6 @@
 UnitID,UnitName,MeshName,UnitType,Health,Damage,Walkspeed,Range,Cost,Weapon1,Weapon2,Weapon3
-1,Crusader,M_Crusader,0,300,1,16,25,5,OneHandedSword,TwoHandedSword,
-2,Archmage,M_Mage,1,100,1,10,40,12,FireProjectile,,
-3,Bowman,M_Archer,2,150,1,18,60,10,FastShoot,SlowShoot,RapidShoot
-4,Beastman,M_Beast,0,300,1,18,30,8,TwoHandedSword,DualSword,
-5,Dragon,M_Dragon,1,500,1,10,50,30,FireProjectile,FireOnPoint,
+1,Crusader,M_Crusader,0,300,1,20,30,5,Sword 1*,Greatsword 2*,
+2,Archmage,M_Mage,1,220,1,15,40,12,Fireball 2*,Fireball 2*,Explosion 3*
+3,Bowman,M_Archer,2,120,1,22,60,10,Bow 1*,Greatbow 2*,Crossbow 3*
+4,Beastman,M_Beast,0,400,1,22,40,8,Greatsword 2*,Dual Sword 3*,
+5,Dragon,M_Dragon,1,500,1,14,50,30,Fireball 2*,Explosion 3*,

@@ -345,8 +345,6 @@ void BattleScene::RenderPassMain()
 		SceneSystem::Instance().RenderMouseCursor(Vector3(SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.05f, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.05f), "Pointer");
 	else SceneSystem::Instance().RenderMouseCursor(Vector3(SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.05f, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.05f), "PointerDown");
 
-	Renderer->RenderMesh("reference", false);
-
 	RenderSkybox();
 	RenderShadowCasters();
 
@@ -354,7 +352,7 @@ void BattleScene::RenderPassMain()
 	std::stringstream ss;
 	ss.str("");
 	ss << "FPS: " << framerates;
-	Renderer->RenderTextOnScreen(ss.str(), Color(), SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth* 0.02f, SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth* 0.01f, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.1f);
+	//Renderer->RenderTextOnScreen(ss.str(), Color(), SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth* 0.02f, SceneSystem::Instance().cSS_InputManager->cIM_ScreenWidth* 0.01f, SceneSystem::Instance().cSS_InputManager->cIM_ScreenHeight * 0.1f);
 
 	Renderer->SetHUD(false);
 }

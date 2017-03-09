@@ -125,7 +125,7 @@ void RenderSystem::Init()
 	FogColor.Set(0.65f, 0.7f, 0.75f);
 	glUniform3fv(m_parameters[U_FOG_COLOR], 1, &FogColor.r);
 	glUniform1f(m_parameters[U_FOG_START], 100);
-	glUniform1f(m_parameters[U_FOG_END], 500);
+	glUniform1f(m_parameters[U_FOG_END], 400);
 	glUniform1f(m_parameters[U_FOG_DENSITY], 0.05f);
 	glUniform1f(m_parameters[U_FOG_TYPE], 1);
 	glUniform1f(m_parameters[U_FOG_ENABLED], 1);

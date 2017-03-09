@@ -140,6 +140,7 @@ bool GameMap::LoadFile(const std::string &mapName, const bool& IsGameScreenMap, 
 						it->second.push_back(" ");
 						TN->SetEntity(aCopyOfIt);
 						TN->SetGridIndex(aCopyOfIt->GetPosition());
+						TNBO->Active = TNBO->Visible = false;
 						TempNodeList.push_back(TN);
 						if (Icon == "BPS")
 						{

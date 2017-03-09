@@ -118,13 +118,13 @@ void MainMenuInterface::InitInstructLayer()
 	InstructionsLayer = CreateNewInterfaceLayer(std::to_string(L_INSTRUCTIONS), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * -(2.5f), 0), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 1.2f, 0));
 
 	
-	InstructionsText = InstructionsLayer->CreateNewInterfaceElement("Instructions", "InstructionsBoard", 0, Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 1.2f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 1.2f, 0));
+	InstructionsText = InstructionsLayer->CreateNewInterfaceElement("Instructions", "InstructionsBoard1", 0, Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 1.2f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 1.2f, 0));
 	InstructionsText->SetTargetPosition(0);
 
-	InstructionsTextP2 = InstructionsLayer->CreateNewInterfaceElement("Instructions", "InstructionsBoard", 0, Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 1.2f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 1.2f, 0));
+	InstructionsTextP2 = InstructionsLayer->CreateNewInterfaceElement("Instructions", "InstructionsBoard2", 0, Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 1.2f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 1.2f, 0));
 	InstructionsTextP2->SetTargetPosition(RightSide);
 
-	InstructionsTextP3 = InstructionsLayer->CreateNewInterfaceElement("Instructions", "InstructionsBoardWeed", 0, Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 1.2f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 1.2f, 0));
+	InstructionsTextP3 = InstructionsLayer->CreateNewInterfaceElement("Instructions", "InstructionsBoard3", 0, Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 1.2f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 1.2f, 0));
 	InstructionsTextP3->SetTargetPosition(RightSide);
 
 	Vector3 ButtonDimensions = Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.25f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.15f, 0);

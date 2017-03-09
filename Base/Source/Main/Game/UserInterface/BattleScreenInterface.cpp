@@ -427,9 +427,9 @@ void BattleScreenInterface::RecreateDataLayer()
 	UnitDataFrameButton = UnitDataLayer->CreateNewInterfaceElement("UnitDtatFrameButton", "Transparent", Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x* 1.02f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 1.025f, 0), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.075f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.3f, 0));
 	UnitDataFrameButton->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 1.02f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 1.025f, 0));
 
-	UnitDataInfoText = UnitDataLayer->CreateNewInterfaceElement("UnitDtatInfoText", "Transparent", Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x* 1.53f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 1.5f, 0), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.25f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.15f, 0));
+	UnitDataInfoText = UnitDataLayer->CreateNewInterfaceElement("UnitDtatInfoText", "Transparent", Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x* 1.53f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 1.5f, 0), Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 0.25f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 0.125f, 0));
 	UnitDataInfoText->SetTargetPosition(Vector3(SceneSystem::Instance().cSS_InputManager->ScreenCenter.x * 1.53f, SceneSystem::Instance().cSS_InputManager->ScreenCenter.y * 1.5f, 0));
-	UnitDataInfoText->SetText("Unit  Weapon Using  Quantity");
+	UnitDataInfoText->SetText("Unit  Equipped Weapon  Quantity");
 
 	int Counter = 0;
 	float offSet = SceneSystem::Instance().cSS_InputManager->ScreenCenter.x* 0.08f;

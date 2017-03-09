@@ -6,6 +6,6 @@ Sounds//Fireball.ogg,2D,0.15,1,,,fireball
 Sounds//Hurt.ogg,2D,0.15,1,,,hurt
 Sounds//Impact.ogg,2D,0.15,1,,,impact
 Sounds//SwordClash.ogg,2D,0.15,1,,,clash
-Sounds//Rose_At_Eclipse.mp3,2D,0.15,1,1,1,battlemusic
-Sounds//Symphonic_Storms.mp3,2D,0.15,1,1,1,mainmenumusic
-Sounds//Viper_Orchestral.ogg,2D,0.15,1,1,1,gamemusic
+Sounds//Rose_At_Eclipse.mp3,2D,0.1,1,1,1,battlemusic
+Sounds//Symphonic_Storms.mp3,2D,0.1,1,1,1,mainmenumusic
+Sounds//Viper_Orchestral.ogg,2D,0.1,1,1,1,gamemusic

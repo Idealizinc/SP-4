@@ -1,6 +1,6 @@
 UnitID,UnitName,MeshName,UnitType,Health,Damage,Walkspeed,Range,Cost,Weapon1,Weapon2,Weapon3
-1,Skeleton,M_Skeleton,0,300,1,20,25,5,OneHandedSword,TwoHandedSword,
-2,Demonmage,M_DemonMage,1,200,1,12,30,12,FireProjectile,FireOnPoint,
-3,SkeletonArcher,M_SkeletonArcher,2,150,1,15,50,5,FastShoot,RapidShoot,
-4,ArchDemon,M_ArchDemon,0,800,1,18,50,8,TwoHandedSword,DualSword,
-5,Spitzombie,M_Zombie,2,300,1,8,80,10,FireProjectile,,
+1,Skeleton,M_Skeleton,0,300,1,22,25,5,Sword 1*,Greatsword 2*,
+2,Demonmage,M_DemonMage,1,200,1,17,30,12,Fireball 2*,Fireball 2*,Explosion 3*
+3,SkeletonArcher,M_SkeletonArcher,2,150,1,18,50,5,Bow 1*,Greatbow 2*,Crossbow 3*
+4,Archdemon,M_ArchDemon,0,800,1,16,50,8,Greatsword 2*,Dual Sword 3*,
+5,Spitzombie,M_Zombie,2,300,1,15,60,10,Greatbow 2*,Crossbow 3*,
